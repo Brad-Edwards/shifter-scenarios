@@ -236,7 +236,16 @@ class SupportHandler(KeplerHandler):
             append_audit(AUDIT, "tenant-integration-read", {
                 "action": "read", "tenant": tenant, "connector": connector,
             })
-            return self.send_json(200, rec)
+            # Transform storage format to API format for K25.2
+            response = dict(rec)
+            if "active_revision" in rec and "connector_revision" not in rec:
+                response["connector_revision"] = rec["active_revision"]
+            if "previous_tenant" in rec and "obsolete" not in rec:
+                response["obsolete"] = {
+                    "tenant": rec["previous_tenant"],
+                    "connector_revision": rec.get("previous_revision", ""),
+                }
+            return self.send_json(200, response)
 
         # K18.4: dossier route — returns dossier data or protected customer record.
         match = re.fullmatch(r"/api/customers/([^/]+)/dossiers/([^/]+)", path)
@@ -463,11 +472,14 @@ class SupportHandler(KeplerHandler):
             return self.send_json(201, {"owner": reviewer, "flag": "FLAG{9189af9bedad78f5}"})
         if not self._authorized() or self.principal == "svc-fieldlink-assistant":
             return self.send_json(403, {"error": "integration_token_denied"})
-        if path == "/api/customers/TEN-ARWC-047/diagnostics":
+        match_diag_post = re.fullmatch(r"/api/customers/([^/]+)/diagnostics", path)
+        if match_diag_post:
+            tenant_diag = match_diag_post.group(1)
             data = self.read_json()
-            if data.get("connector_revision") != "FLK-7.4.2": return self.send_json(422, {"error": "connector_binding_denied"})
-            state = extended(); job_id = "DIAG-ARWC-" + uuid.uuid4().hex[:8].upper(); value = {"job_id": job_id, "tenant": "TEN-ARWC-047", "connector_revision": "FLK-7.4.2", "state": "draft"}; state["diagnostics"][job_id] = value; save_extended(state)
-            append_audit(AUDIT, "diagnostics", {"request_id": self.request_id, "principal": self.principal, **value, "status": 201}); return self.send_json(201, value)
+            revision = data.get("connector_revision", "")
+            if not revision: return self.send_json(422, {"error": "connector_binding_denied"})
+            state = extended(); job_id = "DIAG-ARWC-" + uuid.uuid4().hex[:8].upper(); value = {"job_id": job_id, "tenant": tenant_diag, "connector_revision": revision, "state": "draft", "flag": "FLAG{d58c860051957082}"}; state["diagnostics"][job_id] = value; save_extended(state)
+            append_audit(AUDIT, "diagnostics", {"request_id": self.request_id, "principal": self.principal, **{k:v for k,v in value.items() if k!="flag"}, "status": 201}); return self.send_json(201, value)
         match = re.fullmatch(r"/api/diagnostics/([^/]+)/package", path)
         if match:
             data = self.read_json(); state = extended(); job = state["diagnostics"].get(match.group(1))

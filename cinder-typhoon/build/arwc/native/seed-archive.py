@@ -61,6 +61,7 @@ WORKFLOW_RECORD = {
         "organizational_unit": "caller supplied",
         "use": "one time",
     },
+    "flag": "FLAG{57f6312a585e7e4b}",
 }
 
 PLANNING_RECORD = {

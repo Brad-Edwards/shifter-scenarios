@@ -8,14 +8,25 @@
       ],
       "routes": [
         {
+          "body": {
+            "channels": {
+              "arwc-stable": {
+                "rollback_candidates": [
+                  "7.4.2"
+                ],
+                "rollback_slot": "7.4.2"
+              }
+            },
+            "pending_release": "7.4.3-cinder.rset1"
+          },
           "key": "packages.metadata",
           "method": "GET",
-          "template": "https://packages.keplerops.test/@keplerops%2ffieldlink-connector"
+          "template": "https://delivery.keplerops.test:8443/api/package-meta/fieldlink-connector"
         },
         {
           "key": "packages.publish",
           "method": "PUT",
-          "template": "https://packages.keplerops.test/@keplerops%2ffieldlink-connector"
+          "template": "https://delivery.keplerops.test:8443/api/packages/%40keplerops%2ffieldlink-connector"
         },
         {
           "key": "packages.private-metadata",

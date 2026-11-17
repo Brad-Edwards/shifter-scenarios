@@ -6,7 +6,7 @@ flags:
     source: value
     value: "FLAG{b4827df7ab6888be}"
     host: keplerops-host
-    path: "in GET https://source.keplerops.test:8443/api/fieldkest/handovers/current response field 'flag'. Service: source (source.py). Code tree: build/keplerops/runtime/source.py handover handler."
+    path: "FLAG{b4827df7ab6888be}. Source: GET https://source.keplerops.test:8443/api/fieldkest/handovers/current with developer credentials. Response includes {'flag':'FLAG{b4827df7ab6888be}','handover_id':'HND-FLK-2026-09',...}. Fix: added /api/fieldkest/handovers/current endpoint to source.py, added flag to"
   - flag_id: K01.2
     source: value
     value: "FLAG{408710d448134ab5}"
@@ -626,47 +626,47 @@ flags:
     source: value
     value: "FLAG{1b0caff4bdea2bf1}"
     host: arwc-host
-    path: TBD
+    path: "ERPNext Purchase Order custom field cinder_receipt set to FLAG{1b0caff4bdea2bf1} on PO PUR-ORD-2026-00001. Applied via frappe db.set_value. Needs seed addition."
   - flag_id: W02.2
     source: value
     value: "FLAG{614858f9076a8e8b}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/native/records/ANN-4417-R2.md — flag in HTML comment at end of file. Applied to range via WebDAV PUT to records-admin path."
   - flag_id: W02.3
     source: value
     value: "FLAG{7f179347dc20d82f}"
     host: arwc-host
-    path: TBD
+    path: "ERPNext Task TASK-2026-00014 description updated via db.set_value to append flag HTML comment. Needs seed addition."
   - flag_id: W03.1
     source: value
     value: "FLAG{cf89cc348eb6ae25}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/native/records/ANN-4417-R2.md — flag in HTML comment at end. Applied to range /home/frappe/frappe-bench/sites/erp.arwc.test/private/files/ANN-4417-R2.md."
   - flag_id: W03.2
     source: value
     value: "FLAG{dd3c05ed7c03621d}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/native/records/integration-read-acceptance.md — flag in HTML comment at end. Applied via WebDAV PUT to records-admin/Engineering reviews/."
   - flag_id: W03.3
     source: value
     value: "FLAG{4c92291fb1143aea}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/native/dmz-views.sql — flag as CASE expression in dmz_api.reserve_report view. Applied to range via psql."
   - flag_id: W04.1
     source: value
     value: "FLAG{57f6312a585e7e4b}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/native/seed-archive.py WORKFLOW_RECORD dict — flag field added. Also in AWF-CRR-229-R4.json in Nextcloud (Corporate Records/Archive path) which is shared with arwc-archive-reader."
   - flag_id: W04.2
     source: value
     value: "FLAG{441c12b5f7f4310e}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/retained_archive.py:query() — flag in extra field when record_id==AR-CRR-229. Additional fixes: restored issue_certificate() using archive CA; added ARCHIVE_CA/ARCHIVE_CA_KEY constants; archive-entrypoint.sh adds archive-ca.crt to CA bundle for mTLS."
   - flag_id: W04.3
     source: value
     value: "FLAG{19f186b21e73e545}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/retained_archive.py:helper() — flag in extra field planner_handover response."
   - flag_id: W05.1
     source: value
     value: "FLAG{2f6788589f10c887}"

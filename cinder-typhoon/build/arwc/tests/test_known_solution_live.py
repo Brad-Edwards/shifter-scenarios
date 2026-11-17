@@ -1028,7 +1028,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             # The enrollment copies the caller-supplied OU into the backend query;
             # a subject injection reaches the protected archive record.
             protected = self.evidence["protected_record"]
-            ou = f"MaintenanceArchive' OR r.id='{protected}' OR 'a'='b"
+            ou = f"MaintenanceArchive' OR record_id='{protected}' OR 'a'='b"
             status, enrolled = request(
                 self.discovered_route("archive.archived-query"), method="POST",
                 body={"operation": "enroll", "enrollment_token": self.evidence["archive_token"], "organizational_unit": ou},

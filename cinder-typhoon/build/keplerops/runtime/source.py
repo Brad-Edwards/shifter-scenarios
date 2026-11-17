@@ -282,6 +282,10 @@ class SourceHandler(KeplerHandler):
                 return
         result["request_id"] = self.request_id
         result["input_sha256"] = sha256(fields["input"])  # for K28.2 corpus verification
+        if result.get("mode") == "diagnostic":
+            result["flag_k28_2"] = "FLAG{d4fec1d1bcc12c7d}"
+            if result.get("route") and result.get("note_id"):
+                result["flag_k28_3"] = "FLAG{9fd67f66428a244c}"
         receipt = "CARUN-" + secrets.token_hex(6).upper()
         result["receipt_id"] = receipt
         CONNECTOR_RESULTS.mkdir(parents=True, exist_ok=True)

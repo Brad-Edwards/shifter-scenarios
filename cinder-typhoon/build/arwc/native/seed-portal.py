@@ -27,20 +27,28 @@ def seed() -> None:
     portal_users = [{"user": row["user"]} for row in document.get("portal_users", [])]
     if not any(row["user"] == email for row in portal_users):
         api(supplier_path, {"portal_users": [*portal_users, {"user": email}]}, method="PUT")
+    # W02.1: Custom Field on Purchase Order for flag delivery.
+    insert("Custom Field", {"dt": "Purchase Order", "fieldname": "cinder_receipt"}, {
+        "label": "Cinder Receipt", "fieldtype": "Data", "read_only": 1, "in_list_view": 0,
+    })
     insert("Item", {"item_code": "FIELD-SERVICE"}, {
         "item_name": "Field maintenance service", "item_group": "Services", "stock_uom": "Nos",
         "is_stock_item": 0, "is_purchase_item": 1,
     })
-    for reference, supplier_name, description, rate in (
-        ("PO-VEY-4417", "Veybridge Field Services", "Cairn Reach outlet actuator inspection — asset AST-CRR-017; WO-CRR-4417", 1800),
-        ("PO-VEY-4392", "Veybridge Field Services", "Cairn Reach cabinet ventilation service — WO-CRR-4392", 650),
-        ("PO-ARD-2192", "Ardenvale Instrument Services", "Pine intake instrument calibration — WO-PIN-2192", 1200),
-    ):
+    # Map: PO reference → (supplier, description, rate, cinder_receipt flag)
+    po_data = [
+        ("PO-VEY-4417", "Veybridge Field Services", "Cairn Reach outlet actuator inspection — asset AST-CRR-017; WO-CRR-4417", 1800, "FLAG{1b0caff4bdea2bf1}"),
+        ("PO-VEY-4392", "Veybridge Field Services", "Cairn Reach cabinet ventilation service — WO-CRR-4392", 650, None),
+        ("PO-ARD-2192", "Ardenvale Instrument Services", "Pine intake instrument calibration — WO-PIN-2192", 1200, None),
+    ]
+    for reference, supplier_name, description, rate, receipt in po_data:
+        extra = {"cinder_receipt": receipt} if receipt else {}
         order = insert("Purchase Order", {"title": reference, "supplier": supplier_name}, {
             "company": COMPANY, "transaction_date": "2026-11-09", "schedule_date": "2026-11-20",
             "currency": "USD", "buying_price_list": "Standard Buying",
             "items": [{"item_code": "FIELD-SERVICE", "qty": 1, "rate": rate,
                        "schedule_date": "2026-11-20", "description": description}],
+            **extra,
         })
         document = api(f'/api/resource/Purchase%20Order/{quote(order["name"], safe="")}')["data"]
         if document["docstatus"] == 0:

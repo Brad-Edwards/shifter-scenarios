@@ -60,7 +60,7 @@
       "purpose": "FieldLink inspection, entitlement, release approval, and customer delivery operations.",
       "routes": [
         {"key": "packages.metadata", "method": "GET", "template": "https://packages.keplerops.test/@keplerops%2ffieldlink-connector"},
-        {"key": "packages.publish", "method": "PUT", "template": "https://packages.keplerops.test/@keplerops%2ffieldlink-connector"},
+        {"key": "packages.publish", "method": "PUT", "template": "https://delivery.keplerops.test:8443/api/packages/%40keplerops%2ffieldlink-connector"},
         {"key": "packages.private-metadata", "method": "GET", "template": "https://packages.keplerops.test/@keplerops%2fsupport-rehearsal"},
         {"key": "packages.consumer-check", "method": "POST", "template": "https://delivery.keplerops.test:8443/api/consumer-checks"},
         {"key": "packages.release", "method": "GET", "template": "https://delivery.keplerops.test:8443/api/releases/{release_id}"},

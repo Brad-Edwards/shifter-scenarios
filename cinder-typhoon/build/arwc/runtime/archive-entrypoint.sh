@@ -39,15 +39,18 @@ for file in archive-ca.crt archive-ca.key; do
   fi
 done
 
-# Build CA bundle: golden CA + native IT step-ca root and intermediate.
-# The bundle is used for Nextcloud connections and for verifying step-ca-signed
-# client certificates in mTLS (both root and intermediate are required).
+# Build CA bundle: golden CA + native IT step-ca root and intermediate + archive CA.
+# The bundle is used for Nextcloud connections and for verifying mTLS client
+# certificates (both step-ca-signed and archive-CA-signed via enrollment).
 cat /run/arwc-tls/ca.crt > /tmp/arwc-ca-bundle.pem
 if [ -r /run/arwc-native/root-ca.crt ]; then
   cat /run/arwc-native/root-ca.crt >> /tmp/arwc-ca-bundle.pem
 fi
 if [ -r /run/arwc-step-ca/intermediate.crt ]; then
   cat /run/arwc-step-ca/intermediate.crt >> /tmp/arwc-ca-bundle.pem
+fi
+if [ -r /tmp/archive-ca.crt ]; then
+  cat /tmp/archive-ca.crt >> /tmp/arwc-ca-bundle.pem
 fi
 chmod 0644 /tmp/arwc-ca-bundle.pem
 

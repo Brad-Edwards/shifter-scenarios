@@ -181,13 +181,13 @@ class W04Live(unittest.TestCase):
         self.assertNotIn("AR-CRR-229", json.dumps(response))
         self.assertEqual(
             response["backend_query"],
-            "MATCH (i:Identity {ou:'MaintenanceArchive'})-[:CAN_READ]->(r:ArchiveRecord) RETURN r",
+            "SELECT record_id, revision, workflow, attachment, classification FROM archive.records WHERE organizational_unit = 'MaintenanceArchive'",
         )
 
     def test_05_backend_rejects_other_records_and_writes(self) -> None:
         other_token = workflow_token()
         other_cert, other_key = enroll(
-            "MaintenanceArchive' OR r.id='AR-MER-100' OR 'a'='b", other_token,
+            "MaintenanceArchive' OR record_id='AR-MER-100' OR 'a'='b", other_token,
         )
         status, response = request(
             "/api/archived-queries/current", method="POST", body={"operation": "query"},
@@ -208,7 +208,7 @@ class W04Live(unittest.TestCase):
     def test_06_subject_injection_recovers_only_the_bounded_record(self) -> None:
         token = workflow_token()
         certificate, key = enroll(
-            "MaintenanceArchive' OR r.id='AR-CRR-229' OR 'a'='b", token,
+            "MaintenanceArchive' OR record_id='AR-CRR-229' OR 'a'='b", token,
         )
         type(self).injected_certificate = certificate
         type(self).injected_key = key
@@ -224,7 +224,7 @@ class W04Live(unittest.TestCase):
             "attachment": "ARC-229-A",
             "classification": "retained corporate archive",
         })
-        self.assertIn("OR r.id='AR-CRR-229'", response["backend_query"])
+        self.assertIn("OR record_id='AR-CRR-229'", response["backend_query"])
 
     def test_07_helper_validates_raw_member_before_nfkc(self) -> None:
         slash_archive = make_archive("outside/copy_handover(HND-PLANNER-06)")

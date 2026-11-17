@@ -287,7 +287,7 @@ services:
     - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
     - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
     - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
-    - arwc-planning-evidence:/run/arwc-planning-evidence
+    - arwc-identity-planning:/run/arwc-planning-evidence:ro
     - type: bind
       source: ${ARWC_OPERATOR_DIR:-./.operator}/archive-workflow/reports-state.json
       target: /run/arwc-reports-state.json
@@ -478,5 +478,7 @@ volumes:
     name: cinder-arwc-archive-data
   arwc-planning-evidence:
     name: cinder-arwc-planning-evidence
+  arwc-identity-planning:
+    name: cinder-arwc-identity-planning
   arwc-data-data:
     name: cinder-arwc-data-data

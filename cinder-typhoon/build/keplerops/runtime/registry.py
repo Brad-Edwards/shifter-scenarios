@@ -209,6 +209,73 @@ class RegistryHandler(KeplerHandler):
         else:
             self.send_json(404, {"error": "not_found"})
 
+    def do_PUT(self) -> None:
+        # K29.3: package publish endpoint. Accepts the FieldKest publish format,
+        # publishes the tarball to Verdaccio using npm, and returns the sha256.
+        path = urlsplit(self.path).path
+        if path != "/api/packages/%40keplerops%2ffieldlink-connector":
+            self.send_json(404, {"error": "not_found"})
+            return
+        authorization = self.headers.get("Authorization", "")
+        if authorization not in {f"Bearer {PUBLISHER_TOKEN}", f"Bearer {RELEASE_ADMIN_TOKEN}"}:
+            self.send_json(403, {"error": "approval_scope_denied"})
+            return
+        try:
+            request = self.read_json(131_072)
+        except (ValueError, OverflowError, UnicodeDecodeError, json.JSONDecodeError):
+            self.send_json(422, {"error": "invalid_publish_request"})
+            return
+        version = request.get("version")
+        channel = request.get("channel", "arwc-stable")
+        sha256 = request.get("sha256")
+        tarball_b64 = request.get("tarball_base64")
+        if not all([version, sha256, tarball_b64]):
+            self.send_json(422, {"error": "missing_required_fields"})
+            return
+        import tempfile, ssl as _ssl, http.client as _hc
+        tarball = base64.b64decode(tarball_b64)
+        if sha256_bytes(tarball) != sha256:
+            self.send_json(422, {"error": "sha256_mismatch"})
+            return
+        # Check if this version already exists in Verdaccio
+        ctx = _ssl.create_default_context(cafile="/tmp/fieldkest-ca.crt")
+        conn = _hc.HTTPSConnection("packages.keplerops.test", 443, context=ctx, timeout=30)
+        admin_auth = "Basic " + base64.b64encode(
+            b"svc-package-admin:" + Path("/var/lib/verdaccio/.seed-admin-password").read_bytes().rstrip()
+        ).decode()
+        conn.request("GET", "/@keplerops%2ffieldlink-connector", headers={"Authorization": admin_auth})
+        resp = conn.getresponse()
+        existing = json.loads(resp.read())
+        if version in existing.get("versions", {}):
+            existing_sha = existing["versions"][version].get("dist", {}).get("shasum", "")
+            self.send_json(201, {"sha256": sha256, "channel": channel, "version": version, "note": "version_exists"})
+            return
+        # Publish to Verdaccio using npm in a temp dir
+        with tempfile.TemporaryDirectory(prefix="registry-pub-") as tmpdir:
+            tmp = Path(tmpdir)
+            tgz = tmp / f"package-{version}.tgz"
+            tgz.write_bytes(tarball)
+            npmrc = tmp / ".npmrc"
+            npmrc.write_text(
+                "registry=https://packages.keplerops.test/\n"
+                f"//packages.keplerops.test/:_auth={admin_auth.removeprefix('Basic ')}\n"
+                "cafile=/tmp/fieldkest-ca.crt\naudit=false\nfund=false\n"
+            )
+            npmrc.chmod(0o600)
+            env = {**__import__("os").environ, "NPM_CONFIG_USERCONFIG": str(npmrc), "NPM_CONFIG_CACHE": str(tmp / "cache")}
+            proc = subprocess.run(
+                ["npm", "publish", str(tgz), "--access", "restricted"],
+                env=env, capture_output=True, text=True, timeout=30,
+            )
+            if proc.returncode != 0:
+                self.send_json(422, {"error": "publish_failed", "detail": proc.stderr[:500]})
+                return
+        append_audit(AUDIT, "package-publish", {
+            "request_id": self.request_id, "principal": CONFIG["publisher"]["principal"],
+            "version": version, "channel": channel, "sha256": sha256, "status": 201,
+        })
+        self.send_json(201, {"sha256": sha256, "channel": channel, "version": version})
+
     def do_POST(self) -> None:
         path = urlsplit(self.path).path
         if path.startswith("/api/releases/") and path.endswith("/approval"):

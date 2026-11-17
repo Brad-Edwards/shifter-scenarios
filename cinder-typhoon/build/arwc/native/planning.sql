@@ -65,7 +65,8 @@ INSERT INTO public.business_reserve_report
  ) AS ordinary(site,asset,reserve_ml)
 ON CONFLICT DO NOTHING;
 CREATE OR REPLACE VIEW reporting.reserve_report AS
- SELECT record_id, revision, planning_window, reported_ml, asset, unit, as_of
+ SELECT record_id, revision, planning_window, reported_ml, asset, unit, as_of,
+   CASE WHEN record_id = 'RPT-CRR-DP3-R7' THEN 'FLAG{4c92291fb1143aea}' ELSE NULL END AS flag
  FROM public.business_reserve_report;
 CREATE OR REPLACE VIEW public.reserve_report_current AS
  SELECT record_id, revision, planning_window, reported_ml, asset, unit, as_of

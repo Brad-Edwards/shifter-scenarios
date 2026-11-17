@@ -15,3 +15,5 @@ revision and observation date with the live result when reviewing a handover.
 Allocation ledger and settlement tariff records remain outside this interface.
 The approved exchange is read-only; report consumers do not insert, amend or
 delete reserve records. Operations and control requests use separate systems.
+
+<!-- flag:FLAG{dd3c05ed7c03621d} -->

@@ -70,6 +70,8 @@ def main() -> None:
         "dossier_id": "DOS-ARWC-HIST-01",
         "tenant": "TEN-ARWC-047",
         "case": "SUP-2841",
+        "recurring_case": "SUP-2841",
+        "account": "K-C-001",
         "reviewer_federation": {
             "provider": "OIDC-FIELDKEST-RETAINED-SUPPORT",
             "tenant": "TEN-ARWC-047",

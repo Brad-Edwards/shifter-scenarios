@@ -311,7 +311,8 @@ def main() -> None:
             'title': 'Connector support handover HND-FLK-2026-09',
             'body': f"Release {handover['release']} · revision {handover['revision']}\n\n"
                     + f"Owner: {handover['owner']}\n\n"
-                    + '\n'.join('- ' + note for note in handover['notes']),
+                    + '\n'.join('- ' + note for note in handover['notes'])
+                    + (f"\n\n{handover['flag']}" if handover.get('flag') else ''),
         })
         marker.touch(mode=0o600)
     ordinary_marker = ROOT / 'data/.ordinary-issues-seeded'

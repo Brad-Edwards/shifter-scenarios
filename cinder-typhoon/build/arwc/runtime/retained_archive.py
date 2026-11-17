@@ -43,6 +43,8 @@ DATA_SOURCE = pathlib.Path("/run/arwc-planning-evidence/archive-lineage.json")
 STEP_CA_ROOT = "/run/arwc-step-ca/root.crt"
 STEP_CA_INTERMEDIATE = "/run/arwc-step-ca/intermediate.crt"
 ARCHIVE_CA_PATH = "/run/arwc-tls/archive-ca.crt"
+ARCHIVE_CA = "/tmp/archive-ca.crt"
+ARCHIVE_CA_KEY = "/tmp/archive-ca.key"
 STEP_CA_URL = "https://ca.arwc.test:9000"
 OTT_POOL = pathlib.Path("/run/arwc-tokens")
 GITEA_STATE_PATH = pathlib.Path("/run/arwc-archive-workflow/gitea-reader.json")
@@ -513,6 +515,39 @@ def consume_enrollment_token() -> str:
     return ott
 
 
+def issue_certificate(organizational_unit: str) -> tuple[str, str, str]:
+    if not (1 <= len(organizational_unit) <= 160):
+        raise ValueError("organizational unit has an invalid length")
+    if any(c in organizational_unit for c in "\r\n\x00/"):
+        raise ValueError("organizational unit contains an invalid character")
+    with tempfile.TemporaryDirectory() as directory:
+        work = pathlib.Path(directory)
+        key = work / "client.key"
+        req = work / "client.csr"
+        cert = work / "client.crt"
+        exts = work / "client.ext"
+        exts.write_text(
+            "basicConstraints=critical,CA:FALSE\n"
+            "keyUsage=critical,digitalSignature\n"
+            "extendedKeyUsage=clientAuth\n",
+            encoding="utf-8",
+        )
+        subprocess.run(
+            ["openssl", "req", "-new", "-newkey", "rsa:2048", "-nodes",
+             "-subj", f"/CN=corporate-reader-principal/O=Alterra Regional Water Company/OU={organizational_unit}",
+             "-keyout", str(key), "-out", str(req)],
+            check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        )
+        serial = "0x" + secrets.token_hex(16)
+        subprocess.run(
+            ["openssl", "x509", "-req", "-days", "30", "-sha256",
+             "-in", str(req), "-CA", ARCHIVE_CA, "-CAkey", ARCHIVE_CA_KEY,
+             "-set_serial", serial, "-extfile", str(exts), "-out", str(cert)],
+            check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        )
+        return cert.read_text(encoding="utf-8"), key.read_text(encoding="utf-8"), serial
+
+
 def peer_organizational_unit(socket: ssl.SSLSocket) -> str | None:
     """Return the archive identity from the client certificate's OrganizationalUnit.
 
@@ -770,7 +805,7 @@ class Handler(BaseHTTPRequestHandler):
                 {
                     "key": "archive.contract",
                     "method": "GET",
-                    "template": CONTRACT_SHARE_URL,
+                    "template": "https://retained-archive.arwc.test/api/archive-contracts/current",
                 },
                 {
                     "key": "archive.archived-query",
@@ -877,6 +912,13 @@ class Handler(BaseHTTPRequestHandler):
         if not self.authorized():
             return
         path = urlsplit(self.path).path
+        if path == "/api/archive-contracts/current":
+            # W04.1: Return the archive workflow contract with the current enrollment token.
+            workflow = _load_workflow()
+            state = load_state()
+            record = {**workflow, "enrollment_token": state.get("enrollment_token", "")}
+            self.accepted("archive-contract-read", record, "corporate-reader-principal", 200)
+            return
         if path == "/api/archived-queries/current":
             # Return a pre-generated step-ca OTT from the pool, plus the
             # step-ca connection info. The participant calls step-ca directly
@@ -1564,14 +1606,42 @@ class Handler(BaseHTTPRequestHandler):
     def query(self, request: dict[str, object]) -> None:
         operation = request.get("operation")
         if operation == "enroll":
-            # Certificate issuance is owned by step-ca. The participant must use
-            # the OTT from GET /api/archived-queries/current to call step-ca's
-            # /1.0/sign endpoint directly. This endpoint is kept for compatibility
-            # but no longer issues certificates.
-            self.send_json(410, {
-                "error": "enrollment is handled by step-ca directly",
-                "sign_endpoint": STEP_CA_URL + "/1.0/sign",
-            })
+            state = load_state()
+            supplied = request.get("enrollment_token")
+            if not isinstance(supplied, str) or state.get("enrollment_consumed"):
+                self.send_json(409, {"error": "enrollment is not current"})
+                return
+            if not hmac.compare_digest(hashlib.sha256(supplied.encode()).hexdigest(),
+                                       str(state.get("enrollment_token_sha256", ""))):
+                self.send_json(409, {"error": "enrollment is not current"})
+                return
+            organizational_unit = request.get("organizational_unit")
+            if not isinstance(organizational_unit, str):
+                self.send_json(409, {"error": "organizational unit is required"})
+                return
+            try:
+                certificate, private_key, serial = issue_certificate(organizational_unit)
+            except (ValueError, subprocess.SubprocessError):
+                self.send_json(409, {"error": "organizational unit is not accepted"})
+                return
+            state["enrollment_consumed"] = True
+            issued = state.get("issued_certificates", [])
+            issued.append({"serial": serial, "organizational_unit": organizational_unit})
+            state["issued_certificates"] = issued
+            save_state(state)
+            result = {
+                "record_id": f"ArchiveSubmitter-{serial[2:]}",
+                "revision": 1,
+                "profile": "ArchiveSubmitter",
+                "common_name": "corporate-reader-principal",
+                "organizational_unit": organizational_unit,
+                "extended_key_usage": "clientAuth",
+            }
+            self.accepted(
+                "archive-identity-query/enroll", result,
+                "corporate-reader-principal",
+                extra={"certificate": certificate, "private_key": private_key},
+            )
             return
         if operation != "query":
             self.send_json(409, {"error": "unknown archive operation"})
@@ -1594,6 +1664,10 @@ class Handler(BaseHTTPRequestHandler):
             state = load_state()
             state["protected_record_observed"] = True
             save_state(state)
+            self.accepted("archive-identity-query/query", record,
+                          "corporate-reader-principal",
+                          extra={"backend_query": backend_query, "flag": "FLAG{441c12b5f7f4310e}"})
+            return
         self.accepted("archive-identity-query/query", record,
                       "corporate-reader-principal", extra={"backend_query": backend_query})
 
@@ -1680,7 +1754,7 @@ class Handler(BaseHTTPRequestHandler):
         save_state(state)
         self.accepted(
             "archive-helper-executed", handover, "svc-archive-helper",
-            extra={"planner_handover": token},
+            extra={"planner_handover": token, "flag": "FLAG{19f186b21e73e545}"},
         )
 
 
