@@ -595,6 +595,48 @@ class Handler(BaseHTTPRequestHandler):
         self.accepted("saved-query-read", DEFINITION)
 
     def do_POST(self) -> None:
+        # W29.2: reserve reconciliation state setter called by engineering workbench
+        # after the participant submits a valid UsableVolumeML reconciliation.
+        if urlsplit(self.path).path == "/internal/reserve-reconciled":
+            if (self.headers.get("X-ARWC-Internal") != "engineering-r29" or
+                    self.headers.get("X-ARWC-Tenant") != "arwc" or
+                    self.client_address[0] not in {"10.77.60.55", "10.77.60.51"}):
+                self.send_json(403, {"error": "engineering service context required"})
+                return
+            request = self.body()
+            if request is None:
+                return
+            expected_fields = {
+                "planning_window", "asset", "observed_at", "process_quality",
+                "measured_usable_volume_ml", "committed_ml", "uncommitted_margin_ml",
+                "margin_state", "source_digest",
+            }
+            if (set(request) != expected_fields or
+                    request.get("planning_window") != "ALLOC-2026-DP3" or
+                    request.get("asset") != "AST-CRR-017" or
+                    request.get("process_quality") != "Good" or
+                    request.get("margin_state") not in {"positive", "zero", "negative"}):
+                self.send_json(409, {"error": "reserve reconciliation binding rejected"})
+                return
+            state = load_state()
+            state["reserve_reconciled"] = True
+            save_state(state)
+            result = {
+                "record_id": "REC-CRR-DP3-17", "revision": 1,
+                "planning_window": "ALLOC-2026-DP3", "asset": "AST-CRR-017",
+                "observed_at": request["observed_at"],
+                "measured_usable_volume_ml": request["measured_usable_volume_ml"],
+                "committed_ml": request["committed_ml"],
+                "uncommitted_margin_ml": request["uncommitted_margin_ml"],
+                "margin_state": request["margin_state"],
+                "process_quality": request["process_quality"],
+                "source_digest": request["source_digest"],
+            }
+            atomic_json(INTEGRATION_EVIDENCE, result)
+            os.chown(INTEGRATION_EVIDENCE, -1, grp.getgrnam("arwc-integration").gr_gid)
+            os.chmod(INTEGRATION_EVIDENCE, 0o640)
+            self.accepted("reserve-reconciliation-recorded", result, 201)
+            return
         if urlsplit(self.path).path == "/internal/diagnostic-estimate":
             if (self.headers.get("X-ARWC-Internal") != "diagnostics-r27" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or

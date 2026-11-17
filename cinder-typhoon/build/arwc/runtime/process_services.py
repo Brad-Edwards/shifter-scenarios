@@ -613,6 +613,11 @@ class Handler(BaseHTTPRequestHandler):
         "template": "PROCESS_VIEW_BASE/api/controlled-allocations/current"
     },
     {
+        "key": "process.reserve-reconciliation",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/reserve-reconciliations/current"
+    },
+    {
         "key": "process.estimator-sufficiency",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/estimator-sufficiency/current"
@@ -845,6 +850,9 @@ class Handler(BaseHTTPRequestHandler):
             "/api/control-authority",
         }:
             self.w28_post(path, request, state)
+            return
+        if ROLE == "engineering" and path == "/api/reserve-reconciliations/current":
+            self.w29_post(path, request, state)
             return
         if ROLE == "engineering" and path in {
             "/api/estimator-tasks/current/inputs", "/api/estimator-results/current",
@@ -1321,6 +1329,113 @@ class Handler(BaseHTTPRequestHandler):
                   "structure": "accepted", "outputs": parsed["outputs"]}
         atomic_json(output / "result.json", record)
         self.accepted("collision-model", record, 201)
+
+    def w29_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        required = {
+            "planning_window", "asset", "observed_at", "process_quality",
+            "measured_usable_volume_ml", "committed_ml",
+            "uncommitted_margin_ml", "margin_state",
+        }
+        if (set(request) != required or
+                request.get("planning_window") != "ALLOC-2026-DP3" or
+                request.get("asset") != "AST-CRR-017" or
+                request.get("process_quality") != "Good" or
+                request.get("margin_state") not in {"positive", "zero", "negative"}):
+            self.send_json(409, {"error": "reserve reconciliation fields do not match the planning contract"})
+            return
+        try:
+            import datetime as _dt
+            observed_str = request["observed_at"]
+            observed = _dt.datetime.fromisoformat(observed_str.replace("Z", "+00:00"))
+        except (ValueError, TypeError):
+            self.send_json(409, {"error": "observed_at must be a valid ISO 8601 timestamp"})
+            return
+        # Query the OT historian for the latest good-quality UsableVolumeML near observed_at.
+        OT_HISTORIAN = "172.29.63.22"
+        OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+        try:
+            import psycopg2 as _pg
+            ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
+                             user="reader", password=OT_READER_PASS, connect_timeout=5)
+            ot.autocommit = True
+            with ot.cursor() as cur:
+                cur.execute("""
+                    SELECT ph.source_time, ph.value, ph.unit, ph.process_quality,
+                           ph.collected_time, ph.ingested_at
+                    FROM public.process_history ph
+                    JOIN public.historian_tag_catalog c ON c.series = ph.tag
+                    WHERE ph.asset = 'AST-CRR-017'
+                      AND c.variable = 'UsableVolumeML'
+                      AND ph.source_time >= current_timestamp - interval '5 minutes'
+                    ORDER BY ph.source_time DESC
+                    LIMIT 20
+                """)
+                rows = ot.cursor().fetchall() if False else cur.fetchall()
+            ot.close()
+        except (OSError, ImportError) as exc:
+            self.send_json(409, {"error": "OT historian unavailable"})
+            return
+        if not rows:
+            self.send_json(409, {"error": "no recent UsableVolumeML samples in OT historian"})
+            return
+        # Find the sample closest to observed_at.
+        import datetime as _dt2
+        UTC = _dt2.timezone.utc
+        best = min(rows, key=lambda r: abs((r[0].replace(tzinfo=UTC) - observed).total_seconds()))
+        source_time, value, unit, quality = best[0], best[1], best[2], best[3]
+        source_time = source_time.replace(tzinfo=UTC)
+        distance = abs((source_time - observed).total_seconds())
+        if distance > 5.0:
+            self.send_json(409, {"error": "no UsableVolumeML sample within 5s of the claimed observation"})
+            return
+        if quality != "Good":
+            self.send_json(409, {"error": "nearest UsableVolumeML sample does not have Good process quality"})
+            return
+        TOLERANCE = 0.005
+        committed = 12.0
+        margin = value - committed
+        margin_state = "positive" if margin > TOLERANCE else ("negative" if margin < -TOLERANCE else "zero")
+        def _near(a: float, b: float) -> bool:
+            return abs(float(a) - float(b)) <= TOLERANCE
+        if (not _near(request["measured_usable_volume_ml"], value) or
+                not _near(request["committed_ml"], committed) or
+                not _near(request["uncommitted_margin_ml"], margin) or
+                request["margin_state"] != margin_state):
+            self.send_json(409, {"error": "reconciliation values do not match product evidence"})
+            return
+        # Compute source digest from the matched historian sample.
+        import hashlib as _hlib
+        source_digest = _hlib.sha256(
+            f"{source_time.isoformat()}:{value}:{quality}".encode()
+        ).hexdigest()
+        # Notify planning_data to set reserve_reconciled.
+        internal_body = {
+            "planning_window": "ALLOC-2026-DP3", "asset": "AST-CRR-017",
+            "observed_at": observed_str, "process_quality": quality,
+            "measured_usable_volume_ml": value, "committed_ml": committed,
+            "uncommitted_margin_ml": margin, "margin_state": margin_state,
+            "source_digest": source_digest,
+        }
+        try:
+            status, result = self.internal_request("data", "POST", "/internal/reserve-reconciled",
+                                                   internal_body, "engineering-r29")
+        except (OSError, json.JSONDecodeError):
+            self.send_json(409, {"error": "planning data service unavailable"})
+            return
+        if status != 201 or result.get("record", {}).get("record_id") != "REC-CRR-DP3-17":
+            self.send_json(status if status in {403, 409} else 409, result)
+            return
+        state["reserve_observed"] = True
+        save_state(state)
+        record = {
+            "record_id": "REC-CRR-DP3-17", "revision": 1,
+            "planning_window": "ALLOC-2026-DP3", "asset": "AST-CRR-017",
+            "observed_at": observed_str, "process_quality": quality,
+            "measured_usable_volume_ml": value, "committed_ml": committed,
+            "uncommitted_margin_ml": margin, "margin_state": margin_state,
+        }
+        atomic_json(ROOT / "artifacts" / "reserve-reconciliation" / "result.json", record)
+        self.accepted("reserve-reconciliation", record, 201)
 
     def w32_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state["replay_structure_recovered"]:

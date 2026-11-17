@@ -1165,12 +1165,15 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W29/allocation-ledger.csv
   W29.2:
-    h1: Follow the reconciliation document and query native process history for the latest good UsableVolumeML sample
-      for AST-CRR-017. Retain its source time, process quality, unit, and planning window.
-    h2: Use reconciliation to join that measured value to the 12.00 ML corporate allocation by asset and planning window. Calculate measured
-      usable volume minus committed allocation; do not use a paper report as the current measurement.
-    h3: Check the signed uncommitted margin and classify it as positive, zero, or negative. A stale or bad-quality
-      historian row cannot establish the current margin even if its number looks plausible.
+    h1: POST /api/reserve-reconciliations/current with {"planning_window":"ALLOC-2026-DP3","asset":"AST-CRR-017",
+      "observed_at":"<ISO 8601>","process_quality":"Good","measured_usable_volume_ml":<value>,
+      "committed_ml":12.0,"uncommitted_margin_ml":<margin>,"margin_state":"positive|zero|negative"}.
+    h2: Query public.process_history JOIN public.historian_tag_catalog WHERE asset='AST-CRR-017' AND
+      variable='UsableVolumeML' for a recent Good-quality sample. margin = measured - 12.00 ML.
+      margin_state: positive if >0.005, negative if <-0.005, zero otherwise.
+    h3: The service validates the submitted values against the nearest OT historian sample within 5 seconds.
+      A stale (>5 min), bad-quality (not Good), or miscalculated margin is rejected. Use the source_time
+      from the historian row as observed_at.
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W29/reconciliation-method.md
