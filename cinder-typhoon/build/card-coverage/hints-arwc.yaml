@@ -1193,12 +1193,15 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W29/reconciliation-method.md
   W30.1:
-    h1: Begin with the W30 release plan, operator brief, and installed remote-request contract. Reconcile the asset,
-      target, topic, delivery, expiry, and restoration fields before acting.
-    h2: Separate the fixed plan from execution-time values. The request needs a fresh UUID and a numeric Unix-time
-      expiry; neither should be copied from an old request.
-    h3: Record the durable dispatcher and PLC outcome stages, duplicate rule, and local FUXA handback. Broker receipt
-      alone does not prove controller acceptance or movement.
+    h1: POST /api/request-plans/current with the exact planned request struct. Fields must match the installed
+      arwc.remote-request/v1 contract exactly: instruction=CRR-OP-W30-R1, asset=AST-CRR-017, project_revision=364,
+      delivery (schema/topic/principal/qos/retain=false), request (id_strategy/mode/positions/flow/expiry),
+      successful_states, retry rules, and restore={channel:hmi, manual A20/B20}.
+    h2: The service validates: submission matches the contract plan exactly AND running ProjectRevision = 364 from
+      OT historian. id_strategy must be "fresh_uuid_v4_at_execution" (not an actual UUID). expiry_seconds=90.
+      This card prepares but does NOT issue the dispatcher request.
+    h3: retain=false, qos=1, topic=arwc/crr/commands/operator. restore.remote_enabled=false. All numeric
+      position/flow values must be exact floats (20.0, 0.3, 0.2). Prerequisite: W29.3 (paper_variance_observed).
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W30/release-plan.json

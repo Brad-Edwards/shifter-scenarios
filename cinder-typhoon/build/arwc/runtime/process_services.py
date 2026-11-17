@@ -54,6 +54,7 @@ INITIAL = {
     "instruments": {
         "reserve_observed": False,
         "paper_variance_observed": False,
+        "request_planned": False,
         "reporting_handover_observed": False, "reporting_handover_response": None,
     },
 }
@@ -624,6 +625,11 @@ class Handler(BaseHTTPRequestHandler):
         "template": "PROCESS_VIEW_BASE/api/paper-reconciliations/current"
     },
     {
+        "key": "process.request-plan",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/request-plans/current"
+    },
+    {
         "key": "process.estimator-sufficiency",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/estimator-sufficiency/current"
@@ -862,6 +868,9 @@ class Handler(BaseHTTPRequestHandler):
             return
         if ROLE == "engineering" and path == "/api/paper-reconciliations/current":
             self.w29_3_post(path, request, state)
+            return
+        if ROLE == "engineering" and path == "/api/request-plans/current":
+            self.w30_post(path, request, state)
             return
         if ROLE == "engineering" and path in {
             "/api/estimator-tasks/current/inputs", "/api/estimator-results/current",
@@ -1549,6 +1558,85 @@ class Handler(BaseHTTPRequestHandler):
         }
         atomic_json(ROOT / "artifacts" / "paper-reconciliation" / "result.json", record)
         self.accepted("paper-reconciliation", record, 201)
+
+    def w30_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state.get("paper_variance_observed"):
+            self.send_json(403, {"error": "planning basis evidence (W29.3) required"})
+            return
+        PLANNED = {
+            "instruction": "CRR-OP-W30-R1",
+            "asset": "AST-CRR-017",
+            "project_revision": 364,
+            "delivery": {
+                "schema": "arwc.remote-request/v1",
+                "request_topic": "arwc/crr/commands/operator",
+                "outcome_topic": "arwc/crr/outcomes/operator",
+                "principal": "operator",
+                "qos": 1,
+                "retain": False,
+            },
+            "request": {
+                "id_strategy": "fresh_uuid_v4_at_execution",
+                "asset": "AST-CRR-017",
+                "mode": "automatic",
+                "position_a_pct": 20.0,
+                "position_b_pct": 20.0,
+                "total_flow_m3s": 0.3,
+                "expiry_format": "numeric_unix_epoch_seconds_utc",
+                "expiry_seconds": 90,
+            },
+            "successful_states": ["received", "dispatch_intent", "dispatched", "plc_accepted", "completed"],
+            "retry": {
+                "duplicate": "same_uuid_same_payload_returns_recorded_state_without_another_plc_operation",
+                "conflict": "same_uuid_changed_payload_is_conflict",
+                "uncertain": "inspect_and_reconcile_never_automatic_retry",
+            },
+            "restore": {
+                "channel": "hmi",
+                "mode": "manual",
+                "position_a_pct": 20.0,
+                "position_b_pct": 20.0,
+                "total_flow_m3s": 0.2,
+                "remote_enabled": False,
+            },
+        }
+        if request != PLANNED:
+            self.send_json(409, {"error": "request plan does not match the installed dispatcher contract"})
+            return
+        # Verify the running ProjectRevision from the OT historian.
+        OT_HISTORIAN = "172.29.63.22"
+        OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+        try:
+            import psycopg2 as _pg
+            ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
+                             user="reader", password=OT_READER_PASS, connect_timeout=5)
+            ot.autocommit = True
+            with ot.cursor() as cur:
+                cur.execute("""
+                    SELECT ph.value FROM public.process_history ph
+                    JOIN public.historian_tag_catalog c ON c.series = ph.tag
+                    WHERE ph.asset = 'AST-CRR-017' AND c.variable = 'ProjectRevision'
+                      AND ph.source_time >= current_timestamp - interval '5 minutes'
+                    ORDER BY ph.source_time DESC LIMIT 1
+                """)
+                row = cur.fetchone()
+            ot.close()
+        except (OSError, ImportError):
+            self.send_json(409, {"error": "OT historian unavailable"})
+            return
+        if not row or round(float(row[0])) != 364:
+            self.send_json(409, {"error": "running project revision does not match the operating instruction"})
+            return
+        state["request_planned"] = True
+        save_state(state)
+        record = {
+            "record_id": "PLAN-CRR-W30-R1", "revision": 1,
+            "instruction": "CRR-OP-W30-R1", "asset": "AST-CRR-017",
+            "project_revision": 364, "request_prepared": True,
+            "product_action_issued": False,
+        }
+        atomic_json(ROOT / "artifacts" / "request-plan" / "result.json", record)
+        self.accepted("request-plan", record, 201)
 
     def w32_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state["replay_structure_recovered"]:
