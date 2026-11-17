@@ -1293,12 +1293,13 @@ hints:
     - kind: client_route
       id: process.estimator-task
   W32.3:
-    h1: Begin with the retained replay engine and current estimator observations. Start from process-view.arwc.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as state-machine reconstruction and old-model-versus-current-reality comparison. Separate the
-      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Replay the supplied outlet case locally, vary one hidden-state candidate at a time, and retain the condition
-      only when it explains every old-model approval without changing unrelated component updates.
+    h1: POST /api/estimator-results/current with {"replay":"REPLAY-CRR-R19","trace":"TRACE-R19-DISPUTED",
+      "condition":<condition from binary>}. Run the replay binary with mode "condition" to get the
+      approval condition dict; submit it verbatim along with the fixed replay and trace identifiers.
+    h2: The service compares submitted condition against run_replay32("condition") output exactly.
+      Sets replay_condition_recovered state; gates W32.4 (witness submission).
+    h3: Call subprocess.run([replay_binary, "condition"]) and parse stdout as the condition JSON dict.
+      The condition includes record_id=APPROVAL-COND-R19, system_order, and the hidden state binding.
     references:
     - kind: participant_service
       id: process-view.arwc.test
