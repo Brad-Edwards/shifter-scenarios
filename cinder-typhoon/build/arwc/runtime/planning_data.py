@@ -81,6 +81,7 @@ DEFINITION = {
 }
 
 ALLOCATION_ID = "ALLOC-2026-DP3-R9"
+TARIFF_ID = "TAR-CRR-DP3-R4"
 METER_ID = "MTR-CRR-DP3-R12"
 REPORT_ID = "RPT-CRR-DP3-R7"
 
@@ -140,6 +141,7 @@ def initialize() -> None:
             "adjustment_observed": False,
             "reconciliation_copy_created": False,
             "allocation_observed": False,
+            "tariff_observed": False,
             "meter_observed": False,
             "reserve_reconciled": False,
             "relation_contract_observed": False,
@@ -154,7 +156,7 @@ def initialize() -> None:
         state = load_state()
         changed = False
         for key in (
-            "allocation_observed", "meter_observed", "reserve_reconciled",
+            "allocation_observed", "tariff_observed", "meter_observed", "reserve_reconciled",
             "relation_contract_observed", "relation_exchange_observed", "lineage_observed",
             "diagnostic_estimate_observed",
             "reporting_view_observed", "reporting_decision_observed", "reporting_handover_observed",
@@ -473,6 +475,11 @@ class Handler(BaseHTTPRequestHandler):
                     "template": _metabase_card_url(reports, "rel_query_question_id", "https://reports.arwc.test/api/card/rel-query-crr-r3")
                 },
                 {
+                    "key": "planning.settlement-tariff",
+                    "method": "GET",
+                    "template": "https://planning-data.arwc.test/api/settlement-tariffs/current"
+                },
+                {
                     "key": "planning.asset-lineage",
                     "method": "GET",
                     "template": "https://planning-data.arwc.test/api/asset-lineage/current"
@@ -558,6 +565,9 @@ class Handler(BaseHTTPRequestHandler):
             return
         if path == "/api/allocation-ledgers/current":
             self.allocation()
+            return
+        if path == "/api/settlement-tariffs/current":
+            self.tariff()
             return
         if path == "/api/meter-allocations/current":
             self.meter()
@@ -929,6 +939,24 @@ class Handler(BaseHTTPRequestHandler):
         state["allocation_observed"] = True
         save_state(state)
         self.accepted("allocation-ledger-read", result)
+
+    def tariff(self) -> None:
+        with database() as connection, connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT record_id,revision,planning_window,asset,currency,rate_per_ml,unit,"
+                "effective_from,effective_to FROM settlement_tariff WHERE record_id=%s", (TARIFF_ID,),
+            )
+            row = cursor.fetchone()
+        result = {
+            "record_id": row[0], "revision": row[1], "planning_window": row[2], "asset": row[3],
+            "currency": row[4], "rate_per_ml": float(row[5]), "unit": row[6],
+            "effective_from": row[7].isoformat().replace("+00:00", "Z"),
+            "effective_to": row[8].isoformat().replace("+00:00", "Z"),
+        }
+        state = load_state()
+        state["tariff_observed"] = True
+        save_state(state)
+        self.accepted("settlement-tariff-read", result)
 
     def meter(self) -> None:
         with database() as connection, connection.cursor() as cursor:

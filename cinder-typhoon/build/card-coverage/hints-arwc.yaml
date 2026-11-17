@@ -1152,12 +1152,15 @@ hints:
     - kind: client_route
       id: process.control-authority
   W29.1:
-    h1: Start with the supplied allocation ledger, then read the current settlement tariff and allocation records
-      from the corporate PostgreSQL service. Preserve their planning window, asset, revision, unit, and effective time.
-    h2: The tariff is a price per ML and the allocation is a committed ML quantity. Keep those different data meanings
-      explicit, and do not substitute the procurement catalog used by a later operation.
-    h3: Verify TAR-CRR-DP3-R4 and ALLOC-2026-DP3-R9 are bound to AST-CRR-017 and their common planning window only after the native
-      corporate rows agree with the supplied ledger.
+    h1: Read the allocation-ledger.csv from ~/CairnReach/Briefs/W29/ (shows TAR-CRR-DP3-R4 and ALLOC-2026-DP3-R9).
+      Then call GET /api/settlement-tariffs/current and GET /api/allocation-ledgers/current on planning-data.arwc.test
+      (requires corporate Bearer + X-ARWC-Planner-Session header from earned W06.3 session).
+    h2: settlement_tariff row: TAR-CRR-DP3-R4 at 2400 USD/ML, planning window ALLOC-2026-DP3, asset AST-CRR-017,
+      effective 2026-11-01 to 2026-12-01. allocation_ledger row: ALLOC-2026-DP3-R9 at 12.00 ML. Keep rate and
+      committed volume separate — they describe different facts.
+    h3: Verify TAR-CRR-DP3-R4 and ALLOC-2026-DP3-R9 are bound to AST-CRR-017 and their common planning window
+      only after the native corporate rows agree with the supplied ledger. TAR-CRR-DP3-R4 is the settlement tariff;
+      do not substitute the W35 procurement catalog.
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W29/allocation-ledger.csv
