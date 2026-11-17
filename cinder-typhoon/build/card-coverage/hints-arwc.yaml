@@ -1084,15 +1084,15 @@ hints:
     - kind: client_route
       id: process.signature-program-reproduction
   W27.2:
-    h1: Begin with the legacy program verifier and planning diagnostic consumer. Its published client document exposes
-      the signature program constraints and signature program reproduction operation, so use that ordinary contract
-      instead of guessing a path.
-    h2: Treat this as signature-equivalence modeling under structural and unaffected-output constraints. Derive
-      every constraint from supplied records or normal responses, test a deliberately failing candidate, and only
-      then produce a candidate.
-    h3: Locate the signature program constraints and signature program reproduction operation in the published client
-      reference. List the observed constraints, exercise a known rejection, and use the difference to test a candidate
-      that still requires service validation.
+    h1: POST /api/signature-programs/current/constraints with body {"operation":"contract","record_id":"DPG-CONTRACT-R8"}.
+      Returns base_program_b64, reservoir_bits (256 bit positions), and distinguishing_cases (3 cases). Read
+      model_program_id in the response — the collision candidate must use that identity, not BASE_ID or TARGET_ID.
+    h2: Build a 128-row GF(2) system over the 256 reservoir-bit variables. RHS = rot128(model_zero) XOR rot128(base),
+      where model_zero is the model-identity program with zero reservoir. Each matrix column is the digest delta
+      for flipping one reservoir bit in model_zero. Solve by Gaussian elimination; free variables stay 0.
+    h3: Submit POST /api/signature-programs/current/constraints with {"operation":"model","record_id":"DPG-MODEL-R8",
+      "cases":[<from contract>],"program_b64":"<solved candidate b64>"}. The candidate must differ from base only in
+      reservoir bytes and the program-id header field. Cairn Reach output stays at 12.4; only the identity changes.
     references:
     - kind: client_route
       id: process.signature-program-constraints
