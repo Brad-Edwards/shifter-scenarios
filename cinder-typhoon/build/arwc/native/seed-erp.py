@@ -85,6 +85,17 @@ def maintenance_permissions() -> None:
                                   "ptype": permission, "value": "1"})
 
 
+def restrict_supplier_quotation() -> None:
+    # Supplier Quotation must be readable only by Purchase roles.
+    # ERPNext default grants read/select to Stock User and Maintenance User,
+    # creating a parallel path that bypasses the W35.2 district-auth flaw.
+    manager = "/api/method/frappe.core.page.permission_manager.permission_manager"
+    for role in ("Stock User", "Manufacturing Manager", "Maintenance User", "Maintenance Manager"):
+        for ptype in ("read", "select", "report", "print", "email", "export"):
+            api(f"{manager}.update", {"doctype": "Supplier Quotation", "role": role,
+                                      "permlevel": 0, "ptype": ptype, "value": "0"})
+
+
 def seed() -> None:
     api("/api/method/login", {"usr": "Administrator", "pwd": os.environ["ERP_ADMIN_PASSWORD"]})
     result = api("/api/method/frappe.desk.page.setup_wizard.setup_wizard.setup_complete", {"args": {
@@ -214,6 +225,7 @@ def seed() -> None:
         "currency": "USD", "items": [{"item_code": "BULK-WATER", "qty": 0.75,
             "uom": "Megalitre", "rate": 2280, "description": "Supplementary water for ALLOC-2026-DP3; supplier reservation required."}],
     })
+    restrict_supplier_quotation()
     print("ARWC company, staff, suppliers and asset records loaded through native APIs")
 
 
