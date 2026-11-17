@@ -23,7 +23,7 @@ STATE = ROOT / "state" / "renderer.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
 CONTRACTOR_SESSION = pathlib.Path("/run/arwc-field-session/contractor-session.json")
 APPROVAL_EVIDENCE = pathlib.Path("/run/arwc-approval-evidence/approval.json")
-ATTESTATION_EVIDENCE = pathlib.Path("/var/lib/arwc-renderer/handover/renderer-attestation.json")
+ATTESTATION_EVIDENCE = pathlib.Path("/run/arwc-renderer-evidence/renderer-attestation.json")
 
 PROFILE = {
     "record_id": "RENDER-MAINT-CRR-R9",

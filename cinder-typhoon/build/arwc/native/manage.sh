@@ -571,6 +571,7 @@ VALUES ('EVT-COMM-OG2-114', 'high', '2026-11-13 09:28:14+00', '2026-11-13 09:29:
       -v cinder-arwc-renderer-state:/var/lib/arwc-renderer \
       -v cinder-arwc-approval-evidence:/run/arwc-approval-evidence:ro \
       -v cinder-arwc-field-session:/run/arwc-field-session:ro \
+      -v cinder-arwc-renderer-evidence:/run/arwc-renderer-evidence:rw \
       -v "${golden_op}/tls/server.crt:/run/arwc-tls/server.crt:ro" \
       -v "${golden_op}/tls/server.key:/run/arwc-tls/server.key:ro" \
       -v "${golden_op}/tls/ca.crt:/run/arwc-tls/ca.crt:ro" \
@@ -579,15 +580,9 @@ VALUES ('EVT-COMM-OG2-114', 'high', '2026-11-13 09:28:14+00', '2026-11-13 09:29:
     # Start the control broker (a-control-broker) for W26.4 control client issuance.
     # POST /api/approval-clients/current → CTRL-CLIENT-CRR-26 (W26.CONTROL).
     # Reads: contractor session (W13), approval evidence (W15), renderer attestation (W26.3).
+    # NOTE: The renderer mounts cinder-arwc-renderer-evidence rw so W26.3 writes the attestation
+    # directly there. The control-broker reads from the same volume (ro). No copy step needed.
     docker volume create cinder-arwc-control-broker-state 2>/dev/null || true
-    # Copy renderer attestation from renderer state to renderer-evidence volume.
-    docker run --rm \
-      -v cinder-arwc-renderer-state:/src:ro \
-      -v cinder-arwc-renderer-evidence:/dest:rw \
-      busybox sh -c 'if [ -f /src/handover/renderer-attestation.json ]; then \
-        cp /src/handover/renderer-attestation.json /dest/renderer-attestation.json && \
-        chmod 0640 /dest/renderer-attestation.json && chown root:2312 /dest/renderer-attestation.json; fi' \
-      2>/dev/null || true
     docker stop cinder-arwc-control-broker 2>/dev/null; docker rm cinder-arwc-control-broker 2>/dev/null || true
     docker run -d \
       --name cinder-arwc-control-broker \
