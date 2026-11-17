@@ -266,6 +266,10 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
       - source-gitea:/var/lib/gitea/data
       - source-repositories:/var/lib/gitea/repositories
+      # Cold-start fix without an image rebuild: longer Gitea readiness window.
+      - ./runtime/source-entrypoint.sh:/usr/local/bin/fieldkest-source-entrypoint:ro
+    healthcheck:
+      start_period: 300s
     networks:
       delivery:
         ipv4_address: 10.77.51.20
