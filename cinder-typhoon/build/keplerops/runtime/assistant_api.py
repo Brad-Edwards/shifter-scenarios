@@ -196,7 +196,7 @@ class AssistantApiHandler(KeplerHandler):
             if not api_key:
                 self.send_json(503, {"error": "retrieval_unavailable"})
                 return
-            chat_url = f"{ANYLLM_BASE}/api/workspace/{workspace_slug}/chat"
+            chat_url = f"{ANYLLM_BASE}/api/v1/workspace/{workspace_slug}/chat"
             chat_body = json.dumps({"message": question, "mode": "query"}).encode()
             req = Request(chat_url, data=chat_body, headers={
                 "Authorization": f"Bearer {api_key}",

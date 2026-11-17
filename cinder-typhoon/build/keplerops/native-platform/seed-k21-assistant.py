@@ -156,13 +156,33 @@ def seed(operator: Path) -> None:
             pass  # 404 or plain-text response is expected
 
     # K21.3: Create an AnythingLLM API key for the k-assistant service to use for
-    # real Ollama retrieval via /api/workspace/{slug}/chat.
+    # real Ollama retrieval via /api/v1/workspace/{slug}/chat.
+    # The v1 admin API itself requires an existing API key, so we insert directly.
     anyllm_api_key = ''
     try:
-        key_result = api('/admin/api-keys', {'name': 'k-assistant-service'}, token)
-        anyllm_api_key = key_result.get('apiKey', '')
+        import sqlite3 as _sql2, secrets as _sec, string as _str
+        db_paths2 = [
+            Path('/var/lib/docker/volumes/cinder-keplerops-native-assistant-data/_data/anythingllm.db'),
+        ]
+        db_path2 = next((p for p in db_paths2 if p.exists()), None)
+        if db_path2:
+            chars = _str.ascii_uppercase + _str.digits
+            anyllm_api_key = '-'.join(
+                ''.join(_sec.choice(chars) for _ in range(7)) for _ in range(4)
+            )
+            conn2 = _sql2.connect(str(db_path2))
+            with conn2:
+                # Remove any stale k-assistant-service keys before inserting
+                conn2.execute(
+                    "DELETE FROM api_keys WHERE name = 'k-assistant-service'"
+                )
+                conn2.execute(
+                    "INSERT INTO api_keys (secret, name, createdBy) VALUES (?, ?, ?)",
+                    (anyllm_api_key, 'k-assistant-service', None),
+                )
+            conn2.close()
     except Exception:
-        pass  # API key creation is best-effort; chat falls back to 502
+        anyllm_api_key = ''  # chat endpoint returns 503 if key is absent
 
     config_path = operator / 'native-platform/assistant-k21-config.json'
     config_path.write_text(json.dumps({
