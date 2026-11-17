@@ -122,40 +122,43 @@ def seed(operator: Path) -> None:
     svc_user = 'svc-fieldlink-assistant'
     svc_pass = secrets.token_hex(16)  # used as both password and api_access_token
 
-    # PHP script: creates svc user, generates API token, adds to FIELDLINK, creates/reopens task
-    php_code = (
-        "chdir('/var/www/app');"
-        "require 'app/common.php';"
-        "$container['dispatcher']->dispatch(new Symfony\\\\Contracts\\\\EventDispatcher\\\\Event(), 'app.bootstrap');"
-        f"$svc_pass = '{svc_pass}';"
-        "$svc_user = 'svc-fieldlink-assistant';"
-        "$existing = $container['userModel']->getByUsername($svc_user);"
-        "if (!$existing) {"
-        "  $uid = $container['userModel']->create(['username' => $svc_user, 'password' => $svc_pass, 'role' => 'app-user', 'name' => 'FieldKest Assistant Service']);"
-        "} else {"
-        "  $uid = $existing['id'];"
-        "  $container['userModel']->update(['id' => $uid, 'password' => $svc_pass]);"
-        "}"
-        "$container['userModel']->update(['id' => $uid, 'api_access_token' => $svc_pass]);"
-        "$projects = $container['projectModel']->getAll();"
-        "$project_id = null;"
-        "foreach ($projects as $p) { if ($p['identifier'] === 'FIELDLINK') { $project_id = $p['id']; break; } }"
-        "if (!$project_id) { echo json_encode(['error' => 'FIELDLINK not found']); exit(1); }"
-        "$container['projectUserRoleModel']->addUser($project_id, $uid, 'project-member');"
-        "$t = $container['db']->table('tasks')->eq('project_id', $project_id)->eq('reference', 'DREV-2841-2')->findOne();"
-        "if ($t) {"
-        "  $task_id = $t['id'];"
-        "  if ($t['is_active'] == 0) { $container['taskStatusModel']->open($task_id); }"
-        "} else {"
-        "  $task_id = $container['taskCreationModel']->create(['project_id' => $project_id,"
-        "    'title' => 'Duplicate diagnostic review -- SUP-2841 bundle recommendation',"
-        "    'reference' => 'DREV-2841-2', 'owner_id' => $uid,"
-        "    'description' => 'Awaiting second-level approval.']);"
-        "}"
-        "echo json_encode(['uid' => $uid, 'task_id' => $task_id, 'project_id' => $project_id]);"
-    )
+    # PHP script: creates svc user, generates API token, adds to FIELDLINK, creates/reopens task.
+    # Piped via stdin to avoid shell escaping issues with PHP namespace backslashes.
+    php_code = f"""<?php
+chdir('/var/www/app');
+require 'app/common.php';
+$e = new Symfony\\Contracts\\EventDispatcher\\Event();
+$container['dispatcher']->dispatch($e, 'app.bootstrap');
+$svc_pass = '{svc_pass}';
+$svc_user = 'svc-fieldlink-assistant';
+$existing = $container['userModel']->getByUsername($svc_user);
+if (!$existing) {{
+    $uid = $container['userModel']->create(['username' => $svc_user, 'password' => $svc_pass, 'role' => 'app-user', 'name' => 'FieldKest Assistant Service']);
+}} else {{
+    $uid = $existing['id'];
+    $container['userModel']->update(['id' => $uid, 'password' => $svc_pass]);
+}}
+$container['userModel']->update(['id' => $uid, 'api_access_token' => $svc_pass]);
+$projects = $container['projectModel']->getAll();
+$project_id = null;
+foreach ($projects as $p) {{ if ($p['identifier'] === 'FIELDLINK') {{ $project_id = $p['id']; break; }} }}
+if (!$project_id) {{ echo json_encode(['error' => 'FIELDLINK not found']); exit(1); }}
+$container['projectUserRoleModel']->addUser($project_id, $uid, 'project-member');
+$t = $container['db']->table('tasks')->eq('project_id', $project_id)->eq('reference', 'DREV-2841-2')->findOne();
+if ($t) {{
+    $task_id = $t['id'];
+    if ($t['is_active'] == 0) {{ $container['taskStatusModel']->open($task_id); }}
+}} else {{
+    $task_id = $container['taskCreationModel']->create(['project_id' => $project_id,
+        'title' => 'Duplicate diagnostic review -- SUP-2841 bundle recommendation',
+        'reference' => 'DREV-2841-2', 'owner_id' => $uid,
+        'description' => 'Awaiting second-level approval.']);
+}}
+echo json_encode(['uid' => $uid, 'task_id' => $task_id, 'project_id' => $project_id]);
+"""
     result = _sub.run(
-        ['docker', 'exec', 'cinder-keplerops-kanboard', 'php', '-r', php_code],
+        ['docker', 'exec', '-i', 'cinder-keplerops-kanboard', 'php'],
+        input=php_code.encode(),
         capture_output=True, timeout=30,
     )
     if result.returncode != 0:
