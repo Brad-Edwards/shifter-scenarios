@@ -213,6 +213,8 @@ class RegistryHandler(KeplerHandler):
         path = urlsplit(self.path).path
         if path.startswith("/api/releases/") and path.endswith("/approval"):
             return self._approve_release(path.removeprefix("/api/releases/").removesuffix("/approval"))
+        if path == "/api/releases/lineage-proof":
+            return self._k29_2_lineage_proof()
         if not self._require_developer():
             return
         if path == "/api/consumer-checks":
@@ -546,6 +548,44 @@ class RegistryHandler(KeplerHandler):
             (RESULTS / f"entitlement-{plaintext_sha}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
         append_audit(AUDIT, "entitlement-checks", {"request_id": self.request_id, "principal": USERNAME, **result, "status": 200})
         self.send_json(200, result)
+
+    def _k29_2_lineage_proof(self) -> None:
+        """K29.2 grader: verify the participant has the real lineage signing key.
+        Takes {key_id, signature_base64}; verifies signature against K29_CONFIG public key.
+        The signed message is canonical {key_id, lineage}. Requires developer auth.
+        """
+        if not self._developer():
+            return self.send_json(401, {"error": "authentication_required"})
+        try:
+            request = self.read_json(4096)
+            key_id = request.get("key_id", "")
+            signature_b64 = request.get("signature_base64", "")
+            if not key_id or not signature_b64:
+                raise ValueError("key_id_and_signature_required")
+        except (ValueError, TypeError, json.JSONDecodeError, OverflowError) as e:
+            return self.send_json(422, {"error": str(e)})
+        if key_id not in {K29_CONFIG["old_key_id"], K29_CONFIG.get("next_key_id", "")}:
+            return self.send_json(422, {"error": "unknown_key_id"})
+        public_field = "old_public_key_base64" if key_id == K29_CONFIG["old_key_id"] else "next_public_key_base64"
+        lineage = K29_CONFIG["lineage"]
+        message = canonical_bytes({"key_id": key_id, "lineage": lineage})
+        try:
+            Ed25519PublicKey.from_public_bytes(base64.b64decode(K29_CONFIG[public_field], validate=True)).verify(
+                base64.b64decode(signature_b64, validate=True), message)
+        except Exception:
+            return self.send_json(422, {"error": "signature_verification_failed"})
+        receipt_id = "K29-2-" + uuid.uuid4().hex[:12].upper()
+        RESULTS.mkdir(parents=True, exist_ok=True)
+        (RESULTS / f"{receipt_id}.json").write_text(json.dumps({
+            "card": "K29.2", "lineage": lineage, "key_id": key_id,
+            "receipt_id": receipt_id,
+        }, sort_keys=True, separators=(",", ":")) + "\n")
+        append_audit(AUDIT, "lineage-proof", {
+            "request_id": self.request_id, "lineage": lineage, "key_id": key_id,
+            "receipt_id": receipt_id, "status": 200,
+        })
+        self.send_json(200, {"card": "K29.2", "lineage": lineage, "key_id": key_id,
+                              "receipt_id": receipt_id})
 
 
 def main() -> None:
