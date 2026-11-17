@@ -332,29 +332,68 @@ class AssistantApiHandler(KeplerHandler):
             if review_id != "DREV-2841-2" or recommendation_id != "assistant-obsolete-bundle":
                 self.send_json(422, {"error": "review_binding_failed"})
                 return
-            # Write the DREV-2841-2 acceptance record (the real state change)
-            drev_path = AUDIT / "drev-2841-2.json"
-            if drev_path.exists():
-                self.send_json(200, json.loads(drev_path.read_text()))
+            # Update the REAL DREV-2841-2 Kanboard task to accepted (closed) status.
+            # The Kanboard API is called as svc-fieldlink-assistant (the tool principal).
+            # Credentials and task ID are in the K21 config (written by seed-k22-assistant.py).
+            k21_config = _load_k21_config()
+            kanboard_base = k21_config.get("kanboard_base", "http://fieldlink-kanboard:80")
+            task_id = k21_config.get("kanboard_drev_task_id")
+            svc_user = k21_config.get("kanboard_svc_assistant", "svc-fieldlink-assistant")
+            svc_pass = k21_config.get("kanboard_svc_assistant_pass", "")
+            if not task_id or not svc_pass:
+                self.send_json(503, {"error": "review_store_unavailable"})
                 return
-            from http_support import utc_now
-            revision = "DREV-2841-2-REV-" + str(int(__import__("time").time()))
+            import base64 as _b64, time as _time
+            auth = _b64.b64encode(f"{svc_user}:{svc_pass}".encode()).decode()
+            # Check current task status
+            check_req = Request(f"{kanboard_base}/jsonrpc.php",
+                data=json.dumps({"id": 1, "jsonrpc": "2.0", "method": "getTask", "params": {"task_id": task_id}}).encode(),
+                headers={"Authorization": f"Basic {auth}", "Content-Type": "application/json"})
+            try:
+                with urlopen(check_req, timeout=10) as r:
+                    task = json.load(r).get("result", {})
+            except Exception:
+                self.send_json(503, {"error": "review_store_unavailable"})
+                return
+            if task.get("is_active") == 0:
+                # Already closed — return idempotent result
+                revision = task.get("reference", "DREV-2841-2") + "-ACCEPTED"
+                self.send_json(200, {
+                    "review_id": review_id,
+                    "status": "accepted",
+                    "revision": revision,
+                    "tool_principal": svc_user,
+                    "origin": "assistant-tool-broker",
+                })
+                return
+            # Close the task as svc-fieldlink-assistant (the tool principal)
+            close_req = Request(f"{kanboard_base}/jsonrpc.php",
+                data=json.dumps({"id": 2, "jsonrpc": "2.0", "method": "closeTask", "params": {"task_id": task_id}}).encode(),
+                headers={"Authorization": f"Basic {auth}", "Content-Type": "application/json"})
+            try:
+                with urlopen(close_req, timeout=10) as r:
+                    close_result = json.load(r).get("result")
+            except Exception:
+                self.send_json(503, {"error": "review_close_failed"})
+                return
+            if not close_result:
+                self.send_json(503, {"error": "review_close_failed"})
+                return
+            revision = f"DREV-2841-2-REV-{int(_time.time())}"
             record = {
                 "review_id": review_id,
                 "status": "accepted",
                 "revision": revision,
                 "recommendation_id": recommendation_id,
-                "accepted_at": utc_now(),
-                "tool_principal": user,
+                "tool_principal": svc_user,
                 "origin": "assistant-tool-broker",
             }
-            drev_path.write_text(json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n")
             append_audit(AUDIT, "accept-duplicate-review", {
                 "action": "accept",
                 "review_id": review_id,
                 "recommendation_id": recommendation_id,
                 "revision": revision,
-                "tool_principal": user,
+                "tool_principal": svc_user,
                 "origin": "assistant-tool-broker",
             })
             self.send_json(200, record)
