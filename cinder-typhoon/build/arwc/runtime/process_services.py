@@ -55,6 +55,7 @@ INITIAL = {
         "reserve_observed": False,
         "paper_variance_observed": False,
         "request_planned": False,
+        "w33_calibrated": False, "w33_flow_gain": None,
         "reporting_handover_observed": False, "reporting_handover_response": None,
     },
 }
@@ -635,6 +636,11 @@ class Handler(BaseHTTPRequestHandler):
         "template": "PROCESS_VIEW_BASE/api/remote-operations/current"
     },
     {
+        "key": "process.commissioning-calibration",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/commissioning-calibrations/current"
+    },
+    {
         "key": "process.estimator-sufficiency",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/estimator-sufficiency/current"
@@ -879,6 +885,9 @@ class Handler(BaseHTTPRequestHandler):
             return
         if ROLE == "engineering" and path == "/api/remote-operations/current":
             self.w30_2_post(path, request, state)
+            return
+        if ROLE == "engineering" and path == "/api/commissioning-calibrations/current":
+            self.w33_1_post(path, request, state)
             return
         if ROLE == "engineering" and path in {
             "/api/estimator-tasks/current/inputs", "/api/estimator-results/current",
@@ -1648,6 +1657,92 @@ class Handler(BaseHTTPRequestHandler):
         atomic_json(ROOT / "artifacts" / "request-plan" / "result.json", record)
         self.accepted("request-plan", record, 201)
         return
+
+    def w33_1_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state.get("w30_result"):
+            self.send_json(403, {"error": "completed W30 operation (w30_result) required"})
+            return
+        REQUIRED = {"request_id", "requested_total_flow_m3s", "mean_total_flow_m3s",
+                    "response_delay_seconds", "flow_gain", "good_sample_count"}
+        if (set(request) != REQUIRED or
+                request.get("requested_total_flow_m3s") != 0.3 or
+                not isinstance(request.get("good_sample_count"), int) or
+                request.get("good_sample_count") < 5):
+            self.send_json(409, {"error": "calibration submission fields do not match the W33 contract"})
+            return
+        import uuid as _uuid
+        try:
+            request_id = str(_uuid.UUID(str(request["request_id"])))
+        except (ValueError, TypeError):
+            self.send_json(409, {"error": "request_id must be a valid UUID"})
+            return
+        OT_HISTORIAN = "172.29.63.22"
+        OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+        REQUESTED_FLOW = 0.3
+        TOLERANCE = 0.02
+        TOLERANCE_CALC = 0.01
+        MIN_SAMPLES = 5
+        try:
+            import psycopg2 as _pg
+            import datetime as _dt
+            UTC = _dt.timezone.utc
+            ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
+                             user="reader", password=OT_READER_PASS, connect_timeout=5)
+            ot.autocommit = True
+            with ot.cursor() as cur:
+                cur.execute(
+                    "SELECT source_time FROM public.command_history "
+                    "WHERE asset='AST-CRR-017' AND channel='dispatcher' "
+                    "AND source_time >= current_timestamp - interval '24 hours' "
+                    "ORDER BY source_time DESC LIMIT 1"
+                )
+                cmd_row = cur.fetchone()
+                if cmd_row is None:
+                    self.send_json(409, {"error": "W30 PLC acceptance not found in command history"})
+                    ot.close(); return
+                plc_accepted = cmd_row[0].replace(tzinfo=UTC)
+                window_end = plc_accepted + _dt.timedelta(minutes=3)
+                cur.execute("""
+                    SELECT ph.source_time, ph.value, ph.process_quality
+                    FROM public.process_history ph
+                    JOIN public.historian_tag_catalog c ON c.series = ph.tag
+                    WHERE ph.asset = 'AST-CRR-017' AND c.variable = 'TotalFlowM3s'
+                      AND ph.source_time >= %s AND ph.source_time <= %s
+                    ORDER BY ph.source_time
+                """, (plc_accepted, window_end))
+                rows = cur.fetchall()
+            ot.close()
+        except (OSError, ImportError):
+            self.send_json(409, {"error": "OT historian unavailable"})
+            return
+        good_rows = [(r[0].replace(tzinfo=UTC), float(r[1]))
+                     for r in rows if r[2] == "Good" and abs(float(r[1]) - REQUESTED_FLOW) <= TOLERANCE]
+        if len(good_rows) < MIN_SAMPLES:
+            self.send_json(409, {"error": "insufficient good in-tolerance TotalFlowM3s samples"})
+            return
+        first_good_time = good_rows[0][0]
+        delay = (first_good_time - plc_accepted).total_seconds()
+        mean_flow = sum(r[1] for r in good_rows) / len(good_rows)
+        gain = mean_flow / REQUESTED_FLOW
+        def _near(a: float, b: float) -> bool:
+            return abs(float(a) - float(b)) <= TOLERANCE_CALC
+        if (not _near(request["response_delay_seconds"], delay) or
+                not _near(request["mean_total_flow_m3s"], mean_flow) or
+                not _near(request["flow_gain"], gain)):
+            self.send_json(409, {"error": "calibration values do not match OT historian evidence"})
+            return
+        state["w33_calibrated"] = True
+        state["w33_flow_gain"] = float(request["flow_gain"])
+        save_state(state)
+        record = {
+            "record_id": "CAL-CRR-W33-R1", "revision": 1,
+            "instruction": "CRR-OP-W33-R1", "asset": "AST-CRR-017",
+            "request_id": request_id, "requested_total_flow_m3s": REQUESTED_FLOW,
+            "mean_total_flow_m3s": mean_flow, "response_delay_seconds": delay,
+            "flow_gain": gain, "good_sample_count": len(good_rows),
+        }
+        atomic_json(ROOT / "artifacts" / "commissioning-calibration" / "result.json", record)
+        self.accepted("commissioning-calibration", record, 201)
 
     def w30_2_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state.get("request_planned"):
