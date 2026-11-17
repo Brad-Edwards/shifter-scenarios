@@ -6,7 +6,7 @@ flags:
     source: value
     value: "FLAG{b4827df7ab6888be}"
     host: keplerops-host
-    path: TBD
+    path: "in GET https://source.keplerops.test:8443/api/fieldkest/handovers/current response field 'flag'. Service: source (source.py). Code tree: build/keplerops/runtime/source.py handover handler."
   - flag_id: K01.2
     source: value
     value: "FLAG{408710d448134ab5}"
@@ -291,22 +291,22 @@ flags:
     source: value
     value: "FLAG{a56dde25afcee8cb}"
     host: keplerops-host
-    path: TBD
+    path: "in GET https://support.keplerops.test:8443/api/handovers/current response field 'flag'. Service: k-support. Code tree: build/keplerops/runtime/support.py handover handler."
   - flag_id: K17.2
     source: value
     value: "FLAG{d9c146b29c13ab3f}"
     host: keplerops-host
-    path: TBD
+    path: "in POST https://support.keplerops.test:8443/api/recovery/redeem response field 'flag'. Service: k-support."
   - flag_id: K17.3
     source: value
     value: "FLAG{a732179b6bc51139}"
     host: keplerops-host
-    path: TBD
+    path: "in GET https://support.keplerops.test:8443/api/assignments/{assignment_id} response field 'flag'. Service: k-support."
   - flag_id: K17.4
     source: value
     value: "FLAG{9189af9bedad78f5}"
     host: keplerops-host
-    path: TBD
+    path: "in POST https://support.keplerops.test:8443/api/cases/{case_id}/copy-handover response field 'flag'. Service: k-support."
   - flag_id: K18.1
     source: value
     value: "FLAG{3177559b5e2a80d8}"
@@ -496,32 +496,32 @@ flags:
     source: value
     value: "FLAG{c8bcc391ce763872}"
     host: keplerops-host
-    path: TBD
+    path: "in GET /api/build-records/BLD-REC-021 response field 'flag'. Service: cloud-api. Code tree: build/keplerops/runtime/cloud-api.py _build_record_history_recovery()."
   - flag_id: K30.2
     source: value
     value: "FLAG{a4e3552a48f21f30}"
     host: keplerops-host
-    path: TBD
+    path: "in GET /api/backups/BAK-2026-021 response field 'flag'. Service: cloud-api (via data.keplerops.test)."
   - flag_id: K30.3
     source: value
     value: "FLAG{862b3bb92d638213}"
     host: keplerops-host
-    path: TBD
+    path: "in GET /api/recovery/{namespace_id}/customer-migration-history response field 'flag'. Service: cloud-api (via data.keplerops.test)."
   - flag_id: K31.1
     source: value
     value: "FLAG{c3f9834223486bbe}"
     host: keplerops-host
-    path: TBD
+    path: "in GET /api/policies/fieldlink-maintenance response field 'flag'. Service: cloud-api. Code tree: build/keplerops/runtime/cloud-api.py K31.1 policy handler."
   - flag_id: K31.2
     source: value
     value: "FLAG{a17c2fea31043bd8}"
     host: keplerops-host
-    path: TBD
+    path: "in GET /api/workloads/MAINT-FLK-01/whoami response field 'flag'. Service: cloud-api. Code tree: build/keplerops/runtime/cloud-api.py K31.2 whoami handler."
   - flag_id: K31.3
     source: value
     value: "FLAG{fde258527cfc25b1}"
     host: keplerops-host
-    path: TBD
+    path: "in GET /api/field-archive/FIELD-CRR-2026-09 response field 'flag'. Service: cloud-api (via data.keplerops.test proxy). Code tree: build/keplerops/runtime/cloud-api.py K31.3 field-archive handler."
   - flag_id: T01.1
     source: value
     value: "FLAG{2e184cd91352e573}"

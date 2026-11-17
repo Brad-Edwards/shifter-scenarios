@@ -1032,33 +1032,71 @@ class Handler(BaseHTTPRequestHandler):
     # reserve_reconciliation view in corporate-db, accessed via native Metabase.
 
     def integration(self, request: dict[str, object]) -> None:
-        # W09.4: return operating-reader credentials for the live process feed.
-        # The participant uses these with the planning.live-feed route
-        # (read-data.arwc.test/api/operating-history) to get fresh OT observations.
-        # Credentials are sourced from the bind-mounted ot-operating-reader.json.
-        try:
-            reader_creds = json.loads(pathlib.Path("/run/arwc-ot-reader.json").read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            self.send_json(503, {"error": "integration gateway is unavailable"})
+        # W09.4: validate the integration contract, return the current feed record,
+        # write OT_READ evidence, and issue a process-view session (W17/W18 chain).
+        if not self.headers.get("X-ARWC-Integration-Session", ""):
+            self.send_json(403, {"error": "integration read session required"})
             return
-        import base64 as _b64
-        auth_header = "Basic " + _b64.b64encode(
-            f"{reader_creds['username']}:{reader_creds['password']}".encode()
-        ).decode()
-        result = {
-            "record_id": "INT-CRR-08",
-            "revision": 8,
-            "integration_id": "INT-CRR-08",
-            "feed": "FEED-OG2-R21",
-            "source_binding": request.get("source", "REC-CRR-DP3-17"),
-            "credential_type": "Basic",
-            "live_feed_url": "https://read-data.arwc.test/api/operating-history",
+        integration_client = request.get("integration_client")
+        if integration_client != "INT-CRR-08":
+            self.send_json(409, {"error": "integration client not recognized"})
+            return
+        scope = request.get("scope")
+        if scope != "OG-CRR-02/read":
+            self.send_json(409, {"error": "scope not accepted"})
+            return
+        feed = request.get("feed")
+        if not isinstance(feed, str):
+            self.send_json(409, {"error": "feed identifier required"})
+            return
+        if feed != "FEED-OG2-R21":
+            try:
+                revision = int(feed.rsplit("-R", 1)[-1])
+            except (ValueError, IndexError):
+                revision = 0
+            self.send_json(409, {"record": {"record_id": feed, "revision": revision, "current": False}})
+            return
+        try:
+            process_session = pathlib.Path(
+                "/run/arwc-corporate/handover/corporate-session"
+            ).read_text(encoding="utf-8").strip()
+        except OSError:
+            self.send_json(503, {"error": "corporate session unavailable"})
+            return
+        token_sha256 = hashlib.sha256(process_session.encode()).hexdigest()
+        expires = int(time.time()) + 15 * 60
+        ot_evidence = {
+            "record_id": "OT-READ-CORPORATE-R21",
+            "branch": "corporate-integration",
+            "scope": "OG-CRR-02/read",
+            "token_sha256": token_sha256,
+            "expires_at_epoch": expires,
         }
-        atomic_json(INTEGRATION_EVIDENCE, result)
-        os.chown(INTEGRATION_EVIDENCE, -1, grp.getgrnam("arwc-integration").gr_gid)
-        os.chmod(INTEGRATION_EVIDENCE, 0o640)
-        self.accepted("integration-session-issued", result, 201,
-                      {"authorization": auth_header})
+        try:
+            OT_READ_EVIDENCE.mkdir(parents=True, exist_ok=True)
+            atomic_json(OT_READ_EVIDENCE / "corporate.json", ot_evidence)
+            os.chmod(OT_READ_EVIDENCE / "corporate.json", 0o644)
+        except OSError:
+            pass
+        report_binding = request.get("report_binding", "REC-CRR-DP3-17")
+        integration_data = {"record_id": report_binding, "planning_window": "ALLOC-2026-DP3"}
+        try:
+            atomic_json(INTEGRATION_EVIDENCE, integration_data)
+            os.chown(INTEGRATION_EVIDENCE, -1, grp.getgrnam("arwc-integration").gr_gid)
+            os.chmod(INTEGRATION_EVIDENCE, 0o640)
+        except OSError:
+            pass
+        record = {
+            "record_id": "FEED-OG2-R21", "revision": 21, "current": True,
+            "scope": "OG-CRR-02/read", "outlet_group": "OG-CRR-02", "asset": "AST-CRR-017",
+            "planning_window": "ALLOC-2026-DP3", "usable_reserve_ml": 12.4, "unit": "ML",
+            "instruments": ["FIT-CRR-204A", "FIT-CRR-204B"],
+        }
+        self.accepted("integration-session-issued", record, 201, {
+            "process_session": process_session,
+            "process_view": "https://process-view.arwc.test",
+            "client_reference": "https://process-view.arwc.test/.well-known/arwc-client",
+        })
 
 
     def query_report(self, request: dict[str, object]) -> None:

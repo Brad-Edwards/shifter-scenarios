@@ -626,6 +626,7 @@ class CloudApiHandler(KeplerHandler):
             "restore_allowed": True,
             "contents": ["customer-migration-history"],
             "created_at": "2026-08-20T00:00:00Z",
+            "flag": "FLAG{a4e3552a48f21f30}",
         }
         append_audit(AUDIT, "backup-catalog", {
             "request_id": self.request_id, "backup_id": "BAK-2026-021", "status": 200,
@@ -645,6 +646,7 @@ class CloudApiHandler(KeplerHandler):
         import copy as _copy
         result = _copy.deepcopy(_ARWC_MIGRATION_HISTORY)
         result["namespace_id"] = namespace_id
+        result["flag"] = "FLAG{862b3bb92d638213}"
         append_audit(AUDIT, "recovery-history", {
             "request_id": self.request_id, "namespace_id": namespace_id, "status": 200,
         })
@@ -1313,6 +1315,7 @@ class CloudApiHandler(KeplerHandler):
             "session": HISTORY_RECOVERY_SESSION,
             "allowed": "restore",
             "source_database": "denied",
+            "flag": "FLAG{c8bcc391ce763872}",
         }
         append_audit(AUDIT, "build-records", {
             "request_id": self.request_id,
