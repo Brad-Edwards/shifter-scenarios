@@ -50,12 +50,19 @@ nodes:
       addressing remain open.'
   k-source:
     type: compute
-    description: Gitea source, handover, retained release and binary archive service.
+    description: Native Gitea repositories, issues and Git transport, with separate retained FieldLink compiler and
+      archive tools.
     os: linux
     architecture: x86_64
     services:
     - name: source
       port: 443
+      protocol: tcp
+    - name: source-tools
+      port: 8443
+      protocol: tcp
+    - name: source-ssh
+      port: 22
       protocol: tcp
     features:
       k-source: ''
@@ -91,6 +98,8 @@ nodes:
           - k-source
           dns_names:
           - source.keplerops.test
+          - source-tools.keplerops.test
+          - git.keplerops.test
           backend:
             driver: bridge
             description: KeplerOps delivery segment.
@@ -102,12 +111,26 @@ nodes:
         protocol: tcp
         address_family: ipv4
         scope: wildcard
+      - service_listener_id: source-tools
+        service: source-tools
+        address: 0.0.0.0
+        port: 8443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      - service_listener_id: source-ssh
+        service: source-ssh
+        address: 0.0.0.0
+        port: 22
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
       applications:
       - application_id: gitea
         service: source
         protocol: https
         base_path: /
-        description: Gitea-compatible repositories plus exact authored release-history and retained-tool endpoints.
+        description: Native Gitea private repositories, issues, file objects, history and Git transport.
         routes:
         - route_id: current-user-repositories
           path: /api/v1/user/repos
@@ -115,7 +138,7 @@ nodes:
           - GET
           auth_required: true
           auth_scheme: Gitea basic token, bearer token or session
-          session_required: true
+          session_required: false
           responses:
           - status_code: 200
             content_type: application/json
@@ -127,7 +150,7 @@ nodes:
           - GET
           auth_required: true
           auth_scheme: Gitea basic token, bearer token or session
-          session_required: true
+          session_required: false
           parameters:
           - name: owner
             location: path
@@ -159,7 +182,7 @@ nodes:
           - POST
           auth_required: true
           auth_scheme: Gitea basic token, bearer token or session
-          session_required: true
+          session_required: false
           parameters:
           - name: owner
             location: path
@@ -181,24 +204,31 @@ nodes:
           - status_code: 403
             content_type: application/json
         - route_id: protected-handover
-          path: /api/fieldkest/handovers/current
+          path: /api/v1/repos/fieldkest/fieldlink-connector/issues
           methods:
           - GET
           auth_required: true
           auth_scheme: Gitea basic token, bearer token or session
-          session_required: true
+          session_required: false
           responses:
           - status_code: 200
             content_type: application/json
           - status_code: 403
             content_type: application/json
+      - application_id: source-tools
+        service: source-tools
+        protocol: https
+        base_path: /
+        description: Genuine retained FieldLink policy compiler and archived connector operations; native Git and
+          Gitea remain separate.
+        routes:
         - route_id: policy-compiler-evaluations
           path: /api/policy-compilers/fieldkest-policyc/evaluations
           methods:
           - POST
           auth_required: true
-          auth_scheme: Gitea basic token, bearer token or session
-          session_required: true
+          auth_scheme: FieldLink developer HTTP Basic credential
+          session_required: false
           parameters:
           - name: operation
             location: json_body
@@ -224,8 +254,8 @@ nodes:
           methods:
           - POST
           auth_required: true
-          auth_scheme: Gitea basic token, bearer token or session
-          session_required: true
+          auth_scheme: FieldLink developer HTTP Basic credential
+          session_required: false
           responses:
           - status_code: 201
             content_type: application/json
@@ -238,8 +268,8 @@ nodes:
           methods:
           - POST
           auth_required: true
-          auth_scheme: Gitea session
-          session_required: true
+          auth_scheme: FieldLink developer HTTP Basic credential
+          session_required: false
           parameters:
           - name: input
             location: uploaded_file
@@ -361,11 +391,14 @@ nodes:
         - /var/lib/gitea/exercise-artifacts/fieldlink-connector-6.9.8
   k-registry:
     type: compute
-    description: Package registry, resolver, inspector, entitlement and publication services.
+    description: Native Verdaccio package storage and separate FieldLink delivery, inspection and compatibility application.
     os: linux
     services:
     - name: packages
       port: 443
+      protocol: tcp
+    - name: delivery
+      port: 8443
       protocol: tcp
     features:
       k-registry: ''
@@ -416,6 +449,7 @@ nodes:
           - k-registry
           dns_names:
           - packages.keplerops.test
+          - delivery.keplerops.test
           backend:
             driver: bridge
             description: KeplerOps delivery segment.
@@ -427,19 +461,26 @@ nodes:
         protocol: tcp
         address_family: ipv4
         scope: wildcard
+      - service_listener_id: delivery-https
+        service: delivery
+        address: 0.0.0.0
+        port: 8443
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
       applications:
-      - application_id: package-registry
+      - application_id: verdaccio
         service: packages
         protocol: https
         base_path: /
-        description: Verdaccio-compatible metadata/publication with authored consumer, inspector, entitlement and delivery APIs.
+        description: Native Verdaccio npm metadata, accounts, package versions, tarballs, publication and errors.
         routes:
         - route_id: connector-metadata
           path: /@keplerops%2ffieldlink-connector
           methods:
           - GET
           auth_required: true
-          auth_scheme: Bearer or registry session
+          auth_scheme: Native npm Basic or JWT
           session_required: false
           responses:
           - status_code: 200
@@ -451,8 +492,8 @@ nodes:
           methods:
           - PUT
           auth_required: true
-          auth_scheme: Bearer
-          session_required: true
+          auth_scheme: Native npm Basic or JWT
+          session_required: false
           responses:
           - status_code: 201
             content_type: application/json
@@ -465,8 +506,8 @@ nodes:
           methods:
           - GET
           auth_required: true
-          auth_scheme: Bearer or registry session
-          session_required: true
+          auth_scheme: Native npm Basic or JWT
+          session_required: false
           parameters:
           - name: version
             location: path
@@ -479,6 +520,22 @@ nodes:
             content_type: application/json
           - status_code: 404
             content_type: application/json
+        - route_id: support-metadata
+          path: /@keplerops%2fsupport-rehearsal
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Native CI reader or registry administrator
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+      - application_id: package-registry
+        service: delivery
+        protocol: https
+        base_path: /
+        description: Genuine FieldLink release approval, compatibility, customer records and inspection; native package storage is separate.
+        routes:
         - route_id: consumer-check
           path: /api/consumer-checks
           methods:
@@ -524,62 +581,6 @@ nodes:
           - status_code: 200
             content_type: application/json
           - status_code: 422
-            content_type: application/json
-        - route_id: resolver-run
-          path: /api/resolver/runs
-          methods:
-          - POST
-          auth_required: true
-          auth_scheme: Gitea developer session
-          session_required: true
-          responses:
-          - status_code: 201
-            content_type: application/json
-          - status_code: 422
-            content_type: application/json
-        - route_id: importer
-          path: /api/imports
-          methods:
-          - POST
-          auth_required: true
-          auth_scheme: Gitea developer session
-          session_required: true
-          parameters:
-          - name: package_request
-            location: json_body
-            required: true
-            data_type: object
-          disclosures:
-          - trigger: A valid package request selects an unavailable resolver view and the error serializer includes the resolved registry client configuration.
-            status_code: 422
-            disclosure: Scoped customer-channel publisher credential fixture.
-            sensitivity: secret_fixture
-          responses:
-          - status_code: 200
-            content_type: application/json
-          - status_code: 422
-            content_type: application/json
-        - route_id: package-view
-          path: /api/package-views/{view}/{package_name}
-          methods:
-          - GET
-          auth_required: true
-          auth_scheme: Bearer
-          session_required: true
-          parameters:
-          - name: view
-            location: path
-            required: true
-            data_type: string
-          - name: package_name
-            location: path
-            required: true
-            data_type: string
-          description: Resolves the named package before applying the requested restricted view; only the authored support package crosses the view boundary.
-          responses:
-          - status_code: 200
-            content_type: application/json
-          - status_code: 403
             content_type: application/json
         - route_id: inspector-submit
           path: /api/inspections
@@ -728,7 +729,8 @@ nodes:
           actions:
           - read
           resource_patterns:
-          - packages/@keplerops/*
+          - packages/@keplerops/fieldlink-connector
+          - packages/@keplerops/support-rehearsal
           effect: allow
         - grant_id: publish-customer-channel
           role_ref: customer-channel-publisher
@@ -736,7 +738,7 @@ nodes:
           actions:
           - publish
           resource_patterns:
-          - packages/@keplerops/fieldlink-connector/channels/arwc-stable
+          - packages/@keplerops/fieldlink-connector
           effect: allow
         - grant_id: approve-release
           role_ref: privileged-release-approver
@@ -787,7 +789,7 @@ nodes:
         installed_paths:
         - /opt/verdaccio
       - component_id: fieldkest-registry-services
-        name: FieldKest registry companion services
+        name: FieldLink delivery and compatibility application
         version: 1.0.0
         component_type: application
         provenance: operator
@@ -921,6 +923,57 @@ nodes:
         privilege_class: namespaced
         description: Jobs have outbound HTTPS only to the named source, registry, staff, certificate and cloud APIs and receive no engine control interface.
       applications:
+      - application_id: jenkins
+        service: ci
+        protocol: https
+        base_path: /
+        description: Native Jenkins LTS jobs, SCM revisions, build history, console, artifacts and file parameters.
+        routes:
+        - route_id: build-console
+          path: /job/{job}/{build}/consoleText
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Native Jenkins account or API token
+          responses:
+          - status_code: 200
+            content_type: text/plain
+          - status_code: 403
+            content_type: text/html
+        - route_id: build-record
+          path: /job/{job}/{build}/api/json
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Native Jenkins account or API token
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 404
+            content_type: text/html
+        - route_id: build-artifacts
+          path: /job/{job}/{build}/artifact/{path}
+          methods: [GET]
+          auth_required: true
+          auth_scheme: Native Jenkins account or API token
+          responses:
+          - status_code: 200
+            content_type: application/octet-stream
+          - status_code: 404
+            content_type: text/html
+        - route_id: file-parameter-build
+          path: /job/fieldlink-report-review/buildWithParameters
+          methods: [POST]
+          auth_required: true
+          auth_scheme: Native Jenkins account or API token with CSRF protection
+          parameters:
+          - name: provider.zip
+            location: form
+            required: true
+            data_type: multipart file
+          responses:
+          - status_code: 201
+            content_type: text/html
+          - status_code: 403
+            content_type: text/html
       - application_id: fieldkest-ci
         service: ci
         protocol: https
@@ -1139,6 +1192,12 @@ nodes:
         - tenant_id: keplerops
           name: KeplerOps
       software_components:
+      - component_id: jenkins
+        name: Jenkins LTS
+        version: 2.580.2
+        component_type: application
+        provenance: image_metadata
+        installed_paths: [/usr/share/jenkins/jenkins.war]
       - component_id: fieldkest-ci
         name: FieldKest CI and rehearsal service
         version: 1.0.0

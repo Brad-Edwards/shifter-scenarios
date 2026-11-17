@@ -1,3 +1,5 @@
+FROM node:22.19.0-bookworm-slim AS node-tools
+
 FROM python:3.12.11-slim-bookworm
 
 RUN apt-get update \
@@ -11,10 +13,16 @@ RUN apt-get update \
     && groupadd --system fieldkest-consumer \
     && useradd --system --gid fieldkest-consumer --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-consumer
 
+COPY --from=node-tools /usr/local/bin/node /usr/local/bin/node
+COPY --from=node-tools /usr/local/lib/node_modules /usr/local/lib/node_modules
+RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
+    && ln -s ../lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
+
 COPY build/keplerops/runtime/http_support.py /opt/fieldkest/http_support.py
 COPY build/keplerops/runtime/credentials.py /opt/fieldkest/credentials.py
 COPY build/keplerops/runtime/client-references/ci.json /opt/fieldkest/client_documents.json
 COPY build/keplerops/runtime/ci.py /opt/fieldkest/ci.py
+COPY build/keplerops/runtime/package_delivery.py /opt/fieldkest/package_delivery.py
 COPY build/keplerops/runtime/ci-entrypoint.sh /usr/local/bin/fieldkest-ci-entrypoint
 COPY assets/keplerops/opening/k-ci-state.tar /tmp/k-ci-state.tar
 COPY assets/keplerops/build-operations/k-ci-runner-state.tar /tmp/k-ci-runner-state.tar

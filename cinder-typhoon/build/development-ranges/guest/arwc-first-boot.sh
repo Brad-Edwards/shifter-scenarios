@@ -20,7 +20,7 @@ plc_before=$(docker inspect --format '{{.Id}}' arwc-ot-compat-plc-1)
 metadata=http://metadata.google.internal/computeMetadata/v1
 address=$(curl --fail --silent --show-error --header 'Metadata-Flavor: Google' \
   "$metadata/instance/network-interfaces/0/ip")
-[[ $address == 10.77.59.* && $address != 10.77.59.2 && $address != 10.77.59.6 ]] || exit 1
+[[ $address == 10.77.59.11 ]] || exit 1
 
 export ARWC_CARRIER_ADDRESS=$address
 export ARWC_OT_OPERATOR_DIR=$PWD/.operator

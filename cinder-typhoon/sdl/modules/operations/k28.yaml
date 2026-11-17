@@ -118,7 +118,7 @@ evidence_requirements:
     description: |-
       Recover the actual path and engineering note. They help locate W19's artifact but do not solve its different analysis problem or grant OT access.
 
-      Required technical proof: Completion is observed by the owning service from the fresh result and its immutable audit correlation. The evidence binds the participant, accepted identity or job, exact input and output identifiers, relevant revision or digest, and destination-side observation where a second service consumes the result. Objective evaluation does not create the result or grant authority.
+      Required technical proof: Require the fresh diagnostic result's route, note ID, output digest and protected tool audit, together with the actual Gitea repository path, commit revision and engineering-note content digest. An unrelated local file, guessed HTTP route or ordinary connector response does not establish that binding. The note identifies retained package `DIAG-CRR-MIXED-19` and project family `R19`; its content does not supply the reservoir diagnostic's later interpretation or outlet mapping.
     source_refs:
     - features.k-delivery.k-source
     scope: Per-participant in-world evidence; no other participant state.
@@ -149,10 +149,10 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Verify the normal baseline, the exact intended path, and the fresh evidence described above.
-      Reject a wrong identifier, revision, digest, tenant, identity, stale result, or cross-participant reference.
-      Verify unrelated records and permissions remain unchanged and that the result remains recognizable and usable
-      by every declared downstream consumer.'
+    - 'Author checks: Verify the original binary, build ID, tag and diagnostic transformations remain unchanged.
+      Recover the exact route and note ID from a fresh diagnostic result; retrieve the matching native Gitea file
+      and bind its revision and digest. Check authenticated retrieval, anonymous denial and an unrelated path denial.
+      Confirm the note names the retained ARWC package without disclosing its analysis or granting OT access.'
 propositions:
   c1:
     description: Recover the actual behavior distinction and its relevant runtime condition. A binary filename or
@@ -465,11 +465,10 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: 'The intended path is limited to the authored software, data, configuration, identity, permission,
-      or state described above. The participant must exercise that real condition through the declared service interface
-      and produce this result: Invocation returns actual path and note ENG-FLK-LEGACY-42. Merely describing the
-      condition, editing a local copy, or presenting a value obtained from another surface does not satisfy the
-      contract.'
+    procedure_basis: Reconstruct the concealed loader's path and object identifier, then use that binding to retrieve
+      the corresponding native repository note. Correlate the note's customer and retained diagnostic-package references
+      with the fresh loader result. The note supplies an optional ARWC Engineering discovery lead; it grants no
+      customer or OT authority.
     realization_profile: backend-declared
     fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
       independently owned evidence are required. Backend choices remain open only where they cannot change those
@@ -484,12 +483,11 @@ action_contracts:
       - features.k-delivery.k-source
     - precondition_id: normal-surface
       precondition_class: target
-      description: '`k-source` owns this part of the operation. Its starting state is exact: Hidden module constructs
-        route /internal/fieldlink/legacy-diagnostics/CRR-OG2 and embeds engineering-note object ID. The owning service
-        uses the listener, route, identity, authorization, storage, and audit contract declared in the corresponding
-        world module. Records that are not explicitly mutable remain immutable. The private service-loader contract
-        `content.keplerops-k-source.k28-3-the-path-that-appears-at-runtime` freezes the request, denial, state-transition,
-        evidence, and any exploit-critical implementation details.'
+      description: The retained binary and its signed diagnostic configuration remain unchanged. The loader emits
+        an archived internal path and engineering-note object ID. The private native Gitea repository `fieldkest/connector-archive`
+        retains the note as a Markdown file under that exact namespace; its README explains that archived internal
+        paths are repository paths rather than live service endpoints. Gitea owns the authenticated file, Git history,
+        revision and ordinary access errors.
       support_refs:
       - features.k-delivery.k-source
       - content.keplerops-k-source.k28-3-the-path-that-appears-at-runtime

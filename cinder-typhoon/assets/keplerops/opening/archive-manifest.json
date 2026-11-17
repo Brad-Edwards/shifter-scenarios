@@ -24,8 +24,8 @@
         {
           "mode": "0644",
           "path": "README.md",
-          "sha256": "0bd237d283cda2d2afd567dd8597e40d9367cd3906a8e3ec1bf04a802b6bdb97",
-          "size": 749
+          "sha256": "ef7f1903adabe6826a78b06788d5700e07be337eb8cd48f791c94b438b1b57af",
+          "size": 784
         },
         {
           "mode": "0640",
@@ -44,6 +44,18 @@
           "path": "work/local-helper.md",
           "sha256": "e9f253d764e30d22ae0af5273c8ee9ecc93794eb4b566cfdb3655508c954d505",
           "size": 821
+        },
+        {
+          "mode": "0640",
+          "path": "work/previews/index.html",
+          "sha256": "511dd8375f763ec12f9ec6064f5d96f3c46d165fcb05e3440c8133ab1f0a0163",
+          "size": 998
+        },
+        {
+          "mode": "0640",
+          "path": "work/previews/review.css",
+          "sha256": "1294dba8d3f087e69094fc311ffbf70688ba289299699198bf1663dfe7c47f5e",
+          "size": 540
         },
         {
           "mode": "0640",
@@ -66,14 +78,14 @@
         {
           "mode": "0644",
           "path": "work/service-notes.md",
-          "sha256": "6a330823536788153ff6bbe8556e398638c17ee7792a6078904a02ca1cf4b541",
-          "size": 1791
+          "sha256": "ea23d21754a8bc40ead36506dd01757d43c64194f02a38bb9fab39658bc94a76",
+          "size": 3674
         }
       ],
       "group": "rowan",
       "owner": "rowan",
-      "sha256": "2d0652dee35849ba282ec99ea7c5ca469de14799d88ba00a9ef2e91c32d3a852",
-      "size": 40960
+      "sha256": "96cd43dd51f85f264061710537ed230490bed9114af57bad8366434423db6259",
+      "size": 51200
     },
     {
       "archive": "k-dev-workbench.tar",

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Known-solution acceptance for every KeplerOps card (K01-K31).
+"""Partial KeplerOps reference harness during native application migration.
 
 This operator-only suite follows an authored solution sequence from the Rowan
 workstation boundary; it is not a service-contract test. The operator runner
@@ -14,8 +14,14 @@ Boundary rules this suite enforces:
   or from an earlier response. It never embeds a value known only to the author.
 - It carries response evidence forward across cards and operations.
 
-The suite contains solution algorithms and expected assertions. Its passing
-result proves known-path executability only; it does not prove that a fresh
+Native K02/K05/K06 product workflows are qualified separately during migration;
+their retired facade routines have been removed from this legacy suite. The
+complete monolithic run and its cross-operation evidence setup have not been
+ported or qualified. Current native paths are in the reviewed card designs;
+actual participant QA is recorded separately.
+
+The retained routines contain solution algorithms and expected assertions. An
+individually qualified result proves its known-path executability only; it does not prove that a fresh
 person would discover or understand the path, or establish difficulty or
 duration. It consumes single-use state and must run from a pristine range.
 """
@@ -299,90 +305,6 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             curl(helper_route, "-F", "sample=@work/review-exports/fieldlink-7.4.2-review.md", expected=422)
             self.evidence["sample"] = receipt
 
-    # ------------------------------------------------------------------ K02
-    def test_k02_report_fixture_and_changed_report(self) -> None:
-        notes = self.service_notes
-        dev = self.evidence["dev"]
-        handover = self.evidence["handover"]
-
-        with self.subTest(card="K02.1 recover the missing report fixture"):
-            # A handover note points at the failing build.
-            build_note = next(n for n in handover["notes"] if re.search(r"BLD-\d+", n))
-            build_id = re.search(r"(BLD-\d+)", build_note).group(1)
-            run_route = re.search(r"Run record: `GET (https://\S+)/\{run_id\}`", notes).group(1)
-            run = curl_json(f"{run_route}/{build_id}", creds=dev)
-            fixture_path = run["expected_fixture"]
-            fixture_ref = run["fixture_revision"]
-            # The removed fixture is still in repository history at the named revision.
-            fixture_raw = rowan_bytes("git", "-C", "work/fieldlink-connector", "show", f"{fixture_ref}:{fixture_path}")
-            fixture = json.loads(fixture_raw)
-            self.assertEqual(fixture["schema"], "fieldkest.report/v2")
-            self.evidence["build_id"] = build_id
-            self.evidence["fixture_ref"] = fixture_ref
-            self.evidence["fixture"] = fixture
-            self.evidence["fixture_raw"] = fixture_raw
-
-        with self.subTest(card="K02.2 expose the withheld review note"):
-            import_route = re.search(r"Review import: `POST (https://\S+)`", notes).group(1)
-            number = re.search(r"BLD-(\d+)", build_id).group(1)
-            note_id = f"REVNOTE-{number}"
-            # The importer resolves the object before access control; traverse out of inputs/.
-            traversal = f"inputs/%2e%2e/reviews/{note_id}.json"
-            receipt = post_json_route(
-                import_route,
-                {"schema": "fieldkest.review-import/v1", "run_id": build_id, "object": traversal},
-                creds=dev, expected=201,
-            )
-            note = receipt["object"]
-            self.assertEqual(note["review_id"], note_id)
-            self.assertEqual(note["baseline"]["ref"], fixture_ref)
-            # Escaping beyond the repository is still refused.
-            post_json_route(
-                import_route,
-                {"schema": "fieldkest.review-import/v1", "run_id": build_id, "object": "inputs/%2e%2e/%2e%2e/etc/passwd"},
-                creds=dev, expected=422,
-            )
-            self.evidence["review_note"] = note
-
-        with self.subTest(card="K02.3 publish Cinder's report through a green job"):
-            note = self.evidence["review_note"]
-            fixture = self.evidence["fixture"]
-            # The note's contract names the extension point, layout and field rules.
-            self.assertEqual(note["extension_point"], "report_provider")
-            self.assertIn("provider.py", note["archive_layout"])
-            # A compatible provider keeps immutable fields and supplies the assessment.
-            provider = (
-                "def render_report(fixture):\n"
-                "    report = dict(fixture)\n"
-                "    report['assessment'] = {'rating': 'action-required',\n"
-                "        'summary': 'Cinder review: callback latency needs support attention.'}\n"
-                "    return report\n"
-            )
-            buffer = io.BytesIO()
-            with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
-                archive.writestr("provider.py", provider)
-                archive.writestr("fixture.json", self.evidence["fixture_raw"])
-            job_route = re.search(r"Submit an isolated job: `POST (https://\S+)`", notes).group(1)
-            result_route = re.search(r"Read a job result: `GET (https://\S+)/\{job_id\}`", notes).group(1)
-            submitted = post_json_route(
-                job_route,
-                {"template": "report-consumer-v2", "input": {"archive_base64": base64.b64encode(buffer.getvalue()).decode()}},
-                creds=dev, expected=202,
-            )
-            result = curl_json(f"{result_route}/{submitted['job_id']}", creds=dev)
-            self.assertEqual(result["state"], "success")
-            self.assertEqual(result["report"]["assessment"]["rating"], "action-required")
-            for field in note["immutable_fields"]:
-                base = fixture
-                got = result["report"]
-                for part in field.split("."):
-                    base, got = base.get(part), got.get(part)
-                self.assertEqual(got, base, f"immutable field changed: {field}")
-            # The support handover now shows Cinder's output.
-            support_handover = re.search(r"Current handover: `GET (https://support\S+)`", notes).group(1)
-            handover = curl_json(support_handover, cookie=f"fieldkest_support={self.evidence['support_cookie']}")
-            self.assertEqual(handover["job_id"], submitted["job_id"])
-            self.assertEqual(handover["report_sha256"], result["report_sha256"])
 
     # ------------------------------------------------------------------ K03
     def test_k03_predecessor_callback(self) -> None:
@@ -508,137 +430,7 @@ class KeplerOpsKnownSolutionAcceptance(unittest.TestCase):
             # The recovered exception dossier is an alternative K29 release lead.
             self.evidence["indexer_dossier"] = result["dossier"]
 
-    # ------------------------------------------------------------------ K05
-    def test_k05_package_foundation(self) -> None:
-        dev = self.evidence["dev"]
 
-        with self.subTest(card="K05.1 speak the consumer-check contract"):
-            metadata = curl_json(self.discovered_route("packages.metadata"), creds=dev)
-            latest = metadata["dist_tags"]["latest"]
-            request = read_home("work/registry/consumer-request.json")
-            write_tmp("/tmp/journey-consumer.json", request.encode())
-            result = curl_json(
-                self.discovered_route("packages.consumer-check"),
-                "-H", "Content-Type: application/json",
-                "--data-binary", "@/tmp/journey-consumer.json", creds=dev, expected=201)
-            self.assertEqual(result["resolved_version"], latest)
-            self.evidence["package_metadata"] = metadata
-            self.evidence["declared_range"] = result["declared_range"]
-            self.evidence["consumer_revision"] = result["consumer_revision"]
-            self.evidence["tenant"] = result["request"]["tenant_id"]
-
-        with self.subTest(card="K05.2 recover the yanked release named in the ticket"):
-            # The support ticket names the retained historical release record.
-            cookie = f"fieldkest_support={self.evidence['support_cookie']}"
-            support_conv = curl_json(
-                self.discovered_route("support.conversation").replace(
-                    "{conversation_id}", self.evidence["ticket"]),
-                cookie=cookie)
-            text = " ".join(m["text"] for m in support_conv["messages"])
-            archive_id = re.search(r"(REL-FLK-[0-9.]+-ARCHIVE)", text).group(1)
-            archive = curl_json(
-                self.discovered_route("packages.release").replace("{release_id}", archive_id),
-                creds=dev)
-            self.assertEqual(archive["status"], "yanked")
-            self.assertNotIn(archive["version"], metadata["versions"])
-            self.evidence["archive"] = archive
-
-        with self.subTest(card="K05.3 reconcile the disagreeing manifests"):
-            result = curl_json(
-                self.discovered_route("packages.reconcile"),
-                "-H", "Content-Type: application/json",
-                "--data-binary", json.dumps({"tenant_record_id": self.evidence["tenant"], "release_id": self.evidence["release"]}),
-                creds=dev)
-            self.assertIn("resolved_version", result["disagreements"])
-
-        with self.subTest(card="K05.4 run the isolated resolver"):
-            result = curl_json(
-                self.discovered_route("packages.resolver"),
-                "-H", "Content-Type: application/json",
-                "--data-binary", json.dumps({
-                    "package": metadata["name"],
-                    "range": self.evidence["declared_range"],
-                    "consumer_revision": self.evidence["consumer_revision"]}),
-                creds=dev, expected=201)
-            self.assertEqual(result["selected_version"], metadata["dist_tags"]["latest"])
-            self.assertEqual([c["version"] for c in result["candidate_set"]], metadata["versions"])
-
-    # ------------------------------------------------------------------ K06
-    def test_k06_house_credentials_and_rehearsal(self) -> None:
-        dev = self.evidence["dev"]
-        metadata = self.evidence["package_metadata"]
-
-        with self.subTest(card="K06.1 recover the house publisher credential"):
-            disclosed = curl_json(
-                self.discovered_route("packages.import"),
-                "-H", "Content-Type: application/json",
-                "--data-binary", json.dumps({
-                    "package": metadata["name"], "version": metadata["dist_tags"]["latest"],
-                    "registry_view": "customer-preview-unavailable"}),
-                creds=dev, expected=422)
-            client = disclosed["resolved_registry_client"]
-            self.assertEqual(client["principal"], "fieldlink-importer-publisher")
-            package_name, channel = client["scope"].rsplit(":", 1)
-            self.assertEqual(package_name, metadata["name"])
-            token = client["token"]
-            self.assertTrue(token)
-            self.evidence["publisher_token"] = token
-            self.evidence["publisher_channel"] = channel
-
-        with self.subTest(card="K06.2 read the private package view in bounds"):
-            token = self.evidence["publisher_token"]
-            view_route = self.discovered_route("packages.view").replace("{view}", "publisher")
-            package = curl_json(
-                view_route.replace("{package}", quote("@keplerops/support-rehearsal", safe="")),
-                bearer=token)
-            self.assertEqual(package["name"], "@keplerops/support-rehearsal")
-            # The publisher view does not reach the release-admin package.
-            curl_json(
-                view_route.replace("{package}", quote("@keplerops/release-admin", safe="")),
-                bearer=token, expected=403)
-
-        with self.subTest(card="K06.3 publish and run the rehearsal consumer"):
-            token = self.evidence["publisher_token"]
-            package_name = metadata["name"]
-            channel = self.evidence["publisher_channel"]
-            version = "7.4.3-cinder." + uuid.uuid4().hex[:10]
-            builder = (
-                "import base64, gzip, hashlib, io, json, pathlib, tarfile\n"
-                f"version = {version!r}\n"
-                f"package_name = {package_name!r}\n"
-                f"channel = {channel!r}\n"
-                "files = {\n"
-                " 'package/package.json': json.dumps({'name':package_name,'version':version,'main':'index.js','engines':{'node':'>=22'},'fieldkest':{'interface':'fieldkest.connector/v3'}}, sort_keys=True).encode()+b'\\n',\n"
-                " 'package/index.js': b\"'use strict';\\nexports.consume = request => ({schema:'fieldkest.rehearsal-result/v1',tenant_id:request.tenant_id,asset_id:request.asset_id,assessment:'operator-confirmed-change'});\\n\",\n"
-                "}\n"
-                "raw=io.BytesIO()\n"
-                "with tarfile.open(fileobj=raw,mode='w') as t:\n"
-                " for name,data in files.items():\n"
-                "  i=tarfile.TarInfo(name); i.size=len(data); i.mode=0o644; t.addfile(i,io.BytesIO(data))\n"
-                "out=io.BytesIO()\n"
-                "with gzip.GzipFile(fileobj=out,mode='wb',mtime=0) as g: g.write(raw.getvalue())\n"
-                "data=out.getvalue()\n"
-                "request={'name':package_name,'version':version,'channel':channel,'sha256':hashlib.sha256(data).hexdigest(),'tarball_base64':base64.b64encode(data).decode()}\n"
-                "pathlib.Path('/tmp/journey-publication.json').write_text(json.dumps(request))\n"
-            )
-            build = rowan("python3", "-c", builder)
-            self.assertEqual(build.returncode, 0, build.stderr)
-            published = curl_json(
-                self.discovered_route("packages.publish"),
-                "-X", "PUT", "-H", "Content-Type: application/json",
-                "--data-binary", "@/tmp/journey-publication.json", bearer=token, expected=201)
-            self.assertEqual((published["version"], published["channel"]), (version, channel))
-            result = curl_json(
-                self.discovered_route("ci.connector-rehearsal"),
-                "-H", "Content-Type: application/json",
-                "--data-binary", json.dumps({
-                    "version": version, "consumer": "support-rehearsal-v3",
-                    "input": {"schema": "fieldkest.connector/v3", "tenant_id": "TEN-SYNTH-REHEARSAL-01",
-                              "asset_id": "SYNTH-PUMP-07", "operation": "support_review"}}),
-                creds=dev, expected=202)
-            self.assertEqual((result["state"], result["version"]), ("success", version))
-            self.assertEqual(result["output"]["assessment"], "operator-confirmed-change")
-            self.evidence["rehearsal_version"] = version
 
     # ------------------------------------------------------------------ K07
     def test_k07_inspector_boundary(self) -> None:

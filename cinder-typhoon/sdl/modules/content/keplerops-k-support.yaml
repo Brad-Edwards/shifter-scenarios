@@ -703,7 +703,7 @@ content:
         authority: Support service + registry
       surface_bindings:
       - k-delivery.k-support/support-service/diagnostic-package
-      - k-delivery.k-registry/package-registry/package-publication
+      - k-delivery.k-registry/verdaccio/package-publication
       starting_state: Diagnostic package template with G03 interface; edit endpoint validates
         schema/digest but fails immutable-source enforcement.
       mechanic_profile:
@@ -754,7 +754,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 1ef308125faef4adf96a8b2ec1a46c26839fdc143cd10bc9a8146096394f7db6
+        digest: 95988ef93618bae7aca7e8930823f2b3293f741710d51756be5a4f8182981ee7
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

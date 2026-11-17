@@ -17,7 +17,6 @@ SOCKET = Path("/run/fieldkest-runner/runner.sock")
 WORKER_IMAGE = os.environ["FIELDKEST_WORKER_IMAGE"]
 NODE_WORKER_IMAGE = os.environ["FIELDKEST_NODE_WORKER_IMAGE"]
 COMMAND_WORKER_IMAGE = os.environ["FIELDKEST_COMMAND_WORKER_IMAGE"]
-PREVIEW_IMAGE = os.environ["FIELDKEST_PREVIEW_IMAGE"]
 MAX_REQUEST = 800_000
 ACTIVE_COMMANDS: dict[str, str] = {}
 ACTIVE_LOCK = threading.RLock()
@@ -33,21 +32,36 @@ result = function(payload['fixture'])
 sys.stdout.write(json.dumps({'ok': True, 'output': result}, sort_keys=True, separators=(',', ':')) + '\n')
 """
 NODE_WRAPPER = r"""
-const vm = require('node:vm');
+const fs = require('node:fs');
+const path = require('node:path');
+const child = require('node:child_process');
 let raw = '';
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', chunk => raw += chunk);
-process.stdin.on('end', () => {
+process.stdin.on('end', async () => {
   try {
     const request = JSON.parse(raw);
-    const sandbox = {exports: {}};
-    vm.createContext(sandbox, {codeGeneration: {strings: false, wasm: false}});
-    new vm.Script(request.source, {filename: 'package/index.js'}).runInContext(sandbox, {timeout: 1000});
-    if (typeof sandbox.exports.consume !== 'function') throw new Error('consume export required');
-    const output = sandbox.exports.consume(request.input);
-    process.stdout.write(JSON.stringify({ok: true, output}) + '\n');
+    const work = fs.mkdtempSync('/tmp/fieldlink-consumer-');
+    const archive = path.join(work, 'package.tgz');
+    fs.writeFileSync(archive, Buffer.from(request.archive_base64, 'base64'));
+    child.execFileSync('/usr/local/bin/npm', [
+      'install', '--offline', '--no-audit', '--no-fund', '--no-package-lock',
+      '--prefix', work, archive
+    ], {
+      env: {...process.env, HOME: work, npm_config_cache: path.join(work, 'cache')},
+      timeout: 7000, stdio: 'pipe'
+    });
+    const root = path.join(work, 'node_modules', '@keplerops', 'fieldlink-connector');
+    const consumer = require(root);
+    const metadata = require(path.join(root, 'package.json'));
+    if (typeof consumer.consume !== 'function') throw new Error('consume export required');
+    const output = await consumer.consume(request.input);
+    process.stdout.write(JSON.stringify({ok: true, output,
+      package: {name: metadata.name, version: metadata.version}}) + '\n');
   } catch (error) {
-    process.stdout.write(JSON.stringify({ok: false, error: 'consumer_failed'}) + '\n');
+    process.stdout.write(JSON.stringify({ok: false, error: 'consumer_failed',
+      details: {message: String(error.message).slice(0, 1024),
+        stderr: error.stderr ? error.stderr.toString().slice(-4096) : ''}}) + '\n');
   }
 });
 """
@@ -212,33 +226,6 @@ class Handler(socketserver.StreamRequestHandler):
                     response = {"ok": True, "result": json.loads(lines[0])}
                 self.wfile.write(json.dumps(response, separators=(",", ":")).encode() + b"\n")
                 return
-            if (set(request) == {"kind", "run_id", "worker_scope"}
-                    and request["kind"] == "preview"
-                    and isinstance(request["run_id"], str)
-                    and request["worker_scope"] == "/review/"):
-                name = "fieldkest-preview-" + request["run_id"].lower().replace("_", "-")
-                command = [
-                    "docker", "run", "--rm", "--name", name, "--network", "none",
-                    "--read-only", "--tmpfs", "/tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777",
-                    "--tmpfs", "/dev/shm:rw,noexec,nosuid,nodev,size=128m,mode=1777",
-                    "--memory", "512m", "--memory-swap", "512m", "--pids-limit", "128", "--cpus", "1.0",
-                    "--user", "fieldkest-renderer:fieldkest-renderer", "--cap-drop", "ALL",
-                    "--security-opt", "no-new-privileges:true",
-                    "--entrypoint", "/usr/local/bin/python3", PREVIEW_IMAGE,
-                    "/opt/fieldkest/preview_worker.py",
-                ]
-                try:
-                    result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=30)
-                except subprocess.TimeoutExpired:
-                    subprocess.run(["docker", "rm", "--force", name], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
-                    self.wfile.write(b'{"ok":false,"error":"preview_timeout"}\n')
-                    return
-                lines = result.stdout.splitlines()
-                response = {"ok": False, "error": "preview_failed"}
-                if result.returncode == 0 and len(lines) == 1:
-                    response = {"ok": True, "result": json.loads(lines[0])}
-                self.wfile.write(json.dumps(response, separators=(",", ":")).encode() + b"\n")
-                return
             if (set(request) == {"kind", "run_id", "handover_id", "script"}
                     and request["kind"] == "completion"
                     and isinstance(request["run_id"], str)
@@ -270,7 +257,7 @@ class Handler(socketserver.StreamRequestHandler):
                 return
             if set(request) == {"source", "fixture"} and isinstance(request["source"], str) and isinstance(request["fixture"], dict):
                 kind = "report"
-            elif set(request) == {"kind", "source", "input"} and request["kind"] == "node-package" and isinstance(request["source"], str) and isinstance(request["input"], dict):
+            elif set(request) == {"kind", "archive_base64", "input"} and request["kind"] == "node-package" and isinstance(request["archive_base64"], str) and isinstance(request["input"], dict):
                 kind = "node-package"
             else:
                 raise ValueError
@@ -286,12 +273,14 @@ class Handler(socketserver.StreamRequestHandler):
         else:
             name = "fieldkest-consumer-" + uuid.uuid4().hex[:16]
             image = NODE_WORKER_IMAGE
-            entrypoint = ["--entrypoint", "/usr/local/bin/node", image, "--disallow-code-generation-from-strings", "-e", NODE_WRAPPER]
-            input_bytes = json.dumps({"source": request["source"], "input": request["input"]}, separators=(",", ":")).encode()
+            entrypoint = ["--entrypoint", "/usr/local/bin/node", image, "-e", NODE_WRAPPER]
+            input_bytes = json.dumps({"archive_base64": request["archive_base64"], "input": request["input"]}, separators=(",", ":")).encode()
         command = [
             "docker", "run", "--rm", "-i", "--name", name,
-            "--network", "none", "--read-only", "--tmpfs", "/tmp:rw,noexec,nosuid,nodev,size=8m",
-            "--memory", "128m", "--memory-swap", "128m", "--pids-limit", "32", "--cpus", "0.5",
+            "--network", "none", "--read-only", "--tmpfs",
+            "/tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777" if kind == "node-package" else "/tmp:rw,noexec,nosuid,nodev,size=8m,mode=1777",
+            "--memory", "256m" if kind == "node-package" else "128m",
+            "--memory-swap", "256m" if kind == "node-package" else "128m", "--pids-limit", "32", "--cpus", "0.5",
             "--user", "65534:65534", "--cap-drop", "ALL", "--security-opt", "no-new-privileges:true",
             *entrypoint,
         ]

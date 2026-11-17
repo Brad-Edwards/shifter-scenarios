@@ -1,22 +1,45 @@
 # FieldKest developer service notes
 
-All three services use the workstation CA. The saved Gitea credential is also
-accepted by the developer CI routes.
+Internal services use the workstation CA. The saved Gitea credential is also
+accepted by Jenkins and the FieldLink report service.
 
 ## Source
 
 - Repository remote: `https://source.keplerops.test/fieldkest/fieldlink-connector.git`
-- Client reference: `GET https://source.keplerops.test/.well-known/fieldkest-client`
-- Current handover: `GET https://source.keplerops.test/api/fieldkest/handovers/current`
+- Source browser: `https://source.keplerops.test/`
+- Handovers: `https://source.keplerops.test/fieldkest/fieldlink-connector/issues`
 - Repository content: `GET https://source.keplerops.test/api/v1/repos/fieldkest/fieldlink-connector/contents/{path}?ref={revision}`
+- SSH remote: `git@source.keplerops.test:fieldkest/fieldlink-connector.git`
 
-## CI
+Add your public SSH key to your Gitea account before using the SSH remote.
+Compiler and archive operations have their own reference at
+`https://source-tools.keplerops.test:8443/.well-known/fieldkest-client`.
 
-- Run record: `GET https://ci.keplerops.test/api/runs/{run_id}`
-- Run log: `GET https://ci.keplerops.test/api/runs/{run_id}/log`
-- Review import: `POST https://ci.keplerops.test/api/reviews/import`
-- Submit an isolated job: `POST https://ci.keplerops.test/api/jobs`
-- Read a job result: `GET https://ci.keplerops.test/api/jobs/{job_id}`
+## Builds
+
+Jenkins is at `https://ci.keplerops.test/`. The connector report job is
+`fieldlink-report`; its retained build number is 1842. Its build page includes
+Console Output, Artifacts, Changes, and Workspace.
+
+- Build record: `GET https://ci.keplerops.test/job/fieldlink-report/{build_number}/api/json`
+- Build log: `GET https://ci.keplerops.test/job/fieldlink-report/{build_number}/consoleText`
+- Build artifact: `GET https://ci.keplerops.test/job/fieldlink-report/{build_number}/artifact/reports/{filename}`
+
+## FieldLink report review
+
+Jenkins job `fieldlink-report-review` accepts `provider.zip` through its native
+Build with Parameters form or native `buildWithParameters` API. The fixed build
+step submits the ZIP to the isolated report worker, records its accepted result,
+and archives the actual report. A rejected provider fails the native build.
+The source reader does not need repository write or Jenkins administration.
+
+The underlying report service runs submitted providers in isolated workers and
+publishes compatible results to support.
+
+- Client reference: `GET https://review.keplerops.test/.well-known/fieldkest-client`
+- Review import: `POST https://review.keplerops.test/api/reviews/import`
+- Submit an isolated report: `POST https://review.keplerops.test/api/jobs`
+- Read its result: `GET https://review.keplerops.test/api/jobs/{job_id}`
 
 The review importer accepts `fieldkest.review-import/v1` JSON with `run_id` and
 an `object` beneath `inputs/`.
@@ -45,3 +68,15 @@ copy the recovered file directly into the ZIP instead of re-serializing it.
 
 The support service expects its ordinary browser session cookie.
 
+
+## Document previews
+
+Gotenberg is at `https://preview.keplerops.test/`. The native multipart route
+`POST /forms/chromium/convert/html` accepts an `index.html` plus its CSS, images,
+and other local assets in the `files` fields. It returns a PDF directly.
+The review draft and stylesheet are in `work/previews/`.
+
+The service also accepts URLs through `/forms/chromium/convert/url` and exposes
+ordinary status at `/health` and version information at `/version`.
+Use the workstation CA with ordinary HTTPS clients. Store the returned PDF with
+its source files when handing a review to another engineer.

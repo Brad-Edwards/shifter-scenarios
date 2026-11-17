@@ -30,33 +30,32 @@ content:
       record_key: the-missing-fixture
       owner:
         node: k-ci
-        authority: Test history on k-ci backed by k-source
+        authority: Native Gitea history and Jenkins build fieldlink-report/1842
       surface_bindings:
-      - k-delivery.k-ci/fieldkest-ci/run-log
+      - k-delivery.k-ci/jenkins/build-console
       - k-delivery.k-source/gitea/repository-content
-      starting_state: Report job BLD-1842; deleted fixtures/report-crr-og2.json at ref fk-test-6d1e9f7
-        and commit 80560bcf8381c36ef82be771e58fc164a349ea07; test tests/test_crr_og2_report.py;
-        fixture SHA-256 da511020fa2f2e23ec74ea3e8e2f8e19452ae90bcdd32fea2e0602b8573d6564.
+      starting_state: Deleted fixtures/report-crr-og2.json at ref fk-test-6d1e9f7 and commit
+        80560bcf8381c36ef82be771e58fc164a349ea07; test tests/test_crr_og2_report.py; fixture
+        SHA-256 da511020fa2f2e23ec74ea3e8e2f8e19452ae90bcdd32fea2e0602b8573d6564.
       mechanic_profile:
-        classification: service-native
-        surface: source.keplerops.test repository content API; ci.keplerops.test review-job
-          API
-        normal_case: reviewer reads connector source and CI review job for the handover
-          commit
-        defect: the review job carries a signed pointer to the policy-compiler workspace
-          file path
-        bounds: only the workspace file identified by the review job is readable; no other
-          workspace or job is enumerable
+        classification: product-native
+        surface: Native Gitea Git history and Jenkins fieldlink-report build 1842 console/SCM
+          revision
+        normal_case: developer inspects the actual failed test and retained repository history
+        defect: a fixture removed from the current checkout remains in immutable Git history
+        bounds: developer source read and selected Jenkins job read; no source write or
+          administration
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Report job BLD-1842; deleted fixtures/report-crr-og2.json at ref fk-test-6d1e9f7
-          and commit 80560bcf8381c36ef82be771e58fc164a349ea07; test tests/test_crr_og2_report.py;
-          fixture SHA-256 da511020fa2f2e23ec74ea3e8e2f8e19452ae90bcdd32fea2e0602b8573d6564.
-        success: Historical-object read receipt binding commit, fixture digest and test.
-        correlation: The service generates a per-request UUIDv4 and writes it to its protected
-          audit before returning it.
+        input: Deleted fixtures/report-crr-og2.json at ref fk-test-6d1e9f7 and commit 80560bcf8381c36ef82be771e58fc164a349ea07;
+          test tests/test_crr_og2_report.py; fixture SHA-256 da511020fa2f2e23ec74ea3e8e2f8e19452ae90bcdd32fea2e0602b8573d6564.
+        success: Native historical Git object and actual failed Jenkins checkout/test revision
+          bind fixture digest to test.
+        correlation: Use native repository commit IDs, Jenkins job/build URLs and exact
+          artifact digests. The report consumer also supplies its actual job ID and input/output
+          digests.
       denial_contract:
         wrong_scope: Return the route's declared authorization failure without disclosing
           the protected object or changing state.
@@ -66,11 +65,11 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Historical-object read receipt binding commit, fixture digest
-        and test.
+      transition_contract: Native historical Git object and actual failed Jenkins checkout/test
+        revision bind fixture digest to test.
       evidence_contract:
-        producer: The owning service writes the audit; the caller-controlled request and
-          output are not sufficient by themselves.
+        producer: Native Git objects, Jenkins build records and archived actual artifacts;
+          for a submitted report, the independently persisted support handover.
         required_bindings:
         - tenant instance
         - accepted caller or runtime identity
@@ -78,18 +77,20 @@ content:
         - exact input identifiers and revisions
         - result identifier and digest
         downstream_join: Baseline for K02.3.
-        freshness: The result and audit must be created after the accepted request and must
-          not exist in starting state.
+        freshness: Historical source and build reads remain repeatable. A submitted report
+          requires a new native build and a matching fresh report-consumer job and support
+          handover.
       state_rules:
         initial_records: immutable unless the owning route explicitly defines a mutable
           revision
         tenant_state: persistent for the tenant instance
-        completion: observed from the owning service audit; never pre-populated by this
-          file
+        completion: Correlate native build records, exact source/artifact bytes and, where
+          applicable, the separately persisted support report; no synthetic product audit
+          is required.
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: d1deacaa2031851cb57464accc192a5c8e4f181031be742ddb76094159b81898
+        digest: f1ec9f284e9d6d77016b1587dba8367adf0986444dd8347ca3d571e101c0ddde
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -109,32 +110,31 @@ content:
       record_key: an-input-outside-its-lane
       owner:
         node: k-ci
-        authority: FieldKest importer on k-ci
+        authority: Native Jenkins build artifacts on k-ci
       surface_bindings:
-      - k-delivery.k-ci/fieldkest-ci/review-import
-      starting_state: fieldkest.review-import/v1 object selector; raw prefix check for inputs/
-        occurs before one percent-decode and dot-segment normalization; normal object inputs/report-request.json;
-        protected object selected by inputs/%2e%2e/reviews/REVNOTE-1842.json.
+      - k-delivery.k-ci/jenkins/build-artifacts
+      starting_state: Actual fieldlink-report/1842 build archive reports/REVNOTE-1842.json;
+        repository docs/report-provider.md; native fieldlink-report-review file parameter
+        provider.zip.
       mechanic_profile:
-        classification: service-native
-        surface: ci.keplerops.test review-import API; source.keplerops.test policy-evaluate
-          API
-        normal_case: developer imports a CI review and submits the policy program for evaluation
-        defect: the review import credential also accepts a policy-evaluate request with
-          an author-controlled program model
-        bounds: only the one-use evaluate route is reachable; no CI run trigger or artifact
-          delete authority
+        classification: product-native
+        surface: Jenkins fieldlink-report/1842/artifact/reports/REVNOTE-1842.json and native
+          job parameters
+        normal_case: developer reads separately archived review notes and the documented
+          provider interface
+        defect: the console omits the separately retained provider contract
+        bounds: native artifact read; no source write or job configuration authority
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: fieldkest.review-import/v1 object selector; raw prefix check for inputs/
-          occurs before one percent-decode and dot-segment normalization; normal object
-          inputs/report-request.json; protected object selected by inputs/%2e%2e/reviews/REVNOTE-1842.json.
-        success: Import audit naming resolved object and immutable input contract; no job
-          mutation.
-        correlation: The service generates a per-request UUIDv4 and writes it to its protected
-          audit before returning it.
+        input: Actual fieldlink-report/1842 build archive reports/REVNOTE-1842.json; repository
+          docs/report-provider.md; native fieldlink-report-review file parameter provider.zip.
+        success: Exact archived note digest, native build/source revision and provider contract;
+          no source write or job configuration rights.
+        correlation: Use native repository commit IDs, Jenkins job/build URLs and exact
+          artifact digests. The report consumer also supplies its actual job ID and input/output
+          digests.
       denial_contract:
         wrong_scope: Return the route's declared authorization failure without disclosing
           the protected object or changing state.
@@ -144,11 +144,11 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Import audit naming resolved object and immutable input contract;
-        no job mutation.
+      transition_contract: Exact archived note digest, native build/source revision and
+        provider contract; no source write or job configuration rights.
       evidence_contract:
-        producer: The owning service writes the audit; the caller-controlled request and
-          output are not sufficient by themselves.
+        producer: Native Git objects, Jenkins build records and archived actual artifacts;
+          for a submitted report, the independently persisted support handover.
         required_bindings:
         - tenant instance
         - accepted caller or runtime identity
@@ -156,18 +156,20 @@ content:
         - exact input identifiers and revisions
         - result identifier and digest
         downstream_join: Input for K02.3.
-        freshness: The result and audit must be created after the accepted request and must
-          not exist in starting state.
+        freshness: Historical source and build reads remain repeatable. A submitted report
+          requires a new native build and a matching fresh report-consumer job and support
+          handover.
       state_rules:
         initial_records: immutable unless the owning route explicitly defines a mutable
           revision
         tenant_state: persistent for the tenant instance
-        completion: observed from the owning service audit; never pre-populated by this
-          file
+        completion: Correlate native build records, exact source/artifact bytes and, where
+          applicable, the separately persisted support report; no synthetic product audit
+          is required.
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: a4aa5b65f80a9e6095c463c62b25bda6c29e8b789e60352d5fe7115bcbb97a71
+        digest: 55e46123904575c67a0d18307b869cc62160413ce63cc283312e91cb60c16662
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -187,35 +189,36 @@ content:
       record_key: green-with-our-changes
       owner:
         node: k-ci
-        authority: Isolated test consumer on k-ci
+        authority: Native Jenkins file-parameter job and isolated FieldLink report consumer
       surface_bindings:
-      - k-delivery.k-ci/fieldkest-ci/isolated-job-submit
-      - k-delivery.k-ci/fieldkest-ci/isolated-job-result
+      - k-delivery.k-ci/jenkins/file-parameter-build
+      - k-delivery.k-ci/jenkins/build-artifacts
       - k-delivery.k-support/support-service/private-handover
-      starting_state: Template report-consumer-v2; ZIP root files provider.py and fixture.json;
-        entrypoint render_report; schema fieldkest.report/v2; immutable asset, revision,
-        capture, and observation fields; mutable assessment rating and summary; support
-        handover consumer.
+      starting_state: fieldlink-report-review accepts provider.zip; ZIP root provider.py
+        and exact fixture.json; render_report; fieldkest.report/v2; immutable asset, revision,
+        capture and observations; mutable assessment; actual support handover.
       mechanic_profile:
-        classification: service-native
-        surface: ci.keplerops.test workspace-file API
-        normal_case: developer retrieves the review workspace artifact uploaded during CI
-        defect: the workspace path disclosed by the review job allows reading an operator-scoped
-          staging artifact
-        bounds: only the named workspace path is readable; no directory listing or arbitrary
-          workspace traversal
+        classification: product-native
+        surface: Jenkins fieldlink-report-review file parameter and build artifacts; actual
+          FieldLink support handover
+        normal_case: fixed Jenkins step submits a compatible provider to the isolated report
+          consumer
+        defect: the documented provider extension can change assessment while preserving
+          required ordinary fields
+        bounds: untrusted code runs only in the existing isolated report worker; controller
+          job steps remain fixed
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Template report-consumer-v2; ZIP root files provider.py and fixture.json;
-          entrypoint render_report; schema fieldkest.report/v2; immutable asset, revision,
-          capture, and observation fields; mutable assessment rating and summary; support
-          handover consumer.
-        success: Fresh job, compatible altered report, consumer receipt and support-handover
-          view of those exact bytes.
-        correlation: The service generates a per-request UUIDv4 and writes it to its protected
-          audit before returning it.
+        input: fieldlink-report-review accepts provider.zip; ZIP root provider.py and exact
+          fixture.json; render_report; fieldkest.report/v2; immutable asset, revision, capture
+          and observations; mutable assessment; actual support handover.
+        success: Fresh native Jenkins SUCCESS with actual archived report, input/output
+          digests and matching support handover job ID/digest.
+        correlation: Use native repository commit IDs, Jenkins job/build URLs and exact
+          artifact digests. The report consumer also supplies its actual job ID and input/output
+          digests.
       denial_contract:
         wrong_scope: Return the route's declared authorization failure without disclosing
           the protected object or changing state.
@@ -225,11 +228,11 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Fresh job, compatible altered report, consumer receipt and support-handover
-        view of those exact bytes.
+      transition_contract: Fresh native Jenkins SUCCESS with actual archived report, input/output
+        digests and matching support handover job ID/digest.
       evidence_contract:
-        producer: The owning service writes the audit; the caller-controlled request and
-          output are not sufficient by themselves.
+        producer: Native Git objects, Jenkins build records and archived actual artifacts;
+          for a submitted report, the independently persisted support handover.
         required_bindings:
         - tenant instance
         - accepted caller or runtime identity
@@ -237,18 +240,20 @@ content:
         - exact input identifiers and revisions
         - result identifier and digest
         downstream_join: First changed-but-green result.
-        freshness: The result and audit must be created after the accepted request and must
-          not exist in starting state.
+        freshness: Historical source and build reads remain repeatable. A submitted report
+          requires a new native build and a matching fresh report-consumer job and support
+          handover.
       state_rules:
         initial_records: immutable unless the owning route explicitly defines a mutable
           revision
         tenant_state: persistent for the tenant instance
-        completion: observed from the owning service audit; never pre-populated by this
-          file
+        completion: Correlate native build records, exact source/artifact bytes and, where
+          applicable, the separately persisted support report; no synthetic product audit
+          is required.
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 8fa882648eb0ed7f546e12fb55648f55b3d3b57b27f9afbd94b1716f2fefa661
+        digest: 5a7efd5c97db620f1e6b619608a73ecca3a486b2d75679ded93c3da754ab929a
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -268,29 +273,31 @@ content:
       record_key: the-rehearsal-consumer
       owner:
         node: k-ci
-        authority: Registry + private consumer on k-ci
+        authority: Native Verdaccio and existing FieldLink rehearsal consumer
       surface_bindings:
-      - k-delivery.k-registry/package-registry/package-publication
+      - k-delivery.k-registry/verdaccio/package-publication
       - k-delivery.k-ci/fieldkest-ci/private-consumer-submit
-      starting_state: Synthetic rehearsal input and compatible consumer contract.
+      starting_state: Real compatible Node package; fieldkest.connector/v3; exact supplied
+        tenant/asset/interface input.
       mechanic_profile:
-        package: '@keplerops/fieldlink-connector'
-        channel: arwc-stable
-        consumer: support-rehearsal-v3
-        input_schema: fieldkest.connector/v3
-        output_schema: fieldkest.rehearsal-result/v1
-        execution: the CI service resolves the immutable published tarball and runs it in
-          a short-lived networkless Node.js worker
-        bounds: the rehearsal tenant is synthetic and has no ARWC route or credential
+        classification: product-native
+        interface: fieldkest.connector/v3
+        publication: Actual native npm publication and duplicate-version rejection
+        execution: Actual Node module and local files installed offline in existing networkless
+          worker
+        bounds: Preserve tenant, asset and interface; no release administration or customer
+          route
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Synthetic rehearsal input and compatible consumer contract.
-        success: operator version publication, isolated resolution/execution and protected
-          fresh receipt.
-        correlation: The service generates a per-request UUIDv4 and writes it to its protected
-          audit before returning it.
+        input: Real compatible Node package; fieldkest.connector/v3; exact supplied tenant/asset/interface
+          input.
+        success: Native immutable publication and fresh actual module/local-file execution
+          with changed compatible output.
+        correlation: Use native repository commit IDs, registry versions, Jenkins build
+          URLs and exact artifact digests. The report consumer also supplies its actual
+          job ID and input/output digests.
       denial_contract:
         wrong_scope: Return the route's declared authorization failure without disclosing
           the protected object or changing state.
@@ -300,11 +307,12 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: operator version publication, isolated resolution/execution and
-        protected fresh receipt.
+      transition_contract: Native immutable publication and fresh actual module/local-file
+        execution with changed compatible output.
       evidence_contract:
-        producer: The owning service writes the audit; the caller-controlled request and
-          output are not sufficient by themselves.
+        producer: Native Git objects, registry package state, Jenkins build records and
+          actual execution artifacts; for a submitted report, the independently persisted
+          support handover.
         required_bindings:
         - tenant instance
         - accepted caller or runtime identity
@@ -312,18 +320,20 @@ content:
         - exact input identifiers and revisions
         - result identifier and digest
         downstream_join: Supplier-only result; no ARWC route.
-        freshness: The result and audit must be created after the accepted request and must
-          not exist in starting state.
+        freshness: Historical source, metadata and build reads remain repeatable. Submitted
+          work requires a new native build or actual worker result, with matching input/output
+          digests and downstream evidence.
       state_rules:
         initial_records: immutable unless the owning route explicitly defines a mutable
           revision
         tenant_state: persistent for the tenant instance
-        completion: observed from the owning service audit; never pre-populated by this
-          file
+        completion: Correlate native build records, exact source/artifact bytes and, where
+          applicable, the separately persisted support report; no synthetic product audit
+          is required.
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: b2eda26f651ab5cd4b0bb303d2851140563b8661e894a9a7c112e142efc053d5
+        digest: 8abf9233755fec12386b046b34cf0afbbcae96760afb7ed3426ac7768ffcc834
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -660,7 +670,7 @@ content:
         node: k-ci
         authority: Registry + two private consumers on k-ci
       surface_bindings:
-      - k-delivery.k-registry/package-registry/package-publication
+      - k-delivery.k-registry/verdaccio/package-publication
       - k-delivery.k-ci/fieldkest-ci/private-consumer-submit
       starting_state: Signed support release must support connector v2 and v3; ARWC rehearsal
         and unrelated TEN-RILL-022 reference fixtures.
@@ -712,7 +722,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: d3cfcad1c2a1d4b55cfa0ff05e5652722a466f8e93d14784052ce23e5ea41a38
+        digest: 8872754d9d95c2fe3abe07063392ff7724d3b55e34856b6df6ba91827d125ba2
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

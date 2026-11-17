@@ -1,0 +1,4 @@
+{
+  "maximum_callback_latency_ms": 250,
+  "minimum_sample_count": 1
+}

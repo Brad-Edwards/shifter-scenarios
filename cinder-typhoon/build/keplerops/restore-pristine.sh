@@ -8,14 +8,14 @@ docker compose -f compose.yaml down -v --remove-orphans
 bash ./generate-operator-material.sh
 docker compose -f compose.yaml up -d --force-recreate \
   router fieldlink-dns fieldlink-edge fieldlink-postgres runner \
-  k-source k-registry k-ci k-preview k-support k-indexer \
+  k-source k-registry k-ci fieldlink-review k-preview k-support k-indexer \
   k-cloud-api k-workload k-data k-assistant k-staff k-identity k-cert \
   a-connector k-dev
 
 for attempt in $(seq 1 60); do
   if docker exec --user rowan cinder-keplerops-k-dev curl -sS --fail \
       --cacert /home/rowan/.local/share/keplerops/ca.crt \
-      https://source.keplerops.test/.well-known/fieldkest-client >/dev/null; then
+      https://source.keplerops.test/user/login >/dev/null; then
     break
   fi
   if [[ $attempt -eq 60 ]]; then
@@ -27,7 +27,7 @@ done
 
 docker exec --user fieldkest-registry cinder-keplerops-registry \
   sh -c 'test -z "$(find /var/lib/fieldkest-registry/published -type f -print -quit)"'
-docker exec --user fieldkest-ci cinder-keplerops-ci \
+docker exec --user fieldkest-ci cinder-keplerops-review \
   sh -c 'test -z "$(find /var/lib/fieldkest-ci/results -type f \( -name "JOB-*.json" -o -name "REH-*.json" \) -print -quit)"'
 docker exec --user fieldkest-support cinder-keplerops-support \
   python3 -c 'import json; from pathlib import Path; p=Path("/var/lib/fieldkest-support/extended.json"); raise SystemExit(0 if not p.exists() or json.loads(p.read_text()).get("diagnostics") == {} else 1)'

@@ -34,31 +34,30 @@ content:
       record_key: speak-the-package-s-language
       owner:
         node: k-registry
-        authority: Registry consumer-check app on k-registry
+        authority: Native Verdaccio and FieldLink consumer check
       surface_bindings:
+      - k-delivery.k-registry/verdaccio/connector-metadata
       - k-delivery.k-registry/package-registry/consumer-check
-      starting_state: Exact consumer-request.json uses fieldkest.connector/v3, tenant TEN-ARWC-047,
-        asset CRR-OG2, operation summarize_diagnostics, package @keplerops/fieldlink-connector,
-        range ^7.4.0 and consumer arwc-connector-consumer@19f43d2.
+      starting_state: Actual npm connector 7.4.2; fieldkest.connector/v3; supplied consumer
+        request; arwc-connector-consumer@19f43d2.
       mechanic_profile:
+        classification: product-native
         package: '@keplerops/fieldlink-connector'
-        range: ^7.4.0
-        selected_version: 7.4.2
-        request_schema: fieldkest.connector/v3
-        operation: summarize_diagnostics
-        baseline_asset: CRR-OG2
+        version: 7.4.2
+        interface: fieldkest.connector/v3
         consumer_revision: arwc-connector-consumer@19f43d2
+        execution: Actual npm pack and offline module/local-file execution in the existing
+          worker
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Exact consumer-request.json uses fieldkest.connector/v3, tenant TEN-ARWC-047,
-          asset CRR-OG2, operation summarize_diagnostics, package @keplerops/fieldlink-connector,
-          range ^7.4.0 and consumer arwc-connector-consumer@19f43d2.
-        success: Valid baseline request/result resolves 7.4.2 and returns a fresh resolution
-          receipt.
-        correlation: The service generates a per-request UUIDv4 and writes it to its protected
-          audit before returning it.
+        input: Actual npm connector 7.4.2; fieldkest.connector/v3; supplied consumer request;
+          arwc-connector-consumer@19f43d2.
+        success: Fresh actual module result, selected version and archive digest.
+        correlation: Use native repository commit IDs, registry versions, Jenkins build
+          URLs and exact artifact digests. The report consumer also supplies its actual
+          job ID and input/output digests.
       denial_contract:
         wrong_scope: Return the route's declared authorization failure without disclosing
           the protected object or changing state.
@@ -68,11 +67,11 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Valid baseline request/result resolves 7.4.2 and returns a fresh
-        resolution receipt.
+      transition_contract: Fresh actual module result, selected version and archive digest.
       evidence_contract:
-        producer: The owning service writes the audit; the caller-controlled request and
-          output are not sufficient by themselves.
+        producer: Native Git objects, registry package state, Jenkins build records and
+          actual execution artifacts; for a submitted report, the independently persisted
+          support handover.
         required_bindings:
         - tenant instance
         - accepted caller or runtime identity
@@ -80,18 +79,20 @@ content:
         - exact input identifiers and revisions
         - result identifier and digest
         downstream_join: Supplies G03.
-        freshness: The result and audit must be created after the accepted request and must
-          not exist in starting state.
+        freshness: Historical source, metadata and build reads remain repeatable. Submitted
+          work requires a new native build or actual worker result, with matching input/output
+          digests and downstream evidence.
       state_rules:
         initial_records: immutable unless the owning route explicitly defines a mutable
           revision
         tenant_state: persistent for the tenant instance
-        completion: observed from the owning service audit; never pre-populated by this
-          file
+        completion: Correlate native build records, exact source/artifact bytes and, where
+          applicable, the separately persisted support report; no synthetic product audit
+          is required.
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: b29d4ae21e0e432e61b5b3b19b30496b0aff77ea13a1d8c7a06b62d5cf20a423
+        digest: 2be68f2863497f90abf573542700173a0aedd8f4b3275b991de0c71e96df3702
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -111,26 +112,30 @@ content:
       record_key: the-version-they-kept
       owner:
         node: k-registry
-        authority: Registry/release archive on k-registry
+        authority: Native Verdaccio plus retained customer release record
       surface_bindings:
+      - k-delivery.k-registry/verdaccio/connector-metadata
       - k-delivery.k-registry/package-registry/release-record
-      starting_state: REL-FLK-6.9.8-ARCHIVE is yanked and absent from the current 7.4.0/7.4.1/7.4.2
-        listing; REL-FLK-7.4.2-09 remains active.
+      starting_state: Native 6.9.8 published and deprecated; REL-FLK-6.9.8-ARCHIVE describes
+        withdrawn customer rollout; REL-FLK-7.4.2-09 active.
       mechanic_profile:
+        classification: product-native
         archive_record: REL-FLK-6.9.8-ARCHIVE
-        package_revision: FLK-6.9.8
-        status: yanked
         active_release: REL-FLK-7.4.2-09
-        listing_rule: the current metadata lists 7.4.0, 7.4.1 and 7.4.2 and omits 6.9.8
+        native_registry_state: 6.9.8 remains published with a genuine npm deprecation notice
+        business_record: yanked customer rollout retained for maintenance; not an unpublished
+          native package
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: REL-FLK-6.9.8-ARCHIVE is yanked and absent from the current 7.4.0/7.4.1/7.4.2
-          listing; REL-FLK-7.4.2-09 remains active.
-        success: Historical-version read receipt binds FLK-6.9.8 and its maintenance note.
-        correlation: The service generates a per-request UUIDv4 and writes it to its protected
-          audit before returning it.
+        input: Native 6.9.8 published and deprecated; REL-FLK-6.9.8-ARCHIVE describes withdrawn
+          customer rollout; REL-FLK-7.4.2-09 active.
+        success: Native version/deprecation and exact package correlate with maintenance
+          record.
+        correlation: Use native repository commit IDs, registry versions, Jenkins build
+          URLs and exact artifact digests. The report consumer also supplies its actual
+          job ID and input/output digests.
       denial_contract:
         wrong_scope: Return the route's declared authorization failure without disclosing
           the protected object or changing state.
@@ -140,30 +145,33 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Historical-version read receipt binds FLK-6.9.8 and its maintenance
-        note.
+      transition_contract: Native version/deprecation and exact package correlate with maintenance
+        record.
       evidence_contract:
-        producer: The owning service writes the audit; the caller-controlled request and
-          output are not sufficient by themselves.
+        producer: Native Git objects, registry package state, Jenkins build records and
+          actual execution artifacts; for a submitted report, the independently persisted
+          support handover.
         required_bindings:
         - tenant instance
         - accepted caller or runtime identity
         - request correlation
         - exact input identifiers and revisions
         - result identifier and digest
-        downstream_join: Optional history; active 7.4.2 stays visibly distinct.
-        freshness: The result and audit must be created after the accepted request and must
-          not exist in starting state.
+        downstream_join: Optional retained entitlement context.
+        freshness: Historical source, metadata and build reads remain repeatable. Submitted
+          work requires a new native build or actual worker result, with matching input/output
+          digests and downstream evidence.
       state_rules:
         initial_records: immutable unless the owning route explicitly defines a mutable
           revision
         tenant_state: persistent for the tenant instance
-        completion: observed from the owning service audit; never pre-populated by this
-          file
+        completion: Correlate native build records, exact source/artifact bytes and, where
+          applicable, the separately persisted support report; no synthetic product audit
+          is required.
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: cae53cc16dae6751ae86e0bd6fdb44953c1c1b9ff2472e46d8c32108e41700f3
+        digest: 24b9b189be1e6ed3cdb3c707969c2158d8f0febc39f0646f669f03bc9482e40f
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -183,12 +191,14 @@ content:
       record_key: two-manifests-disagree
       owner:
         node: k-registry
-        authority: Registry reconciliation app
+        authority: FieldLink release/tenant records and native package
       surface_bindings:
+      - k-delivery.k-registry/verdaccio/connector-metadata
       - k-delivery.k-registry/package-registry/reconciliation
-      starting_state: Active tenant record TEN-ARWC-047 resolves 7.4.1; release REL-FLK-7.4.2-09
-        resolves 7.4.2; package, ^7.4.0 range and consumer revision match.
+      starting_state: TEN-ARWC-047 selects 7.4.1; REL-FLK-7.4.2-09 selects 7.4.2; package,
+        ^7.4.0 and consumer revision match.
       mechanic_profile:
+        classification: product-native
         tenant_record: TEN-ARWC-047
         release_record: REL-FLK-7.4.2-09
         comparison_fields:
@@ -196,18 +206,20 @@ content:
         - declared_range
         - resolved_version
         - consumer_revision
-        unique_disagreement: tenant resolved_version is 7.4.1 while release resolved_version
-          is 7.4.2
+        unique_disagreement: tenant selected 7.4.1; release selected 7.4.2; consumer revision
+          matches
+        evidence: Independent business records plus actual native package manifest and tarball
+          integrity
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Active tenant record TEN-ARWC-047 resolves 7.4.1; release REL-FLK-7.4.2-09
-          resolves 7.4.2; package, ^7.4.0 range and consumer revision match.
-        success: Four-field comparison binds both record IDs and the sole resolved_version
-          mismatch.
-        correlation: The service generates a per-request UUIDv4 and writes it to its protected
-          audit before returning it.
+        input: TEN-ARWC-047 selects 7.4.1; REL-FLK-7.4.2-09 selects 7.4.2; package, ^7.4.0
+          and consumer revision match.
+        success: Exact sole selected-version disagreement and matching native package evidence.
+        correlation: Use native repository commit IDs, registry versions, Jenkins build
+          URLs and exact artifact digests. The report consumer also supplies its actual
+          job ID and input/output digests.
       denial_contract:
         wrong_scope: Return the route's declared authorization failure without disclosing
           the protected object or changing state.
@@ -217,11 +229,12 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Four-field comparison binds both record IDs and the sole resolved_version
-        mismatch.
+      transition_contract: Exact sole selected-version disagreement and matching native
+        package evidence.
       evidence_contract:
-        producer: The owning service writes the audit; the caller-controlled request and
-          output are not sufficient by themselves.
+        producer: Native Git objects, registry package state, Jenkins build records and
+          actual execution artifacts; for a submitted report, the independently persisted
+          support handover.
         required_bindings:
         - tenant instance
         - accepted caller or runtime identity
@@ -229,18 +242,20 @@ content:
         - exact input identifiers and revisions
         - result identifier and digest
         downstream_join: Input to K05.4.
-        freshness: The result and audit must be created after the accepted request and must
-          not exist in starting state.
+        freshness: Historical source, metadata and build reads remain repeatable. Submitted
+          work requires a new native build or actual worker result, with matching input/output
+          digests and downstream evidence.
       state_rules:
         initial_records: immutable unless the owning route explicitly defines a mutable
           revision
         tenant_state: persistent for the tenant instance
-        completion: observed from the owning service audit; never pre-populated by this
-          file
+        completion: Correlate native build records, exact source/artifact bytes and, where
+          applicable, the separately persisted support report; no synthetic product audit
+          is required.
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 9bd3df591adfd0df59c34ed9d7a19b9f78646675f7c0ee7a51c17381dcd0347b
+        digest: d16a4ea128ff9e8e64b7d1113662529af6abb2c48eacbeebfad9733787475b8f
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -260,31 +275,36 @@ content:
       record_key: selection-has-consequences
       owner:
         node: k-registry
-        authority: Isolated resolver on k-registry
+        authority: Native npm and existing isolated worker
       surface_bindings:
-      - k-delivery.k-registry/package-registry/resolver-run
-      starting_state: Fixed candidates 7.4.0, 7.4.1, 7.4.2; highest non-yanked ^7.4.0 policy;
-        exact per-candidate digests.
+      - k-delivery.k-registry/verdaccio/connector-metadata
+      - k-delivery.k-registry/verdaccio/package-tarball
+      - k-delivery.k-registry/package-registry/consumer-check
+      starting_state: Published 7.4.0/7.4.1/7.4.2; native ^7.4.0 stable selection; actual
+        connector module and limits.json.
       mechanic_profile:
-        range: ^7.4.0
-        candidates:
+        classification: product-native
+        declared_range: ^7.4.0
+        native_candidates:
         - 7.4.0
         - 7.4.1
         - 7.4.2
-        selection: highest non-yanked compatible version, yielding 7.4.2
-        consumer_revision: arwc-connector-consumer@19f43d2
-        execution: a short-lived resolver process receives only the fixed candidate metadata
-          and request and returns canonical JSON
+        selection: Native npm selects highest matching stable version 7.4.2
+        execution: Existing short-lived networkless worker installs the real tarball and
+          loads Node module and local files
+        evidence: Actual package version, archive digest, input bindings and executed module
+          output
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Fixed candidates 7.4.0, 7.4.1, 7.4.2; highest non-yanked ^7.4.0 policy; exact
-          per-candidate digests.
-        success: Fresh networkless resolver result selects 7.4.2 and binds candidate set,
-          consumer revision and digest.
-        correlation: The service generates a per-request UUIDv4 and writes it to its protected
-          audit before returning it.
+        input: Published 7.4.0/7.4.1/7.4.2; native ^7.4.0 stable selection; actual connector
+          module and limits.json.
+        success: Actual selected 7.4.2 tarball, module version, input bindings and execution
+          output.
+        correlation: Use native repository commit IDs, registry versions, Jenkins build
+          URLs and exact artifact digests. The report consumer also supplies its actual
+          job ID and input/output digests.
       denial_contract:
         wrong_scope: Return the route's declared authorization failure without disclosing
           the protected object or changing state.
@@ -294,11 +314,12 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Fresh networkless resolver result selects 7.4.2 and binds candidate
-        set, consumer revision and digest.
+      transition_contract: Actual selected 7.4.2 tarball, module version, input bindings
+        and execution output.
       evidence_contract:
-        producer: The owning service writes the audit; the caller-controlled request and
-          output are not sufficient by themselves.
+        producer: Native Git objects, registry package state, Jenkins build records and
+          actual execution artifacts; for a submitted report, the independently persisted
+          support handover.
         required_bindings:
         - tenant instance
         - accepted caller or runtime identity
@@ -306,18 +327,20 @@ content:
         - exact input identifiers and revisions
         - result identifier and digest
         downstream_join: Optional selection intelligence.
-        freshness: The result and audit must be created after the accepted request and must
-          not exist in starting state.
+        freshness: Historical source, metadata and build reads remain repeatable. Submitted
+          work requires a new native build or actual worker result, with matching input/output
+          digests and downstream evidence.
       state_rules:
         initial_records: immutable unless the owning route explicitly defines a mutable
           revision
         tenant_state: persistent for the tenant instance
-        completion: observed from the owning service audit; never pre-populated by this
-          file
+        completion: Correlate native build records, exact source/artifact bytes and, where
+          applicable, the separately persisted support report; no synthetic product audit
+          is required.
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 0a57db031c3844b4092df9b186b1044eefc6f58a1c8c4bf7bf4cc4393b93b1a3
+        digest: 0d1c67493bb474079e9f14b3c2072309399c4df334493d10a2b1131519dd913a
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -337,32 +360,31 @@ content:
       record_key: house-credentials
       owner:
         node: k-registry
-        authority: Importer + Verdaccio-compatible registry
+        authority: Native Gitea delivery history and Verdaccio
       surface_bindings:
-      - k-delivery.k-registry/package-registry/importer
-      - k-delivery.k-registry/package-registry/package-publication
-      starting_state: Valid connector import selecting unavailable view customer-preview-unavailable
-        leaks the resolved fieldlink-importer-publisher credential scoped only to connector
-        channel arwc-stable.
+      - k-delivery.k-source/gitea/repository-content
+      - k-delivery.k-registry/verdaccio/package-publication
+      starting_state: Existing connector delivery-operations branch; prior committed native
+        .npmrc removed from current tree; fieldlink-importer-publisher account.
       mechanic_profile:
-        trigger: a valid @keplerops/fieldlink-connector import for registry view customer-preview-unavailable
-        disclosed_principal: fieldlink-importer-publisher
-        scope: '@keplerops/fieldlink-connector channel arwc-stable'
-        publication: PUT /@keplerops%2ffieldlink-connector with a new immutable semantic
-          version, matching channel and tarball integrity
-        bounds: the credential cannot publish another package or channel and cannot overwrite
-          an existing version
+        classification: product-native
+        source: Native Gitea delivery-operations branch and retained .npmrc Git history
+        principal: fieldlink-importer-publisher
+        native_scope: Publish versions/tags of @keplerops/fieldlink-connector only
+        business_scope: arwc-stable customer rollout still requires separate release approval
+        bounds: Private support package and release administration remain denied; no current
+          source write authority
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Valid connector import selecting unavailable view customer-preview-unavailable
-          leaks the resolved fieldlink-importer-publisher credential scoped only to connector
-          channel arwc-stable.
-        success: Authenticated immutable-version publication with matching tarball integrity;
-          other package/channel and overwrite attempts remain denied.
-        correlation: The service generates a per-request UUIDv4 and writes it to its protected
-          audit before returning it.
+        input: Existing connector delivery-operations branch; prior committed native .npmrc
+          removed from current tree; fieldlink-importer-publisher account.
+        success: Actual scoped connector publisher authority; private support package and
+          release administration denied.
+        correlation: Use native repository commit IDs, registry versions, Jenkins build
+          URLs and exact artifact digests. The report consumer also supplies its actual
+          job ID and input/output digests.
       denial_contract:
         wrong_scope: Return the route's declared authorization failure without disclosing
           the protected object or changing state.
@@ -372,30 +394,33 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Authenticated immutable-version publication with matching tarball
-        integrity; other package/channel and overwrite attempts remain denied.
+      transition_contract: Actual scoped connector publisher authority; private support
+        package and release administration denied.
       evidence_contract:
-        producer: The owning service writes the audit; the caller-controlled request and
-          output are not sufficient by themselves.
+        producer: Native Git objects, registry package state, Jenkins build records and
+          actual execution artifacts; for a submitted report, the independently persisted
+          support handover.
         required_bindings:
         - tenant instance
         - accepted caller or runtime identity
         - request correlation
         - exact input identifiers and revisions
         - result identifier and digest
-        downstream_join: Supplies A01.
-        freshness: The result and audit must be created after the accepted request and must
-          not exist in starting state.
+        downstream_join: Supplies A01; independent CI reader still required.
+        freshness: Historical source, metadata and build reads remain repeatable. Submitted
+          work requires a new native build or actual worker result, with matching input/output
+          digests and downstream evidence.
       state_rules:
         initial_records: immutable unless the owning route explicitly defines a mutable
           revision
         tenant_state: persistent for the tenant instance
-        completion: observed from the owning service audit; never pre-populated by this
-          file
+        completion: Correlate native build records, exact source/artifact bytes and, where
+          applicable, the separately persisted support report; no synthetic product audit
+          is required.
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 9124a7133017ba178aed8f7e07a76fd995e4f8ba0ede750d96d71205be0fe65a
+        digest: 24e094d2667ca7ca2a92d49d869f874ea74f1005a5a0235577767f8258a1274b
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -415,29 +440,32 @@ content:
       record_key: a-private-package-in-the-wrong-view
       owner:
         node: k-registry
-        authority: Registry view service
+        authority: Native Jenkins package-check job and Verdaccio
       surface_bindings:
-      - k-delivery.k-registry/package-registry/package-view
-      starting_state: Protected @keplerops/support-rehearsal@1.3.1 tarball has SHA-256 6708bbaafa1bf97c3f15d04afa0330a1ce2e914038b22b72ea21b194f32e08d7;
-        shared-namespace resolution occurs before view enforcement.
+      - k-delivery.k-ci/jenkins/build-artifacts
+      - k-delivery.k-registry/verdaccio/support-metadata
+      starting_state: Actual fieldlink-package-check build 611 workspace/archive with native
+        CI configuration; svc-fieldlink-ci; support-rehearsal1.3.1 SHA256 6708bbaafa1bf97c3f15d04afa0330a1ce2e914038b22b72ea21b194f32e08d7.
       mechanic_profile:
+        classification: product-native
+        source: Actual Jenkins fieldlink-package-check build 611 workspace and archived
+          npm configuration
+        principal: svc-fieldlink-ci
         protected_package: '@keplerops/support-rehearsal@1.3.1'
-        content_sha256: 6708bbaafa1bf97c3f15d04afa0330a1ce2e914038b22b72ea21b194f32e08d7
-        defect: the view service resolves the requested package in the shared namespace
-          before enforcing the selected view; only support-rehearsal is mistakenly returned
-          through the publisher view
-        bounds: unrelated private package names remain denied and the response grants no
-          publication or customer authority
+        package_sha256: 6708bbaafa1bf97c3f15d04afa0330a1ce2e914038b22b72ea21b194f32e08d7
+        bounds: Distinct native CI reader may read private support package but cannot publish;
+          publisher remains denied private read
       request_contract:
         entry: Use only the exact surface_bindings above; no hidden evaluator endpoint exists.
         identity: The caller must present the identity or session obtainable through the
           declared world state and prerequisites.
-        input: Protected @keplerops/support-rehearsal@1.3.1 tarball has SHA-256 6708bbaafa1bf97c3f15d04afa0330a1ce2e914038b22b72ea21b194f32e08d7;
-          shared-namespace resolution occurs before view enforcement.
-        success: Publisher-view read returns that immutable manifest/content; unrelated
-          private package reads remain denied.
-        correlation: The service generates a per-request UUIDv4 and writes it to its protected
-          audit before returning it.
+        input: Actual fieldlink-package-check build 611 workspace/archive with native CI
+          configuration; svc-fieldlink-ci; support-rehearsal1.3.1 SHA256 6708bbaafa1bf97c3f15d04afa0330a1ce2e914038b22b72ea21b194f32e08d7.
+        success: Distinct native CI reader retrieves actual protected package; publisher
+          private read and CI publication denied.
+        correlation: Use native repository commit IDs, registry versions, Jenkins build
+          URLs and exact artifact digests. The report consumer also supplies its actual
+          job ID and input/output digests.
       denial_contract:
         wrong_scope: Return the route's declared authorization failure without disclosing
           the protected object or changing state.
@@ -447,11 +475,12 @@ content:
           historical reads remain repeatable.
         cross_tenant: Return not-found or forbidden according to the route contract and
           never join another tenant instance's state.
-      transition_contract: Publisher-view read returns that immutable manifest/content;
-        unrelated private package reads remain denied.
+      transition_contract: Distinct native CI reader retrieves actual protected package;
+        publisher private read and CI publication denied.
       evidence_contract:
-        producer: The owning service writes the audit; the caller-controlled request and
-          output are not sufficient by themselves.
+        producer: Native Git objects, registry package state, Jenkins build records and
+          actual execution artifacts; for a submitted report, the independently persisted
+          support handover.
         required_bindings:
         - tenant instance
         - accepted caller or runtime identity
@@ -459,18 +488,20 @@ content:
         - exact input identifiers and revisions
         - result identifier and digest
         downstream_join: Input to K06.3.
-        freshness: The result and audit must be created after the accepted request and must
-          not exist in starting state.
+        freshness: Historical source, metadata and build reads remain repeatable. Submitted
+          work requires a new native build or actual worker result, with matching input/output
+          digests and downstream evidence.
       state_rules:
         initial_records: immutable unless the owning route explicitly defines a mutable
           revision
         tenant_state: persistent for the tenant instance
-        completion: observed from the owning service audit; never pre-populated by this
-          file
+        completion: Correlate native build records, exact source/artifact bytes and, where
+          applicable, the separately persisted support report; no synthetic product audit
+          is required.
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 8ae0a2ace7e2fe329afc2bbaabc9f2d3b4bec86e829c327fb11e1ba0f3e884ee
+        digest: b93c9b0e452e0ee4aa25871c8979e96bd5b8487f61661b9bcfe22f0dc27dce22
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true
@@ -1006,7 +1037,7 @@ content:
         node: k-registry
         authority: Registry on k-registry
       surface_bindings:
-      - k-delivery.k-registry/package-registry/package-publication
+      - k-delivery.k-registry/verdaccio/package-publication
       - k-delivery.k-registry/package-registry/release-approval
       starting_state: G03 interface contract; G02 channel arwc-stable; A01 or K20 approval
         authority.
@@ -1058,7 +1089,7 @@ content:
         isolation: no cross-tenant records, credentials, jobs, uploads, or audit events
       generation_input:
         algorithm: sha256
-        digest: 84923fcf71161c15f6827eb674fc6342fd54a0ecd78de5d5d04f438113862812
+        digest: e50811a74d6c21b4161b319ab2ec65c663b998bf4b3e1dec201d45d38bae620d
         canonicalization: UTF-8 JSON, keys sorted, separators comma and colon, excluding
           generation_input
     sensitive: true

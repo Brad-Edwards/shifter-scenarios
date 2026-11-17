@@ -55,6 +55,11 @@ treat a VM-only edit as durable work.
 
 ## Provisioning
 
+Existing FieldLink clones must use `manage.sh bind-peer fieldlink <project>`
+after source sync before cross-range tests. This verifies that the customer
+relay targets the ARWC development VM. The fixed private IPs and reset behavior
+are documented in the development-ranges design.
+
 Preserve FieldLink once, then provision each development VM:
 
 ```sh
@@ -67,6 +72,11 @@ Provisioning is idempotent. It never replaces an existing instance or machine
 image. The development VMs have no external IP and no service account.
 
 ## Reset
+
+For authenticated RDP QA on FieldLink, run `manage.sh desktop-login fieldlink
+<project>` after source sync or desktop-container replacement. The private
+login file path and handling rules are in the development-ranges design.
+The development reset reapplies this login. Never print its password.
 
 FieldLink has an in-place application reset:
 

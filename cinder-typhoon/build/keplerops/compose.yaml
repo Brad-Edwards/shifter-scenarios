@@ -128,6 +128,7 @@ services:
         install -d -m 0700 -o rowan -g rowan /home/rowan/.config/git /home/rowan/.config/chromium/Default
         install -m 0600 -o rowan -g rowan /run/participant-seed/git-credentials /home/rowan/.config/git/credentials
         install -m 0600 -o rowan -g rowan /run/participant-seed/chromium-Cookies /home/rowan/.config/chromium/Default/Cookies
+        install -m 0600 -o rowan -g rowan /run/participant-seed/npmrc /home/rowan/.npmrc
     restart: "no"
     read_only: true
     cap_drop: [ALL]
@@ -138,6 +139,7 @@ services:
       - k-dev-home:/home/rowan
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/git-credentials:/run/participant-seed/git-credentials:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/chromium-Cookies:/run/participant-seed/chromium-Cookies:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/npmrc:/run/participant-seed/npmrc:ro
     network_mode: none
 
   k-dev:
@@ -177,6 +179,7 @@ services:
       - identity.keplerops.test:10.77.50.40
       - cert.keplerops.test:10.77.50.50
       - source.keplerops.test:10.77.51.20
+      - source-tools.keplerops.test:10.77.51.20
       - packages.keplerops.test:10.77.51.30
       - ci.keplerops.test:10.77.51.40
       - preview.keplerops.test:10.77.51.50
@@ -210,21 +213,56 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
       - source-audit:/var/lib/gitea/audit
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
       - source-gitea:/var/lib/gitea/data
       - source-repositories:/var/lib/gitea/repositories
     networks:
       delivery:
         ipv4_address: 10.77.51.20
-        aliases: [source.keplerops.test]
+        aliases: [source.keplerops.test, source-tools.keplerops.test]
 
   k-ci:
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [NET_ADMIN, SETUID, SETGID, CHOWN, FOWNER]
+    security_opt: [no-new-privileges:true]
+    sysctls:
+      net.ipv4.ip_unprivileged_port_start: 0
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=2g,mode=1777
+    build:
+      context: ../..
+      dockerfile: build/keplerops/images/jenkins.Dockerfile
+    image: cinder-keplerops/native-jenkins:hand-build
+    container_name: cinder-keplerops-ci
+    hostname: k-ci
+    depends_on:
+      router:
+        condition: service_started
+      k-source:
+        condition: service_healthy
+      k-registry:
+        condition: service_healthy
+    volumes:
+      - native-jenkins-home:/var/jenkins_home
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-ci/server.p12:/run/fieldlink-ci/server.p12:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-ci/keystore-password:/run/fieldlink-ci/keystore-password:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-ci/users.json:/run/fieldlink-ci/users.json:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldlink-ci/ca.crt:ro
+    networks:
+      delivery:
+        ipv4_address: 10.77.51.40
+        aliases: [ci.keplerops.test, jenkins.keplerops.test]
+
+  fieldlink-review:
     <<: *service-security
     build:
       context: ../..
       dockerfile: build/keplerops/images/ci.Dockerfile
     image: cinder-keplerops/k-ci:hand-build
-    container_name: cinder-keplerops-ci
-    hostname: k-ci
+    container_name: cinder-keplerops-review
+    hostname: fieldlink-review
     domainname: delivery.keplerops.test
     depends_on: [router, runner]
     cap_add: [NET_ADMIN, SETUID, SETGID, DAC_READ_SEARCH, CHOWN, FOWNER, DAC_OVERRIDE]
@@ -241,8 +279,8 @@ services:
       - runner-socket:/run/fieldkest-runner
     networks:
       delivery:
-        ipv4_address: 10.77.51.40
-        aliases: [ci.keplerops.test]
+        ipv4_address: 10.77.51.41
+        aliases: [review.keplerops.test]
 
   k-registry:
     <<: *service-security
@@ -253,7 +291,7 @@ services:
     container_name: cinder-keplerops-registry
     hostname: k-registry
     domainname: delivery.keplerops.test
-    depends_on: [router]
+    depends_on: [router, runner]
     volumes:
       - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
@@ -263,10 +301,12 @@ services:
       - registry-results:/var/lib/fieldkest-registry/results
       - registry-published:/var/lib/fieldkest-registry/published
       - registry-verdaccio:/var/lib/verdaccio
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
+      - runner-socket:/run/fieldkest-runner
     networks:
       delivery:
         ipv4_address: 10.77.51.30
-        aliases: [packages.keplerops.test]
+        aliases: [packages.keplerops.test, delivery.keplerops.test]
 
   k-support:
     <<: *service-security
@@ -335,7 +375,6 @@ services:
       FIELDKEST_WORKER_IMAGE: cinder-keplerops/report-worker:hand-build
       FIELDKEST_NODE_WORKER_IMAGE: cinder-keplerops/node-worker:hand-build
       FIELDKEST_COMMAND_WORKER_IMAGE: cinder-keplerops/command-worker:hand-build
-      FIELDKEST_PREVIEW_IMAGE: cinder-keplerops/k-preview:hand-build
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=8m,mode=1777
     volumes:
@@ -373,18 +412,31 @@ services:
     image: cinder-keplerops/k-preview:hand-build
     container_name: cinder-keplerops-preview
     hostname: k-preview
-    depends_on: [router, runner]
+    depends_on: [router]
+    cap_add: [NET_ADMIN, CHOWN, SETUID, SETGID]
     environment:
-      <<: *tls-environment
-      FIELDKEST_SERVICE: preview
       FIELDKEST_GATEWAY: 10.77.51.254
+      API_PORT: "443"
+      API_TLS_CERT_FILE: /tmp/fieldlink-preview.crt
+      API_TLS_KEY_FILE: /tmp/fieldlink-preview.key
+      API_BODY_LIMIT: 10MB
+      CHROMIUM_DENY_PUBLIC_IPS: "true"
+      HOME: /tmp
+      XDG_CACHE_HOME: /tmp/cache
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=512m,mode=1777
+      - /dev/shm:rw,noexec,nosuid,nodev,size=128m,mode=1777
+    mem_limit: 1g
+    pids_limit: 256
     volumes:
-      - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/fieldkest-tls/ca.crt:ro
-      - preview-state:/var/lib/fieldkest-preview
-      - runner-socket:/run/fieldkest-runner
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "--cacert", "/tmp/fieldlink-ca.crt", "--resolve", "preview.keplerops.test:443:127.0.0.1", "https://preview.keplerops.test/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
     networks:
       delivery: {ipv4_address: 10.77.51.50, aliases: [preview.keplerops.test]}
 
@@ -656,7 +708,6 @@ volumes:
   registry-verdaccio: {name: cinder-keplerops-registry-verdaccio}
   support-audit: {name: cinder-keplerops-support-audit}
   cloud-api-audit: {name: cinder-keplerops-cloud-api-audit}
-  preview-state: {name: cinder-keplerops-preview-state}
   indexer-state: {name: cinder-keplerops-indexer-state}
   staff-state: {name: cinder-keplerops-staff-state}
   identity-state: {name: cinder-keplerops-identity-state}
@@ -669,3 +720,4 @@ volumes:
   handover: {name: cinder-keplerops-handover}
   runner-socket: {name: cinder-keplerops-runner-socket}
   native-postgres-data: {name: cinder-keplerops-native-postgres-data}
+  native-jenkins-home: {name: cinder-keplerops-native-jenkins-home}

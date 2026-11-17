@@ -9,6 +9,7 @@ flowchart LR
     KG[cinder-keplerops-golden] -->|machine image| FB[cinder-fieldlink-golden-preserved-20261114]
     FB --> FD[cinder-fieldlink-dev]
     AB[cinder-arwc-ot-backup-20261113-qualified] --> AD[cinder-arwc-dev]
+    FD -->|TCP 443| AD
     FD -->|IAP SSH only| DEV[Developer]
     AD -->|IAP SSH only| DEV
 ```
@@ -22,8 +23,40 @@ flowchart LR
 
 Both VMs are private, have no service account, and accept SSH only through the
 existing IAP firewall rule. They inherit the source machine type and disks.
+Provisioning requests fixed private addresses `10.77.49.9` for FieldLink and
+`10.77.59.11` for ARWC, including after development VM recreation.
 The ARWC first-boot helper changes only the FieldLink listener binding for the
 new private address. It checks that the qualified PLC container is unchanged.
+
+The FieldLink development first-boot helper stores the ARWC development address
+in its local Compose `.env` and recreates only the customer relay with that
+explicit peer. It verifies the effective binding. The development reset applies
+the profile before resetting applications. After upgrading an existing clone,
+run `manage.sh bind-peer fieldlink <project>` after source sync. Do not use the
+generic golden peer default for development delivery tests.
+
+The same action sets up TCP 443 access from `10.77.49.9/32` to the unique
+`cinder-arwc-dev` destination tag. The golden firewall rule remains unchanged.
+Both instances must have their managed development labels and fixed addresses.
+Use `manage.sh allow-peer fieldlink <project>` to repair only this cloud access
+without restarting a guest service. The helper rejects an existing rule with
+broader scope or a destination tag present on another VM.
+
+The local `.env` peer override is development-only. Before a future bake or
+promotion, exclude that file or replace it through the participant release
+first-boot mapping so a participant range uses its own assigned peer.
+
+## Development desktop login
+
+The FieldLink development desktop needs a password for authenticated RDP.
+After source sync, run `manage.sh desktop-login fieldlink <project>` from the
+repository root. This creates a root-owned, mode-0600 login file at
+`/opt/cinder-typhoon/build/keplerops/.operator/development-desktop-login.json`
+on the development VM and applies the password without printing it.
+The development reset reapplies it. Run the action again after replacing the
+desktop container. Use the login securely for QA; never copy it into Git,
+the coordination file, or command output. ARWC uses its existing development
+workstation provisioner. BigRAE participant credentials remain platform-owned.
 
 ## Safety invariants
 

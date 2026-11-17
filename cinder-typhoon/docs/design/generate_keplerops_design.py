@@ -118,9 +118,9 @@ SURFACE_BINDINGS: dict[str, list[str]] = {
     "K01.2": [local_path("k-dev", "/home/rowan/.config/chromium/Default"), route("k-support", "support-service", "conversation")],
     "K01.3": [local_path("k-dev", "/home/rowan/work")],
     "K01.4": [route("k-dev", "local-workbench", "inspection-summary")],
-    "K02.1": [route("k-ci", "fieldkest-ci", "run-log"), route("k-source", "gitea", "repository-content")],
-    "K02.2": [route("k-ci", "fieldkest-ci", "review-import")],
-    "K02.3": [route("k-ci", "fieldkest-ci", "isolated-job-submit"), route("k-ci", "fieldkest-ci", "isolated-job-result"), route("k-support", "support-service", "private-handover")],
+    "K02.1": [route("k-ci", "jenkins", "build-console"), route("k-source", "gitea", "repository-content")],
+    "K02.2": [route("k-ci", "jenkins", "build-artifacts")],
+    "K02.3": [route("k-ci", "jenkins", "file-parameter-build"), route("k-ci", "jenkins", "build-artifacts"), route("k-support", "support-service", "private-handover")],
     "K03.1": [local_path("k-dev", "/home/rowan/work")],
     "K03.2": [route("k-dev", "local-workbench", "reconstruction")],
     "K03.3": [route("k-dev", "local-workbench", "callback-collection")],
@@ -128,13 +128,13 @@ SURFACE_BINDINGS: dict[str, list[str]] = {
     "K04.2": [route("k-indexer", "bundle-indexer", "index-result")],
     "K04.3": [route("k-indexer", "bundle-indexer", "exception-state"), route("k-indexer", "bundle-indexer", "bundle-submit")],
     "K04.4": [route("k-indexer", "bundle-indexer", "complete-exception")],
-    "K05.1": [route("k-registry", "package-registry", "consumer-check")],
-    "K05.2": [route("k-registry", "package-registry", "release-record")],
-    "K05.3": [route("k-registry", "package-registry", "reconciliation")],
-    "K05.4": [route("k-registry", "package-registry", "resolver-run")],
-    "K06.1": [route("k-registry", "package-registry", "importer"), route("k-registry", "package-registry", "package-publication")],
-    "K06.2": [route("k-registry", "package-registry", "package-view")],
-    "K06.3": [route("k-registry", "package-registry", "package-publication"), route("k-ci", "fieldkest-ci", "private-consumer-submit")],
+    "K05.1": [route("k-registry", "verdaccio", "connector-metadata"), route("k-registry", "package-registry", "consumer-check")],
+    "K05.2": [route("k-registry", "verdaccio", "connector-metadata"), route("k-registry", "package-registry", "release-record")],
+    "K05.3": [route("k-registry", "verdaccio", "connector-metadata"), route("k-registry", "package-registry", "reconciliation")],
+    "K05.4": [route("k-registry", "verdaccio", "connector-metadata"), route("k-registry", "verdaccio", "package-tarball"), route("k-registry", "package-registry", "consumer-check")],
+    "K06.1": [route("k-source", "gitea", "repository-content"), route("k-registry", "verdaccio", "package-publication")],
+    "K06.2": [route("k-ci", "jenkins", "build-artifacts"), route("k-registry", "verdaccio", "support-metadata")],
+    "K06.3": [route("k-registry", "verdaccio", "package-publication"), route("k-ci", "fieldkest-ci", "private-consumer-submit")],
     "K07.1": [route("k-registry", "package-registry", "inspector-submit"), route("k-registry", "package-registry", "inspector-trace")],
     "K07.2": [route("k-registry", "package-registry", "inspector-envelope")],
     "K07.3": [route("k-registry", "package-registry", "inspector-envelope")],
@@ -149,11 +149,11 @@ SURFACE_BINDINGS: dict[str, list[str]] = {
     "K10.2": [route("k-preview", "preview-service", "render-document")],
     "K10.3": [route("k-preview", "preview-service", "source-upload"), route("k-preview", "preview-service", "render-result")],
     "K11.1": [route("k-source", "gitea", "repository-content")],
-    "K11.2": [route("k-source", "gitea", "policy-compiler-evaluations")],
-    "K11.3": [route("k-source", "gitea", "policy-compiler-evaluations")],
+    "K11.2": [route("k-source", "source-tools", "policy-compiler-evaluations")],
+    "K11.3": [route("k-source", "source-tools", "policy-compiler-evaluations")],
     "K11.4": [
-        route("k-source", "gitea", "policy-compiler-nonces"),
-        route("k-source", "gitea", "policy-compiler-evaluations"),
+        route("k-source", "source-tools", "policy-compiler-nonces"),
+        route("k-source", "source-tools", "policy-compiler-evaluations"),
     ],
     "K12.1": [route("k-preview", "preview-service", "review-reassign")],
     "K12.2": [route("k-preview", "preview-service", "review-action")],
@@ -202,18 +202,18 @@ SURFACE_BINDINGS: dict[str, list[str]] = {
     "K24.3": [route("k-assistant", "fieldkest-assistant", "completion-job"), route("k-assistant", "fieldkest-assistant", "completion-result")],
     "K25.1": [route("k-support", "support-service", "customer-dossier")],
     "K25.2": [route("k-support", "support-service", "tenant-integration"), route("k-support", "support-service", "tenant-reconcile")],
-    "K26.1": [route("k-registry", "package-registry", "package-publication"), route("k-registry", "package-registry", "release-approval")],
-    "K26.2": [route("k-registry", "package-registry", "connector-metadata"), route("a-connector", "fieldlink-customer-consumer", "package-poll"), route("a-connector", "fieldlink-customer-consumer", "package-activate"), route("a-connector", "fieldlink-customer-consumer", "package-receipt")],
+    "K26.1": [route("k-registry", "verdaccio", "package-publication"), route("k-registry", "package-registry", "release-approval")],
+    "K26.2": [route("k-registry", "verdaccio", "connector-metadata"), route("a-connector", "fieldlink-customer-consumer", "package-poll"), route("a-connector", "fieldlink-customer-consumer", "package-activate"), route("a-connector", "fieldlink-customer-consumer", "package-receipt")],
     "K26.3": [route("k-registry", "package-registry", "release-record"), route("a-connector", "fieldlink-customer-consumer", "rollback-rehearsal")],
     "K27.1": [route("k-support", "support-service", "diagnostic-job")],
-    "K27.2": [route("k-support", "support-service", "diagnostic-package"), route("k-registry", "package-registry", "package-publication")],
+    "K27.2": [route("k-support", "support-service", "diagnostic-package"), route("k-registry", "verdaccio", "package-publication")],
     "K27.3": [route("k-support", "support-service", "diagnostic-delivery"), route("a-connector", "fieldlink-customer-consumer", "diagnostic-intake"), route("a-connector", "fieldlink-customer-consumer", "diagnostic-receipt")],
-    "K28.1": [route("k-source", "gitea", "repository-content"), route("k-source", "gitea", "archived-connector-exercise")],
-    "K28.2": [route("k-source", "gitea", "archived-connector-exercise")],
-    "K28.3": [route("k-source", "gitea", "archived-connector-exercise")],
+    "K28.1": [route("k-source", "gitea", "repository-content"), route("k-source", "source-tools", "archived-connector-exercise")],
+    "K28.2": [route("k-source", "source-tools", "archived-connector-exercise")],
+    "K28.3": [route("k-source", "source-tools", "archived-connector-exercise"), route("k-source", "gitea", "repository-content")],
     "K29.1": [route("k-cloud-api", "fieldkest-cloud-api", "build-record"), route("k-ci", "fieldkest-ci", "historical-artifact")],
     "K29.2": [route("k-source", "gitea", "repository-content")],
-    "K29.3": [route("k-registry", "package-registry", "package-publication"), route("k-ci", "fieldkest-ci", "private-consumer-submit")],
+    "K29.3": [route("k-registry", "verdaccio", "package-publication"), route("k-ci", "fieldkest-ci", "private-consumer-submit")],
     "K29.4": [route("k-ci", "fieldkest-ci", "rollover-rehearsal")],
     "K30.1": [route("k-cloud-api", "fieldkest-cloud-api", "build-record"), route("k-data", "fieldkest-data-api", "backup-catalog")],
     "K30.2": [route("k-data", "fieldkest-data-api", "backup-restore"), route("k-data", "fieldkest-data-api", "restored-query")],
@@ -232,6 +232,8 @@ JOINED_FEATURES: dict[str, list[str]] = {
     "K01.2": ["features.k-corporate.k-dev", "features.k-delivery.k-support"],
     "K02.1": ["features.k-delivery.k-ci", "features.k-delivery.k-source"],
     "K02.3": ["features.k-delivery.k-ci", "features.k-delivery.k-support"],
+    "K06.1": ["features.k-delivery.k-source", "features.k-delivery.k-registry"],
+    "K06.2": ["features.k-delivery.k-ci", "features.k-delivery.k-registry"],
     "K06.3": ["features.k-delivery.k-registry", "features.k-delivery.k-ci--rehearsals"],
     "K09.4": ["features.k-delivery.k-ci--runner", "features.k-cloud.k-cloud-api--build-records"],
     "K16.3": ["features.k-cloud.k-workload--task", "features.k-cloud.k-data"],
@@ -263,9 +265,9 @@ MECHANIC_PROFILE: dict[str, dict[str, object]] = {
     # K01 — developer workstation opening
     "K01.1": {
         "classification": "service-native",
-        "surface": "Chromium SQLite (History, Cookies) and git credential store",
-        "normal_case": "developer authenticates to source service and browses support console",
-        "defect": "retained browser cookies and plaintext git credentials give session access to both services without re-authentication",
+        "surface": "saved native Git client identity and protected Gitea repository handover issue",
+        "normal_case": "developer authenticates through native Gitea and reads the current repository handover issue",
+        "defect": "retained Git client credentials still authorize the limited native repository identity",
         "bounds": "the recovered identity has no push access to the connector repository and no operator authority",
     },
     "K01.2": {
@@ -289,27 +291,27 @@ MECHANIC_PROFILE: dict[str, dict[str, object]] = {
         "defect": "the helper accepts any form upload; a review export submitted instead of the collection report is forwarded to the CI report queue",
         "bounds": "only the report-consumer workflow is reachable; no audit or platform authority is granted",
     },
-    # K02 — source and CI review chain
+    # K02 — native source history, build artifacts and repaired report submission.
     "K02.1": {
-        "classification": "service-native",
-        "surface": "source.keplerops.test repository content API; ci.keplerops.test review-job API",
-        "normal_case": "reviewer reads connector source and CI review job for the handover commit",
-        "defect": "the review job carries a signed pointer to the policy-compiler workspace file path",
-        "bounds": "only the workspace file identified by the review job is readable; no other workspace or job is enumerable",
+        "classification": "product-native",
+        "surface": "Native Gitea Git history and Jenkins fieldlink-report build 1842 console/SCM revision",
+        "normal_case": "developer inspects the actual failed test and retained repository history",
+        "defect": "a fixture removed from the current checkout remains in immutable Git history",
+        "bounds": "developer source read and selected Jenkins job read; no source write or administration",
     },
     "K02.2": {
-        "classification": "service-native",
-        "surface": "ci.keplerops.test review-import API; source.keplerops.test policy-evaluate API",
-        "normal_case": "developer imports a CI review and submits the policy program for evaluation",
-        "defect": "the review import credential also accepts a policy-evaluate request with an author-controlled program model",
-        "bounds": "only the one-use evaluate route is reachable; no CI run trigger or artifact delete authority",
+        "classification": "product-native",
+        "surface": "Jenkins fieldlink-report/1842/artifact/reports/REVNOTE-1842.json and native job parameters",
+        "normal_case": "developer reads separately archived review notes and the documented provider interface",
+        "defect": "the console omits the separately retained provider contract",
+        "bounds": "native artifact read; no source write or job configuration authority",
     },
     "K02.3": {
-        "classification": "service-native",
-        "surface": "ci.keplerops.test workspace-file API",
-        "normal_case": "developer retrieves the review workspace artifact uploaded during CI",
-        "defect": "the workspace path disclosed by the review job allows reading an operator-scoped staging artifact",
-        "bounds": "only the named workspace path is readable; no directory listing or arbitrary workspace traversal",
+        "classification": "product-native",
+        "surface": "Jenkins fieldlink-report-review file parameter and build artifacts; actual FieldLink support handover",
+        "normal_case": "fixed Jenkins step submits a compatible provider to the isolated report consumer",
+        "defect": "the documented provider extension can change assessment while preserving required ordinary fields",
+        "bounds": "untrusted code runs only in the existing isolated report worker; controller job steps remain fixed",
     },
     # K03 — CI build operations
     "K03.1": {
@@ -601,55 +603,67 @@ MECHANIC_PROFILE: dict[str, dict[str, object]] = {
         "exclusions": "no shell, arbitrary file read, dynamic symbol selection, record enumeration, or caller-selected command",
     },
     "K05.1": {
+        "classification": "product-native",
         "package": "@keplerops/fieldlink-connector",
-        "range": "^7.4.0",
-        "selected_version": "7.4.2",
-        "request_schema": "fieldkest.connector/v3",
-        "operation": "summarize_diagnostics",
-        "baseline_asset": "CRR-OG2",
+        "version": "7.4.2",
+        "interface": "fieldkest.connector/v3",
         "consumer_revision": "arwc-connector-consumer@19f43d2",
+        "execution": "Actual npm pack and offline module/local-file execution in the existing worker"
     },
     "K05.2": {
+        "classification": "product-native",
         "archive_record": "REL-FLK-6.9.8-ARCHIVE",
-        "package_revision": "FLK-6.9.8",
-        "status": "yanked",
         "active_release": "REL-FLK-7.4.2-09",
-        "listing_rule": "the current metadata lists 7.4.0, 7.4.1 and 7.4.2 and omits 6.9.8",
+        "native_registry_state": "6.9.8 remains published with a genuine npm deprecation notice",
+        "business_record": "yanked customer rollout retained for maintenance; not an unpublished native package"
     },
     "K05.3": {
+        "classification": "product-native",
         "tenant_record": "TEN-ARWC-047",
         "release_record": "REL-FLK-7.4.2-09",
-        "comparison_fields": ["package", "declared_range", "resolved_version", "consumer_revision"],
-        "unique_disagreement": "tenant resolved_version is 7.4.1 while release resolved_version is 7.4.2",
+        "comparison_fields": [
+            "package",
+            "declared_range",
+            "resolved_version",
+            "consumer_revision"
+        ],
+        "unique_disagreement": "tenant selected 7.4.1; release selected 7.4.2; consumer revision matches",
+        "evidence": "Independent business records plus actual native package manifest and tarball integrity"
     },
     "K05.4": {
-        "range": "^7.4.0",
-        "candidates": ["7.4.0", "7.4.1", "7.4.2"],
-        "selection": "highest non-yanked compatible version, yielding 7.4.2",
-        "consumer_revision": "arwc-connector-consumer@19f43d2",
-        "execution": "a short-lived resolver process receives only the fixed candidate metadata and request and returns canonical JSON",
+        "classification": "product-native",
+        "declared_range": "^7.4.0",
+        "native_candidates": [
+            "7.4.0",
+            "7.4.1",
+            "7.4.2"
+        ],
+        "selection": "Native npm selects highest matching stable version 7.4.2",
+        "execution": "Existing short-lived networkless worker installs the real tarball and loads Node module and local files",
+        "evidence": "Actual package version, archive digest, input bindings and executed module output"
     },
     "K06.1": {
-        "trigger": "a valid @keplerops/fieldlink-connector import for registry view customer-preview-unavailable",
-        "disclosed_principal": "fieldlink-importer-publisher",
-        "scope": "@keplerops/fieldlink-connector channel arwc-stable",
-        "publication": "PUT /@keplerops%2ffieldlink-connector with a new immutable semantic version, matching channel and tarball integrity",
-        "bounds": "the credential cannot publish another package or channel and cannot overwrite an existing version",
+        "classification": "product-native",
+        "source": "Native Gitea delivery-operations branch and retained .npmrc Git history",
+        "principal": "fieldlink-importer-publisher",
+        "native_scope": "Publish versions/tags of @keplerops/fieldlink-connector only",
+        "business_scope": "arwc-stable customer rollout still requires separate release approval",
+        "bounds": "Private support package and release administration remain denied; no current source write authority"
     },
     "K06.2": {
+        "classification": "product-native",
+        "source": "Actual Jenkins fieldlink-package-check build 611 workspace and archived npm configuration",
+        "principal": "svc-fieldlink-ci",
         "protected_package": "@keplerops/support-rehearsal@1.3.1",
-        "content_sha256": "6708bbaafa1bf97c3f15d04afa0330a1ce2e914038b22b72ea21b194f32e08d7",
-        "defect": "the view service resolves the requested package in the shared namespace before enforcing the selected view; only support-rehearsal is mistakenly returned through the publisher view",
-        "bounds": "unrelated private package names remain denied and the response grants no publication or customer authority",
+        "package_sha256": "6708bbaafa1bf97c3f15d04afa0330a1ce2e914038b22b72ea21b194f32e08d7",
+        "bounds": "Distinct native CI reader may read private support package but cannot publish; publisher remains denied private read"
     },
     "K06.3": {
-        "package": "@keplerops/fieldlink-connector",
-        "channel": "arwc-stable",
-        "consumer": "support-rehearsal-v3",
-        "input_schema": "fieldkest.connector/v3",
-        "output_schema": "fieldkest.rehearsal-result/v1",
-        "execution": "the CI service resolves the immutable published tarball and runs it in a short-lived networkless Node.js worker",
-        "bounds": "the rehearsal tenant is synthetic and has no ARWC route or credential",
+        "classification": "product-native",
+        "interface": "fieldkest.connector/v3",
+        "publication": "Actual native npm publication and duplicate-version rejection",
+        "execution": "Actual Node module and local files installed offline in existing networkless worker",
+        "bounds": "Preserve tenant, asset and interface; no release administration or customer route"
     },
     "K07.1": {
         "trace": "INSP-2047",
@@ -944,6 +958,8 @@ MECHANIC_PROFILE: dict[str, dict[str, object]] = {
         "route": "/internal/fieldlink/legacy-diagnostics/CRR-OG2",
         "engineering_note": "ENG-FLK-LEGACY-42",
         "construction": "bytecode appends fixed path segments and note identifier; returned JSON contains route, note_id, and output_sha256",
+        "native_archive": "Gitea fieldkest/connector-archive main: internal/fieldlink/legacy-diagnostics/CRR-OG2/ENG-FLK-LEGACY-42.md",
+        "proof": "fresh diagnostic loader output plus native Git note revision, content digest and matching customer/package reference",
     },
     "K29.2": {
         "algorithm": "Ed25519",
@@ -1124,6 +1140,48 @@ def fixture_text(card: str, title: str, row: dict[str, str]) -> str:
             "isolation": "no cross-tenant records, credentials, jobs, uploads, or audit events",
         },
     }
+    if card in {"K02.1", "K02.2", "K02.3"}:
+        core["request_contract"]["correlation"] = (
+            "Use native repository commit IDs, Jenkins job/build URLs and exact artifact digests. "
+            "The report consumer also supplies its actual job ID and input/output digests."
+        )
+        core["evidence_contract"]["producer"] = (
+            "Native Git objects, Jenkins build records and archived actual artifacts; "
+            "for a submitted report, the independently persisted support handover."
+        )
+        core["evidence_contract"]["freshness"] = (
+            "Historical source and build reads remain repeatable. A submitted report requires a new "
+            "native build and a matching fresh report-consumer job and support handover."
+        )
+        core["state_rules"]["completion"] = (
+            "Correlate native build records, exact source/artifact bytes and, where applicable, "
+            "the separately persisted support report; no synthetic product audit is required."
+        )
+    if card in {"K05.1", "K05.2", "K05.3", "K05.4", "K06.1", "K06.2", "K06.3"}:
+        core["request_contract"]["correlation"] = (
+            "Use native repository commit IDs, registry versions, Jenkins build URLs and exact artifact digests. "
+            "The report consumer also supplies its actual job ID and input/output digests."
+        )
+        core["evidence_contract"]["producer"] = (
+            "Native Git objects, registry package state, Jenkins build records and actual execution artifacts; "
+            "for a submitted report, the independently persisted support handover."
+        )
+        core["evidence_contract"]["freshness"] = (
+            "Historical source, metadata and build reads remain repeatable. Submitted work requires a new "
+            "native build or actual worker result, with matching input/output digests and downstream evidence."
+        )
+        core["state_rules"]["completion"] = (
+            "Correlate native build records, exact source/artifact bytes and, where applicable, "
+            "the separately persisted support report; no synthetic product audit is required."
+        )
+    if card == 'K01.1':
+        core['request_contract']['correlation'] = 'Bind the recovered Git identity to the protected native repository issue, handover identifier and revision.'
+        core['evidence_contract']['producer'] = 'Actual authenticated Gitea repository/issue responses and their native object identity; no custom handover API or synthetic product audit.'
+        core['evidence_contract']['freshness'] = 'Native handover reads remain repeatable; demonstrate actual use of the recovered limited identity.'
+    if card == 'K28.3':
+        core['request_contract']['correlation'] = 'Join the genuine tool request and output digest to the native Git note path, commit and content digest.'
+        core['evidence_contract']['producer'] = 'The retained loader tool supplies its protected request/output audit; Gitea supplies actual Git note objects and history.'
+        core['evidence_contract']['freshness'] = 'Require a fresh loader result. Native archive reads remain repeatable and retain their actual Git revision.'
     canonical = json.dumps(core, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()
     payload = {
         **core,

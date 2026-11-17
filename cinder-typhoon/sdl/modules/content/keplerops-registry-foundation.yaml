@@ -15,7 +15,7 @@ content:
     type: directory
     target: k-delivery.k-registry
     destination: /var/lib/fieldkest-registry
-    description: Exact K05-K08 package metadata, release and tenant records, protected package, inspector fixtures, cryptographic entitlement record, and private service configuration.
+    description: Exact FieldLink release and tenant records, retained compatibility package, inspector inputs, cryptographic entitlement record, and private delivery-service configuration. Native package state is published through npm.
     source:
       name: cinder-typhoon/keplerops/registry/foundation-state
       version: '2026-09-18'
@@ -25,7 +25,7 @@ content:
         exact_artifact:
           artifact_id: cinder-typhoon/keplerops/registry/foundation-state
           version: '2026-09-18'
-          digest: sha256:eead74269c18454769e9d078d7247b6b701d3cd93571fce5e7f0e04123ad56b1
+          digest: sha256:25915d4cb748f2282e1bca8ac0cb4515cd222f964c00efc8b2980fc92f6b51a8
           media_type: application/x-tar
         permitted_routes:
         - mechanism:
@@ -51,7 +51,7 @@ content:
         exact_artifact:
           artifact_id: cinder-typhoon/keplerops/registry/workstation
           version: '2026-09-18'
-          digest: sha256:9fa7c79c417e3d8b2543ab0da84e74c9c21b0590bb9b1ae4a3b6747bd817b536
+          digest: sha256:5d10fa4eef38fe9a892c6b8f1312d8665f261d37c1b12777cd7090fc33d61626
           media_type: application/x-tar
         permitted_routes:
         - mechanism:

@@ -387,24 +387,24 @@ phases:
           note identifies a repository revision, so the removed fixture should be sought in version history
           rather than the current tree.
         - This stage is version-history recovery. Keep the named revision and fixture path bound together;
-          importer behavior is a later boundary.
+          the provider contract is a separate build artifact.
         - Compare the revision in the failing-job note with the repository history, then inspect the change
           that removed the named fixture without restoring unrelated files.
         completion:
           mode: automatic_range_evidence
       - id: K02.2
         title: An input outside its lane
-        description: The test importer is supposed to accept only job inputs. Make it expose the separate
-          review note that the ordinary test view withholds.
+        description: The report build failed, but it retained a review note separate from the console log.
+          Recover that note and establish the input contract for a corrected report provider.
         difficulty: easy
         points: 50
         hints:
-        - Stay with the continuous-integration client and compare the importer's accepted job namespace
-          with the object it actually resolves. The ordinary form is the baseline, not the complete boundary.
-        - This is path resolution before authorization. Test whether a job-relative reference remains
-          inside the intended input collection after normalization.
-        - Submit one ordinary job input and one minimally changed relative reference, then compare the
-          resolved object and denial evidence before trying a second variation.
+        - Inspect the native Jenkins build page and its separately archived artifacts. The console is only
+          one part of the retained build record.
+        - Match the review note to the failed build and source revision before using its provider contract.
+          Reading an artifact does not grant repository write or job configuration access.
+        - Compare the exact fixture path and revision in REVNOTE-1842 with the native source history and
+          inspect the file parameter on fieldlink-report-review.
         completion:
           mode: automatic_range_evidence
       - id: K02.3
@@ -414,15 +414,12 @@ phases:
         difficulty: medium
         points: 100
         hints:
-        - Begin with the retained source history and the continuous-integration review workflow. Start
-          from ci.keplerops.test's published client document and records already earned in this operation,
-          not from an invented endpoint.
-        - Treat this as version-history recovery followed by importer-boundary and extension-point analysis.
-          Keep the recovered fixture's exact file bytes when you build the archive, then vary only the
-          provider extension point.
-        - Review the published client document and ordinary records for ci.keplerops.test. Read the current
-          revision, submit one minimal variation, and compare the resulting audit and unaffected fields
-          with the baseline.
+        - Use the native Jenkins fieldlink-report-review job and its provider.zip file parameter. The
+          original fieldlink-report job is the retained failing baseline.
+        - Preserve the fixture's exact file bytes and immutable fields while implementing the documented
+          provider extension point. A valid package is different from an accepted changed report.
+        - Compare the native build artifacts with the support handover. The job ID and report digest must
+          identify the same fresh output; a green status by itself is insufficient.
         completion:
           mode: automatic_range_evidence
     - id: K03
@@ -576,74 +573,62 @@ phases:
       cards:
       - id: K05.1
         title: Speak the package's language
-        description: Find the package interface used by the ARWC connector and make its documented example
-          produce a valid result.
+        description: Find the actual connector package interface and make its documented example produce a valid
+          result through the FieldLink check consumer.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the package registry metadata, retained release records, and consumer fixtures. Its
-          published client document exposes the consumer check and metadata operation, so use that ordinary
-          contract instead of guessing a path.
-        - Treat this as package-contract reconciliation across metadata, manifests, and isolated resolution.
-          Separate the authoritative service record from stale or local copies, and preserve its identity,
-          revision, and scope.
-        - Locate the consumer check and metadata operation in the published client reference. Capture
-          one ordinary response and one denial, then correlate the returned identifiers with evidence
-          already earned.
+        - Inspect the native npm manifest and downloaded package interface, then use the supplied request with the
+          separate FieldLink consumer check.
+        - Match the declared request and output schemas to the actual module rather than treating a release label
+          as an executed result.
+        - Keep the tenant, asset and ordinary request fields unchanged and compare a valid request with one missing
+          a required field.
         completion:
           mode: automatic_range_evidence
       - id: K05.2
         title: The version they kept
-        description: The visible package listing skips an older release mentioned in the support ticket.
-          Recover the retained version record and its maintenance note.
+        description: Recover the older connector release named in the support ticket. Establish how its native package
+          deprecation relates to the retained customer maintenance record.
         difficulty: easy
         points: 50
         hints:
-        - Begin with the package registry metadata, retained release records, and consumer fixtures. Its
-          published client document exposes the release and conversation operation, so use that ordinary
-          contract instead of guessing a path.
-        - Treat this as package-contract reconciliation across metadata, manifests, and isolated resolution.
-          Observe the ordinary and denied cases first, then change one input at a time and keep every
-          unrelated binding fixed.
-        - Locate the release and conversation operation in the published client reference. Record the
-          normal result and a denied variant, alter one dimension, and keep the service-owned evidence
-          needed to explain the difference.
+        - The older release remains in the native registry. Inspect its version metadata and deprecation notice
+          alongside the retained customer maintenance record.
+        - A customer rollout record and a registry package have separate lifecycles. A withdrawn rollout does not
+          imply an unpublished package.
+        - Correlate package name and version across the ticket, native tarball and customer record before carrying
+          its maintenance context forward.
         completion:
           mode: automatic_range_evidence
       - id: K05.3
         title: Two manifests disagree
-        description: The release manifest and the customer's recorded selection do not describe the same
-          dependency. Reconcile the two and recover the exact discrepancy.
+        description: The release manifest and customer selection record disagree. Reconcile them against the actual
+          native package and identify the exact selected-version discrepancy and matching consumer identity.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the package registry metadata, retained release records, and consumer fixtures. Its
-          published client document exposes the reconcile operation, so use that ordinary contract instead
-          of guessing a path.
-        - Treat this as package-contract reconciliation across metadata, manifests, and isolated resolution.
-          Observe the ordinary and denied cases first, then change one input at a time and keep every
-          unrelated binding fixed.
-        - Locate the reconcile operation in the published client reference. Record the normal result and
-          a denied variant, alter one dimension, and keep the service-owned evidence needed to explain
-          the difference.
+        - Compare the actual release manifest and tenant package record, then check the native npm manifest and
+          archive.
+        - Distinguish selected version from declared range and consumer revision. Matching fields matter as much
+          as the disagreement.
+        - Join the exact record IDs and report which field differs; verify the package bytes instead of inventing
+          a digest from a release label.
         completion:
           mode: automatic_range_evidence
       - id: K05.4
         title: Selection has consequences
-        description: Demonstrate which dependency the check consumer really chooses from the available
-          candidates. The answer must come from consumed behavior, not the release label.
+        description: Prove which dependency npm actually selects for the declared range and what the real installed
+          consumer executes. Use package and module evidence rather than the release label.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the package registry metadata, retained release records, and consumer fixtures. Its
-          published client document exposes the resolver operation, so use that ordinary contract instead
-          of guessing a path.
-        - Treat this as package-contract reconciliation across metadata, manifests, and isolated resolution.
-          Observe the ordinary and denied cases first, then change one input at a time and keep every
-          unrelated binding fixed.
-        - Locate the resolver operation in the published client reference. Record the normal result and
-          a denied variant, alter one dimension, and keep the service-owned evidence needed to explain
-          the difference.
+        - Use ordinary npm selection for the declared range and compare the selected tarball with the real consumer
+          output.
+        - A matching version label does not prove which module or local files executed. Preserve the request bindings
+          while comparing actual behavior.
+        - Correlate the native archive integrity, installed module version and fresh consumer result; test a native
+          range with no matching version separately.
         completion:
           mode: automatic_range_evidence
     - id: K06
@@ -654,54 +639,46 @@ phases:
       cards:
       - id: K06.1
         title: House credentials
-        description: The importer can retrieve material the developer cannot read directly. Recover usable
-          authority over the release channel consumed by FieldKest customers.
+        description: The delivery team removed its local npm configuration from the current source tree. Recover
+          usable publishing authority from the retained native history and establish its limits.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the package import, publisher, and rehearsal-consumer services. Its published client
-          document exposes the import operation, so use that ordinary contract instead of guessing a path.
-        - Treat this as publisher credential scope and package publication without release-administration
-          authority. Observe the ordinary and denied cases first, then change one input at a time and
-          keep every unrelated binding fixed.
-        - Locate the import operation in the published client reference. Record the normal result and
-          a denied variant, alter one dimension, and keep the service-owned evidence needed to explain
-          the difference.
+        - Inspect the delivery branch in native Gitea, including changes that removed local client configuration
+          from its current tree.
+        - A deleted current file can remain in Git history. Identify the recovered account and establish its actual
+          package authority.
+        - Compare connector publication with private support-package access and release administration. Those are
+          separate native or business permissions.
         completion:
           mode: automatic_range_evidence
       - id: K06.2
         title: A private package in the wrong view
-        description: Your publication identity still cannot read the private support package. Cross the
-          package-view boundary and recover its protected contents.
+        description: Your publishing account cannot read the private support package. Investigate the independent
+          package-check build and recover the distinct CI identity that can.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the package import, publisher, and rehearsal-consumer services. Its published client
-          document exposes the view operation, so use that ordinary contract instead of guessing a path.
-        - Treat this as publisher credential scope and package publication without release-administration
-          authority. Observe the ordinary and denied cases first, then change one input at a time and
-          keep every unrelated binding fixed.
-        - Locate the view operation in the published client reference. Record the normal result and a
-          denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
-          difference.
+        - The package-check job uses a different account. Follow its native build, workspace and archived files.
+        - Console masking does not determine what is retained in a workspace archive. Establish the independent
+          CI identity from actual build material.
+        - Use the CI reader for the private package, and retain the publisher denial and reader publication denial
+          to demonstrate the separate scopes.
         completion:
           mode: automatic_range_evidence
       - id: K06.3
         title: The rehearsal consumer
-        description: Make the isolated test consumer run your compatible package behavior and return its
-          protected rehearsal result.
+        description: Publish a compatible connector package under the authority you recovered, then make the isolated
+          rehearsal consumer run its actual code and return your changed result.
         difficulty: medium
         points: 100
         hints:
-        - Begin with the package import, publisher, and rehearsal-consumer services. Its published client
-          document exposes the connector rehearsal and publish operation, so use that ordinary contract
-          instead of guessing a path.
-        - Treat this as publisher credential scope and package publication without release-administration
-          authority. Establish the denied and ordinary baselines first, then vary only the boundary input
-          the service is meant to bind.
-        - Locate the connector rehearsal and publish operation in the published client reference. Read
-          the current revision, submit one minimal variation, and compare the resulting audit and unaffected
-          fields with the baseline.
+        - Use the real package interface and earned publisher identity to publish a new compatible npm version,
+          then run the ordinary isolated rehearsal.
+        - Preserve required tenant, asset and schema fields while changing the assessment. Native publication and
+          successful module execution are separate outcomes.
+        - Correlate the native tarball digest and immutable version with the actual rehearsal output; a missing
+          local file or incompatible interface should fail normally.
         completion:
           mode: automatic_range_evidence
     - id: K07
@@ -2229,7 +2206,7 @@ phases:
         points: 200
         hints:
         - Begin with the retained connector archive and its signed diagnostic configuration. Start from
-          source.keplerops.test's published client document and records already earned in this operation,
+          source-tools.keplerops.test:8443's published client document and records already earned in this operation,
           not from an invented endpoint.
         - Treat this as static and dynamic loader analysis for behavior that appears only at runtime.
           Build a local model from the supplied reference cases, then confirm it explains both accepted
@@ -2247,14 +2224,14 @@ phases:
         points: 200
         hints:
         - Begin with the retained connector archive and its signed diagnostic configuration. Start from
-          source.keplerops.test's published client document and records already earned in this operation,
+          source-tools.keplerops.test:8443's published client document and records already earned in this operation,
           not from an invented endpoint.
         - Treat this as static and dynamic loader analysis for behavior that appears only at runtime.
           Separate the authoritative service record from stale or local copies, and preserve its identity,
           revision, and scope.
-        - Trace the diagnostic-only loader branch in the retained source, follow the runtime path it registers,
-          and verify the engineering note comes from that loaded branch rather than an ordinary connector
-          response.
+        - Trace the diagnostic-only loader branch, then match its recovered archive namespace and object
+          identifier to the native repository note. Preserve the note revision and content digest alongside
+          the fresh loader result.
         completion:
           mode: automatic_range_evidence
     - id: K29

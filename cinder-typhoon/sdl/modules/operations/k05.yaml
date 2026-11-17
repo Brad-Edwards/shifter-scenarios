@@ -47,7 +47,7 @@ evidence_requirements:
     description: |-
       Identify the consumed package and exercise its expected interface. This supplies G03 without requiring the other K05 tasks.
 
-      Required technical proof: The consumer records a valid request, package name, resolved version range, and expected baseline result, awarding `G03`.
+      Required technical proof: The fresh check result binds the actual package version and archive digest to the input tenant, asset, consumer revision and executed module output.
     source_refs:
     - features.k-delivery.k-registry
     scope: Per-participant in-world evidence; no other participant state.
@@ -78,13 +78,13 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Test documented example success, malformed interface failure, correct package/version recording,
-      no registry authority.'
+    - 'Author checks: Verify native package metadata and tarball access, one valid consumer request, missing required
+      input failure, actual local module/file behavior and matching version/digests.'
   c2:
     description: |-
-      Recover the missing version record and note. It informs the package dispute but is not a hidden prerequisite for ordinary entry.
+      Recover the actual retained package version, native deprecation notice and matching customer maintenance record. Carry its entitlement context into the existing compatibility investigation.
 
-      Required technical proof: Completion binds the retained version metadata and maintenance note to `FLK-6.9.8`; it grants context only.
+      Required technical proof: The native version/deprecation metadata, exact downloaded package and customer release record agree on package identity and version, and recover the maintenance context needed by the retained entitlement investigation.
     source_refs:
     - features.k-delivery.k-registry
     scope: Per-participant in-world evidence; no other participant state.
@@ -115,13 +115,13 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Verify current listing omits the version, ticket/release history gives a lead, one record
-      resolves, active and obsolete revisions differ visibly, and no authority results.'
+    - 'Author checks: Verify that the real published 6.9.8 version remains readable, native deprecation is present,
+      customer record identity matches, unknown versions fail normally and no fictitious registry view is used.'
   c3:
     description: |-
       Produce a correctly bound comparison of package, version, and consumer revision. It must identify the actual disagreement, not just differing text.
 
-      Required technical proof: The scorer verifies a four-field comparison with both record IDs and makes the discrepancy available to K05.4.
+      Required technical proof: The comparison identifies the selected-version disagreement and matching consumer revision, bound to both business record IDs and the native package archive digest.
     source_refs:
     - features.k-delivery.k-registry
     scope: Per-participant in-world evidence; no other participant state.
@@ -152,13 +152,13 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Test clear active/obsolete labeling, a unique discrepancy, rejection of text-only comparison,
-      correct provenance references.'
+    - 'Author checks: Verify matching fields, the sole selected-version difference and matching consumer revision,
+      native archive integrity, wrong record-pair rejection and repeatable reads without release mutation.'
   c4:
     description: |-
       Make the intended check consumer identify its selected dependency through a fresh result. This is optional selection intelligence; K26 retains its own production delivery problem.
 
-      Required technical proof: The report binds resolved dependency, candidate set, consumer revision, and result digest; it is optional intelligence only.
+      Required technical proof: The native npm selection, exact archive digest, installed module version, preserved request bindings and actual consumer output identify the dependency that ran.
     source_refs:
     - features.k-delivery.k-registry
     scope: Per-participant in-world evidence; no other participant state.
@@ -189,8 +189,8 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Verify labels can disagree with resolution, intended candidate is selected, incompatible candidates
-      fail, a fresh receipt is required.'
+    - 'Author checks: Verify highest matching stable-version selection, standard no-matching-version failure, native
+      tarball integrity, actual module/local-file behavior and a fresh consumer result.'
 propositions:
   c1:
     description: Identify the consumed package and exercise its expected interface. This supplies G03 without requiring
@@ -289,7 +289,7 @@ objectives:
   c1:
     name: 'K05.1: Speak the package''s language'
     description: |-
-      Find the package interface used by the ARWC connector and make its documented example produce a valid result.
+      Find the actual connector package interface and make its documented example produce a valid result through the FieldLink check consumer.
 
       Establishes the package contract needed by either ordinary delivery route.
     assigned_participant: participant.operator
@@ -307,7 +307,7 @@ objectives:
   c2:
     name: 'K05.2: The version they kept'
     description: |-
-      The visible package listing skips an older release mentioned in the support ticket. Recover the retained version record and its maintenance note.
+      Recover the older connector release named in the support ticket. Establish how its native package deprecation relates to the retained customer maintenance record.
 
       Adds product history with its own information payoff.
     assigned_participant: participant.operator
@@ -325,7 +325,7 @@ objectives:
   c3:
     name: 'K05.3: Two manifests disagree'
     description: |-
-      The release manifest and the customer's recorded selection do not describe the same dependency. Reconcile the two and recover the exact discrepancy.
+      The release manifest and customer selection record disagree. Reconcile them against the actual native package and identify the exact selected-version discrepancy and matching consumer identity.
 
       Turns release metadata into an operationally useful finding.
     assigned_participant: participant.operator
@@ -343,7 +343,7 @@ objectives:
   c4:
     name: 'K05.4: Selection has consequences'
     description: |-
-      Demonstrate which dependency the check consumer really chooses from the available candidates. The answer must come from consumed behavior, not the release label.
+      Prove which dependency npm actually selects for the declared range and what the real installed consumer executes. Use package and module evidence rather than the release label.
 
       Distinguishes publisher intention from consumer behavior.
     assigned_participant: participant.operator
@@ -456,8 +456,9 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: 'This is an orientation task: inspect the earned source and run the documented interface against
-      the fixture consumer to identify the consumed package.'
+    procedure_basis: Read the native package interface and supply the ordinary input schema through the documented
+      consumer operation. The result must come from the real installed module rather than a release label or an
+      edited local output.
     realization_profile: backend-declared
     fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
       independently owned evidence are required. Backend choices remain open only where they cannot change those
@@ -472,8 +473,9 @@ action_contracts:
       - features.k-delivery.k-registry
     - precondition_id: normal-surface
       precondition_class: target
-      description: The FieldKest Gitea project documents the connector's package interface and supplies a fixture
-        consumer with a valid example request.
+      description: Verdaccio exposes the actual npm manifest and package tarball. The installed Node module exports
+        consume(request), reads its package metadata and local limits file, and the separate FieldLink delivery
+        application invokes it in the existing isolated worker.
       support_refs:
       - features.k-delivery.k-registry
       - content.keplerops-k-registry.k05-1-speak-the-package-s-language
@@ -497,8 +499,8 @@ action_contracts:
       - evidence_requirements.k05.c1
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: The consumer records a valid request, package name, resolved version range, and expected baseline
-        result, awarding `G03`.
+      description: The fresh check result binds the actual package version and archive digest to the input tenant,
+        asset, consumer revision and executed module output.
       target_refs:
       - features.k-delivery.k-registry
       evidence_refs:
@@ -514,9 +516,9 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: Registry search suppresses yanked maintenance versions while its versioned release manifest
-      remains normally recoverable through the named historical reference. The intended solution is revision-led
-      recovery.
+    procedure_basis: Follow the ticket release identity, inspect the native historical package and correlate its
+      deprecation notice with the customer maintenance record. A withdrawn customer rollout does not mean the package
+      was removed from the native registry.
     realization_profile: backend-declared
     fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
       independently owned evidence are required. Backend choices remain open only where they cannot change those
@@ -531,8 +533,9 @@ action_contracts:
       - features.k-delivery.k-registry
     - precondition_id: normal-surface
       precondition_class: target
-      description: The Forge release history and support case expose a visible gap in the current registry listing
-        for an older FieldKest release.
+      description: The support conversation refers to the retained 6.9.8 customer release. Verdaccio still stores
+        its actual native npm version with a genuine deprecation notice; the separate customer rollout record carries
+        its retained maintenance and entitlement context.
       support_refs:
       - features.k-delivery.k-registry
       - content.keplerops-k-registry.k05-2-the-version-they-kept
@@ -548,16 +551,17 @@ action_contracts:
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the missing version record and note. It informs the package dispute but is not a hidden
-        prerequisite for ordinary entry.
+      description: Recover the actual retained package version, native deprecation notice and matching customer
+        maintenance record. Carry its entitlement context into the existing compatibility investigation.
       target_refs:
       - features.k-delivery.k-registry
       evidence_refs:
       - evidence_requirements.k05.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: Completion binds the retained version metadata and maintenance note to `FLK-6.9.8`; it grants
-        context only.
+      description: The native version/deprecation metadata, exact downloaded package and customer release record
+        agree on package identity and version, and recover the maintenance context needed by the retained entitlement
+        investigation.
       target_refs:
       - features.k-delivery.k-registry
       evidence_refs:
@@ -573,8 +577,9 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: This is a structured reconciliation task. The intended solution joins the two authoritative
-      records and identifies the exact dependency discrepancy, excluding stale tenant and package values.
+    procedure_basis: Join the independent records by customer, release and package identity, compare their declared
+      ranges, selected versions and consumer revisions, then verify the actual package bytes. A label alone cannot
+      establish what the customer record selected.
     realization_profile: backend-declared
     fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
       independently owned evidence are required. Backend choices remain open only where they cannot change those
@@ -589,8 +594,9 @@ action_contracts:
       - features.k-delivery.k-registry
     - precondition_id: normal-surface
       precondition_class: target
-      description: The release manifest and active tenant record each declare package, version, consumer revision,
-        timestamp, and provenance for `TEN-ARWC-047`.
+      description: The FieldLink delivery application retains independent release and tenant package records. Verdaccio
+        supplies the real package manifest and tarball; the normal reconciliation operation compares the business
+        records without impersonating registry storage.
       support_refs:
       - features.k-delivery.k-registry
       - content.keplerops-k-registry.k05-3-two-manifests-disagree
@@ -614,8 +620,8 @@ action_contracts:
       - evidence_requirements.k05.c3
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: The scorer verifies a four-field comparison with both record IDs and makes the discrepancy available
-        to K05.4.
+      description: The comparison identifies the selected-version disagreement and matching consumer revision, bound
+        to both business record IDs and the native package archive digest.
       target_refs:
       - features.k-delivery.k-registry
       evidence_refs:
@@ -631,8 +637,9 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: The release label is deliberately not authoritative. The intended solution is controlled behavioral
-      validation of the reconciliation result through the consumer, not a guess from package names.
+    procedure_basis: Relate standard npm version-selection rules to the available native versions, then confirm
+      the selected archive and module behavior with the normal consumer. Compare the module output and archive integrity
+      with the reconciliation evidence.
     realization_profile: backend-declared
     fidelity_claim: The exact starting state, service transition, denial cases, participant-state persistence, and
       independently owned evidence are required. Backend choices remain open only where they cannot change those
@@ -647,8 +654,9 @@ action_contracts:
       - features.k-delivery.k-registry
     - precondition_id: normal-surface
       precondition_class: target
-      description: The isolated check consumer resolves the candidate dependencies using its real lock and range
-        policy and emits a fresh resolution report.
+      description: Native npm selects a real published package for the declared range. The isolated FieldLink check
+        installs its actual tarball offline, loads the module and ordinary local files, and returns the resulting
+        package version and behavior.
       support_refs:
       - features.k-delivery.k-registry
       - content.keplerops-k-registry.k05-4-selection-has-consequences
@@ -672,8 +680,8 @@ action_contracts:
       - evidence_requirements.k05.c4
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: The report binds resolved dependency, candidate set, consumer revision, and result digest; it
-        is optional intelligence only.
+      description: The native npm selection, exact archive digest, installed module version, preserved request bindings
+        and actual consumer output identify the dependency that ran.
       target_refs:
       - features.k-delivery.k-registry
       evidence_refs:

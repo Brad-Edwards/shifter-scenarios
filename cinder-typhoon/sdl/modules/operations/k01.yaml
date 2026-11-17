@@ -47,7 +47,7 @@ evidence_requirements:
     description: |-
       Recover and use the limited repository identity to obtain the protected handover. This supplies G01; credential discovery and use earn one accepted result.
 
-      Required technical proof: Gitea records a handover read by the operator-scoped developer identity and returns its current revision, awarding `G01`.
+      Required technical proof: Use the recovered limited identity to retrieve the actual native repository issue. Bind its native issue identity and content to the current handover identifier and revision, supplying `G01`. No custom handover endpoint or synthetic product-read audit is required.
     source_refs:
     - features.k-corporate.k-dev
     - features.k-delivery.k-source
@@ -481,8 +481,9 @@ action_contracts:
       - features.k-delivery.k-source
     - precondition_id: normal-surface
       precondition_class: target
-      description: Rowan's supplied workspace has a Gitea credential helper and FieldKest Forge project; the current
-        handover is protected by the developer's normal repository role.
+      description: Rowan's supplied workspace has a native Git credential helper and FieldKest Gitea repositories.
+        The current handover is an ordinary issue in the private fieldlink-connector repository, protected by Rowan's
+        native read-only role.
       support_refs:
       - features.k-corporate.k-dev
       - features.k-delivery.k-source
@@ -508,8 +509,9 @@ action_contracts:
       - evidence_requirements.k01.c1
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: Gitea records a handover read by the operator-scoped developer identity and returns its current
-        revision, awarding `G01`.
+      description: Use the recovered limited identity to retrieve the actual native repository issue. Bind its native
+        issue identity and content to the current handover identifier and revision, supplying `G01`. No custom handover
+        endpoint or synthetic product-read audit is required.
       target_refs:
       - features.k-corporate.k-dev
       - features.k-delivery.k-source

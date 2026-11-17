@@ -5,13 +5,12 @@
   "images": {
     "assistant": "assistant.keplerops.test",
     "cert": "cert.keplerops.test",
-    "ci": "ci.keplerops.test",
+    "ci": "review.keplerops.test",
     "cloud-api": "cloud-api.keplerops.test",
     "data": "data.keplerops.test",
     "identity": "identity.keplerops.test",
     "indexer": "indexer.keplerops.test",
-    "preview": "preview.keplerops.test",
-    "registry": "packages.keplerops.test",
+    "registry": "delivery.keplerops.test",
     "source": "source.keplerops.test",
     "staff": "staff.keplerops.test",
     "support": "support.keplerops.test",
@@ -23,77 +22,67 @@
       "purpose": "Repository, handover, and source-side engineering operations.",
       "routes": [
         {"key": "source.repos", "method": "GET", "template": "https://source.keplerops.test/api/v1/user/repos"},
-        {"key": "source.handover", "method": "GET", "template": "https://source.keplerops.test/api/fieldkest/handovers/current"},
-        {"key": "source.policy-evaluate", "method": "POST", "template": "https://source.keplerops.test/api/policy-compilers/fieldkest-policyc/evaluations"},
-        {"key": "source.policy-nonce", "method": "POST", "template": "https://source.keplerops.test/api/policy-compilers/fieldkest-policyc/nonces"},
-        {"key": "source.connector-run", "method": "POST", "template": "https://source.keplerops.test/api/exercises/connector-archive/run"}
+        {"key": "source.handover", "method": "GET", "template": "https://source.keplerops.test/api/v1/repos/fieldkest/fieldlink-connector/issues"},
+        {"key": "source.policy-evaluate", "method": "POST", "template": "https://source-tools.keplerops.test:8443/api/policy-compilers/fieldkest-policyc/evaluations"},
+        {"key": "source.policy-nonce", "method": "POST", "template": "https://source-tools.keplerops.test:8443/api/policy-compilers/fieldkest-policyc/nonces"},
+        {"key": "source.connector-run", "method": "POST", "template": "https://source-tools.keplerops.test:8443/api/exercises/connector-archive/run"}
       ],
       "related": [
-        "https://ci.keplerops.test/.well-known/fieldkest-client",
-        "https://packages.keplerops.test/.well-known/fieldkest-client",
+        "https://review.keplerops.test/.well-known/fieldkest-client",
+        "https://delivery.keplerops.test:8443/.well-known/fieldkest-client",
         "https://support.keplerops.test/.well-known/fieldkest-client"
       ]
     },
-    "ci.keplerops.test": {
-      "title": "CI client reference",
-      "purpose": "Run, review, workspace, and release-rehearsal operations.",
+    "review.keplerops.test": {
+      "title": "FieldLink report and diagnostic service",
+      "purpose": "FieldLink report integration, isolated diagnostics, and connector rehearsal.",
       "routes": [
-        {"key": "ci.run", "method": "GET", "template": "https://ci.keplerops.test/api/runs/{run_id}"},
-        {"key": "ci.run-log", "method": "GET", "template": "https://ci.keplerops.test/api/runs/{run_id}/log"},
-        {"key": "ci.run-artifact", "method": "GET", "template": "https://ci.keplerops.test/api/runs/{run_id}/artifacts/{artifact}"},
-        {"key": "ci.review-import", "method": "POST", "template": "https://ci.keplerops.test/api/reviews/import"},
-        {"key": "ci.report-jobs", "method": "POST", "template": "https://ci.keplerops.test/api/jobs"},
-        {"key": "ci.report-job", "method": "GET", "template": "https://ci.keplerops.test/api/jobs/{job_id}"},
-        {"key": "ci.review-jobs", "method": "POST", "template": "https://ci.keplerops.test/api/review-jobs"},
-        {"key": "ci.review-job", "method": "GET", "template": "https://ci.keplerops.test/api/review-jobs/{run_id}"},
-        {"key": "ci.workspace-file", "method": "GET", "template": "https://ci.keplerops.test/api/review-workspace/files/{path}"},
-        {"key": "ci.connector-rehearsal", "method": "POST", "template": "https://ci.keplerops.test/api/rehearsals/connector"},
-        {"key": "ci.lineage-rollover", "method": "POST", "template": "https://ci.keplerops.test/api/rehearsals/lineage-rollover"}
+        {"key": "ci.run", "method": "GET", "template": "https://ci.keplerops.test/job/fieldlink-report/{run_id}/api/json"},
+        {"key": "ci.run-log", "method": "GET", "template": "https://ci.keplerops.test/job/fieldlink-report/{run_id}/consoleText"},
+        {"key": "ci.run-artifact", "method": "GET", "template": "https://ci.keplerops.test/job/fieldlink-report/{run_id}/artifact/reports/{artifact}"},
+        {"key": "ci.report-parameter-build", "method": "POST", "template": "https://ci.keplerops.test/job/fieldlink-report-review/buildWithParameters"},
+        {"key": "ci.report-build", "method": "GET", "template": "https://ci.keplerops.test/job/fieldlink-report-review/{build_number}/api/json"},
+        {"key": "ci.report-artifact", "method": "GET", "template": "https://ci.keplerops.test/job/fieldlink-report-review/{build_number}/artifact/reports/{artifact}"},
+        {"key": "ci.package-build", "method": "GET", "template": "https://ci.keplerops.test/job/fieldlink-package-check/{build_number}/api/json"},
+        {"key": "ci.package-artifact", "method": "GET", "template": "https://ci.keplerops.test/job/fieldlink-package-check/{build_number}/artifact/package-workspace/{artifact}"},
+        {"key": "ci.review-import", "method": "POST", "template": "https://review.keplerops.test/api/reviews/import"},
+        {"key": "ci.report-jobs", "method": "POST", "template": "https://review.keplerops.test/api/jobs"},
+        {"key": "ci.report-job", "method": "GET", "template": "https://review.keplerops.test/api/jobs/{job_id}"},
+        {"key": "ci.review-jobs", "method": "POST", "template": "https://review.keplerops.test/api/review-jobs"},
+        {"key": "ci.review-job", "method": "GET", "template": "https://review.keplerops.test/api/review-jobs/{run_id}"},
+        {"key": "ci.workspace-file", "method": "GET", "template": "https://review.keplerops.test/api/review-workspace/files/{path}"},
+        {"key": "ci.connector-rehearsal", "method": "POST", "template": "https://review.keplerops.test/api/rehearsals/connector"},
+        {"key": "ci.lineage-rollover", "method": "POST", "template": "https://review.keplerops.test/api/rehearsals/lineage-rollover"}
       ],
       "related": []
     },
-    "packages.keplerops.test": {
-      "title": "Package and delivery client reference",
-      "purpose": "Package lifecycle, inspection, entitlement, approval, and customer delivery operations.",
+    "delivery.keplerops.test": {
+      "title": "FieldLink delivery and compatibility services",
+      "purpose": "FieldLink inspection, entitlement, release approval, and customer delivery operations.",
       "routes": [
         {"key": "packages.metadata", "method": "GET", "template": "https://packages.keplerops.test/@keplerops%2ffieldlink-connector"},
-        {"key": "packages.consumer-check", "method": "POST", "template": "https://packages.keplerops.test/api/consumer-checks"},
-        {"key": "packages.release", "method": "GET", "template": "https://packages.keplerops.test/api/releases/{release_id}"},
-        {"key": "packages.reconcile", "method": "POST", "template": "https://packages.keplerops.test/api/reconcile/tenant-package"},
-        {"key": "packages.resolver", "method": "POST", "template": "https://packages.keplerops.test/api/resolver/runs"},
-        {"key": "packages.import", "method": "POST", "template": "https://packages.keplerops.test/api/imports"},
         {"key": "packages.publish", "method": "PUT", "template": "https://packages.keplerops.test/@keplerops%2ffieldlink-connector"},
-        {"key": "packages.view", "method": "GET", "template": "https://packages.keplerops.test/api/package-views/{view}/{package}"},
-        {"key": "packages.inspections", "method": "POST", "template": "https://packages.keplerops.test/api/inspections"},
-        {"key": "packages.inspection-trace", "method": "GET", "template": "https://packages.keplerops.test/api/inspections/{inspection_id}/trace"},
-        {"key": "packages.inspection-envelope", "method": "POST", "template": "https://packages.keplerops.test/api/inspections/envelope"},
-        {"key": "packages.entitlement", "method": "GET", "template": "https://packages.keplerops.test/api/compatibility/entitlements/{entitlement_id}"},
-        {"key": "packages.entitlement-check", "method": "POST", "template": "https://packages.keplerops.test/api/compatibility/entitlements/check"},
-        {"key": "packages.approval", "method": "POST", "template": "https://packages.keplerops.test/api/releases/{release_id}/approval"},
+        {"key": "packages.private-metadata", "method": "GET", "template": "https://packages.keplerops.test/@keplerops%2fsupport-rehearsal"},
+        {"key": "packages.consumer-check", "method": "POST", "template": "https://delivery.keplerops.test:8443/api/consumer-checks"},
+        {"key": "packages.release", "method": "GET", "template": "https://delivery.keplerops.test:8443/api/releases/{release_id}"},
+        {"key": "packages.reconcile", "method": "POST", "template": "https://delivery.keplerops.test:8443/api/reconcile/tenant-package"},
+        {"key": "packages.inspections", "method": "POST", "template": "https://delivery.keplerops.test:8443/api/inspections"},
+        {"key": "packages.inspection-trace", "method": "GET", "template": "https://delivery.keplerops.test:8443/api/inspections/{inspection_id}/trace"},
+        {"key": "packages.inspection-envelope", "method": "POST", "template": "https://delivery.keplerops.test:8443/api/inspections/envelope"},
+        {"key": "packages.entitlement", "method": "GET", "template": "https://delivery.keplerops.test:8443/api/compatibility/entitlements/{entitlement_id}"},
+        {"key": "packages.entitlement-check", "method": "POST", "template": "https://delivery.keplerops.test:8443/api/compatibility/entitlements/check"},
+        {"key": "packages.approval", "method": "POST", "template": "https://delivery.keplerops.test:8443/api/releases/{release_id}/approval"},
         {"key": "connector.poll", "method": "POST", "template": "https://connector.arwc.test/api/fieldlink/packages/poll"},
         {"key": "connector.activate", "method": "POST", "template": "https://connector.arwc.test/api/fieldlink/packages/{version}/activate"},
         {"key": "connector.receipt", "method": "GET", "template": "https://connector.arwc.test/api/fieldlink/packages/{version}/receipt"},
         {"key": "connector.rollback", "method": "POST", "template": "https://connector.arwc.test/api/fieldlink/rehearsals/rollback"}
       ],
       "related": [
-        "https://preview.keplerops.test/.well-known/fieldkest-client",
         "https://indexer.keplerops.test/.well-known/fieldkest-client",
         "https://cloud-api.keplerops.test/.well-known/fieldkest-client"
       ]
     },
-    "preview.keplerops.test": {
-      "title": "Preview client reference",
-      "purpose": "Attachment, document rendering, and assigned-review operations.",
-      "routes": [
-        {"key": "preview.association", "method": "GET", "template": "https://preview.keplerops.test/api/attachments/{attachment}/preview-association"},
-        {"key": "preview.documents", "method": "POST", "template": "https://preview.keplerops.test/api/documents"},
-        {"key": "preview.render", "method": "POST", "template": "https://preview.keplerops.test/api/documents/{source_id}/render"},
-        {"key": "preview.assignment", "method": "PATCH", "template": "https://preview.keplerops.test/api/reviews/{review_id}/assignment"},
-        {"key": "preview.prepare", "method": "POST", "template": "https://preview.keplerops.test/api/reviews/{review_id}/actions/prepare"},
-        {"key": "preview.review-render", "method": "POST", "template": "https://preview.keplerops.test/review/{review_id}/render"}
-      ],
-      "related": []
-    },
+
     "indexer.keplerops.test": {
       "title": "Bundle index client reference",
       "purpose": "Submit native bundle index requests.",

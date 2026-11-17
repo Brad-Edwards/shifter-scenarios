@@ -50,9 +50,18 @@ fi
 cp "$OPERATOR_DIR/rowan_ed25519.pub" "$OPERATOR_DIR/rowan_authorized_keys"
 
 if [[ ! -s "$OPERATOR_DIR/tls/ca.key" ]]; then
-  openssl req -x509 -newkey rsa:3072 -nodes -days 3650 \
+  openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 \
+    -out "$OPERATOR_DIR/tls/ca.key" 2>/dev/null
+fi
+if [[ ! -s "$OPERATOR_DIR/tls/ca.crt" ]] || ! openssl x509 \
+    -in "$OPERATOR_DIR/tls/ca.crt" -noout -ext keyUsage 2>/dev/null | grep -q 'Certificate Sign'; then
+  openssl req -x509 -new -key "$OPERATOR_DIR/tls/ca.key" -days 3650 \
     -subj '/CN=KeplerOps Range CA' \
-    -keyout "$OPERATOR_DIR/tls/ca.key" -out "$OPERATOR_DIR/tls/ca.crt"
+    -addext 'basicConstraints=critical,CA:TRUE' \
+    -addext 'keyUsage=critical,keyCertSign,cRLSign' \
+    -addext 'subjectKeyIdentifier=hash' \
+    -addext 'authorityKeyIdentifier=keyid:always' \
+    -out "$OPERATOR_DIR/tls/ca.crt"
 fi
 
 if [[ ! -s "$OPERATOR_DIR/tls/evan.key" ]]; then
@@ -100,11 +109,17 @@ EOF
   fi
 done
 
-openssl req -newkey rsa:3072 -nodes \
-  -subj '/CN=keplerops.test' \
-  -keyout "$OPERATOR_DIR/tls/server.key" -out "$OPERATOR_DIR/tls/server.csr" 2>/dev/null
+if [[ ! -s "$OPERATOR_DIR/tls/server.key" ]]; then
+  openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 \
+    -out "$OPERATOR_DIR/tls/server.key" 2>/dev/null
+fi
+openssl req -new -key "$OPERATOR_DIR/tls/server.key" \
+  -subj '/CN=keplerops.test' -out "$OPERATOR_DIR/tls/server.csr" 2>/dev/null
 cat >"$OPERATOR_DIR/tls/server.ext" <<'EOF'
-subjectAltName=DNS:k-dev.keplerops.test,DNS:edge.keplerops.test,DNS:foundation.keplerops.test,DNS:source.keplerops.test,DNS:git.keplerops.test,DNS:packages.keplerops.test,DNS:registry.keplerops.test,DNS:ci.keplerops.test,DNS:jenkins.keplerops.test,DNS:preview.keplerops.test,DNS:support.keplerops.test,DNS:tickets.keplerops.test,DNS:indexer.keplerops.test,DNS:staff.keplerops.test,DNS:workboard.keplerops.test,DNS:identity.keplerops.test,DNS:id.keplerops.test,DNS:cert.keplerops.test,DNS:ca.keplerops.test,DNS:cloud.keplerops.test,DNS:cloud-api.keplerops.test,DNS:data.keplerops.test,DNS:objects.keplerops.test,DNS:workload.keplerops.test,DNS:workloads.keplerops.test,DNS:assistant.keplerops.test,DNS:llm.keplerops.test,DNS:connector.arwc.test
+basicConstraints=critical,CA:FALSE
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid,issuer
+subjectAltName=DNS:k-dev.keplerops.test,DNS:edge.keplerops.test,DNS:foundation.keplerops.test,DNS:source.keplerops.test,DNS:source-tools.keplerops.test,DNS:git.keplerops.test,DNS:packages.keplerops.test,DNS:delivery.keplerops.test,DNS:registry.keplerops.test,DNS:ci.keplerops.test,DNS:review.keplerops.test,DNS:jenkins.keplerops.test,DNS:preview.keplerops.test,DNS:support.keplerops.test,DNS:tickets.keplerops.test,DNS:indexer.keplerops.test,DNS:staff.keplerops.test,DNS:workboard.keplerops.test,DNS:identity.keplerops.test,DNS:id.keplerops.test,DNS:cert.keplerops.test,DNS:ca.keplerops.test,DNS:cloud.keplerops.test,DNS:cloud-api.keplerops.test,DNS:data.keplerops.test,DNS:objects.keplerops.test,DNS:workload.keplerops.test,DNS:workloads.keplerops.test,DNS:assistant.keplerops.test,DNS:llm.keplerops.test,DNS:connector.arwc.test
 keyUsage=digitalSignature,keyEncipherment
 extendedKeyUsage=serverAuth
 EOF
@@ -122,3 +137,5 @@ fi
 chmod 0600 "$OPERATOR_DIR/rowan_ed25519" "$OPERATOR_DIR/worker-hmac.key" "$OPERATOR_DIR/fixture-issuer.key" "$OPERATOR_DIR/tls/ca.key" "$OPERATOR_DIR/tls/server.key" "$OPERATOR_DIR/tls/evan.key" "$OPERATOR_DIR/integration/registry-delivery.key" "$OPERATOR_DIR/integration/support-delivery.key"
 chmod 0644 "$OPERATOR_DIR/rowan_ed25519.pub" "$OPERATOR_DIR/rowan_authorized_keys" "$OPERATOR_DIR/fixture-issuer.pub" "$OPERATOR_DIR/tls/ca.crt" "$OPERATOR_DIR/tls/server.crt" "$OPERATOR_DIR/tls/evan.crt"
 chmod 0644 "$OPERATOR_DIR/integration/arwc-ca.crt" "$OPERATOR_DIR/integration/registry-delivery.crt" "$OPERATOR_DIR/integration/support-delivery.crt"
+python3 "$ROOT/native-ci/prepare.py" --operator-dir "$OPERATOR_DIR"
+python3 "$ROOT/native-registry/prepare-participant.py" --operator-dir "$OPERATOR_DIR"
