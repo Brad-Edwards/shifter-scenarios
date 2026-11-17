@@ -1113,12 +1113,14 @@ hints:
     - kind: client_route
       id: process.diagnostic-run
   W28.1:
-    h1: Begin with the constrained engineering utility and its control-authority exchange. Its published client
-      document exposes the collision inputs operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as control-flow recovery within a deliberately small executable surface. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the collision inputs operation in the published client reference. Capture one ordinary response and
-      one denial, then correlate the returned identifiers with evidence already earned.
+    h1: POST /api/collision-inputs/current with body {"operation":"materials","project_revision":364}.
+      Returns the utility binary (utility_b64), relationship, ordinary_invocations, relocations, seccomp_policy,
+      and a signed status record with session_id, stack_canary, and return_address.
+    h2: The status record is signed with Ed25519 (key derived from SHA-256 of a fixed label). The canary and
+      return address are freshly generated per session and persist for the session lifetime. The return address
+      encodes the ELF-relative offset from status_return_offset in the relationship file and the current PIE base.
+    h3: This card only requires recovering the contract materials. Submit the materials request and retain the
+      full response (status record, binary, relationship) for use in W28.2 and W28.3.
     references:
     - kind: client_route
       id: process.collision-inputs
