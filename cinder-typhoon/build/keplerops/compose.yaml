@@ -882,6 +882,7 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.key:/run/fieldkest-tls/server.key:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/runtime-credentials.json:/run/fieldkest-auth/runtime-credentials.json:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/cloud-api-k3s.json:/etc/cloud-api/k3s.json:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
     extra_hosts:
