@@ -431,6 +431,37 @@ class SupportHandler(KeplerHandler):
             job.update({"state": "delivered", "receipt": value}); save_extended(state); append_audit(AUDIT, "diagnostic-delivery", {"request_id": self.request_id, "principal": self.principal, "job_id": match.group(1), "receipt_id": value["receipt_id"], "destination_audit_id": value["audit_id"], "status": 202}); return self.send_json(202, value)
         self.send_json(404, {"error": "not_found"})
 
+    def do_PUT(self) -> None:
+        # K27.2: diagnostic-package PUT API — same handler as the POST package route.
+        # The SDL specifies PUT for the diagnostic package upload.
+        path = urlsplit(self.path).path
+        if not self._authorized() or self.principal == "svc-fieldlink-assistant":
+            return self.send_json(403, {"error": "integration_token_denied"})
+        match = re.fullmatch(r"/api/diagnostics/([^/]+)/package", path)
+        if match:
+            data = self.read_json()
+            state = extended()
+            job = state["diagnostics"].get(match.group(1))
+            if not job:
+                return self.send_json(404, {"error": "job_not_found"})
+            if (data.get("interface") != "fieldkest.connector/v3"
+                    or not isinstance(data.get("expected_output"), dict)
+                    or not isinstance(data.get("source"), str)
+                    or len(data["source"].encode()) > 131_072):
+                return self.send_json(422, {"error": "package_denied"})
+            signed = {key: data[key] for key in ("interface", "source", "expected_output")}
+            data["package_sha256"] = hashlib.sha256(
+                json.dumps(signed, sort_keys=True, separators=(",", ":")).encode()
+            ).hexdigest()
+            job.update({"package": data, "state": "packaged"})
+            save_extended(state)
+            append_audit(AUDIT, "diagnostic-package", {
+                "request_id": self.request_id, "principal": self.principal,
+                "job_id": match.group(1), "digest": data["package_sha256"], "status": 200,
+            })
+            return self.send_json(200, job)
+        self.send_json(404, {"error": "not_found"})
+
 
 def main() -> None:
     AUDIT.mkdir(parents=True, exist_ok=True)
