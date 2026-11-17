@@ -630,6 +630,11 @@ class Handler(BaseHTTPRequestHandler):
         "template": "PROCESS_VIEW_BASE/api/request-plans/current"
     },
     {
+        "key": "process.remote-operation",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/remote-operations/current"
+    },
+    {
         "key": "process.estimator-sufficiency",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/estimator-sufficiency/current"
@@ -871,6 +876,9 @@ class Handler(BaseHTTPRequestHandler):
             return
         if ROLE == "engineering" and path == "/api/request-plans/current":
             self.w30_post(path, request, state)
+            return
+        if ROLE == "engineering" and path == "/api/remote-operations/current":
+            self.w30_2_post(path, request, state)
             return
         if ROLE == "engineering" and path in {
             "/api/estimator-tasks/current/inputs", "/api/estimator-results/current",
@@ -1637,6 +1645,116 @@ class Handler(BaseHTTPRequestHandler):
         }
         atomic_json(ROOT / "artifacts" / "request-plan" / "result.json", record)
         self.accepted("request-plan", record, 201)
+        return
+
+    def w30_2_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state.get("request_planned"):
+            self.send_json(403, {"error": "request plan evidence (W30.1) required"})
+            return
+        REQUIRED = {
+            "asset", "request_id", "remote_sequence", "received_at", "completed_at",
+            "restore_sequence", "restore_accepted_at", "final_observed_at",
+            "interval_start", "interval_end", "interpretation",
+        }
+        INTERPRETATION = "durable_receipt_plc_acceptance_measured_completion_local_handback"
+        if (set(request) != REQUIRED or
+                request.get("asset") != "AST-CRR-017" or
+                request.get("interpretation") != INTERPRETATION):
+            self.send_json(409, {"error": "W30.2 submission fields or interpretation do not match"})
+            return
+        import uuid as _uuid
+        import datetime as _dt
+        UTC = _dt.timezone.utc
+        try:
+            request_id = str(_uuid.UUID(str(request["request_id"])))
+            remote_sequence = int(request["remote_sequence"])
+            restore_sequence = int(request["restore_sequence"])
+            received = _dt.datetime.fromisoformat(str(request["received_at"]).replace("Z", "+00:00")).astimezone(UTC)
+            completed = _dt.datetime.fromisoformat(str(request["completed_at"]).replace("Z", "+00:00")).astimezone(UTC)
+            restore_accepted = _dt.datetime.fromisoformat(str(request["restore_accepted_at"]).replace("Z", "+00:00")).astimezone(UTC)
+            final = _dt.datetime.fromisoformat(str(request["final_observed_at"]).replace("Z", "+00:00")).astimezone(UTC)
+            start = _dt.datetime.fromisoformat(str(request["interval_start"]).replace("Z", "+00:00")).astimezone(UTC)
+            end = _dt.datetime.fromisoformat(str(request["interval_end"]).replace("Z", "+00:00")).astimezone(UTC)
+        except (ValueError, TypeError):
+            self.send_json(409, {"error": "W30.2 timestamps or IDs are invalid"})
+            return
+        if remote_sequence == restore_sequence:
+            self.send_json(409, {"error": "remote and restore sequences must be distinct"})
+            return
+        if not (start <= received < completed < restore_accepted <= final <= end):
+            self.send_json(409, {"error": "W30.2 operation interval ordering is invalid"})
+            return
+        OT_HISTORIAN = "172.29.63.22"
+        OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+        EXPECTED_STATES = ["received", "dispatch_intent", "dispatched", "plc_accepted", "completed"]
+        TOLERANCE_FLOW = 0.0075
+        EXPECTED_FLOW = 0.15
+        try:
+            import psycopg2 as _pg
+            ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
+                             user="reader", password=OT_READER_PASS, connect_timeout=5)
+            ot.autocommit = True
+            with ot.cursor() as cur:
+                cur.execute(
+                    "SELECT status,sequence,time,detail FROM public.dispatch_history "
+                    "WHERE id=%s ORDER BY time", (request_id,)
+                )
+                dispatch_rows = cur.fetchall()
+                cur.execute(
+                    "SELECT channel,decision,sequence,source_time FROM public.command_history "
+                    "WHERE asset='AST-CRR-017' AND source_time >= %s AND source_time <= %s",
+                    (start, end)
+                )
+                command_rows = cur.fetchall()
+            ot.close()
+        except (OSError, ImportError):
+            self.send_json(409, {"error": "OT historian unavailable"})
+            return
+        if not dispatch_rows:
+            self.send_json(409, {"error": "request not found in dispatcher journal"})
+            return
+        statuses = [r[0] for r in dispatch_rows]
+        if statuses != EXPECTED_STATES:
+            self.send_json(409, {"error": f"dispatcher states do not match expected sequence: {statuses}"})
+            return
+        if any(r[1] != remote_sequence for r in dispatch_rows):
+            self.send_json(409, {"error": "dispatcher sequences do not agree"})
+            return
+        import datetime as _dt2
+        UTC2 = _dt2.timezone.utc
+        received_db = dispatch_rows[0][2].replace(tzinfo=UTC2)
+        completed_db = dispatch_rows[-1][2].replace(tzinfo=UTC2)
+        if abs((received_db - received).total_seconds()) > 2.0 or abs((completed_db - completed).total_seconds()) > 2.0:
+            self.send_json(409, {"error": "claimed timestamps do not match dispatcher journal"})
+            return
+        detail = dispatch_rows[-1][3]
+        if isinstance(detail, str):
+            import json as _json2; detail = _json2.loads(detail)
+        flow_a = float(detail.get("flow_a_m3s", 0))
+        flow_b = float(detail.get("flow_b_m3s", 0))
+        if abs(flow_a - EXPECTED_FLOW) > TOLERANCE_FLOW or abs(flow_b - EXPECTED_FLOW) > TOLERANCE_FLOW:
+            self.send_json(409, {"error": f"remote flows outside tolerance: a={flow_a:.4f} b={flow_b:.4f}"})
+            return
+        dispatcher_cmd = next((r for r in command_rows if r[0] == "dispatcher" and r[2] == remote_sequence), None)
+        hmi_cmd = next((r for r in command_rows if r[0] == "HMI" and r[2] == restore_sequence), None)
+        if dispatcher_cmd is None or hmi_cmd is None:
+            self.send_json(409, {"error": "command history missing dispatcher or HMI acceptance"})
+            return
+        restore_db = hmi_cmd[3].replace(tzinfo=UTC2)
+        if abs((restore_db - restore_accepted).total_seconds()) > 2.0:
+            self.send_json(409, {"error": "claimed restore_accepted_at does not match command history"})
+            return
+        state["w30_result"] = True
+        save_state(state)
+        record = {
+            "record_id": "RESULT-CRR-W30-R1", "revision": 1,
+            "instruction": "CRR-OP-W30-R1", "asset": "AST-CRR-017",
+            "request_id": request_id, "remote_sequence": remote_sequence,
+            "restore_sequence": restore_sequence, "baseline_restored": True,
+            "flow_a_m3s": flow_a, "flow_b_m3s": flow_b,
+        }
+        atomic_json(ROOT / "artifacts" / "remote-operation" / "result.json", record)
+        self.accepted("remote-operation", record, 201)
 
     def w32_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state["replay_structure_recovered"]:

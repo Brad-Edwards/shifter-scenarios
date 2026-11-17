@@ -1208,12 +1208,17 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W30/operator-brief.md
   W30.2:
-    h1: Enable remote selection in FUXA, then use the fixed authenticated MQTT contract topics for one fresh,
-      non-retained QoS 1 request at the approved target.
-    h2: Correlate the same UUID and PLC sequence through durable receipt, dispatch, native acceptance, settled two-outlet
-      feedback, and retained history. Treat a publish acknowledgement as broker receipt only.
-    h3: After remote completion, use local FUXA priority to restore manual A20/B20. Verify the local sequence, measured
-      flow, ownership, permissives, motion, faults, and historian record before finishing.
+    h1: POST /api/remote-operations/current with the W30.2 submission after executing the real operation.
+      Requires W30.1 (request_planned). Submission must include request_id, remote_sequence, timestamps
+      (received_at, completed_at, restore_accepted_at, final_observed_at, interval_start, interval_end),
+      restore_sequence, and interpretation=durable_receipt_plc_acceptance_measured_completion_local_handback.
+    h2: Publish the MQTT request (operator/Y7kjNV-... to mosquitto:8883, topic arwc/crr/commands/operator,
+      QoS 1 no-retain). The dispatcher records 5 states: received→dispatch_intent→dispatched→plc_accepted→completed.
+      Flows complete at ~0.15 m³/s each outlet. Restore via FUXA: HmiRemoteEnabled=false, HmiAutoMode=false,
+      HmiTargetPct=20, HmiTargetBPct=20, then increment HmiSequence. Owner returns to 1, AutoMode=false.
+    h3: The service validates dispatch_history (all 5 states, remote_sequence), command_history (dispatcher
+      and HMI acceptances), and flow tolerances (±0.0075 m³/s from 0.15). All timestamps must match
+      database records within 2 seconds. Reader must be granted SELECT on ot_dispatch schema.
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W30/operator-brief.md
