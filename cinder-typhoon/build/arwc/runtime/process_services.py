@@ -53,6 +53,7 @@ INITIAL = {
     "engineering": {},
     "instruments": {
         "reserve_observed": False,
+        "paper_variance_observed": False,
         "reporting_handover_observed": False, "reporting_handover_response": None,
     },
 }
@@ -618,6 +619,11 @@ class Handler(BaseHTTPRequestHandler):
         "template": "PROCESS_VIEW_BASE/api/reserve-reconciliations/current"
     },
     {
+        "key": "process.paper-reconciliation",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/paper-reconciliations/current"
+    },
+    {
         "key": "process.estimator-sufficiency",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/estimator-sufficiency/current"
@@ -853,6 +859,9 @@ class Handler(BaseHTTPRequestHandler):
             return
         if ROLE == "engineering" and path == "/api/reserve-reconciliations/current":
             self.w29_post(path, request, state)
+            return
+        if ROLE == "engineering" and path == "/api/paper-reconciliations/current":
+            self.w29_3_post(path, request, state)
             return
         if ROLE == "engineering" and path in {
             "/api/estimator-tasks/current/inputs", "/api/estimator-results/current",
@@ -1370,7 +1379,7 @@ class Handler(BaseHTTPRequestHandler):
                     ORDER BY ph.source_time DESC
                     LIMIT 20
                 """)
-                rows = ot.cursor().fetchall() if False else cur.fetchall()
+                rows = cur.fetchall()
             ot.close()
         except (OSError, ImportError) as exc:
             self.send_json(409, {"error": "OT historian unavailable"})
@@ -1436,6 +1445,110 @@ class Handler(BaseHTTPRequestHandler):
         }
         atomic_json(ROOT / "artifacts" / "reserve-reconciliation" / "result.json", record)
         self.accepted("reserve-reconciliation", record, 201)
+
+    def w29_3_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state.get("reserve_observed"):
+            self.send_json(403, {"error": "reserve reconciliation evidence required"})
+            return
+        required = {
+            "planning_window", "asset", "report_id", "report_as_of", "reported_ml",
+            "observed_at", "measured_usable_volume_ml",
+            "signed_paper_variance_ml", "direction", "time_basis", "conclusion",
+        }
+        REPORT_AS_OF = "2026-11-09T00:00:00Z"
+        REPORTED_ML = 13.4
+        TOLERANCE = 0.005
+        ACCEPTED_DIRECTIONS = {
+            "report_above_later_process_value",
+            "report_below_later_process_value",
+            "aligned_within_tolerance",
+        }
+        if (set(request) != required or
+                request.get("planning_window") != "ALLOC-2026-DP3" or
+                request.get("asset") != "AST-CRR-017" or
+                request.get("report_id") != "RPT-CRR-DP3-R7" or
+                request.get("report_as_of") != REPORT_AS_OF or
+                request.get("time_basis") != "different_as_of_times" or
+                request.get("conclusion") != "paper_report_is_not_current_process_truth" or
+                request.get("direction") not in ACCEPTED_DIRECTIONS):
+            self.send_json(409, {"error": "paper reconciliation fields do not match the planning contract"})
+            return
+        import datetime as _dt
+        UTC = _dt.timezone.utc
+        REPORT_TIME = _dt.datetime(2026, 11, 9, 0, 0, 0, tzinfo=UTC)
+        try:
+            observed_str = request["observed_at"]
+            observed = _dt.datetime.fromisoformat(observed_str.replace("Z", "+00:00")).astimezone(UTC)
+        except (ValueError, TypeError):
+            self.send_json(409, {"error": "observed_at must be a valid ISO 8601 timestamp"})
+            return
+        if observed <= REPORT_TIME:
+            self.send_json(409, {"error": "observed_at must be later than the report as_of time"})
+            return
+        OT_HISTORIAN = "172.29.63.22"
+        OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+        try:
+            import psycopg2 as _pg
+            ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
+                             user="reader", password=OT_READER_PASS, connect_timeout=5)
+            ot.autocommit = True
+            with ot.cursor() as cur:
+                cur.execute("""
+                    SELECT ph.source_time, ph.value, ph.unit, ph.process_quality
+                    FROM public.process_history ph
+                    JOIN public.historian_tag_catalog c ON c.series = ph.tag
+                    WHERE ph.asset = 'AST-CRR-017'
+                      AND c.variable = 'UsableVolumeML'
+                      AND ph.source_time >= current_timestamp - interval '5 minutes'
+                    ORDER BY ph.source_time DESC
+                    LIMIT 20
+                """)
+                rows = cur.fetchall()
+            ot.close()
+        except (OSError, ImportError):
+            self.send_json(409, {"error": "OT historian unavailable"})
+            return
+        if not rows:
+            self.send_json(409, {"error": "no recent UsableVolumeML samples in OT historian"})
+            return
+        best = min(rows, key=lambda r: abs((r[0].replace(tzinfo=UTC) - observed).total_seconds()))
+        source_time, value, unit, quality = best[0], best[1], best[2], best[3]
+        source_time = source_time.replace(tzinfo=UTC)
+        if abs((source_time - observed).total_seconds()) > 5.0:
+            self.send_json(409, {"error": "no UsableVolumeML sample within 5s of the claimed observation"})
+            return
+        if quality != "Good":
+            self.send_json(409, {"error": "nearest UsableVolumeML sample does not have Good process quality"})
+            return
+        variance = REPORTED_ML - value
+        if variance > TOLERANCE:
+            direction = "report_above_later_process_value"
+        elif variance < -TOLERANCE:
+            direction = "report_below_later_process_value"
+        else:
+            direction = "aligned_within_tolerance"
+        def _near(a: float, b: float) -> bool:
+            return abs(float(a) - float(b)) <= TOLERANCE
+        if (not _near(request["reported_ml"], REPORTED_ML) or
+                not _near(request["measured_usable_volume_ml"], value) or
+                not _near(request["signed_paper_variance_ml"], variance) or
+                request["direction"] != direction):
+            self.send_json(409, {"error": "paper variance values do not match product evidence"})
+            return
+        state["paper_variance_observed"] = True
+        save_state(state)
+        record = {
+            "record_id": "PAPER-VAR-CRR-DP3", "revision": 1,
+            "planning_window": "ALLOC-2026-DP3", "asset": "AST-CRR-017",
+            "report_id": "RPT-CRR-DP3-R7", "report_as_of": REPORT_AS_OF,
+            "reported_ml": REPORTED_ML, "observed_at": observed_str,
+            "measured_usable_volume_ml": value,
+            "signed_paper_variance_ml": variance, "direction": direction,
+            "time_basis": "different_as_of_times",
+            "conclusion": "paper_report_is_not_current_process_truth",
+        }
+        atomic_json(ROOT / "artifacts" / "paper-reconciliation" / "result.json", record)
+        self.accepted("paper-reconciliation", record, 201)
 
     def w32_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state["replay_structure_recovered"]:

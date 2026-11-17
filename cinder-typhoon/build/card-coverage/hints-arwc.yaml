@@ -1178,12 +1178,17 @@ hints:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W29/reconciliation-method.md
   W29.3:
-    h1: Read RPT-CRR-DP3-R7 from the corporate records and select a later good UsableVolumeML historian sample
-      for the same asset. Keep both as-of times beside their values and units.
-    h2: Use an explicit comparison of reported usable volume minus the later measured usable volume, preserving the sign. The two records
-      describe different times, so their difference is a variance rather than proof of a correction or cause.
-    h3: Record the direction of the paper variance and the time-basis limitation. Finish with a current planning basis,
-      not an executable control plan or a claim that the dated report is live process truth.
+    h1: POST /api/paper-reconciliations/current with {"planning_window":"ALLOC-2026-DP3","asset":"AST-CRR-017",
+      "report_id":"RPT-CRR-DP3-R7","report_as_of":"2026-11-09T00:00:00Z","reported_ml":13.4,
+      "observed_at":"<ISO 8601>","measured_usable_volume_ml":<value>,"signed_paper_variance_ml":<var>,
+      "direction":"report_above|report_below|aligned","time_basis":"different_as_of_times",
+      "conclusion":"paper_report_is_not_current_process_truth"}.
+    h2: variance = reported_ml - measured_usable_volume_ml (13.4 - ~10.85 = +2.55 ML currently).
+      direction: report_above_later_process_value if variance > 0.005, report_below if < -0.005.
+      observed_at must be AFTER 2026-11-09T00:00:00Z (the report as_of time).
+    h3: The service validates the submitted variance and direction against the nearest OT historian UsableVolumeML
+      sample within 5 seconds. time_basis and conclusion are fixed strings — the report is dated paper truth,
+      not current process state. Prerequisites: W29.1 AND W29.2 (reserve_observed state).
     references:
     - kind: participant_artifact
       id: /home/fieldlink/CairnReach/Briefs/W29/reconciliation-method.md
