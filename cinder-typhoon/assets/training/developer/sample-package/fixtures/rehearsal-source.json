@@ -2,5 +2,6 @@
   "record_id": "SRC-204",
   "delivery_id": "DL-204",
   "destination": "Cinder receiving desk",
-  "parcel_count": 3
+  "parcel_count": 3,
+  "flag": "FLAG{eab17b875afc64d3}"
 }

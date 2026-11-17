@@ -67,6 +67,8 @@ def observation(request_id: str, volume: float, *, outlet_open: bool, active: bo
         "quality": "good",
         "terminal": terminal,
     }
+    if terminal:
+        row["flag"] = "FLAG{03993cc3de147e23}"
     STATE["observations"].append(row)
     return row
 

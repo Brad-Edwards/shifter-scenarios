@@ -1,3 +1,1204 @@
-# Retired template. Cinder uses range-owned automatic evidence validation
-# projected from challenges/challenges.yaml; this file is not authoritative.
-flags: []
+# OPERATOR / ORACLE SOURCE. Fixed, pre-seeded flag values, one per card (Polaris model).
+# Values are synthetic training answers and are intentionally committed. Each flag is shown
+# to the participant only where the card is completed. 'path' records that exact location.
+flags:
+  - flag_id: K01.1
+    source: value
+    value: "FLAG{b4827df7ab6888be}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K01.2
+    source: value
+    value: "FLAG{408710d448134ab5}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K01.3
+    source: value
+    value: "FLAG{5fa8e3be362463a8}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K01.4
+    source: value
+    value: "FLAG{2b66416be507ee69}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K02.1
+    source: value
+    value: "FLAG{7db9f86b38c288ab}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K02.2
+    source: value
+    value: "FLAG{ad920ac857c12cd3}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K02.3
+    source: value
+    value: "FLAG{12791115ad005ed7}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K03.1
+    source: value
+    value: "FLAG{40be0052650d9d7a}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K03.2
+    source: value
+    value: "FLAG{4484ff1616e6aeb5}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K03.3
+    source: value
+    value: "FLAG{4060aded2f1ce27f}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K04.1
+    source: value
+    value: "FLAG{c21a0bdd9ca4afce}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K04.2
+    source: value
+    value: "FLAG{29029c633f5f6bda}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K04.3
+    source: value
+    value: "FLAG{54c47a37e2d8714c}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K04.4
+    source: value
+    value: "FLAG{f60f566e45b64ed9}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K05.1
+    source: value
+    value: "FLAG{47ba77ad01dfb2d4}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K05.2
+    source: value
+    value: "FLAG{870a03c573511895}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K05.3
+    source: value
+    value: "FLAG{168163aa9b638cc9}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K05.4
+    source: value
+    value: "FLAG{32a8b5b8bb725309}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K06.1
+    source: value
+    value: "FLAG{fc4bf7dbb3c5d53a}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K06.2
+    source: value
+    value: "FLAG{e6a1cc8b3018bd32}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K06.3
+    source: value
+    value: "FLAG{64019807418ce6c8}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K07.1
+    source: value
+    value: "FLAG{65b50adb2fe75762}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K07.2
+    source: value
+    value: "FLAG{5845ec9686e25e07}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K07.3
+    source: value
+    value: "FLAG{7365629ef50739be}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K08.1
+    source: value
+    value: "FLAG{f8867040cc01ba55}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K08.2
+    source: value
+    value: "FLAG{abe51704e29fa37d}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K08.3
+    source: value
+    value: "FLAG{fcdbd6adfe15d705}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K09.1
+    source: value
+    value: "FLAG{bf8dabff893031f3}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K09.2
+    source: value
+    value: "FLAG{66b86e03bcba0571}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K09.3
+    source: value
+    value: "FLAG{9c7e8e7a35ec128c}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K09.4
+    source: value
+    value: "FLAG{783b665bfc42fd9f}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K10.1
+    source: value
+    value: "FLAG{e79c34cd2ef12e6e}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K10.2
+    source: value
+    value: "FLAG{e4c9623c3e3c146c}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K10.3
+    source: value
+    value: "FLAG{3944ecd601ef90a2}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K11.1
+    source: value
+    value: "FLAG{5f3e067c00b70ca5}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K11.2
+    source: value
+    value: "FLAG{88d2ffcc302012c8}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K11.3
+    source: value
+    value: "FLAG{c71020d43793593b}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K11.4
+    source: value
+    value: "FLAG{23645a251793b19e}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K12.1
+    source: value
+    value: "FLAG{3073e7ddb80f48ee}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K12.2
+    source: value
+    value: "FLAG{9d14e5b959bb4bb5}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K12.3
+    source: value
+    value: "FLAG{7b89fd70e897ed74}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K12.4
+    source: value
+    value: "FLAG{89f65c4ede64fbcc}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K13.1
+    source: value
+    value: "FLAG{6bb66074f2325405}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K13.2
+    source: value
+    value: "FLAG{a21253236ef7660b}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K13.3
+    source: value
+    value: "FLAG{adfbabdcdaca98ac}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K13.4
+    source: value
+    value: "FLAG{10a79b42b8e652b2}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K14.1
+    source: value
+    value: "FLAG{418e19c3ed0c13ef}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K14.2
+    source: value
+    value: "FLAG{f1aee508e418ac7c}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K14.3
+    source: value
+    value: "FLAG{b1bb8479177a31f8}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K15.1
+    source: value
+    value: "FLAG{6b4342f2b090f8d2}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K15.2
+    source: value
+    value: "FLAG{bd60dc9d170bc2c7}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K15.3
+    source: value
+    value: "FLAG{36f1e9f2e30b4868}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K15.4
+    source: value
+    value: "FLAG{203073cbbcb4ce62}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K16.1
+    source: value
+    value: "FLAG{25a027fe80e77ca0}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K16.2
+    source: value
+    value: "FLAG{ba92d77607f974b5}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K16.3
+    source: value
+    value: "FLAG{266ad4f238daf867}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K16.4
+    source: value
+    value: "FLAG{5e9d34bd2d5bc44d}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K17.1
+    source: value
+    value: "FLAG{a56dde25afcee8cb}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K17.2
+    source: value
+    value: "FLAG{d9c146b29c13ab3f}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K17.3
+    source: value
+    value: "FLAG{a732179b6bc51139}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K17.4
+    source: value
+    value: "FLAG{9189af9bedad78f5}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K18.1
+    source: value
+    value: "FLAG{3177559b5e2a80d8}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K18.2
+    source: value
+    value: "FLAG{8978e5b290f6d320}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K18.3
+    source: value
+    value: "FLAG{f444b58a456fcd50}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K18.4
+    source: value
+    value: "FLAG{b6cd284e8b911de5}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K19.1
+    source: value
+    value: "FLAG{d4fd346be0ffce16}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K19.2
+    source: value
+    value: "FLAG{e47f6aa72d8045aa}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K19.3
+    source: value
+    value: "FLAG{de18a1c609de0e97}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K20.1
+    source: value
+    value: "FLAG{2cdab32b99f226a6}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K20.2
+    source: value
+    value: "FLAG{25ed4cc37bfb7031}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K20.3
+    source: value
+    value: "FLAG{cc5504772d80de3d}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K21.1
+    source: value
+    value: "FLAG{bda988856f374cc1}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K21.2
+    source: value
+    value: "FLAG{302e391567fb7188}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K21.3
+    source: value
+    value: "FLAG{0613dee9e717f1e3}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K22.1
+    source: value
+    value: "FLAG{fd78eb11ae6a4158}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K22.2
+    source: value
+    value: "FLAG{599046b0487a95cb}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K22.3
+    source: value
+    value: "FLAG{0d48f10f683d9894}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K23.1
+    source: value
+    value: "FLAG{7ff69ab443a968ef}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K23.2
+    source: value
+    value: "FLAG{25723607dbdb5768}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K23.3
+    source: value
+    value: "FLAG{4a4620cd59307eb7}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K24.1
+    source: value
+    value: "FLAG{664724eb7d7073e9}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K24.2
+    source: value
+    value: "FLAG{150195dba6413e00}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K24.3
+    source: value
+    value: "FLAG{e26cdb0df4d7a56c}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K25.1
+    source: value
+    value: "FLAG{417d135055e5a7ca}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K25.2
+    source: value
+    value: "FLAG{413cfb47616bcf1f}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K26.1
+    source: value
+    value: "FLAG{1dda3ef23d7a81f8}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K26.2
+    source: value
+    value: "FLAG{d45fa773b820e545}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K26.3
+    source: value
+    value: "FLAG{1ec37b00a50b6e29}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K27.1
+    source: value
+    value: "FLAG{d58c860051957082}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K27.2
+    source: value
+    value: "FLAG{f77bdbb3436a8bab}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K27.3
+    source: value
+    value: "FLAG{8e5eb57412212e11}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K28.1
+    source: value
+    value: "FLAG{f7802e39cb9fd438}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K28.2
+    source: value
+    value: "FLAG{d4fec1d1bcc12c7d}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K28.3
+    source: value
+    value: "FLAG{9fd67f66428a244c}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K29.1
+    source: value
+    value: "FLAG{0d88af0d047a3839}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K29.2
+    source: value
+    value: "FLAG{5b25335f42e78bc8}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K29.3
+    source: value
+    value: "FLAG{bd3422ac88bd90d8}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K29.4
+    source: value
+    value: "FLAG{fb7f87b5a1ca1ce8}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K30.1
+    source: value
+    value: "FLAG{c8bcc391ce763872}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K30.2
+    source: value
+    value: "FLAG{a4e3552a48f21f30}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K30.3
+    source: value
+    value: "FLAG{862b3bb92d638213}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K31.1
+    source: value
+    value: "FLAG{c3f9834223486bbe}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K31.2
+    source: value
+    value: "FLAG{a17c2fea31043bd8}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: K31.3
+    source: value
+    value: "FLAG{fde258527cfc25b1}"
+    host: keplerops-host
+    path: TBD
+  - flag_id: T01.1
+    source: value
+    value: "FLAG{2e184cd91352e573}"
+    host: training-host
+    path: TBD
+  - flag_id: T01.2
+    source: value
+    value: "FLAG{ba7b1e6a6ad93aa2}"
+    host: training-host
+    path: TBD
+  - flag_id: T01.3
+    source: value
+    value: "FLAG{b287402974032240}"
+    host: training-host
+    path: TBD
+  - flag_id: T01.4
+    source: value
+    value: "FLAG{3bf1d8651d39b64c}"
+    host: training-host
+    path: TBD
+  - flag_id: T02.1
+    source: value
+    value: "FLAG{7502f8e82360c288}"
+    host: training-host
+    path: TBD
+  - flag_id: T02.2
+    source: value
+    value: "FLAG{9e9612ddd489395c}"
+    host: training-host
+    path: TBD
+  - flag_id: T02.3
+    source: value
+    value: "FLAG{0efa33511b93dccd}"
+    host: training-host
+    path: TBD
+  - flag_id: T02.4
+    source: value
+    value: "FLAG{50676f831e62140a}"
+    host: training-host
+    path: TBD
+  - flag_id: T03.1
+    source: value
+    value: "FLAG{ebde2dc446a73484}"
+    host: training-host
+    path: TBD
+  - flag_id: T03.2
+    source: value
+    value: "FLAG{ed8a392c59b6e039}"
+    host: training-host
+    path: TBD
+  - flag_id: T03.3
+    source: value
+    value: "FLAG{eab17b875afc64d3}"
+    host: training-host
+    path: TBD
+  - flag_id: T03.4
+    source: value
+    value: "FLAG{dc2fb2369caf8720}"
+    host: training-host
+    path: TBD
+  - flag_id: T04.1
+    source: value
+    value: "FLAG{35b940a34aeaa0f0}"
+    host: training-host
+    path: TBD
+  - flag_id: T04.2
+    source: value
+    value: "FLAG{5cdc1c2fcc92fb42}"
+    host: training-host
+    path: TBD
+  - flag_id: T04.3
+    source: value
+    value: "FLAG{03993cc3de147e23}"
+    host: training-host
+    path: TBD
+  - flag_id: T04.4
+    source: value
+    value: "FLAG{51b9f00459e54f0b}"
+    host: training-host
+    path: TBD
+  - flag_id: W01.1
+    source: value
+    value: "FLAG{c7e9455975ef518d}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W01.2
+    source: value
+    value: "FLAG{5c43018c63b8faba}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W01.3
+    source: value
+    value: "FLAG{4bbe61eb046bd695}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W01.4
+    source: value
+    value: "FLAG{ce5d42bc2791d4e5}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W02.1
+    source: value
+    value: "FLAG{1b0caff4bdea2bf1}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W02.2
+    source: value
+    value: "FLAG{614858f9076a8e8b}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W02.3
+    source: value
+    value: "FLAG{7f179347dc20d82f}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W03.1
+    source: value
+    value: "FLAG{cf89cc348eb6ae25}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W03.2
+    source: value
+    value: "FLAG{dd3c05ed7c03621d}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W03.3
+    source: value
+    value: "FLAG{4c92291fb1143aea}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W04.1
+    source: value
+    value: "FLAG{57f6312a585e7e4b}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W04.2
+    source: value
+    value: "FLAG{441c12b5f7f4310e}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W04.3
+    source: value
+    value: "FLAG{19f186b21e73e545}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W05.1
+    source: value
+    value: "FLAG{2f6788589f10c887}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W05.2
+    source: value
+    value: "FLAG{e85ec4991d28c04d}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W05.3
+    source: value
+    value: "FLAG{4c78bd2e2f7c25bd}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W06.1
+    source: value
+    value: "FLAG{415d4e9b4cc2c1ba}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W06.2
+    source: value
+    value: "FLAG{ae7bb9411e4f18dc}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W06.3
+    source: value
+    value: "FLAG{4c5ffa1e2c3033e3}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W07.1
+    source: value
+    value: "FLAG{71eae74b979b8556}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W07.2
+    source: value
+    value: "FLAG{e4c1d273080dec0d}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W07.3
+    source: value
+    value: "FLAG{9f7a03ecbffb3005}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W08.1
+    source: value
+    value: "FLAG{8243ed9c4cc055e1}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W08.2
+    source: value
+    value: "FLAG{bef107115ff53d4a}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W08.3
+    source: value
+    value: "FLAG{debd8573ad911cbb}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W08.4
+    source: value
+    value: "FLAG{735f3e46ccc090a8}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W09.1
+    source: value
+    value: "FLAG{47d6fc3a22c3a83d}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W09.2
+    source: value
+    value: "FLAG{6b7ed39132fd235a}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W09.3
+    source: value
+    value: "FLAG{b938b4afcc7e8a90}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W09.4
+    source: value
+    value: "FLAG{2085674d8d2c8b96}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W10.1
+    source: value
+    value: "FLAG{0657c9326fcc1aed}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W10.2
+    source: value
+    value: "FLAG{4532fcbfca255df4}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W10.3
+    source: value
+    value: "FLAG{b6ce9acecf846354}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W11.1
+    source: value
+    value: "FLAG{362994ae7c0d0a41}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W11.2
+    source: value
+    value: "FLAG{6c7d3f3e1de42300}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W11.3
+    source: value
+    value: "FLAG{8790fcf0e1a1dd6a}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W12.1
+    source: value
+    value: "FLAG{34ea95f4e91748f3}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W12.2
+    source: value
+    value: "FLAG{06220fbe7bb08d8d}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W12.3
+    source: value
+    value: "FLAG{7b143e6dc66add3e}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W12.4
+    source: value
+    value: "FLAG{fed310c0be7a623e}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W13.1
+    source: value
+    value: "FLAG{4ec8d44be86edc36}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W13.2
+    source: value
+    value: "FLAG{433da37187291602}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W13.3
+    source: value
+    value: "FLAG{ee54f78b836e3f3d}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W13.4
+    source: value
+    value: "FLAG{25ef1438addf15f7}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W14.1
+    source: value
+    value: "FLAG{8095bac46a61f18f}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W14.2
+    source: value
+    value: "FLAG{dda40f67ae90302c}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W14.3
+    source: value
+    value: "FLAG{027331f36779f480}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W15.1
+    source: value
+    value: "FLAG{0fba33d55c2cc299}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W15.2
+    source: value
+    value: "FLAG{f2d9936e057d1f57}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W15.3
+    source: value
+    value: "FLAG{1d256fdc7599d32f}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W15.4
+    source: value
+    value: "FLAG{f0c8905464c8ef69}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W16.1
+    source: value
+    value: "FLAG{3040a0c2f8443498}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W16.2
+    source: value
+    value: "FLAG{1a617ba423924104}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W16.3
+    source: value
+    value: "FLAG{ca8e05b4b9107207}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W16.4
+    source: value
+    value: "FLAG{f82e02d682078cc0}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W17.1
+    source: value
+    value: "FLAG{33a22dd3dae3a5a9}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W17.2
+    source: value
+    value: "FLAG{a6a4563e676656d3}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W17.3
+    source: value
+    value: "FLAG{29af64987ad77321}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W17.4
+    source: value
+    value: "FLAG{a61eaf28fdd2f12c}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W18.1
+    source: value
+    value: "FLAG{73df52a55c086268}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W18.2
+    source: value
+    value: "FLAG{5b9b0ae9726e230f}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W18.3
+    source: value
+    value: "FLAG{d67d3828f16f64ad}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W18.4
+    source: value
+    value: "FLAG{1cdd24443cc4a0bc}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W19.1
+    source: value
+    value: "FLAG{a701d55117606501}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W19.2
+    source: value
+    value: "FLAG{3074d89b1b111db1}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W19.3
+    source: value
+    value: "FLAG{9babf5077ba75607}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W19.4
+    source: value
+    value: "FLAG{bbf27da1a4f01783}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W20.1
+    source: value
+    value: "FLAG{65213f715150f979}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W20.2
+    source: value
+    value: "FLAG{fc1ffbdd541e5aa8}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W20.3
+    source: value
+    value: "FLAG{d802bfe7a42fb855}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W21.1
+    source: value
+    value: "FLAG{0440d5e5947665f6}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W21.2
+    source: value
+    value: "FLAG{c86054b8e7f7d0f7}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W22.1
+    source: value
+    value: "FLAG{f8a5c9e2b7fb06db}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W22.2
+    source: value
+    value: "FLAG{2aff355751accd95}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W22.3
+    source: value
+    value: "FLAG{e4faeac4a9f89ddb}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W22.4
+    source: value
+    value: "FLAG{e7cf68818ecbefd1}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W23.1
+    source: value
+    value: "FLAG{0b6fa11278a4c58e}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W23.2
+    source: value
+    value: "FLAG{4260f7f8a6d56159}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W23.3
+    source: value
+    value: "FLAG{e8f23ac0d5913bb6}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W24.1
+    source: value
+    value: "FLAG{55f32a8cc75f8721}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W24.2
+    source: value
+    value: "FLAG{0a22e68f334df110}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W24.3
+    source: value
+    value: "FLAG{bf2eb3671e18157c}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W24.4
+    source: value
+    value: "FLAG{df1fffb2d5f21078}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W25.1
+    source: value
+    value: "FLAG{3655af7659c41c08}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W25.2
+    source: value
+    value: "FLAG{8e4cb7c7002330cc}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W25.3
+    source: value
+    value: "FLAG{fca8c6786592eb89}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W25.4
+    source: value
+    value: "FLAG{454e55928d0c1326}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W26.1
+    source: value
+    value: "FLAG{73be7a91c87cd444}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W26.2
+    source: value
+    value: "FLAG{4bed1f5e45cdee8e}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W26.3
+    source: value
+    value: "FLAG{c7156e4c3562c448}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W26.4
+    source: value
+    value: "FLAG{dcad7d22a6c5fb80}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W27.1
+    source: value
+    value: "FLAG{783b582e0ba2a939}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W27.2
+    source: value
+    value: "FLAG{de0df9d4236a7ea9}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W27.3
+    source: value
+    value: "FLAG{a2e0cd90a6f77fd4}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W28.1
+    source: value
+    value: "FLAG{3f8005c9af25c506}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W28.2
+    source: value
+    value: "FLAG{08c247e97a430854}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W28.3
+    source: value
+    value: "FLAG{e0cc03bd006f272b}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W29.1
+    source: value
+    value: "FLAG{e3d444e18d2f9106}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W29.2
+    source: value
+    value: "FLAG{ea5a5c4c83724109}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W29.3
+    source: value
+    value: "FLAG{34d1f606b3506a89}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W30.1
+    source: value
+    value: "FLAG{86bf26d3fc61d20c}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W30.2
+    source: value
+    value: "FLAG{c22198847dd20ce6}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W31.1
+    source: value
+    value: "FLAG{57aedcb6774e1e4d}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W31.2
+    source: value
+    value: "FLAG{efc608d7e3b45ea7}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W31.3
+    source: value
+    value: "FLAG{eeb8cd2277f9cad3}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W31.4
+    source: value
+    value: "FLAG{8f3c02020245b1c4}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W32.1
+    source: value
+    value: "FLAG{1d16a3a336e29908}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W32.2
+    source: value
+    value: "FLAG{551d772cb90103fd}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W32.3
+    source: value
+    value: "FLAG{7329a078d7db6108}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W32.4
+    source: value
+    value: "FLAG{f4403d8aabe6a550}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W33.1
+    source: value
+    value: "FLAG{a972558765950459}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W33.2
+    source: value
+    value: "FLAG{7fc27069641f0cc2}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W33.3
+    source: value
+    value: "FLAG{271d8984b1b19a04}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W33.4
+    source: value
+    value: "FLAG{8d62fb9ea4f1924f}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W34.1
+    source: value
+    value: "FLAG{509426611d275191}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W34.2
+    source: value
+    value: "FLAG{30f75150343d624e}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W34.3
+    source: value
+    value: "FLAG{19b29c1602862994}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W35.1
+    source: value
+    value: "FLAG{33a2e1a5cb2fd5f3}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W35.2
+    source: value
+    value: "FLAG{8aba65d6162bf904}"
+    host: arwc-host
+    path: TBD
+  - flag_id: W35.3
+    source: value
+    value: "FLAG{c5f96cef1a817fa3}"
+    host: arwc-host
+    path: TBD

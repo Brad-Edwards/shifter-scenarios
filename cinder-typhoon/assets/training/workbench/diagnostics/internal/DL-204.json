@@ -4,5 +4,6 @@
   "delivery_id": "DL-204",
   "routing": "Bay 4 sealed intake",
   "courier_id": "CR-17",
-  "internal_note": "Retain the withdrawn amendment with the manifest audit."
+  "internal_note": "Retain the withdrawn amendment with the manifest audit.",
+  "flag": "FLAG{3bf1d8651d39b64c}"
 }

@@ -15,7 +15,7 @@
       "committer_time": "2026-06-18T07:30:00Z",
       "message": "record courier handover",
       "tree": {
-        "handover.md": "# Operator handover\n\nDelivery: DL-204\n\nStatus: The sealed manifest is still assigned to courier CR-17. The dispatch amendment was withdrawn from navigation, not from publication.\n\nNotes: Finish the rehearsal from the dispatch workbench.\n"
+        "handover.md": "# Operator handover\n\nDelivery: DL-204\n\nStatus: The sealed manifest is still assigned to courier CR-17. The dispatch amendment was withdrawn from navigation, not from publication.\n\nNotes: Finish the rehearsal from the dispatch workbench.\n\nFlag: FLAG{2e184cd91352e573}\n"
       }
     },
     {

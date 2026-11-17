@@ -50,10 +50,10 @@ OPERATION_ID = re.compile(r"^[TKW]\d{2}$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 HINT_LEVELS = ("h1", "h2", "h3")
 HINT_POLICY = {
-    "release": "facilitator_on_request",
+    "release": "participant_unlock",
     "levels": 3,
     "independent_levels": True,
-    "penalty": 0,
+    "penalty_percent": [10, 20, 30],
 }
 
 
@@ -266,7 +266,7 @@ def build_catalog() -> dict[str, Any]:
                 "difficulty": brief["difficulty"],
                 "points": TIER_POINTS[brief["difficulty"]],
                 "hints": hints[card_id],
-                "completion": {"mode": "automatic_range_evidence"},
+                "completion": {"mode": "static_flag", "flag_id": card_id},
             })
         phases[phase]["operations"].append({
             "id": operation_id,
@@ -292,7 +292,7 @@ def build_catalog() -> dict[str, Any]:
             "model": "static",
             "tier_points": TIER_POINTS,
             "max_score": sum(TIER_POINTS[brief["difficulty"]] for brief in briefs.values()),
-            "max_out": "Complete all 240 cards; hints do not reduce score.",
+            "max_out": "Complete all 240 cards without unlocking hints.",
             "hint_policy": HINT_POLICY,
         },
         "summary": {
@@ -400,7 +400,7 @@ def validate_catalog(value: Any) -> None:
                     isinstance(hint, str) and hint.strip() for hint in card["hints"]
                 ):
                     raise CatalogError(f"{card_id}: three participant hints are required")
-                if card["completion"] != {"mode": "automatic_range_evidence"}:
+                if card["completion"] != {"mode": "static_flag", "flag_id": card_id}:
                     raise CatalogError(f"{card_id}: completion mode is invalid")
                 actual[difficulty] += 1
                 total_score += card["points"]
@@ -549,12 +549,12 @@ def build_hint_manifest(catalog: dict[str, Any] | None = None) -> dict[str, Any]
         },
         "sources": sources,
         "release": {
-            "mode": "facilitator_on_request",
+            "mode": "participant_unlock",
             "levels": [1, 2, 3],
             "independent_levels": True,
             "audit": "append_only_metadata_without_hint_text",
         },
-        "score_effect": {"penalty": 0, "maximum_score_unchanged": True},
+        "score_effect": {"penalty_percent": HINT_POLICY["penalty_percent"], "maximum_score_unchanged": True},
         "review": {
             "path": _relative(HINT_REVIEWS),
             "sha256": _sha256(HINT_REVIEWS),

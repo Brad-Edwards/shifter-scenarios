@@ -44,6 +44,8 @@ case "$phase" in
   keplerops)
     phase_root=/opt/cinder-typhoon/build/keplerops
     participant_image=cinder-keplerops/k-dev:hand-build
+    printf '%s\n' keplerops.private-image/v1 >/etc/cinder-keplerops-image
+    chmod 0644 /etc/cinder-keplerops-image
     ;;
   arwc)
     phase_root=/opt/cinder-typhoon/build/arwc

@@ -1,6 +1,6 @@
 {
   "catalog": {
-    "revision": "6671188bc4005bc5dca0ed2c72ea436f71bd667f74807cb928bf645117740fe9",
+    "revision": "5a6ca25c19a6d80966777d628c2b58c60b1b781aaae0b9482da2a253ff2d397f",
     "schema": "cinder-typhoon.challenge-delivery/v2"
   },
   "items": [
@@ -6142,18 +6142,22 @@
       2,
       3
     ],
-    "mode": "facilitator_on_request"
+    "mode": "participant_unlock"
   },
   "review": {
     "operation_count": 70,
     "path": "build/hint-delivery/operation-reviews.json",
     "sha256": "b6758f518cabba179165877677714d20d66d6c15185008142934be89ab2d5cd2"
   },
-  "revision": "339d76d710083a7e00e334a6f3073ec098d844e1edbe02703cdebc27cdcd5bf7",
+  "revision": "03d8da563de05c82a6ead2525d4b925cacb6f61a6c4c6e102b2a4d3880878427",
   "schema": "cinder-typhoon.hint-delivery/v1",
   "score_effect": {
     "maximum_score_unchanged": true,
-    "penalty": 0
+    "penalty_percent": [
+      10,
+      20,
+      30
+    ]
   },
   "sources": [
     {

@@ -188,7 +188,7 @@ class CardCoverageTests(unittest.TestCase):
         changed["phases"]["training"]["operations"][0]["cards"][0]["points"] += 1
         mutations.append(changed)
         changed = copy.deepcopy(base)
-        changed["scoring"]["hint_policy"]["penalty"] = 1
+        changed["scoring"]["hint_policy"]["penalty_percent"] = [0, 0, 0]
         mutations.append(changed)
         changed = copy.deepcopy(base)
         changed["phases"]["training"]["operations"][0]["allocation"]["easy"] -= 1

@@ -8,5 +8,6 @@
   "outlet_position": "closed",
   "request_id": "CR-018",
   "request_result": "rejected",
-  "quality": "good"
+  "quality": "good",
+  "flag": "FLAG{5cdc1c2fcc92fb42}"
 }

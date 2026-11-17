@@ -13,11 +13,16 @@ setpriv --reuid=git --regid=git --init-groups sh -c '
   exec /usr/local/bin/gitea web --config /var/lib/gitea/data/app.ini
 ' >/tmp/gitea.log 2>&1 &
 gitea_pid=$!
-for attempt in $(seq 1 30); do
-  if curl -sS --fail --cacert /run/fieldkest-tls/ca.crt https://source.keplerops.test/user/login >/dev/null; then
+# A cold range VM can take longer than 30 seconds to start Gitea.
+for attempt in $(seq 1 180); do
+  if curl -sS --fail --cacert /run/fieldkest-tls/ca.crt https://source.keplerops.test/user/login >/dev/null 2>&1; then
     break
   fi
-  if [ "$attempt" -eq 30 ]; then
+  if ! kill -0 "$gitea_pid" 2>/dev/null; then
+    echo "source service exited during startup" >&2
+    exit 1
+  fi
+  if [ "$attempt" -eq 180 ]; then
     echo "source service did not become ready" >&2
     exit 1
   fi

@@ -43,7 +43,7 @@ class CanonicalCatalogTests(unittest.TestCase):
         for card in catalog.catalog_cards(self.catalog):
             with self.subTest(card=card["id"]):
                 self.assertEqual(set(card), allowed_card_fields)
-                self.assertEqual(card["completion"], {"mode": "automatic_range_evidence"})
+                self.assertEqual(card["completion"], {"mode": "static_flag", "flag_id": card["id"]})
                 self.assertEqual(len(card["hints"]), 3)
         serialized = json.dumps(self.catalog).lower()
         for forbidden in (
