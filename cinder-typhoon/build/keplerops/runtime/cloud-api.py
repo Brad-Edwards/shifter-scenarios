@@ -1054,11 +1054,11 @@ class CloudApiHandler(KeplerHandler):
         """
         auth = self.headers.get("Authorization", "")
         token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
-        # Accept K09.4 path (release_reader exchange handle) or K13.4 path (workload session)
+        # Accept K09.4 path (release_reader) or K13.4 path (workload session) ONLY.
+        # Plain developer token does NOT grant access — K09.4 or K13.4 must be earned first.
         if token not in {RELEASE_READER_TOKEN, WORKLOAD_SESSION}:
-            if not self._developer():
-                self.send_json(401, {"error": "authentication_required"})
-                return
+            self.send_json(401, {"error": "earned_workload_identity_required"})
+            return
         result = {
             "schema": "fieldkest.build-record/v1",
             "build_id": build_id,
