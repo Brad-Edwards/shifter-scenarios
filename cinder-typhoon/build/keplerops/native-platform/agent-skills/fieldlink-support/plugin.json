@@ -1,0 +1,12 @@
+{
+  "active": true,
+  "hubId": "fieldlink-support",
+  "name": "FieldLink support status",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "Read accepted FieldLink report metadata or the status of an existing customer diagnostic job.",
+  "setup_args": {},
+  "examples": [{"prompt": "Show the current accepted FieldLink report", "call": "{\"reference\":\"current\"}"}],
+  "entrypoint": {"file": "handler.js", "params": {"reference": {"description": "current for the accepted report, or an existing DIAG job reference", "type": "string"}}},
+  "imported": true
+}

@@ -23,6 +23,7 @@ EXTENDED = AUDIT / "extended-state.json"
 OPERATORS = {
     credential("support_rowan_session"): "rowan.ito",
     credential("support_reviewer_session"): "talia.mornac",
+    credential("assistant_tool_session"): "svc-fieldlink-assistant",
 }
 SUPPORT_DELIVERY_TOKEN = credential("support_delivery_token")
 
@@ -67,15 +68,19 @@ class SupportHandler(KeplerHandler):
             value = json.loads(HANDOVER.read_text())
             append_audit(AUDIT, "handover", {"request_id": self.request_id, "principal": self.principal,
                          "job_id": value["job_id"], "report_sha256": value["report_sha256"], "status": 200})
+            if self.principal == "svc-fieldlink-assistant":
+                value = {key: value[key] for key in ("job_id", "report_sha256", "provider_sha256", "revision", "created_at") if key in value}
             return self.send_json(200, value)
         match = re.fullmatch(r"/api/diagnostics/([^/]+)", path)
         if match:
             value = extended()["diagnostics"].get(match.group(1))
+            if value and self.principal == "svc-fieldlink-assistant":
+                value = {key: value[key] for key in ("job_id", "state", "tenant", "connector_revision") if key in value}
             return self.send_json(200, value) if value else self.send_json(404, {"error": "job_not_found"})
         self.send_json(404, {"error": "not_found"})
 
     def do_POST(self) -> None:
-        if not self._authorized():
+        if not self._authorized() or self.principal == "svc-fieldlink-assistant":
             return self.send_json(403, {"error": "integration_token_denied"})
         path = urlsplit(self.path).path
         if path == "/api/customers/TEN-ARWC-047/diagnostics":

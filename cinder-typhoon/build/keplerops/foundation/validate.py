@@ -76,13 +76,13 @@ def validate(pack_root: Path, compose_path: Path, named_conf_path: Path) -> None
             'native enrollment upstream is absent')
     require('proxy_ssl_verify on;' in nginx, 'enrollment upstream TLS is not verified')
 
-    for relative in (
-        "build/keplerops/restore-pristine.sh",
-        "build/keplerops/gcp/deploy.sh",
-    ):
-        text = (pack_root / relative).read_text(encoding="utf-8")
-        for name in required:
-            require(name in text, f"{relative} does not start {name}")
+    relative = "build/keplerops/restore-pristine.sh"
+    text = (pack_root / relative).read_text(encoding="utf-8")
+    for name in required:
+        require(name in text, f"{relative} does not start {name}")
+    retired = (pack_root / "build/keplerops/gcp/deploy.sh").read_text(encoding="utf-8")
+    require('exit 1' in retired and 'terraform ' not in retired and 'gcloud ' not in retired,
+            'retired golden deployment entrypoint can mutate infrastructure')
 
     operator = (pack_root / "build/keplerops/generate-operator-material.sh").read_text(encoding="utf-8")
     require("native-foundation.env" in operator, "foundation operator seed is absent")

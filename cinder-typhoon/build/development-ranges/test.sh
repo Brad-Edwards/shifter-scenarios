@@ -7,6 +7,7 @@ repo=$(CDPATH='' cd -- "$root/../../.." && pwd)
 bash -n "$root/manage.sh" "$root/targets.sh" "$root/guest/fieldlink-first-boot.sh" \
   "$root/guest/arwc-first-boot.sh"
 python3 -m unittest discover -s "$root" -p test_peer_access.py
+python3 -m unittest discover -s "$root" -p test_boot_disk.py
 
 if [[ $(hostname) != cinder-fieldlink-dev ]] \
     && python3 "$root/guest/fieldlink-desktop-login.py" 2>/dev/null; then

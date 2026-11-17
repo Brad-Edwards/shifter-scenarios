@@ -1,4 +1,4 @@
-"""Initialize only an empty native KDC volume from private runtime inputs."""
+"""Initialize an empty KDC and complete missing declared users without rotation."""
 
 import json
 import os
@@ -20,8 +20,7 @@ def initialize() -> None:
     database = STATE / 'krb5kdc'
     started = STATE / '.native-initialization-started'
     complete = STATE / '.native-initialization-complete'
-    if complete.exists() or ((database / 'principal').exists() and not started.exists()):
-        return
+    retained = complete.exists() or ((database / 'principal').exists() and not started.exists())
     if not (database / 'principal').exists() and any(database.iterdir()):
         raise RuntimeError('KDC state is incomplete; refusing to overwrite it')
     values = json.loads(INPUT.read_text())
@@ -36,7 +35,12 @@ def initialize() -> None:
     required = {f'{name}@{REALM}' for name in values['users']}
     for principal, password in values['users'].items():
         if f'{principal}@{REALM}' not in existing:
-            run(['kadmin.local', '-r', REALM], f'addprinc -pw {password} {principal}@{REALM}\nquit\n')
+            run(['kadmin.local', '-r', REALM, '-q', f'addprinc {principal}@{REALM}'],
+                password + '\n' + password + '\n')
+    if retained:
+        if not required <= principals():
+            raise RuntimeError('Native KDC declared user completion did not finish')
+        return
     for service, filename in (('identity', 'identity'), ('staff', 'staff')):
         principal = f'HTTP/{service}.keplerops.test@{REALM}'
         required.add(principal)

@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fieldlink
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: v1.37
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: rowan-workspace
+  namespace: fieldlink
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: engineering
+  namespace: fieldlink
+rules:
+  - apiGroups: ['']
+    resources: [pods, configmaps, secrets, services, persistentvolumeclaims]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: ['']
+    resources: [pods/log, events, serviceaccounts]
+    verbs: [get, list, watch]
+  - apiGroups: [batch]
+    resources: [jobs, cronjobs]
+    verbs: [get, list, watch, create, update, patch, delete]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: rowan-engineering
+  namespace: fieldlink
+subjects:
+  - kind: ServiceAccount
+    name: rowan-workspace
+    namespace: fieldlink
+roleRef:
+  kind: Role
+  name: engineering
+  apiGroup: rbac.authorization.k8s.io

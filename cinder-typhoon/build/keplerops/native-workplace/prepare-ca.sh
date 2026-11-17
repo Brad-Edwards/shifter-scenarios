@@ -38,7 +38,8 @@ python3 "$ROOT/native-workplace/prepare.py" --operator-dir "$OPERATOR_DIR" --ca-
 chown -R 1000:1000 "$CA"
 # PostgreSQL and CA application data reset through their named volumes. The CA
 # keys and initial account inputs remain private operator material.
-docker volume create cinder-keplerops-native-ca-data >/dev/null
+docker volume create --label com.docker.compose.project=cinder-keplerops \
+  --label com.docker.compose.volume=native-ca-data cinder-keplerops-native-ca-data >/dev/null
 docker run --pull never --rm --user 0:0 --network none --entrypoint sh \
   -v cinder-keplerops-native-ca-data:/home/step/db "$image" \
   -c 'chown 1000:1000 /home/step/db'

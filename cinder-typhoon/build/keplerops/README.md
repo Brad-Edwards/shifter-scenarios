@@ -6,11 +6,14 @@ content remain the source of truth. When hand-building exposes missing bytes,
 behavior, placement, or contradictory contracts, reconcile the design and pass
 the RAE gates before encoding the change here.
 
-The original golden baseline is recorded below. Native application migration on
-`cinder-fieldlink-dev` is in progress under issue 399; see
-[the native delivery design](../../docs/design/fieldlink-native-delivery.md) for
-current service ownership and remaining card qualification. The old preview
-worker and its service-worker receipts have been retired.
+Current FieldLink development uses native applications on `cinder-fieldlink-dev`.
+See the [workplace design](../../docs/design/fieldlink-native-workplace.md) and
+[native platform runbook](../../docs/design/fieldlink-native-platform.md) for
+current ownership and setup. Native product functionality, data, connections and
+lifecycle are the current scope. Challenge changes are paused. The original
+implementation ledger below is historical and is not the current service map.
+The old golden deployment entrypoint is disabled; use the guarded development
+wrapper for all current VM access and synchronization.
 
 **Original golden status:** K01-K31 are materialized and accepted on the isolated private GCP
 carrier. The former local stand-in for K26/K27 has been removed. Both delivery
