@@ -64,21 +64,47 @@ def seed(operator: Path) -> None:
         'Finished: SUCCESS\n'
     )
 
+    import os as _os
+    import tarfile as _tarfile
+
+    # fieldkest-ci uid/gid is 2100 (from ci.Dockerfile groupadd/useradd)
+    CI_UID = CI_GID = 2100
+
     VOLUME_RUNS.mkdir(parents=True, exist_ok=True)
     VOLUME_ARTIFACTS.mkdir(parents=True, exist_ok=True)
-    (VOLUME_ARTIFACTS / 'BLD-611').mkdir(mode=0o750, exist_ok=True)
+    art_dir = VOLUME_ARTIFACTS / 'BLD-611'
+    art_dir.mkdir(mode=0o750, exist_ok=True)
+    art_dir.chmod(0o750)
+    import os as _os
+    _os.chown(str(art_dir), CI_UID, CI_GID)
 
     run_path = VOLUME_RUNS / 'BLD-611.json'
     run_path.write_text(json.dumps(run, sort_keys=True, separators=(',', ':')) + '\n')
     run_path.chmod(0o640)
+    _os.chown(str(run_path), CI_UID, CI_GID)
 
     log_path = VOLUME_RUNS / 'BLD-611.log'
     log_path.write_text(run_log)
     log_path.chmod(0o640)
+    _os.chown(str(log_path), CI_UID, CI_GID)
 
-    art_path = VOLUME_ARTIFACTS / 'BLD-611' / 'package-workspace.npmrc'
+    art_path = art_dir / 'package-workspace.npmrc'
     art_path.write_text(json.dumps(artifact, sort_keys=True, separators=(',', ':')) + '\n')
     art_path.chmod(0o640)
+    _os.chown(str(art_path), CI_UID, CI_GID)
+
+    # Ensure BLD-1842 (from image layer) is in the volume in case it was
+    # pre-populated before docker compose up could copy the image content.
+    ci_state_tar = operator.parent.parent / 'assets/keplerops/opening/k-ci-state.tar'
+    if ci_state_tar.is_file() and not (VOLUME_RUNS / 'BLD-1842.json').exists():
+        with _tarfile.open(str(ci_state_tar)) as tf:
+            for member in ('runs/BLD-1842.json', 'runs/BLD-1842.log'):
+                f = tf.extractfile(member)
+                if f:
+                    dest = VOLUME_RUNS / Path(member).name
+                    dest.write_bytes(f.read())
+                    dest.chmod(0o640)
+                    _os.chown(str(dest), CI_UID, CI_GID)
 
     marker.touch(mode=0o600)
     print('K06 CI artifact seeded: BLD-611 run and package-workspace.npmrc artifact.')
