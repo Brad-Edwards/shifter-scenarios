@@ -352,7 +352,7 @@ class Handler(BaseHTTPRequestHandler):
     def planning_consumer(self, request: dict[str, object]) -> tuple[int, dict[str, object]]:
         payload = json.dumps(request, sort_keys=True, separators=(",", ":")).encode()
         context = ssl.create_default_context(cafile="/tmp/ca.crt")
-        connection = http.client.HTTPSConnection("a-data-bridge", 443, context=context, timeout=5)
+        connection = http.client.HTTPSConnection("a-data", 443, context=context, timeout=5)
         try:
             connection.request("POST", "/internal/diagnostic-estimate", body=payload, headers={
                 "Content-Type": "application/json", "Content-Length": str(len(payload)),

@@ -1099,13 +1099,16 @@ hints:
     - kind: client_route
       id: process.signature-program-reproduction
   W27.3:
-    h1: Begin with the legacy program verifier and planning diagnostic consumer. Its published client document exposes
-      the diagnostic run operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as signature-equivalence modeling under structural and unaffected-output constraints. Derive
-      every constraint from supplied records or normal responses, test a deliberately failing candidate, and only
-      then produce a candidate.
-    h3: Locate the diagnostic run operation in the published client reference. List the observed constraints, exercise
-      a known rejection, and use the difference to test a candidate that still requires service validation.
+    h1: POST /api/diagnostic-runs (via process-view.arwc.test, same proxy path as other diagnostic routes).
+      Body {"record_id":"DPG-CRR-CINDER","consumer":"PLAN-CONSUMER-R8","program_b64":"<b64>"}. Requires W27.2
+      collision_model_created state; gates on the planning consumer accepting the false estimate.
+    h2: Build the GF(2) collision for TARGET_ID (DPG-CRR-CINDER) with cairn_reserve=13.4 instead of 12.4. Set up:
+      base = build_program(BASE_ID, cairn=12.4); target_zero = build_program(TARGET_ID, cairn=13.4, reservoir=0).
+      Solve 128-equation GF(2) system the same way as W27.2 but over target_zero. changed_only(candidate,
+      purpose="target") allows RESERVOIR_BYTES, program-id field (bytes 48-63), and CAIRN_VALUE_OFFSET range.
+    h3: The service validates: program_id=DPG-CRR-CINDER, outputs={Cairn Reach:13.4, North:8.1, Merewick:7.65},
+      digest==base digest, changed_only(target). Then calls the planning consumer internally. The accepted program
+      and false estimate supply the W34 planning-view capability without altering raw OT observations.
     references:
     - kind: client_route
       id: process.diagnostic-run

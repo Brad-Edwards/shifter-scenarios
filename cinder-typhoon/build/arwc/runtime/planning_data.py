@@ -586,10 +586,10 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self) -> None:
         if urlsplit(self.path).path == "/internal/diagnostic-estimate":
-            if (self.headers.get("X-ARWC-Internal") != "data-bridge-r27" or
+            if (self.headers.get("X-ARWC-Internal") != "diagnostics-r27" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or
-                    self.client_address[0] != "10.77.62.20"):
-                self.send_json(403, {"error": "integration service context required"})
+                    self.client_address[0] != "10.77.60.58"):
+                self.send_json(403, {"error": "diagnostic service context required"})
                 return
             request = self.body()
             if request is None:

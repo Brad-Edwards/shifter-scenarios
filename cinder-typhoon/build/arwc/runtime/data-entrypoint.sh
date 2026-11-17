@@ -53,7 +53,6 @@ fi
 if ! gosu postgres psql -Atqc "SELECT 1 FROM pg_roles WHERE rolname='svc-planner-write'" | grep -qx 1; then
   gosu postgres psql -d arwc -v ON_ERROR_STOP=1 <<'SQL' >/dev/null
 CREATE ROLE "svc-planner-write" LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT;
-GRANT UPDATE (committed_ml, revision) ON public.allocation_ledger TO "svc-planner-write";
 SQL
 fi
 
@@ -164,6 +163,7 @@ REVOKE ALL ON reserve_report_current, district_allocation_adjustment,
   allocation_ledger, settlement_tariff, meter_export, business_reserve_report FROM PUBLIC;
 GRANT SELECT ON reserve_report_current, district_allocation_adjustment,
   allocation_ledger, settlement_tariff, meter_export, business_reserve_report TO "svc-planner-query";
+GRANT UPDATE (committed_ml, revision) ON public.allocation_ledger TO "svc-planner-write";
 SQL
 
 exec setpriv --reuid=arwc-data --regid=arwc-data --init-groups \

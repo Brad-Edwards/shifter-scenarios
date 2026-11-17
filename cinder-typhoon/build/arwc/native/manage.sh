@@ -534,11 +534,14 @@ VALUES ('EVT-COMM-OG2-114', 'high', '2026-11-13 09:28:14+00', '2026-11-13 09:29:
       --tmpfs /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777 \
       --tmpfs /run:rw,nosuid,nodev,size=8m,mode=0755 \
       -v cinder-arwc-diagnostics-data:/var/lib/arwc-diagnostics \
+      -v cinder-arwc-engineering-data:/run/arwc-engineering:ro \
       -v "${golden_op}/tls/server.crt:/run/arwc-tls/server.crt:ro" \
       -v "${golden_op}/tls/server.key:/run/arwc-tls/server.key:ro" \
       -v "${golden_op}/tls/ca.crt:/run/arwc-tls/ca.crt:ro" \
       "${DIAGNOSTIC_IMAGE:-cinder-arwc/a-diagnostics:hand-build}"
-    echo "a-diagnostics (diagnostic-services at 10.77.63.50) started on cinder-arwc-engineering"
+    docker network connect --ip 10.77.60.58 --alias diagnostic-services.arwc.test \
+      cinder-arwc-corporate cinder-arwc-diagnostics 2>/dev/null || true
+    echo "a-diagnostics (diagnostic-services at 10.77.63.50/10.77.60.58) started on cinder-arwc-engineering + cinder-arwc-corporate"
     # Start the maintenance renderer (a-renderer) for W26 renderer profile discovery.
     # Provides GET /api/renderers/current → RENDER-MAINT-CRR-R9 profile.
     # Reads approval from cinder-arwc-approval-evidence volume (populated by W15 flow).
