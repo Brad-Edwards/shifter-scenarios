@@ -83,8 +83,38 @@ class AssistantApiHandler(KeplerHandler):
                         "tenant_id": "TEN-RILL-022",
                     }
                 },
+                "source_selection": {
+                    "selection_id": k21.get("selection_id", "SEL-SUP-2841-12"),
+                    "attachment_id": k21.get("attachment_id", "ATT-DIAG-698"),
+                },
             }
             self.send_json(200, config)
+            return
+
+        # K22.1: source-selection endpoint — session-required, returns the selection record
+        # binding support case SUP-2841 to diagnostic attachment ATT-DIAG-698.
+        if path == "/api/source-selection":
+            cookie = self.headers.get("Cookie", "")
+            user = _get_session(cookie)
+            if user is None:
+                self.send_json(403, {"error": "session_required"})
+                return
+            k21 = _load_k21_config()
+            record = {
+                "selection_id": k21.get("selection_id", "SEL-SUP-2841-12"),
+                "case_id": k21.get("selection_case_id", "SUP-2841"),
+                "attachment_id": k21.get("attachment_id", "ATT-DIAG-698"),
+                "tenant_id": "TEN-ARWC-047",
+                "purpose": "diagnostic_review",
+                "selected_at": "2026-09-18T10:00:00Z",
+            }
+            append_audit(AUDIT, "source-selection-read", {
+                "action": "read",
+                "selection_id": record["selection_id"],
+                "attachment_id": record["attachment_id"],
+                "user": user,
+            })
+            self.send_json(200, record)
             return
 
         # K23.1: contexts endpoint — public, returns workspace context list with real thread slugs.
