@@ -1262,12 +1262,11 @@ hints:
     - kind: client_route
       id: process.replay-divergence
   W31.4:
-    h1: Begin with the diagnostic vault record, parser worker, and approval-history export. Its published client
-      document exposes the diagnostic program operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as record-boundary analysis followed by protected saved-state control. Carry forward only earned
-      identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
-    h3: Carry the controlled saved-state result through the diagnostic program boundary, then verify the resulting
-      approval-history read is recorded under the diagnostic service identity and not the participant client.
+    h1: POST /api/diagnostic-programs/authority (via process-view.arwc.test). Requires W31.3
+      (vault_saved_state_controlled). Submit the four execution fields from the W31.3 state record:
+      execution_id, correlation, history_id=HIST-APR-CRR-09, history_digest.
+    h2: Read execution_id, correlation, and history_digest from the DVL-STATE-CRR-R5 record returned
+      by W31.3. The service validates these exactly
     references:
     - kind: client_route
       id: process.diagnostic-program
