@@ -1,0 +1,60 @@
+{
+  "schema": "arwc.engineering-workstation/v1",
+  "image": "arwc-ot-engineering:368",
+  "base": "python:3.14.10-slim-bookworm@sha256:3fe1a0b6c2d6b2ebb572906cdabeca75aeb558c0c17db5ffefbcf8094871c32b",
+  "participant_user": "fieldlink",
+  "participant_uid": 2500,
+  "networks": [
+    "supervisory"
+  ],
+  "address": "172.29.63.10",
+  "rdp_port": 3389,
+  "editor": {
+    "version": "4.3.4",
+    "sha256": "b81863722d65eaa786f53234472601b649ea34a3f2f790f931beedaa7ec75fa0"
+  },
+  "opcua_browser": {
+    "package": "opcua-client",
+    "version": "1.0.2",
+    "source_commit": "7b4f1de827c086f1189060996ed743e756498d90",
+    "license": "GPL-3.0"
+  },
+  "browser_sandbox_profile": {
+    "source": "microsoft/playwright",
+    "version": "v1.64.1",
+    "commit": "cfe490d941f992655948eee8fd4fd94e1c4234bf",
+    "sha256": "cc3e61cabda6bbc1e53e54d27ba4d55a9d3be829b6dd1a596f4a7b31b1cc7849"
+  },
+  "tools": [
+    "OpenPLC Editor",
+    "Firefox ESR",
+    "FreeOpcUa client GUI",
+    "psql",
+    "Mosquitto clients",
+    "C++ compiler",
+    "Git",
+    "OpenSSH client"
+  ],
+  "endpoints": {
+    "hmi": "http://fuxa:1881",
+    "history": "http://grafana:3000/d/arwc-history",
+    "plc_engineering": "https://plc:8443",
+    "opcua": "opc.tcp://plc:4840/arwc",
+    "postgresql": "postgres:5432",
+    "mqtt": "mosquitto:8883"
+  },
+  "boundaries": {
+    "privileged_container": false,
+    "host_network": false,
+    "host_docker_socket": false,
+    "participant_sudo": false,
+    "browser_no_sandbox": false,
+    "runtime_downloads": false
+  },
+  "delivery": "Existing BigRAE RDP/VPN and participant credential delivery. Final binding belongs to deferred issue 370; no replacement access service or scenario password-copy shim.",
+  "participant_readiness": {
+    "contract": "participant-readiness/v1",
+    "manifest_sha256": "31b871052c49aa4ccad2548f5c6b863578ae360a9dc52afafa2b75ea479d7620",
+    "shared_executable": "../participant-host/shifter-participant-readiness"
+  }
+}

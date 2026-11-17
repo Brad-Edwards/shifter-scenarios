@@ -1,0 +1,35 @@
+{
+  "issue": 367,
+  "status": "passed",
+  "scope": "normal broker-to-controller component QA on the dedicated development VM; integrated BigRAE acceptance remains downstream",
+  "observations": [
+    {
+      "coordination_message": 696,
+      "subject": "First dispatcher checkpoint \u2014 normal manual PASS, duplicate conflict PASS",
+      "detail": "MSG 694 confirmed. First dispatcher operating checkpoint:\n\nPRODUCT FINDING \u2014 expires_at format:\ncontract.json and README.md do not specify the format for expires_at. The model.py validation requires a numeric Unix timestamp (float), not an ISO 8601 string. First attempt with ISO string ('2026-11-13T03:19:24Z') returned invalid. Fixed to Unix timestamp and all subsequent tests passed.\n\nNORMAL MANUAL REQUEST (PASS):\nRequest: id=df540751, asset=AST-CRR-017, mode=manual, A=25.0%, B=20.0%, flow=0.3, expires=+90s\nOutcomes received in sequence:\n1. received\n2. dispatch_intent (seq=1, origin=dispatcher journal)\n3. dispatched (seq=1, origin=OPC UA sequence write)\n4. plc_accepted (seq=1, origin=native PLC decision)\n5. completed (seq=1, origin=observed equipment feedback, A=25.0%, B=20.0%, flowA=0.125, flowB=0.100)\nFUXA overview confirmed: Control owner=Dispatcher, A=25.0%, B=20.0%, total=0.225 m3/s, Armed\n\nDUPLICATE/CONFLICT TEST (PASS):\nSame UUID re-sent with different expires_at (changed payload):\nOutcome: {status: conflict, duplicate: true} \u2014 no new PLC operation\n\nContinuing: testing local HMI priority (Apply from HMI supersedes dispatcher)."
+    },
+    {
+      "coordination_message": 699,
+      "subject": "Dispatcher QA final \u2014 broker reconnect PASS, all 8 dispatcher checks done",
+      "detail": "Dispatcher QA final checkpoint \u2014 broker reconnect and post-reconnect operation.\n\nBROKER RECONNECT (PASS):\nMosquitto restarted while dispatcher idle.\nDispatcher log: 'Marked 0 unfinished requests uncertain' + 'Connected to the authenticated site request path' x2.\nNo PLC operations during reconnect. No replay.\n\nPOST-RECONNECT OPERATION (PASS):\nRequest 1bb5ac81, mode=manual, A=35%, B=30%.\nOutcomes: received->dispatch_intent(seq=7)->dispatched->plc_accepted->completed.\nCompleted: A=35.0%, B=30.0%, flowA=0.175, flowB=0.150 m3/s.\n\nFULL DISPATCHER QA SUMMARY (all PASS):\n1. Normal manual request: PASS (seq=1, A=25%/B=20% completed)\n2. Normal automatic request: PASS (seq=3, 0.25 m3/s settled)\n3. Changed-payload conflict: PASS (conflict+duplicate:true, no PLC op)\n4. Same-payload redelivery: PASS (completed+duplicate:true, no new PLC op)\n5. Restart-without-replay: PASS (0 unfinished marked uncertain on each restart)\n6. Local priority: PASS (HMI takes ownership after dispatcher completes)\n7. Broker reconnect: PASS (auto-reconnect, no replay)\n8. Post-reconnect operation: PASS (seq=7)\n\nDEFERRED:\n- Supersede (in-flight): simulation moves outlets to target faster than test can intervene; documented as not confirmed in this environment\n- Travel fault reset with active fault: deferred to joined utility walkthrough\n\nPRODUCT FINDING:\nexpires_at must be a numeric Unix timestamp (float); README/contract.json do not specify format. Already noted in first checkpoint."
+    },
+    {
+      "coordination_message": 702,
+      "subject": "Dispatcher QA complete \u2014 supersede and restart-uncertain both PASS",
+      "detail": "Both in-flight dispatcher cases complete.\n\nLOCAL HMI TAKEOVER / SUPERSEDE (PASS):\nRequest 87874071, mode=manual, target A=99%/B=99% (from 1%/1% = 20-second window).\nWhile dispatcher was at plc_accepted (outlets moving from 1%), clicked HMI Apply (target A=35%/B=30%).\nDispatcher outcomes: received -> dispatch_intent(seq=18) -> dispatched -> plc_accepted -> superseded(owner=1, origin=native PLC ownership).\nControl owner changed to HMI. PLC dispatch journal confirms superseded state.\n\nRESTART-WITH-UNCERTAIN (PASS):\nRequest 573e15fa, mode=manual, target 1%/1%, dispatched and plc_accepted.\nDispatcher restarted while request was at plc_accepted.\nDispatcher startup log: 'Marked 1 unfinished requests uncertain'.\nPG journal: received -> dispatch_intent(seq=20) -> dispatched -> plc_accepted -> uncertain('dispatcher restart; never automatically replay').\nNo replay of the uncertain request after restart.\n\nFULL DISPATCHER QA SUMMARY:\n1. Normal manual: PASS\n2. Normal automatic: PASS\n3. Changed-payload conflict: PASS\n4. Same-payload redelivery: PASS\n5. Idle restart (Marked 0 uncertain): PASS\n6. Local HMI priority (completed journal stays completed): PASS\n7. Broker reconnect: PASS\n8. Post-reconnect operation: PASS\n9. Local HMI supersede (in-flight): PASS\n10. Restart with unfinished entry (uncertain): PASS\n\nPRODUCT FINDING: expires_at must be numeric Unix epoch (float); README/contract.json do not specify format.\n\nAll 10 dispatcher checks complete."
+    }
+  ],
+  "native_journal_cross_check": [
+    {
+      "sequence": 18,
+      "status": "superseded",
+      "owner": 1
+    },
+    {
+      "sequence": 20,
+      "status": "uncertain",
+      "reason": "dispatcher restart; operator reconciliation required"
+    }
+  ],
+  "documentation_fix": "expires_at now explicitly specifies numeric Unix epoch seconds in UTC"
+}

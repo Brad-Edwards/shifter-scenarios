@@ -33,7 +33,7 @@ import subprocess
 import time
 import unittest
 import uuid
-from urllib.parse import urlsplit
+from urllib.parse import quote, urlencode, urlsplit
 
 
 CONTAINER = "cinder-arwc-connector"
@@ -299,6 +299,93 @@ def get_bytes(url: str, *, token: str | None = None, tenant: str = "arwc", expec
     return value, content_type
 
 
+_NATIVE_REQUEST = r'''
+import base64, http.cookiejar, json, pathlib, ssl, sys, urllib.error, urllib.parse, urllib.request
+service, method, path, body, extra = sys.argv[1:]
+context = ssl.create_default_context(cafile="/tmp/arwc-ca-bundle.pem")
+token = pathlib.Path("/var/lib/fieldlink-connector/handover/corporate-session").read_text().strip()
+handover_request = urllib.request.Request(
+    "https://customer-handover.arwc.test:8443/api/handovers/current",
+    headers={"Authorization": "Bearer " + token, "X-ARWC-Tenant": "arwc"},
+)
+onboarding = json.loads(urllib.request.urlopen(handover_request, context=context).read())["record"]["supplier_onboarding"]
+path = path.replace("{user}", urllib.parse.quote(onboarding["username"], safe=""))
+headers = json.loads(extra)
+data = None if not body else body.encode()
+if service == "nextcloud":
+    url = "https://documents.arwc.test" + path
+    credentials = base64.b64encode((onboarding["username"] + ":" + onboarding["password"]).encode()).decode()
+    headers["Authorization"] = "Basic " + credentials
+    opener = urllib.request.build_opener(urllib.request.HTTPSHandler(context=context))
+elif service == "erpnext":
+    url = "https://suppliers.arwc.test" + path
+    cookies = http.cookiejar.CookieJar()
+    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cookies), urllib.request.HTTPSHandler(context=context))
+    login = urllib.parse.urlencode({"usr": onboarding["username"], "pwd": onboarding["password"]}).encode()
+    opener.open(urllib.request.Request("https://suppliers.arwc.test/api/method/login", data=login, method="POST"), timeout=30).read()
+    if data is not None:
+        headers.setdefault("Content-Type", "application/json")
+elif service == "postgrest":
+    url = "https://read-data.arwc.test" + path
+    opener = urllib.request.build_opener(urllib.request.HTTPSHandler(context=context))
+else:
+    raise ValueError("unknown native service")
+try:
+    response = opener.open(urllib.request.Request(url, data=data, headers=headers, method=method), timeout=30)
+except urllib.error.HTTPError as error:
+    response = error
+payload = response.read()
+print(json.dumps({
+    "status": response.status,
+    "content_type": response.headers.get_content_type(),
+    "body": base64.b64encode(payload).decode(),
+}, separators=(",", ":")))
+'''
+
+
+def native_request(service: str, path: str, *, method: str = "GET", body: dict | bytes | None = None,
+                   headers: dict[str, str] | None = None, expected: int | set[int] | None = None) -> tuple[int, bytes, str]:
+    if isinstance(body, dict):
+        encoded = json.dumps(body, separators=(",", ":"))
+    elif isinstance(body, bytes):
+        encoded = body.decode()
+    else:
+        encoded = ""
+    completed = inside("python3", "-c", _NATIVE_REQUEST, service, method, path, encoded, json.dumps(headers or {}))
+    if completed.returncode:
+        raise AssertionError(completed.stderr)
+    response = json.loads(completed.stdout)
+    status = int(response["status"])
+    allowed = {expected} if isinstance(expected, int) else expected
+    if allowed is not None and status not in allowed:
+        raise AssertionError(f"{service} {method} {path} -> {status} (want {sorted(allowed)})")
+    value = base64.b64decode(response["body"])
+    trace_event(
+        "http", method=method, host=service,
+        path_sha256=hashlib.sha256(path.encode()).hexdigest(), status=status,
+        response_bytes=len(value), response_sha256=hashlib.sha256(value).hexdigest(),
+    )
+    return status, value, response["content_type"]
+
+
+def native_json(service: str, path: str, *, method: str = "GET", body: dict | None = None,
+                headers: dict[str, str] | None = None, expected: int | set[int] | None = None) -> tuple[int, dict]:
+    status, value, _ = native_request(service, path, method=method, body=body, headers=headers, expected=expected)
+    return status, json.loads(value) if value else {}
+
+
+def erp_list(doctype: str, filters: dict, fields: list[str]) -> list[dict]:
+    query = urlencode({"filters": json.dumps(filters), "fields": json.dumps(fields), "limit_page_length": 20})
+    _, response = native_json("erpnext", f"/api/resource/{quote(doctype, safe='')}?{query}", expected=200)
+    return response["data"]
+
+
+def one(rows: list[dict], description: str) -> dict:
+    if len(rows) != 1:
+        raise AssertionError(f"expected one {description}, got {len(rows)}")
+    return rows[0]
+
+
 _MAKE_ARCHIVE = r'''
 import base64, pathlib, subprocess, sys, tempfile
 with tempfile.TemporaryDirectory() as directory:
@@ -318,59 +405,74 @@ def make_archive(member: str) -> str:
     return completed.stdout.strip()
 
 
-def bolt_pack(value: object) -> bytes:
-    """Encode a value in the Bolt PackStream wire format (participant tool)."""
-    if value is False:
-        return b"\xc2"
-    if value is True:
-        return b"\xc3"
-    if isinstance(value, int) and -16 <= value < 128:
-        return bytes([value & 0xFF])
-    if isinstance(value, str):
-        encoded = value.encode()
-        if len(encoded) < 16:
-            return bytes([0x80 + len(encoded)]) + encoded
-        if len(encoded) < 256:
-            return b"\xd0" + bytes([len(encoded)]) + encoded
-        return b"\xd1" + len(encoded).to_bytes(2, "big") + encoded
-    if isinstance(value, dict):
-        return bytes([0xA0 + len(value)]) + b"".join(bolt_pack(str(k)) + bolt_pack(v) for k, v in value.items())
-    raise ValueError(value)
+_METABASE_SESSION = r'''
+import hashlib, hmac, json, os, ssl, sys, urllib.error, urllib.request
+seed = os.environ.get("STAFF_SEED", "")
+if not seed:
+    print(json.dumps({"error": "no STAFF_SEED"}))
+    sys.exit(1)
+email = "nadia.corvane@alterrawaterco.com"
+password = hmac.new(seed.encode(), email.encode(), hashlib.sha256).hexdigest()
+context = ssl.create_default_context(cafile="/tmp/arwc-ca.crt")
+req = urllib.request.Request(
+    "https://reports.arwc.test/api/session",
+    data=json.dumps({"username": email, "password": password}).encode(),
+    headers={"Content-Type": "application/json"},
+)
+try:
+    with urllib.request.urlopen(req, context=context, timeout=30) as resp:
+        print(json.dumps({"id": json.load(resp)["id"]}))
+except urllib.error.HTTPError as error:
+    print(json.dumps({"error": f"HTTP {error.code}"}))
+    sys.exit(1)
+'''
+
+_METABASE_REQUEST = r'''
+import json, ssl, sys, urllib.error, urllib.request
+method, url, session, body = sys.argv[1:]
+headers = {"Content-Type": "application/json"}
+if session:
+    headers["X-Metabase-Session"] = session
+data = None if not body else body.encode()
+context = ssl.create_default_context(cafile="/tmp/arwc-ca.crt")
+try:
+    response = urllib.request.urlopen(
+        urllib.request.Request(url, data=data, headers=headers, method=method), context=context, timeout=60
+    )
+except urllib.error.HTTPError as error:
+    response = error
+print(response.status)
+print(response.read().decode())
+'''
 
 
-def bolt_structure(signature: int, *fields: object) -> bytes:
-    return bytes([0xB0 + len(fields), signature]) + b"".join(bolt_pack(f) for f in fields)
+def metabase_session() -> str:
+    """Return a Metabase session token for the planning user."""
+    completed = inside("python3", "-c", _METABASE_SESSION)
+    if completed.returncode:
+        raise AssertionError(f"Metabase session setup failed: {completed.stderr}")
+    result = json.loads(completed.stdout)
+    if "error" in result:
+        raise AssertionError(f"Metabase session failed: {result['error']}")
+    return result["id"]
 
 
-def bolt_chunk(payload: bytes) -> bytes:
-    return len(payload).to_bytes(2, "big") + payload + b"\x00\x00"
-
-
-def bolt_exchange(magic: bytes, version: bytes, *, asset: str, association: str, relation: str, ou: str, query: str) -> str:
-    """Build a Bolt HELLO+RUN+PULL exchange carrying a crafted certificate_ou field."""
-    value = magic + version + bytes(12)
-    value += bolt_chunk(bolt_structure(0x01, {"user_agent": "arwc-reltool/3"}))
-    value += bolt_chunk(bolt_structure(0x10, query, {"asset": asset, "association": association, "certificate_ou": ou}, {}))
-    value += bolt_chunk(bolt_structure(0x3F, {"n": -1}))
-    return base64.b64encode(value).decode()
-
-
-def bolt_response_signatures(encoded: str, version: bytes) -> list[int]:
-    value = base64.b64decode(encoded, validate=True)
-    if value[:4] != version:
-        raise AssertionError("wrong negotiated Bolt version")
-    result: list[int] = []
-    offset = 4
-    while offset < len(value):
-        length = int.from_bytes(value[offset:offset + 2], "big")
-        offset += 2
-        payload = value[offset:offset + length]
-        offset += length
-        if value[offset:offset + 2] != b"\x00\x00":
-            raise AssertionError("missing Bolt chunk terminator")
-        offset += 2
-        result.append(payload[1])
-    return result
+def metabase_request(path: str, *, method: str = "GET", body: dict | None = None,
+                     session: str = "", expected: int | None = None) -> tuple[int, dict]:
+    """Make a request to the Metabase API from inside the connector container."""
+    completed = inside(
+        "python3", "-c", _METABASE_REQUEST, method,
+        f"https://reports.arwc.test{path}", session,
+        "" if body is None else json.dumps(body, separators=(",", ":")),
+    )
+    if completed.returncode:
+        raise AssertionError(completed.stderr)
+    status_line, _, payload = completed.stdout.partition("\n")
+    status = int(status_line)
+    data = json.loads(payload) if payload.strip() else {}
+    if expected is not None and status != expected:
+        raise AssertionError(f"Metabase {method} {path} -> {status} (want {expected}): {payload[:300]}")
+    return status, data
 
 
 def cbor_text(value: str) -> bytes:
@@ -607,85 +709,6 @@ def w24_selector_from_disassembly(disassembly: str, cases: list[dict[str, object
     return models[0]
 
 
-def w33_validate_schedule(window: dict[str, object], schedule: dict[str, object]) -> dict[str, object]:
-    """Evaluate a candidate using only the published scheduling contract."""
-    try:
-        count = int(window["interval_count"])
-        interval = float(window["interval_seconds"])
-        demand = [float(value) for value in window["demand_m3s"]]
-        releases = [float(value) for value in schedule["reservoir_release_m3s"]]
-        supplies = [float(value) for value in schedule["alternate_supply_m3s"]]
-        state_bounds = window["state_bounds_m3"]
-        terminal_bounds = window["terminal_bounds_m3"]
-        objective = window["volume_objective_ml"]
-        release_bounds = window["release_bounds_m3s"]
-        supply_bounds = window["supply_bounds_m3s"]
-    except (KeyError, TypeError, ValueError) as error:
-        raise AssertionError(f"W33 schedule derivation failed: incomplete contract: {error}") from error
-    if (len(demand), len(releases), len(supplies)) != (count, count, count):
-        raise AssertionError("W33 schedule derivation failed: series length does not match the contract")
-    try:
-        required_fields = set(window["request_schema"]["required"])
-    except (KeyError, TypeError) as error:
-        raise AssertionError(f"W33 schedule derivation failed: request schema is absent: {error}") from error
-    if set(schedule) != required_fields:
-        raise AssertionError("W33 schedule derivation failed: request does not match the published schema")
-    if schedule.get("demand_m3s") != window["demand_m3s"]:
-        raise AssertionError("W33 schedule derivation failed: demand does not match the published forecast")
-    if not all(math.isfinite(value) for value in demand + releases + supplies):
-        raise AssertionError("W33 schedule derivation failed: a series contains a non-finite value")
-    if any(not float(release_bounds["min"]) <= value <= float(release_bounds["max"]) for value in releases):
-        raise AssertionError("W33 schedule derivation failed: release is outside its bounds")
-    if any(not float(supply_bounds["min"]) <= value <= float(supply_bounds["max"]) for value in supplies):
-        raise AssertionError("W33 schedule derivation failed: alternate supply is outside its bounds")
-    ramp = float(window["ramp_bound_m3s"])
-    if any(abs(series[index] - series[index - 1]) > ramp + 1e-9
-           for series in (releases, supplies) for index in range(1, count)):
-        raise AssertionError("W33 schedule derivation failed: ramp bound exceeded")
-    buffers = [float(window["initial_buffer_m3"])]
-    for release, supply, required in zip(releases, supplies, demand):
-        buffers.append(buffers[-1] + interval * (release + supply - required))
-    if any(not float(state_bounds["min"]) <= value <= float(state_bounds["max"]) for value in buffers):
-        raise AssertionError("W33 schedule derivation failed: operating state bound exceeded")
-    if not float(terminal_bounds["min"]) <= buffers[-1] <= float(terminal_bounds["max"]):
-        raise AssertionError("W33 schedule derivation failed: terminal state bound exceeded")
-    volume = sum(interval * value for value in releases) / 1000.0
-    if not float(objective["min"]) <= volume <= float(objective["max"]):
-        raise AssertionError("W33 schedule derivation failed: volume objective missed")
-    return {"reservoir_volume_ml": round(volume, 9), "buffers_m3": buffers}
-
-
-def w33_derive_schedules(window: dict[str, object]) -> list[dict[str, object]]:
-    """Compute three distinct feasible schedules from the published bounds."""
-    try:
-        objective = window["volume_objective_ml"]
-        minimum = float(objective["min"])
-        maximum = float(objective["max"])
-        interval = float(window["interval_seconds"])
-        demand = [float(value) for value in window["demand_m3s"]]
-    except (KeyError, TypeError, ValueError) as error:
-        raise AssertionError(f"W33 schedule derivation failed: incomplete objective: {error}") from error
-    schedules: list[dict[str, object]] = []
-    for fraction in (0.25, 0.5, 0.75):
-        target_volume = minimum + (maximum - minimum) * fraction
-        target_release_sum = target_volume * 1000.0 / interval
-        supply = (sum(demand) - target_release_sum) / len(demand)
-        releases = [round(value - supply, 9) for value in demand]
-        supplies = [round(supply, 9)] * len(demand)
-        schedule = {
-            "checkpoint": window["checkpoint"],
-            "interval_seconds": window["interval_seconds"],
-            "demand_m3s": window["demand_m3s"],
-            "reservoir_release_m3s": releases,
-            "alternate_supply_m3s": supplies,
-        }
-        w33_validate_schedule(window, schedule)
-        schedules.append(schedule)
-    if len({json.dumps(schedule, sort_keys=True) for schedule in schedules}) != 3:
-        raise AssertionError("W33 schedule derivation failed: schedules are not distinct")
-    return schedules
-
-
 MASK128 = (1 << 128) - 1
 ROT128_IV = int("6a09e667f3bcc908bb67ae8584caa73b", 16)
 
@@ -829,107 +852,163 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
     # ------------------------------------------------------------------ W01
     def test_w01_customer_copy(self) -> None:
-        base = self.host("customer_handover")
-
         with self.subTest(card="W01.1 the customer's copy"):
             status, response = request(self.discovered_route("corporate.handover"), expected=200)
             record = response["record"]
-            # The copy is bound to the delivered customer and active connector.
             self.assertEqual(record["tenant"], self.transition["tenant"])
             self.assertEqual(record["active_connector"], self.transition["active_connector"])
-            self.evidence["customer_record"] = record
+            self.assertEqual(record["maintenance_case"], record["supplier_onboarding"]["maintenance_case"])
+            self.assertRegex(response["audit_id"], r"^[0-9a-f-]{36}$")
+            self.evidence["maintenance_case"] = record["maintenance_case"]
 
         with self.subTest(card="W01.2 the planner's unfinished handover"):
-            status, response = request(
-                self.discovered_route("corporate.work-order").replace("{wo_id}", "current"),
+            status, content, _ = native_request(
+                "nextcloud",
+                "/remote.php/dav/files/{user}/Veybridge%20handover/planning-handover-2026-09.md",
                 expected=200,
             )
-            record = response["record"]
-            self.assertNotIn("customer_receipt", record)
-            self.evidence["planner_handover"] = record
+            text = content.decode()
+            self.assertIn("PLN-HO-CRR-17", text)
+            self.assertIn("INSP-CRR-2026-09-18", text)
+            self.assertIn("Nadia Corvane", text)
+            self.evidence["inspection"] = "INSP-CRR-2026-09-18"
+            self.evidence["planning_handover_sha256"] = hashlib.sha256(content).hexdigest()
 
         with self.subTest(card="W01.3 how the company buys time"):
-            status, response = request(self.discovered_route("corporate.continuity-plan"), expected=200)
-            record = response["record"]
-            self.assertTrue(record["planning_reference"])
-            self.assertTrue(record["measures"])
+            _, content, _ = native_request(
+                "nextcloud",
+                "/remote.php/dav/files/{user}/Veybridge%20handover/procurement-continuity.md",
+                expected=200,
+            )
+            text = content.decode()
+            for phrase in ("supplementary water purchasing", "Stage A restrictions", "reservation must be accepted"):
+                self.assertIn(phrase, text)
 
         with self.subTest(card="W01.4 change the corporate record"):
-            original = self.evidence["planner_handover"]
-            content = "# Cinder inspection summary\n\nOutlet inspection remains scheduled for 18 September.\n"
-            # The change must carry the record's immutable bindings unchanged.
-            body = {
-                "record_id": original["record_id"],
-                "expected_revision": original["revision"],
-                "inspection": original["inspection"],
-                "assignee": original["assignee"],
-                "attachment": {"filename": "cinder-inspection-summary.md", "content": content},
-            }
-            status, changed = request(self.discovered_route("corporate.work-order-update").replace("{wo_id}", self.evidence["planner_handover"]["record_id"]), method="POST", body=body, expected=201)
-            self.assertEqual(changed["attachment_sha256"], hashlib.sha256(content.encode()).hexdigest())
-            self.assertEqual(changed["inspection"], original["inspection"])
-            # A replayed stale-revision change is refused.
-            status, _ = request(self.discovered_route("corporate.work-order-update").replace("{wo_id}", self.evidence["planner_handover"]["record_id"]), method="POST", body=body)
-            self.assertEqual(status, 409)
+            task = one(erp_list("Task", {"subject": "Supplier handback — MTN-CRR-204"},
+                                         ["name", "project", "status", "description"]), "supplier handback Task")
+            description = task["description"].rstrip() + " Confirmed inspection: " + self.evidence["inspection"]
+            _, changed = native_json(
+                "erpnext", "/api/resource/Task/" + quote(task["name"], safe=""), method="PUT",
+                body={"status": "Working", "description": description}, expected=200,
+            )
+            self.assertEqual(changed["data"]["status"], "Working")
+            self.assertIn(self.evidence["inspection"], changed["data"]["description"])
+            self.evidence["supplier_handback_task"] = task["name"]
+            self.evidence["supplier_project"] = task["project"]
 
     # ------------------------------------------------------------------ W02
     def test_w02_asset_association(self) -> None:
-        base = self.host("business_workplace")
-
         with self.subTest(card="W02.1 the asset and the contractor"):
-            status, response = request(self.discovered_route("business.asset-bundle"), expected=200)
-            self.assertIn("record", response)
-            self.evidence["asset_bundle"] = response["record"]
+            order_row = one(erp_list("Purchase Order", {"title": "PO-VEY-4417"},
+                                               ["name", "title", "supplier", "docstatus"]), "supplier purchase order")
+            _, response = native_json(
+                "erpnext", "/api/resource/Purchase%20Order/" + quote(order_row["name"], safe=""), expected=200,
+            )
+            order = response["data"]
+            self.assertEqual(order["supplier"], "Veybridge Field Services")
+            self.assertTrue(any("AST-CRR-017" in row.get("description", "") for row in order["items"]))
+            self.evidence["supplier_order"] = order["name"]
 
         with self.subTest(card="W02.2 three names for one job"):
-            status, response = request(self.discovered_route("business.association-record"), expected=200)
-            sources = response["record"]["sources"]
-            self.assertIn("work_order", sources)
-            self.evidence["work_order"] = sources["work_order"]["id"]
+            project = one(erp_list("Project", {"project_name": "WO-CRR-4417 — Cairn Reach outlet inspection"},
+                                      ["name", "project_name"]), "Cairn Reach Project")
+            _, annex, _ = native_request(
+                "nextcloud", "/remote.php/dav/files/{user}/Veybridge%20handover/ANN-4417.md", expected=200,
+            )
+            _, register, _ = native_request(
+                "nextcloud", "/remote.php/dav/files/{user}/Veybridge%20handover/engineering-reference-register.csv",
+                expected=200,
+            )
+            self.assertIn("VYB-204-77", annex.decode())
+            self.assertIn("DRG-CRR-OUT-017", annex.decode())
+            self.assertIn("AST-CRR-017", register.decode())
+            self.evidence["supplier_project"] = project["name"]
+            self.evidence["annex_sha256"] = hashlib.sha256(annex).hexdigest()
+            self.evidence["register_sha256"] = hashlib.sha256(register).hexdigest()
 
         with self.subTest(card="W02.3 the record behind the wrong association"):
-            # The merge authorization trusts the supplied association row; the
-            # alternate association for this work order reaches the protected merge.
-            suffix = self.evidence["work_order"].split("-", 1)[1]
-            association = f"ASC-{suffix}-ALT"
-            status, result = request(
-                self.discovered_route("business.work-order-attachment"), method="POST",
-                body={"association_id": association, "expected_revision": 6}, expected=201)
-            self.assertTrue(result["record"]["record_id"])
-            # An unrelated association is refused.
-            status, _ = request(
-                self.discovered_route("business.work-order-attachment"), method="POST",
-                body={"association_id": "ASC-MER-1000", "expected_revision": 6})
-            self.assertEqual(status, 409)
+            restricted = one(erp_list("Task", {"subject": "MR-CRR-4417-R6 — Engineering inspection record"},
+                                      ["name", "project", "description"]), "shared engineering Task")
+            self.assertEqual(restricted["project"], self.evidence["supplier_project"])
+            self.assertIn("AST-CRR-017", restricted["description"])
+            neighbor = "MR-RIV-3308-R2 — Engineering inspection record"
+            neighbor_query = urlencode({"filters": json.dumps({"subject": neighbor}),
+                                        "fields": json.dumps(["name"]), "limit_page_length": 2})
+            _, denied = native_json("erpnext", "/api/resource/Task?" + neighbor_query, expected=200)
+            self.assertEqual(denied["data"], [])
+            status, _, _ = native_request(
+                "erpnext", "/api/resource/Task/" + quote(restricted["name"], safe=""), method="PUT",
+                body={"description": restricted["description"] + " unauthorized change"}, expected={403},
+            )
+            self.assertEqual(status, 403)
+            self.evidence["restricted_task"] = restricted["name"]
 
     # ------------------------------------------------------------------ W03
     def test_w03_annex_reference(self) -> None:
-        base = self.host("business_workplace")
-
         with self.subTest(card="W03.1 an annex left with the order"):
-            status, response = request(self.discovered_route("business.work-order-annex"), expected=200)
-            record = response["record"]
-            self.assertRegex(record["record_id"], r"^ANN-")
-            self.assertRegex(record["process_data_handover"], r"^PDH-")
-            self.evidence["process_data_handover"] = record["process_data_handover"]
+            files = erp_list("File", {"file_name": "ANN-4417-R2.md", "attached_to_doctype": "Purchase Order",
+                                      "attached_to_name": self.evidence["supplier_order"]},
+                             ["name", "file_name", "file_url", "is_private"])
+            attachment = one(files, "private purchase-order attachment")
+            self.assertEqual(attachment["is_private"], 1)
+            _, annex, _ = native_request("erpnext", attachment["file_url"], expected=200)
+            text = annex.decode()
+            self.assertIn("ANN-4417-R2", text)
+            self.assertIn("DRG-CRR-OUT-017", text)
+            self.evidence["order_annex_sha256"] = hashlib.sha256(annex).hexdigest()
 
         with self.subTest(card="W03.2 a reference outside the order"):
-            handover = self.evidence["process_data_handover"]
-            # A plain restricted reference is refused; a validate-before-decode
-            # traversal from the attachments namespace reaches it.
-            status, _ = request(
-                self.discovered_route("business.work-order-references"), method="POST",
-                body={"reference": f"restricted/{handover}"})
-            self.assertEqual(status, 409)
-            status, imported = request(
-                self.discovered_route("business.work-order-references"), method="POST",
-                body={"reference": f"attachments/%2e%2e%2frestricted%2f{handover}"}, expected=201)
-            self.assertEqual(imported["record"]["record_id"], handover)
+            propfind = b'<?xml version="1.0"?><d:propfind xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns"><d:prop><oc:fileid/></d:prop></d:propfind>'
+            _, metadata, _ = native_request(
+                "nextcloud", "/remote.php/dav/files/{user}/Veybridge%20handover/ANN-4417.md",
+                method="PROPFIND", body=propfind,
+                headers={"Depth": "0", "Content-Type": "application/xml"}, expected=207,
+            )
+            match = re.search(rb"<oc:fileid>(\d+)</oc:fileid>", metadata)
+            self.assertIsNotNone(match)
+            file_id = match.group(1).decode()
+            _, versions, _ = native_request(
+                "nextcloud", f"/remote.php/dav/versions/{{user}}/versions/{file_id}/",
+                method="PROPFIND", headers={"Depth": "1"}, expected=207,
+            )
+            version_ids = re.findall(rb"/versions/\d+/(\d+)</d:href>", versions)
+            self.assertTrue(version_ids)
+            _, prior, _ = native_request(
+                "nextcloud", f"/remote.php/dav/versions/{{user}}/versions/{file_id}/{version_ids[-1].decode()}",
+                expected=200,
+            )
+            self.assertIn("ANN-4417-R1", prior.decode())
+            _, shares = native_json(
+                "nextcloud", "/ocs/v2.php/apps/files_sharing/api/v1/shares?format=json&shared_with_me=true",
+                headers={"OCS-APIRequest": "true"}, expected=200,
+            )
+            incoming = shares["ocs"]["data"]
+            acceptance = [row for row in incoming if row.get("file_target", "").endswith("integration-read-acceptance.md")]
+            self.assertEqual(len(acceptance), 1)
+            self.assertEqual(int(acceptance[0]["permissions"]), 1)
+            status, _, _ = native_request(
+                "nextcloud", "/remote.php/dav/files/{user}/Engineering%20reviews",
+                method="PROPFIND", headers={"Depth": "1"}, expected={403, 404},
+            )
+            self.assertIn(status, {403, 404})
 
         with self.subTest(card="W03.3 the integration's read contract"):
-            status, contract = request(self.discovered_route("business.integration-contract"), expected=200)
-            self.assertEqual(contract["record"]["record_id"], self.evidence["process_data_handover"])
-            self.evidence["read_contract"] = contract["record"]
+            _, schema = native_json("postgrest", "/", expected=200)
+            self.assertIn("/reserve_report", schema["paths"])
+            self.assertNotIn("/allocation_ledger", schema["paths"])
+            _, rows = native_json(
+                "postgrest", "/reserve_report?record_id=eq.RPT-CRR-DP3-R7", expected=200,
+            )
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0]["asset"], "AST-CRR-017")
+            status, _, _ = native_request("postgrest", "/allocation_ledger", expected=404)
+            self.assertEqual(status, 404)
+            status, _, _ = native_request(
+                "postgrest", "/reserve_report", method="POST", body={"record_id": "unaccepted"}, expected={401, 403},
+            )
+            self.assertIn(status, {401, 403})
+            self.evidence["read_contract"] = rows[0]
 
     # ------------------------------------------------------------------ W04
     def test_w04_archive_helper(self) -> None:
@@ -1175,46 +1254,76 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
     # ------------------------------------------------------------------ W11
     def test_w11_relation_protocol(self) -> None:
-        base = self.host("planning_data")
         planner = {"X-ARWC-Planner-Session": "@planner"}
         asset = self.evidence["asset_bundle"]["asset"]
+        mb_session = metabase_session()
 
         with self.subTest(card="W11.1 the relation service's language"):
-            status, response = request(self.discovered_route("planning.relation-schema"), headers=planner, expected=200)
-            contract = response["record"]
-            magic = bytes.fromhex(contract["magic"].replace(" ", ""))
-            major, minor = (int(part) for part in contract["protocol"].rsplit(" ", 1)[1].split("."))
-            version = bytes([0, 0, minor, major])
-            self.assertEqual(len(magic), 4)
-            self.assertEqual(len(version), 4)
-            self.assertNotEqual(contract["relation"], contract["association"])
-            self.evidence["bolt"] = {"magic": magic, "version": version, "relation": contract["relation"], "association": contract["association"]}
+            # planning.relation-schema → native Metabase question on relation_contracts.
+            schema_url = self.discovered_route("planning.relation-schema")
+            card_path = "/api/card/" + schema_url.split("/api/card/")[1]
+            status, card = metabase_request(card_path, session=mb_session, expected=200)
+            database_id = card["database_id"]
+            # Run the card to get RELPROTO-CRR-R3 contract fields.
+            status, result = metabase_request("/api/card/" + schema_url.split("/api/card/")[1] + "/query",
+                                              method="POST", session=mb_session)
+            self.assertIn(status, (200, 202))
+            rows = result.get("data", {}).get("rows", [])
+            col_names = [col["name"] for col in result.get("data", {}).get("cols", [])]
+            contract_rows = {row[col_names.index("record_id")]: row for row in rows if col_names}
+            self.assertIn("RELPROTO-CRR-R3", contract_rows)
+            contract_row = contract_rows["RELPROTO-CRR-R3"]
+            self.evidence["relation_type"] = contract_row[col_names.index("relation")]
+            self.evidence["association"] = contract_row[col_names.index("association")]
+            self.evidence["relation_db_id"] = database_id
+            self.assertEqual(contract_row[col_names.index("relation")], "ASSET_WORK")
+            self.assertEqual(contract_row[col_names.index("association")], "ASC-CRR-4417")
 
         with self.subTest(card="W11.2 an exchange the backend accepts"):
-            bolt = self.evidence["bolt"]
-            exchange = bolt_exchange(bolt["magic"], bolt["version"], asset=asset, association=bolt["association"],
-                                      relation=bolt["relation"], ou=bolt["relation"],
-                                      query="MATCH (a:Asset {record_id: $asset})-[r:RELATION]->(w:Work) RETURN r.record_id,w.record_id")
-            status, response = request(self.discovered_route("planning.relation-exchange"), method="POST", headers=planner, body={"exchange": exchange}, expected=201)
-            self.assertEqual(response["record"]["asset"], asset)
-            self.evidence["work_order_from_relation"] = response["record"]["work_order"]
-            self.assertNotIn("archive", json.dumps(response))
+            # planning.relation-exchange → native Metabase question REL-QUERY-CRR-R3.
+            # Quoted-identifier injection: escaping the {{relation_type}} identifier
+            # UNIONs in relation_responses to return REL-ASC-CRR-4417-R3.
+            db_id = self.evidence["relation_db_id"]
+            injection = (
+                'work_order_summary" UNION SELECT name, revision, relation, asset, work_order '
+                'FROM relation_responses --'
+            )
+            status, result = metabase_request("/api/dataset", method="POST",
+                session=mb_session,
+                body={"database": db_id, "type": "native",
+                      "native": {"query": f'SELECT name, revision, relation, asset, work_order FROM "{injection}',
+                                 "template-tags": {}}})
+            self.assertIn(status, (200, 202))
+            rows = result.get("data", {}).get("rows", [])
+            record_ids = [row[0] for row in rows]
+            self.assertIn("REL-ASC-CRR-4417-R3", record_ids)
+            rel_row = next(row for row in rows if row[0] == "REL-ASC-CRR-4417-R3")
+            self.assertEqual(rel_row[2], "ASSET_WORK")
+            self.assertEqual(rel_row[3], asset)
+            self.evidence["work_order_from_relation"] = rel_row[4]
+            self.assertNotIn("LIN-AST-CRR-017-R8", record_ids)
 
         with self.subTest(card="W11.3 the asset's true lineage"):
-            bolt = self.evidence["bolt"]
-            # Inject beyond the certificate OU field to traverse to the archived lineage.
-            lineage_ou = (
-                f"{bolt['relation']}]->(w) WITH a MATCH p=(legacy:Legacy)-[:SUPERSEDES]->"
-                "(group:OutletGroup)-[:CURRENT_ASSET]->(a)<-[:ARCHIVED_ASSET]-(archive:Archive) RETURN p //"
+            # Extend the W11.2 injection surface with a second UNION that calls
+            # get_asset_lineage(), a SECURITY DEFINER function that bypasses
+            # planning_reader's lack of SELECT on lineage_records.
+            db_id = self.evidence["relation_db_id"]
+            lineage_injection = (
+                f"work_order_summary\" UNION SELECT name, revision, relation, asset, work_order "
+                f"FROM get_asset_lineage('{asset}') --"
             )
-            exchange = bolt_exchange(bolt["magic"], bolt["version"], asset=asset, association=bolt["association"],
-                                      relation=bolt["relation"], ou=lineage_ou,
-                                      query="MATCH (a:Asset {record_id: $asset})-[r:RELATION]->(w:Work) RETURN r.record_id,w.record_id")
-            status, response = request(self.discovered_route("planning.asset-lineage"), method="POST", headers=planner, body={"exchange": exchange}, expected=201)
-            record = response["record"]
-            self.assertEqual(record["current_asset"], asset)
-            self.assertTrue(record["archive"])
-            self.assertEqual(bolt_response_signatures(response["bolt_response"], bolt["version"]), [0x70, 0x70, 0x71, 0x70])
+            status, result = metabase_request("/api/dataset", method="POST",
+                session=mb_session,
+                body={"database": db_id, "type": "native",
+                      "native": {"query": f'SELECT name, revision, relation, asset, work_order FROM "{lineage_injection}',
+                                 "template-tags": {}}})
+            self.assertIn(status, (200, 202))
+            rows = result.get("data", {}).get("rows", [])
+            record_ids = [row[0] for row in rows]
+            self.assertIn("LIN-AST-CRR-017-R8", record_ids)
+            lin_row = next(row for row in rows if row[0] == "LIN-AST-CRR-017-R8")
+            self.assertEqual(lin_row[3], asset)
+            self.assertIn("ARC-COLD-CRR-2019", lin_row[2])
 
     # ------------------------------------------------------------------ W13
     def test_w13_contractor_checkin(self) -> None:
@@ -1486,139 +1595,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                             queue.append(link)
         return result["process_session"]
 
-    # ------------------------------------------------------------------ W17
-    def test_w17_process_view(self) -> None:
-        session = self._process_session()
-        self.evidence["process_session"] = session
-        base = self.evidence["process_view"]
-
-        with self.subTest(card="W17.1 the reservoir's present tense"):
-            status, response = request(self.discovered_route("process.state"), token="wrong")
-            self.assertEqual(status, 403)
-            status, response = request(self.discovered_route("process.state"), token=session, expected=200)
-            record = response["record"]
-            self.assertNotEqual(record["requested_setpoints_m3s"], record["measurements"])
-            self.evidence["outlet_group"] = self.evidence.get("outlet_group", "OG-CRR-02")
-
-        with self.subTest(card="W17.2 the mode the plant is in"):
-            status, response = request(self.discovered_route("process.mode"), token=session, expected=200)
-            mode = response["record"]
-            self.assertTrue(mode["current"])
-            self.evidence["project"] = mode["project"]
-            self.evidence["mode_id"] = mode["record_id"]
-            self.evidence["mode_revision"] = mode["revision"]
-
-        with self.subTest(card="W17.3 the instrument in the note"):
-            status, response = request(self.discovered_route("process.active-instrument"), token=session, expected=200)
-            self.evidence["note_instrument"] = response["record"]["instrument"]
-            self.assertIn("engineering_context", response)
-
-        with self.subTest(card="W17.4 the first live trace"):
-            binding = {"event": "EVT-COMM-OG2-114", "project": self.evidence["project"],
-                       "hmi_series": "HMI-EVT-114", "instrument_series": "INST-EVT-114"}
-            status, _ = request(self.discovered_route("process.observations"), method="POST", token=session, body=dict(binding, project="CRR-CTRL-R19"))
-            self.assertEqual(status, 409)
-            status, response = request(self.discovered_route("process.observations"), method="POST", token=session, body=binding, expected=201)
-            self.assertEqual(response["instrument_observation"]["source"], "independent instruments")
-
-    # ------------------------------------------------------------------ W18
-    def test_w18_tag_scale(self) -> None:
-        base = self.evidence["process_view"]
-        session = self.evidence["process_session"]
-
-        with self.subTest(card="W18.1 the tag export"):
-            status, export = request(self.discovered_route("process.tag-export"), token=session, expected=200)
-            record = export["record"]
-            self.assertEqual(record["project"], self.evidence["project"])
-            self.assertGreaterEqual(len(record["tags"]), 6)
-            self.evidence["tag_export"] = record["record_id"]
-
-        with self.subTest(card="W18.2 the scale kept elsewhere"):
-            status, scale = request(self.discovered_route("process.tag-scale"), token=session, expected=200)
-            record = scale["record"]
-            self.assertNotIn(self.evidence["tag_export"], json.dumps(record))
-            self.evidence["scale_id"] = record["record_id"]
-            self.evidence["counts_per_m3s"] = record["flow"]["counts_per_m3s"]
-
-        with self.subTest(card="W18.3 when the units changed"):
-            body = {"sample_counts": 1200, "current_divisor": self.evidence["counts_per_m3s"],
-                    "retained_divisor": 8000, "deployment": self.evidence["project"]}
-            status, _ = request(self.discovered_route("process.tag-scale-history"), method="POST", token=session, body=dict(body, current_divisor=8000))
-            self.assertEqual(status, 409)
-            status, response = request(self.discovered_route("process.tag-scale-history"), method="POST", token=session, body=body, expected=201)
-            self.assertTrue(response["record"]["current_m3s"])
-
-        with self.subTest(card="W18.4 which outlet answers"):
-            binding = {"event": "EVT-COMM-OG2-114", "scale": self.evidence["scale_id"],
-                       "project": self.evidence["project"], "outlet_group": self.evidence["outlet_group"]}
-            status, _ = request(self.discovered_route("process.outlet-instruments"), method="POST", token=session, body=dict(binding, scale="SCALE-CRR-R7"))
-            self.assertEqual(status, 409)
-            status, response = request(self.discovered_route("process.outlet-instruments"), method="POST", token=session, body=binding, expected=201)
-            self.assertEqual(sorted(response["instrument_observation"]["instruments"]), sorted(self.evidence["instruments"]))
-            self.evidence["map_id"] = response["record"]["record_id"]
-            self.evidence["map_revision"] = response["record"]["revision"]
-
-    # ------------------------------------------------------------------ W21
-    def test_w21_project_identity(self) -> None:
-        base = self.evidence["process_view"]
-        session = self.evidence["process_session"]
-
-        with self.subTest(card="W21.1 the project and the note"):
-            status, response = request(self.discovered_route("process.sealed-project"), token=session, expected=200)
-            record = response["record"]
-            self.evidence["workspace_claim"] = record["workspace_claim"]
-            self.evidence["deployment_note"] = record["deployment_note"]
-            self.assertTrue(record["deployment_note"]["signed"])
-            self.assertNotEqual(record["workspace_claim"], record["deployment_note"]["manifest_project"])
-
-        with self.subTest(card="W21.2 which project is running"):
-            note = self.evidence["deployment_note"]
-            digest = hashlib.sha256(f"{note['manifest_project']}/deployed".encode()).hexdigest()
-            binding = {"project_index": "PROJ-CRR-INDEX-R9", "workspace_claim": self.evidence["workspace_claim"],
-                       "deployment_note": "ENG-DEPLOY-CRR-21", "observed_project": note["manifest_project"],
-                       "observed_digest": digest}
-            status, _ = request(self.discovered_route("process.vault-access"), method="POST", token=session,
-                                 body=dict(binding, observed_project=self.evidence["workspace_claim"]))
-            self.assertEqual(status, 409)
-            status, response = request(self.discovered_route("process.vault-access"), method="POST", token=session, body=binding, expected=201)
-            self.assertEqual(response["record"]["deployed_project"], note["manifest_project"])
-            self.assertEqual(response["record"]["rejected_claim"], self.evidence["workspace_claim"])
-
-    # ------------------------------------------------------------------ W25
-    def test_w25_practice_sequence(self) -> None:
-        base = self.evidence["process_view"]
-        session = self.evidence["process_session"]
-
-        with self.subTest(card="W25.1 the operating envelope"):
-            status, envelope = request(self.discovered_route("process.operating-envelope"), token=session, expected=200)
-            self.evidence["envelope"] = envelope["record"]
-            self.assertEqual(envelope["record"]["outlet_group"], self.evidence["outlet_group"])
-            self.assertGreater(envelope["record"]["aggregate_max_m3s"], max(envelope["record"]["per_gate_m3s"]))
-
-        with self.subTest(card="W25.2 conditions before movement"):
-            status, conditions = request(self.discovered_route("process.movement-conditions"), token=session, expected=200)
-            record = conditions["record"]
-            self.assertFalse(record["permissive"])
-            self.assertNotIn(self.evidence["envelope"]["record_id"], json.dumps(record))
-
-        with self.subTest(card="W25.3 accepted is not actuated"):
-            binding = {"requests": ["PRACTICE-REQ-11", "PRACTICE-REQ-12"], "permissive": "PRACTICE-PERM-02", "expected_actuation": False}
-            status, _ = request(self.discovered_route("process.command-accept"), method="POST", token=session, body=dict(binding, expected_actuation=True))
-            self.assertEqual(status, 409)
-            status, response = request(self.discovered_route("process.command-accept"), method="POST", token=session, body=binding, expected=201)
-            self.assertTrue(all(item["acknowledged"] for item in response["record"]["requests"]))
-            self.assertTrue(all(not item["actuated"] for item in response["record"]["requests"]))
-
-        with self.subTest(card="W25.4 a sequence the process can follow"):
-            binding = {"checkpoint": "PRACTICE-OG2-07", "reset_complete": True, "each_gate_target_m3s": 0.15,
-                       "ramp_open_seconds": 30, "hold_seconds": 70, "ramp_close_seconds": 30}
-            status, _ = request(self.discovered_route("process.practice-sequence"), method="POST", token=session, body=dict(binding, each_gate_target_m3s=0.50))
-            self.assertEqual(status, 409)
-            status, response = request(self.discovered_route("process.practice-sequence"), method="POST", token=session, body=binding, expected=201)
-            self.assertFalse(response["record"]["live_reserve_changed"])
-
     # ------------------------------------------------------------------ W19
     def test_w19_diagnostic_binary(self) -> None:
+        self.evidence["process_session"] = self._process_session()
         base = self.evidence["process_view"]
         session = self.evidence["process_session"]
 
@@ -1663,8 +1642,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(card="W19.4 a map from the old diagnostic"):
             group_suffix = self.evidence["outlet_group"]
+            self.evidence["legacy_project"] = "CRR-CTRL-" + self.evidence["migration_record"].rsplit("-", 1)[-1]
             mapping = {
-                "legacy_project": self.evidence["project_family"], "current_project": self.evidence["project"],
+                "legacy_project": self.evidence["project_family"], "current_project": self.evidence["legacy_project"],
                 "legacy_identifiers": {"OUTLET_A": f"{group_suffix}/GT-CRR-02A", "OUTLET_B": f"{group_suffix}/GT-CRR-02B"},
                 "instruments": dict(zip(("OUTLET_A", "OUTLET_B"), sorted(self.evidence["instruments"]))),
             }
@@ -1675,6 +1655,8 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             status, response = request(self.discovered_route("process.diagnostic-program-legacy"), method="POST", token=session, body=map_request, expected=201)
             self.assertTrue(response["record"]["historical"])
             self.evidence["w19_map_request"] = map_request
+            self.evidence["map_id"] = response["record"]["record_id"]
+            self.evidence["map_revision"] = response["record"]["revision"]
 
     # ------------------------------------------------------------------ W20
     def test_w20_nor_flash_image(self) -> None:
@@ -2360,7 +2342,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             broker = self.evidence["w26_broker"]
             body = {"renderer_attestation": self.evidence["w26_attestation"], "approval": approval,
                     "initiating_role": "contractor", "outlet_group": self.evidence["outlet_group"],
-                    "project": self.evidence["project"], "actions": ["readback", "plan-execute"]}
+                    "project": self.evidence["legacy_project"], "actions": ["readback", "plan-execute"]}
             status, _ = request(self.discovered_route("process.approval-client"), method="POST", token=contractor, body={**body, "renderer_attestation": "wrong"})
             self.assertEqual(status, 403)
             status, result = request(self.discovered_route("process.approval-client"), method="POST", token=contractor, body=body, expected=201)
@@ -2372,7 +2354,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.evidence["w26_broker_record_id"] = record["record_id"]
             # Confirm the issued client actually carries its granted authority.
             correct = {"operation": "readback", "outlet_group": self.evidence["outlet_group"],
-                       "project": self.evidence["project"], "action": "readback"}
+                       "project": self.evidence["legacy_project"], "action": "readback"}
             status, readback = request(self.discovered_route("process.approval-client"), method="POST",
                                         token=self.evidence["w26_control_client"], body=correct, expected=201)
             self.assertEqual(readback["record"]["authority"], "accepted")
@@ -2470,9 +2452,6 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
     def test_w28_utility_privilege_escalation(self) -> None:
         base = self.evidence["process_view"]
         session = self.evidence["process_session"]
-        site_code = self.evidence["asset_bundle"]["asset"].split("-")[1]
-        project_suffix = self.evidence["project"].rsplit("-", 1)[-1]
-        revision = f"CMP-{site_code}-{project_suffix}"
 
         def frame(relationship: dict, pie_base: int, canary: int, issue: bool) -> bytes:
             offsets = relationship["elf_offsets"]
@@ -2499,10 +2478,10 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(card="W28.1 the utility's small world"):
             status, _ = request(self.discovered_route("process.collision-inputs"), method="POST", token="wrong",
-                                 body={"operation": "materials", "revision": revision})
+                                 body={"operation": "materials", "project_revision": 364})
             self.assertEqual(status, 403)
             status, result = request(self.discovered_route("process.collision-inputs"), method="POST", token=session,
-                                      body={"operation": "materials", "revision": revision}, expected=201)
+                                      body={"operation": "materials", "project_revision": 364}, expected=201)
             record = result["record"]
             binary = base64.b64decode(result["utility_b64"])
             self.assertEqual(binary[:4], b"\x7fELF")
@@ -2535,133 +2514,15 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             status, result = request(self.discovered_route("process.control-authority"), method="POST", token=session, body=body, expected=201)
             record = result["record"]
             self.assertEqual(record["outlet_group"], self.evidence["outlet_group"])
-            self.assertEqual(record["project"], self.evidence["project"])
+            self.assertEqual(record["project"], self.evidence["legacy_project"])
             self.evidence["w28_control_client"] = result["control_client"]
             # The issued client's authority is genuinely scoped and usable.
             readback = {"operation": "readback", "control_client": self.evidence["w28_control_client"],
-                        "outlet_group": self.evidence["outlet_group"], "project": self.evidence["project"], "action": "readback"}
+                        "outlet_group": self.evidence["outlet_group"], "project": self.evidence["legacy_project"], "action": "readback"}
             status, _ = request(self.discovered_route("process.control-authority"), method="POST", token=session, body={**readback, "action": "release"})
             self.assertEqual(status, 409)
             status, confirmed = request(self.discovered_route("process.control-authority"), method="POST", token=session, body=readback, expected=201)
             self.assertEqual(confirmed["record"]["authority"], "accepted")
-
-    # ------------------------------------------------------------------ W29
-    def test_w29_planning_window_economics(self) -> None:
-        planning = self.evidence["process_view"].replace("process-view", "planning-data")
-        process = self.evidence["process_view"]
-        session = self.evidence["process_session"]
-        planner = {"X-ARWC-Planner-Session": "@planner"}
-        site_code = self.evidence["asset_bundle"]["asset"].split("-")[1]
-
-        def plan(path: str, method: str = "GET", body: dict | None = None, token: str | None = None, expected: int | None = None) -> tuple[int, dict]:
-            return request(f"{planning}{path}", method=method, body=body, token=token, headers=planner, expected=expected)
-
-        with self.subTest(card="W29.1 the price of this planning window"):
-            status, denied = plan("/api/planning-windows/current/economics", token="wrong")
-            self.assertEqual(status, 403)
-            status, result = plan("/api/planning-windows/current/economics", expected=200)
-            record = result["record"]
-            self.evidence["planning_tariff"] = record["record_id"]
-            self.evidence["w29_rate_per_ml"] = record["rate_per_ml"]
-
-        with self.subTest(card="W29.2 what reserve remains uncommitted"):
-            binding = {
-                "allocation": self.evidence["ledger_record"], "reserve_observation": f"OBS-RESERVE-{site_code}-R29",
-                "planning_window": self.evidence["planning_window"],
-                "expected_margin_ml": round(self.evidence["usable_reserve_ml"] - self.evidence["committed_ml"], 4),
-            }
-            status, _ = plan("/api/collision-solutions", method="POST", body=dict(binding, allocation="wrong"))
-            self.assertEqual(status, 409)
-            status, result = plan("/api/collision-solutions", method="POST", body=binding, expected=201)
-            record = result["record"]
-            self.evidence["reserve_balance"] = record["record_id"]
-
-        with self.subTest(card="W29.3 paper truth"):
-            plan_id = f"PLAN-{site_code}-LOSS-1000"
-            binding = {
-                "plan_id": plan_id, "tariff": self.evidence["planning_tariff"], "balance": self.evidence["reserve_balance"],
-                "mode": self.evidence["mode_id"], "outlet_group": self.evidence["outlet_group"],
-                "ramp_open_seconds": 100, "each_gate_target_m3s": 0.5, "hold_seconds": 900, "ramp_close_seconds": 100,
-            }
-            # The practice sequence (W25) already satisfied the required movement conditions.
-            status, missing = plan("/api/release-plans/current", method="POST", body=binding)
-            self.assertEqual(status, 404)
-            self.assertNotIn("released_volume_ml", json.dumps(missing))
-            status, _ = request(
-                self.discovered_route("process.reporting-checkpoint-submit"), method="POST",
-                token=session, body=dict(binding, hold_seconds=899),
-            )
-            self.assertEqual(status, 409)
-            status, result = request(
-                self.discovered_route("process.reporting-checkpoint-submit"), method="POST",
-                token=session, body=binding, expected=201,
-            )
-            record = result["record"]
-            self.assertEqual(record["record_id"], plan_id)
-            self.assertFalse(record["live_action_performed"])
-            status, missing = plan("/api/release-plans/current", method="POST", body=binding)
-            self.assertEqual(status, 404)
-            self.assertNotIn("released_volume_ml", json.dumps(missing))
-            self.evidence["w29_plan"] = plan_id
-            status, present = request(self.discovered_route("process.state"), token=session, expected=200)
-            self.assertEqual(present["record"]["measurements"]["usable_reserve_ml"], self.evidence["usable_reserve_ml"])
-
-    # ------------------------------------------------------------------ W30
-    def test_w30_command_release(self) -> None:
-        process = self.evidence["process_view"]
-        session = self.evidence["process_session"]
-        project_revision = int(self.evidence["project"].rsplit("-", 1)[-1].lstrip("R"))
-        envelope = self.evidence["envelope"]
-        bind_correlation = str(uuid.uuid4())
-        release_correlation = str(uuid.uuid4())
-        bind_request = {
-            "correlation": bind_correlation,
-            "request": {
-                "control_client": self.evidence["w26_control_client"],
-                "asset": self.evidence["asset_bundle"]["asset"], "outlet_group": self.evidence["outlet_group"],
-                "project": self.evidence["project"], "project_revision": project_revision,
-                "map": self.evidence["map_id"], "map_revision": self.evidence["map_revision"],
-                "mode": self.evidence["mode_id"], "mode_revision": self.evidence["mode_revision"],
-                "envelope": envelope["record_id"], "envelope_revision": envelope["revision"],
-                "plan": self.evidence["w29_plan"],
-                "units": {"flow": "m3/s", "volume": "ML", "time": "s"},
-            },
-        }
-
-        with self.subTest(card="W30.1 bind the plan to the plant"):
-            status, _ = request(self.discovered_route("process.release-plan"), method="POST", token="wrong", body=bind_request)
-            self.assertEqual(status, 403)
-            wrong = json.loads(json.dumps(bind_request)); wrong["request"]["project_revision"] = project_revision - 1
-            status, _ = request(self.discovered_route("process.release-plan"), method="POST", token=session, body=wrong)
-            self.assertEqual(status, 409)
-            status, result = request(self.discovered_route("process.release-plan"), method="POST", token=session, body=bind_request, expected=201)
-            record = result["record"]
-            self.assertEqual(record["request_correlation"], bind_correlation)
-            self.assertEqual(record["units"], bind_request["request"]["units"])
-            self.evidence["w30_command_plan"] = record["record_id"]
-
-        with self.subTest(card="W30.2 open the gates"):
-            open_request = {
-                "correlation": release_correlation,
-                "request": {
-                    "control_client": self.evidence["w26_control_client"],
-                    "command_plan": self.evidence["w30_command_plan"],
-                    "expected_reserve_before_ml": self.evidence["usable_reserve_ml"],
-                    "expected_release_ml": 1.0,
-                },
-            }
-            wrong = json.loads(json.dumps(open_request)); wrong["request"]["expected_release_ml"] = 1.2
-            status, _ = request(self.discovered_route("process.release-execute"), method="POST", token=session, body=wrong)
-            self.assertEqual(status, 409)
-            status, result = request(self.discovered_route("process.release-execute"), method="POST", token=session, body=open_request, expected=201)
-            action = result["actuation"]
-            self.assertEqual(action["integrated_command_volume_ml"], 1.0)
-            self.assertFalse(action["safety_systems_bypassed"])
-            self.assertFalse(result["record"]["flooding"])
-            self.assertFalse(result["record"]["uncontrolled_release"])
-            # Retries are idempotent for the same correlation.
-            status, repeated = request(self.discovered_route("process.release-execute"), method="POST", token=session, body=open_request, expected=201)
-            self.assertEqual(repeated, result)
 
     # ------------------------------------------------------------------ W31
     def test_w31_diagnostic_vault(self) -> None:
@@ -2783,71 +2644,6 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             self.assertEqual(record2["retained_replay"]["decision"], "accepted")
             self.assertEqual(record2["current_model"]["decision"], "rejected")
             self.assertFalse(record2["live_authority"])
-
-    # ------------------------------------------------------------------ W33
-    def test_w33_forecast_scheduling(self) -> None:
-        process = self.evidence["process_view"]
-        session = self.evidence["process_session"]
-        site_code = self.evidence["asset_bundle"]["asset"].split("-")[1]
-        forecast_id = f"FCST-{site_code}-33"
-        # Derive schedule parameters from the schedule-window GET endpoint.
-        _, window = request(self.discovered_route("process.schedule-window"), token=session, expected=200)
-        checkpoint = window["checkpoint"]
-        policy_format = window["policy_format"]
-        schedules = w33_derive_schedules(window)
-        schedule = schedules[len(schedules) // 2]
-        w33_validate_schedule(window, schedule)
-        self.evidence["w33_schedule"] = schedule
-
-        with self.subTest(card="W33.1 a forecast that matches the instrument"):
-            forecast = {
-                "case": forecast_id, "checkpoint": checkpoint, "sample_period_seconds": 20,
-                "publication_delay_seconds": 40, "scale_gain": 1.0, "map": self.evidence["map_id"],
-                "instrument_reserve_ml": self.evidence["usable_reserve_ml"], "forecast_reserve_ml": self.evidence["usable_reserve_ml"],
-            }
-            status, _ = request(self.discovered_route("process.forecast"), method="POST", token="wrong", body=forecast)
-            self.assertEqual(status, 403)
-            status, result = request(self.discovered_route("process.forecast"), method="POST", token=session, body=forecast, expected=201)
-            self.assertTrue(result["record"]["within_tolerance"])
-
-        with self.subTest(card="W33.2 the expensive hour"):
-            wrong = json.loads(json.dumps(schedule))
-            wrong["alternate_supply_m3s"][0] = float(window["supply_bounds_m3s"]["max"]) + 1.0
-            status, _ = request(self.discovered_route("process.schedule-window-submit"), method="POST", token=session, body=wrong)
-            self.assertEqual(status, 409)
-            status, result = request(self.discovered_route("process.schedule-window-submit"), method="POST", token=session, body=schedule, expected=201)
-            self.evidence["w33_schedule_sha256"] = result["record"]["schedule_sha256"]
-
-        with self.subTest(card="W33.3 the schedule the service accepts"):
-            rehearsal = {
-                "control_client": self.evidence["w26_control_client"], "checkpoint": checkpoint,
-                "schedule_sha256": self.evidence["w33_schedule_sha256"], "forecast": forecast_id,
-                "map": self.evidence["map_id"], "mode": self.evidence["mode_id"], "envelope": self.evidence["envelope"]["record_id"],
-                "consequence_plan": self.evidence["w29_plan"], "tariff": self.evidence["planning_tariff"],
-                "committed_allocation_ml": self.evidence["committed_ml"],
-            }
-            wrong = dict(rehearsal, control_client="wrong")
-            status, _ = request(self.discovered_route("process.schedule-submit"), method="POST", token=session, body=wrong)
-            self.assertEqual(status, 403)
-            status, result = request(self.discovered_route("process.schedule-submit"), method="POST", token=session, body=rehearsal, expected=201)
-            self.assertFalse(result["record"]["live_state_changed"])
-            self.evidence["w33_schedule_result"] = result["record"]["record_id"]
-
-        with self.subTest(card="W33.4 when the forecast moves"):
-            policy = {
-                "control_client": self.evidence["w26_control_client"],
-                "schedule_result": self.evidence["w33_schedule_result"],
-                "policy": {"format": policy_format, "checkpoint": checkpoint,
-                           "base_release_m3s": schedule["reservoir_release_m3s"],
-                           "buffer_gain": 1.0, "demand_gain": 1.0},
-            }
-            wrong = json.loads(json.dumps(policy)); wrong["policy"]["buffer_gain"] = 1.01
-            status, _ = request(self.discovered_route("process.feedback-policy"), method="POST", token=session, body=wrong)
-            self.assertEqual(status, 409)
-            status, result = request(self.discovered_route("process.feedback-policy"), method="POST", token=session, body=policy, expected=201)
-            record = result["record"]
-            self.assertEqual(len(record["cases"]), record["case_count"])
-            self.assertTrue(record["all_cases_feasible"])
 
     # ------------------------------------------------------------------ W34
     def test_w34_reporting_checkpoint(self) -> None:

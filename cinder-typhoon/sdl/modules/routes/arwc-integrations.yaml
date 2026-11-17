@@ -19,7 +19,6 @@ module:
     - contractor-historian
     - control-broker-hmi
     - hmi-reservoir
-    - hmi-distribution
     - reservoir-instruments
     - instruments-historian
     - historian-hmi
@@ -95,11 +94,6 @@ relationships:
     source: features.a-engineering.a-hmi
     target: features.a-control.a-reservoir
     description: The dispatcher sends only fully bound envelope-compliant plans to the reservoir endpoint.
-  hmi-distribution:
-    type: connects_to
-    source: features.a-engineering.a-hmi
-    target: features.a-control.a-distribution
-    description: The private scheduler drives only the isolated distribution rehearsal checkpoint.
   reservoir-instruments:
     type: connects_to
     source: features.a-control.a-reservoir

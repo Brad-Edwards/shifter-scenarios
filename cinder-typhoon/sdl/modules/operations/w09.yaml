@@ -566,7 +566,7 @@ action_contracts:
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-data` and its `planning-data` application own this part of **The meter's own account**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Meter export MTR-CRR-DP3-R12 reports independently measured usable reserve 12.40 ML in ML and identifies instruments FIT-CRR-204A and FIT-CRR-204B.
+        `a-data` and its `planning-data` application own this part of **The meter's own account**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Meter export MTR-CRR-DP3-R12 reports independently measured usable reserve 12.40 ML in ML and identifies instruments `FIT-CRR-204A` and `FIT-CRR-204B`.
 
         Native bindings:
 

@@ -235,7 +235,7 @@
           "W25.MODE"
         ]
       ],
-      "output": "Predicted bounded release, usable-reserve change, and economic consequence from current inputs."
+      "output": "Verified current planning basis from the effective corporate records and native process history."
     },
     {
       "id": "W30.RESULT",
@@ -249,7 +249,7 @@
           "W29.PLAN"
         ]
       ],
-      "output": "Gate opening and volume effect verified outside the compromised reporting path."
+      "output": "Bounded dispatcher operation, native controller response, measured two-outlet effect, and local handback verified from product records."
     }
   ],
   "invariants": {

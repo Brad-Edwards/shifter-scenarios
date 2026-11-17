@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
 
-import schedule33
+import reporting_schedule
 
 
 ROOT = pathlib.Path("/var/lib/arwc-reservoir")
@@ -53,9 +53,7 @@ def load_json(path: pathlib.Path) -> dict[str, object] | None:
 def initialize() -> None:
     if not STATE.exists():
         atomic_json(STATE, {
-            "bound_plan": None, "reserve_ml": 12.4, "released_ml": 0.0,
-            "bind_response": None, "release_response": None,
-            "schedule_rehearsal_response": None, "forecast_policy_response": None,
+            "reserve_ml": 12.4, "released_ml": 0.0,
             "reporting_handover_response": None,
         })
     AUDIT.touch(mode=0o600, exist_ok=True)
@@ -114,42 +112,16 @@ def control_authority(raw: object) -> dict[str, object] | None:
 
 def process_context() -> dict[str, dict[str, object]] | None:
     records = {
-        "mapping": load_json(PROCESS_EVIDENCE / "historian" / "outlet-map.json"),
-        "revision": load_json(PROCESS_EVIDENCE / "engineering" / "deployment-revision.json"),
-        "envelope": load_json(PROCESS_EVIDENCE / "hmi" / "operating-envelope.json"),
-        "mode": load_json(PROCESS_EVIDENCE / "hmi" / "practice-sequence.json"),
         "plan": load_json(PROCESS_EVIDENCE / "hmi" / "loss-plan.json"),
     }
     if any(value is None for value in records.values()):
         return None
     result = {key: value for key, value in records.items() if value is not None}
-    if (result["mapping"].get("record_id") != "MAP-OG2-R8" or
-            result["revision"].get("record_id") != "CMP-CRR-R21" or
-            result["revision"].get("deployed_project") != "CRR-CTRL-R21" or
-            result["envelope"].get("record_id") != "ENV-OG2-R6" or
-            result["mode"].get("record_id") != "PRACTICE-OG2-07" or
-            result["plan"].get("record_id") != "PLAN-CRR-LOSS-1000" or
+    if (result["plan"].get("record_id") != "PLAN-CRR-LOSS-1000" or
             result["plan"].get("mode") != "MODE-CRR-17" or
             result["plan"].get("released_volume_ml") != 1.0 or
             result["plan"].get("reserve_after_ml") != 11.4):
         return None
-    return result
-
-
-def command_timeline() -> list[dict[str, object]]:
-    result: list[dict[str, object]] = []
-    for second in range(0, 1101, 20):
-        if second <= 100:
-            flow = 0.5 * second / 100
-        elif second <= 1000:
-            flow = 0.5
-        else:
-            flow = 0.5 * (1100 - second) / 100
-        result.append({
-            "elapsed_seconds": second,
-            "GT-CRR-02A_m3s": round(flow, 2),
-            "GT-CRR-02B_m3s": round(flow, 2),
-        })
     return result
 
 
@@ -184,7 +156,7 @@ class Handler(BaseHTTPRequestHandler):
             return None
 
     def authorized(self) -> bool:
-        if (self.headers.get("X-ARWC-Internal") not in {"instruments-release", "instruments-scheduling", "instruments-reporting"} or
+        if (self.headers.get("X-ARWC-Internal") != "instruments-reporting" or
                 self.headers.get("X-ARWC-Tenant") != "arwc" or
                 self.client_address[0] != "10.77.64.40"):
             self.send_json(403, {"error": "independent instrument service context required"})
@@ -198,212 +170,15 @@ class Handler(BaseHTTPRequestHandler):
         if request is None:
             return
         path = urlsplit(self.path).path
-        if path == "/internal/release-plan-bindings":
-            self.bind_plan(request)
-        elif path == "/internal/release-executions":
-            self.open_gates(request)
-        elif path == "/internal/schedule-validations":
-            self.w33_schedule(request)
-        elif path == "/internal/feedback-policy-validations":
-            self.w33_policy(request)
-        elif path == "/internal/control-handovers":
+        if path == "/internal/control-handovers":
             self.w34_handover(request)
         else:
             self.send_json(404, {"error": "record not found"})
 
-    def bind_plan(self, request: dict[str, object]) -> None:
-        correlation = request.get("correlation")
-        binding = request.get("request")
-        if set(request) != {"correlation", "request"} or not valid_uuid(correlation) or \
-                not isinstance(binding, dict):
-            self.send_json(409, {"error": "command-plan request is not bound"})
-            return
-        expected = {
-            "control_client": binding.get("control_client"),
-            "asset": "AST-CRR-017", "outlet_group": "OG-CRR-02",
-            "project": "CRR-CTRL-R21", "project_revision": 21,
-            "map": "MAP-OG2-R8", "map_revision": 8,
-            "mode": "MODE-CRR-17", "mode_revision": 17,
-            "envelope": "ENV-OG2-R6", "envelope_revision": 6,
-            "plan": "PLAN-CRR-LOSS-1000",
-            "units": {"flow": "m3/s", "volume": "ML", "time": "s"},
-        }
-        authority = control_authority(binding.get("control_client"))
-        context = process_context()
-        if authority is None:
-            self.send_json(403, {"error": "current scoped control authority required"})
-            return
-        if binding != expected or context is None:
-            self.send_json(409, {"error": "current command-plan bindings do not agree"})
-            return
-        record = {
-            "record_id": "CMD-PLAN-CRR-30-R1", "revision": 1,
-            "request_correlation": correlation, "authority": authority["record_id"],
-            "asset": "AST-CRR-017", "outlet_group": "OG-CRR-02",
-            "project": "CRR-CTRL-R21", "project_revision": 21,
-            "map": "MAP-OG2-R8", "map_revision": 8,
-            "mode": "MODE-CRR-17", "mode_revision": 17,
-            "envelope": "ENV-OG2-R6", "envelope_revision": 6,
-            "plan": "PLAN-CRR-LOSS-1000", "status": "bound",
-            "units": binding["units"],
-            "limits": {"per_gate_max_m3s": 0.5, "aggregate_max_m3s": 1.0,
-                       "ramp_max_m3s_per_20s": 0.1, "hold_max_seconds": 1200,
-                       "volume_max_ml": 1.2},
-        }
-        state = load_state()
-        existing = state.get("bind_response")
-        if isinstance(existing, dict):
-            existing_record = existing.get("record")
-            if (isinstance(existing_record, dict) and
-                    existing_record.get("request_correlation") == correlation and
-                    existing_record.get("authority") == authority.get("record_id")):
-                self.send_json(201, existing)
-            else:
-                self.send_json(409, {"error": "command plan already bound under another correlation"})
-            return
-        state["bound_plan"] = record
-        response = {
-            "audit_id": append_audit("release-plan-bound", record, str(correlation)),
-            "record": record,
-        }
-        state["bind_response"] = response
-        atomic_json(STATE, state)
-        atomic_json(ROOT / "results" / "CMD-PLAN-CRR-30-R1.json", record)
-        self.send_json(201, response)
-
-    def open_gates(self, request: dict[str, object]) -> None:
-        correlation = request.get("correlation")
-        action = request.get("request")
-        if set(request) != {"correlation", "request"} or not valid_uuid(correlation) or \
-                not isinstance(action, dict):
-            self.send_json(409, {"error": "release request is not bound"})
-            return
-        expected = {
-            "control_client": action.get("control_client"),
-            "command_plan": "CMD-PLAN-CRR-30-R1",
-            "expected_reserve_before_ml": 12.4, "expected_release_ml": 1.0,
-        }
-        authority = control_authority(action.get("control_client"))
-        state = load_state()
-        bound = state.get("bound_plan")
-        if authority is None:
-            self.send_json(403, {"error": "current scoped control authority required"})
-            return
-        if (action != expected or not isinstance(bound, dict) or
-                bound.get("record_id") != "CMD-PLAN-CRR-30-R1" or
-                bound.get("authority") != authority.get("record_id")):
-            self.send_json(409, {"error": "bound command plan required"})
-            return
-        existing = state.get("release_response")
-        if isinstance(existing, dict):
-            existing_record = existing.get("record")
-            if (isinstance(existing_record, dict) and
-                    existing_record.get("request_correlation") == correlation):
-                self.send_json(201, existing)
-            else:
-                self.send_json(409, {"error": "release already recorded under another correlation"})
-            return
-        timeline = command_timeline()
-        integrated = round(sum(
-            ((timeline[index - 1]["GT-CRR-02A_m3s"] + timeline[index]["GT-CRR-02A_m3s"]) +
-             (timeline[index - 1]["GT-CRR-02B_m3s"] + timeline[index]["GT-CRR-02B_m3s"]))
-            * 0.5 * 20 / 1000
-            for index in range(1, len(timeline))
-        ), 2)
-        if integrated != 1.0:
-            self.send_json(409, {"error": "command timeline did not integrate to the bound volume"})
-            return
-        record = {
-            "record_id": "ACT-CRR-OG2-30", "revision": 1,
-            "request_correlation": correlation, "command_plan": "CMD-PLAN-CRR-30-R1",
-            "authority": authority["record_id"], "asset": "AST-CRR-017",
-            "outlet_group": "OG-CRR-02", "project": "CRR-CTRL-R21",
-            "permissive": "PERM-OG2-LIVE-R4", "mode": "MODE-CRR-17",
-            "timeline": timeline, "elapsed_seconds": 1100,
-            "integrated_command_volume_ml": integrated,
-            "reserve_before_ml": 12.4, "reserve_after_ml": 11.4,
-            "final_gate_positions_percent": {"GT-CRR-02A": 0.0, "GT-CRR-02B": 0.0},
-            "status": "complete", "safety_systems_bypassed": False,
-        }
-        state["reserve_ml"] = 11.4
-        state["released_ml"] = 1.0
-        audit_id = append_audit("gate-release-executed", record, str(correlation))
-        response = {"audit_id": audit_id, "record": record}
-        state["release_response"] = response
-        atomic_json(STATE, state)
-        atomic_json(ROOT / "results" / "ACT-CRR-OG2-30.json", record)
-        self.send_json(201, response)
-
-    def w33_schedule(self, request: dict[str, object]) -> None:
-        correlation = request.get("correlation"); binding = request.get("request"); schedule = request.get("schedule")
-        if (set(request) != {"correlation", "request", "schedule"} or not valid_uuid(correlation) or
-                not isinstance(binding, dict) or not isinstance(schedule, dict)):
-            self.send_json(409, {"error": "reservoir rehearsal request is not bound"}); return
-        authority = control_authority(binding.get("control_client"))
-        context = process_context()
-        evaluated = schedule33.evaluate_schedule(schedule.get("reservoir_release_m3s"),
-                                                 schedule.get("alternate_supply_m3s"),
-                                                 schedule.get("demand_m3s"))
-        if authority is None:
-            self.send_json(403, {"error": "current scoped control authority required"}); return
-        if (context is None or evaluated is None or schedule.get("record_id") != "SCHED-CRR-33" or
-                binding.get("checkpoint") != schedule33.CHECKPOINT or
-                binding.get("schedule_sha256") != evaluated.get("schedule_sha256") or
-                binding.get("mode") != "MODE-CRR-17" or binding.get("consequence_plan") != "PLAN-CRR-LOSS-1000"):
-            self.send_json(409, {"error": "current rehearsal bindings do not agree"}); return
-        state = load_state(); existing = state.get("schedule_rehearsal_response")
-        if isinstance(existing, dict):
-            if existing.get("audit_id") == correlation: self.send_json(201, existing)
-            else: self.send_json(409, {"error": "rehearsal already recorded under another correlation"})
-            return
-        record = {"record_id": "RES-REH-CRR-33", "revision": 1,
-                  "request_correlation": correlation, "authority": authority["record_id"],
-                  "checkpoint": schedule33.CHECKPOINT, "schedule": "SCHED-CRR-33",
-                  "release_volume_ml": evaluated["reservoir_volume_ml"],
-                  "reserve_before_ml": 12.4, "reserve_after_ml": 11.59,
-                  "live_reserve_ml": state["reserve_ml"], "live_released_ml": state["released_ml"],
-                  "live_state_changed": False}
-        response = {"audit_id": append_audit("schedule-evaluation-created", record, str(correlation)),
-                    "record": record}
-        state["schedule_rehearsal_response"] = response; atomic_json(STATE, state)
-        atomic_json(ROOT / "results" / "RES-REH-CRR-33.json", record)
-        self.send_json(201, response)
-
-    def w33_policy(self, request: dict[str, object]) -> None:
-        correlation = request.get("correlation"); binding = request.get("request"); supplied = request.get("evaluation")
-        if (set(request) != {"correlation", "request", "evaluation"} or not valid_uuid(correlation) or
-                not isinstance(binding, dict) or not isinstance(supplied, dict)):
-            self.send_json(409, {"error": "reservoir policy request is not bound"}); return
-        authority = control_authority(binding.get("control_client"))
-        evaluated = schedule33.evaluate_policy(binding.get("policy"))
-        state = load_state()
-        if authority is None:
-            self.send_json(403, {"error": "current scoped control authority required"}); return
-        if (not isinstance(state.get("schedule_rehearsal_response"), dict) or evaluated is None or
-                supplied != evaluated or binding.get("schedule_result") != "REH-RESULT-CRR-33"):
-            self.send_json(409, {"error": "accepted rehearsal and valid policy required"}); return
-        existing = state.get("forecast_policy_response")
-        if isinstance(existing, dict):
-            if existing.get("audit_id") == correlation: self.send_json(201, existing)
-            else: self.send_json(409, {"error": "policy already recorded under another correlation"})
-            return
-        record = {"record_id": "RES-POL-CRR-33", "revision": 1,
-                  "request_correlation": correlation, "authority": authority["record_id"],
-                  "policy_sha256": evaluated["policy_sha256"], "case_count": 27,
-                  "scenario_steps": 324, "minimum_reservoir_volume_ml": evaluated["minimum_reservoir_volume_ml"],
-                  "maximum_reservoir_volume_ml": evaluated["maximum_reservoir_volume_ml"],
-                  "live_reserve_ml": state["reserve_ml"], "live_released_ml": state["released_ml"],
-                  "live_state_changed": False}
-        response = {"audit_id": append_audit("forecast-policy-created", record, str(correlation)),
-                    "record": record}
-        state["forecast_policy_response"] = response; atomic_json(STATE, state)
-        atomic_json(ROOT / "results" / "RES-POL-CRR-33.json", record)
-        self.send_json(201, response)
-
     def w34_handover(self, request: dict[str, object]) -> None:
         correlation = request.get("correlation"); binding = request.get("request"); supplied = request.get("evaluation")
         schedule = binding.get("schedule") if isinstance(binding, dict) else None
-        evaluated = None if not isinstance(schedule, dict) else schedule33.evaluate_schedule(
+        evaluated = None if not isinstance(schedule, dict) else reporting_schedule.evaluate_schedule(
             schedule.get("reservoir_release_m3s"), schedule.get("alternate_supply_m3s"), schedule.get("demand_m3s"))
         if (set(request) != {"correlation", "request", "evaluation"} or not valid_uuid(correlation) or
                 not isinstance(binding, dict) or evaluated is None or supplied != evaluated):

@@ -1,0 +1,24 @@
+# Join only the genuine scoped integrations; upstream applications own product state.
+x-integration-logging: &id001
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: '3'
+services:
+  a-data-bridge:
+    logging: *id001
+    sysctls:
+      net.ipv4.ip_forward: '0'
+    volumes:
+    - ${ARWC_OT_OPERATOR_DIR:?Set the OT operator directory}/integration-bridge:/run/arwc-ot:ro
+    networks:
+      history_exchange:
+        ipv4_address: 172.29.62.3
+  a-connector:
+    logging: *id001
+  fieldlink-edge:
+    logging: *id001
+networks:
+  history_exchange:
+    external: true
+    name: arwc-ot-history-exchange

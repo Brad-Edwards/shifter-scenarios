@@ -1,0 +1,45 @@
+{
+  "schema": "arwc.native-ot-challenge/w17-v1",
+  "operation": "W17",
+  "asset": "AST-CRR-017",
+  "mode": "read_only_observation",
+  "completion": {
+    "reads_product_evidence": true,
+    "writes_product_state": false,
+    "creates_product_evidence": false,
+    "replays_product_requests": false
+  },
+  "product_snapshot": {
+    "schema": "arwc.native-product-observation/v1",
+    "maximum_point_distance_seconds": 2,
+    "accepted_quality": "Good",
+    "minimum_trace_seconds": 15,
+    "maximum_trace_seconds": 300,
+    "minimum_trace_samples": 5
+  },
+  "instrument": {
+    "instrument": "FIT-CRR-204B",
+    "variable": "FlowBM3s",
+    "node_id": "nsu=urn:arwc:crr:tags;s=CRR.FlowBM3s",
+    "historian_series": "flow_b_m3s",
+    "unit": "m3/s"
+  },
+  "tolerance": {
+    "LevelM": 0.002,
+    "UsableVolumeML": 0.004,
+    "PositionPct": 0.2,
+    "PositionBPct": 0.2,
+    "FlowM3s": 0.002,
+    "FlowBM3s": 0.002,
+    "TotalFlowM3s": 0.004,
+    "RequestedTargetPct": 0.1,
+    "RequestedTargetBPct": 0.1,
+    "RequestedFlowM3s": 0.002
+  },
+  "cards": {
+    "W17.1": {"requires": ["measured state", "accepted settings", "source time", "good process quality"]},
+    "W17.2": {"requires": ["actual mode", "command owner", "field state", "both outlet permissives"]},
+    "W17.3": {"requires": ["physical instrument", "IEC variable", "OPC UA NodeId", "historian catalog"]},
+    "W17.4": {"requires": ["FUXA variable", "OPC UA identity", "historian interval", "field-response consistency"]}
+  }
+}

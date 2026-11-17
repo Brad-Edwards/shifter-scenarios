@@ -1,0 +1,57 @@
+{
+  "schema": "arwc.private-ot-image/v1",
+  "source_project": "prod-mgau4w",
+  "distribution_projects": [
+    "prod-mgau4w",
+    "prod-2hl4ce"
+  ],
+  "legacy_release": "retain unchanged for rollback",
+  "source_instance": "cinder-arwc-ot-compat-363",
+  "bake_target": "temporary private clone only; never sanitize the active development VM",
+  "production_root": "/opt/cinder-typhoon/build/arwc-ot",
+  "it_root": "/opt/cinder-typhoon/build/arwc",
+  "runtime_downloads": false,
+  "initialization": {
+    "owner": "image-owned first-boot service",
+    "native_editor": "engineering container, participant UID, official offline CLI",
+    "project": "fresh arwc-site scaffold plus authored native FBD/IEC content",
+    "credentials": "fresh per-range product roles; BigRAE owns participant password",
+    "trust": "fresh per-range PLC, MQTT, PostgreSQL, corporate and RDP identities",
+    "completion_marker": "written only after full initialization",
+    "host_ready_marker": "/run/shifter/preconfigured-range-host.ready"
+  },
+  "restart": {
+    "reupload_program": false,
+    "regenerate_credentials": false,
+    "retain": [
+      "PLC settings and program",
+      "physical model state",
+      "historical records",
+      "dispatcher journal",
+      "participant home"
+    ],
+    "plc_motion": "restart disarmed; no automatic request replay"
+  },
+  "reset": "fresh BigRAE range from the same immutable private image",
+  "sanitize": [
+    "all Docker containers and mutable volumes",
+    "all operator directories",
+    "development projects and connection notes",
+    "development logs and histories",
+    "host SSH identities and machine ID",
+    "old first-boot markers"
+  ],
+  "keep": [
+    "qualified cached OCI images and their identifiers",
+    "committed production source and public notices",
+    "native shared participant readiness executable and pinned manifest"
+  ],
+  "qualification": [
+    "fresh private clone boot without downloads",
+    "native BigRAE readiness and participant credentials",
+    "VPN then RDP participant normal-operation walkthrough",
+    "restart and history recovery",
+    "measured shared-host bounds"
+  ],
+  "status": "deferred; current acceptance is reliable normal OT on existing golden-VPC VMs"
+}

@@ -1,0 +1,8 @@
+{
+  "schema": "arwc.operating-schedule/v1",
+  "instruction": "CRR-OP-W33-R1",
+  "asset": "AST-CRR-017",
+  "interval_seconds": 300,
+  "reservoir_release_m3s": [],
+  "alternate_supply_m3s": []
+}

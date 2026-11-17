@@ -1,7 +1,7 @@
 # ARWC bounded process model
 
 This is the normative process contract for the ARWC SDL. It makes the business
-records, observations, practice model, live result, planning rehearsals, and
+records, observations, bounded operating work, live result, planning rehearsals, and
 consequences agree quantitatively. The physical process is fictional and
 bounded. It models a dispatchable dry-period reserve tranche, not the total
 volume or safety behavior of a real reservoir.
@@ -33,9 +33,25 @@ The dry-period planning window is `ALLOC-2026-DP3`.
 | Actual uncommitted margin before release | 0.40 ML | `12.40 - 12.00` |
 
 The one-megalitre error is a stale duplicated transfer in the business report,
-not missing physical telemetry. W09 establishes this discrepancy. W29 uses the
-current independent reserve and commitment balance; it does not reuse the
-stale 13.40 ML figure.
+not missing physical telemetry. W09 establishes this historical discrepancy.
+It does not make either 13.40 ML or 12.40 ML a current process value.
+
+## W29 current planning basis
+
+W29 treats corporate records and physical process history as records with
+different owners and time bases. PostgreSQL supplies the current settlement
+tariff, allocation revision, effective interval, and the dated 13.40 ML
+business report. Native Grafana/PostgreSQL history supplies a later
+good-quality `UsableVolumeML` observation with its source, collection, and
+ingestion times.
+
+The participant calculates the current uncommitted margin as the later native
+measurement minus the 12.00 ML commitment, and the signed paper variance as
+13.40 ML minus that later measurement. Because the report and measurement have
+different as-of times, W29 establishes only that the paper report is not
+current process truth; it does not claim that the difference is a correction,
+loss, or unexplained incident. The result is a verified planning basis for
+later work, not a release plan or control instruction.
 
 ## Current revision, mapping, and mode
 
@@ -51,65 +67,66 @@ stale 13.40 ML figure.
 These records are independently owned. A control client does not waive any of
 them, and a planning estimate cannot change them.
 
-## Live operating envelope
+## Installed operating envelope
 
-The live command envelope `ENV-OG2-R6` is:
+The installed `arwc-site` OpenPLC project, revision 364, accepts manual outlet
+positions from 0 to 100 percent and automatic total flow from 0 to 1.00 m3/s.
+Each physical outlet is limited to 0.50 m3/s. Field freshness, equipment
+availability and remote selection, low-level protection, operator stop, travel
+faults, controller authorization, and per-outlet permissives remain native PLC
+decisions. The dispatcher does not reproduce or bypass them.
 
-- each gate setpoint: `0.00 <= q_gate <= 0.50 m3/s`;
-- aggregate setpoint: `q_A + q_B <= 1.00 m3/s`;
-- per-gate ramp: at most `0.10 m3/s` per 20-second control step;
-- requested hold: at most `1,200 s`;
-- requested release volume: at most `1.20 ML`;
-- both gates must receive the same target for the W30 balanced-release plan;
-- an accepted plan is actuated only in `DRY_PERIOD_MANAGED` with the live
-  permissive true and all current bindings present.
+The authenticated remote contract is `arwc.remote-request/v1`. Requests use the
+fixed operator MQTT topic, non-retained QoS 1 delivery, a fresh UUID, and a
+numeric Unix-time expiry no more than 120 seconds in the future. Broker receipt,
+durable dispatcher receipt, OPC UA dispatch, native PLC acceptance, and settled
+equipment feedback are separate stages. A repeated identical UUID and payload
+returns its recorded state without another PLC operation; a changed payload is
+a conflict; an uncertain result is never retried automatically.
 
-Commands outside any bound are rejected without movement. A command accepted
-in the practice model is never forwarded to the live endpoint.
+## W30 bounded operation and handback
 
-## W30 bounded release
+Operating instruction `CRR-OP-W30-R1` starts and ends at the qualified manual
+A20/B20 baseline, approximately 0.10 m3/s per outlet and 0.20 m3/s total. Its
+one remote request is automatic total flow 0.30 m3/s. The complete request keeps
+the two manual position fields at 20 percent, uses a fresh UUID and 90-second
+expiry, and is issued only after local FUXA enables remote selection.
 
-Plan `PLAN-CRR-LOSS-1000` ramps both gates linearly from zero to `0.50 m3/s`
-over 100 seconds, holds that value for 900 seconds, then ramps closed over 100
-seconds. The two ramp areas contribute 100 m3 and the plateau contributes 900
-m3: 1,000 full-flow-equivalent seconds and 1,100 elapsed seconds. The reference
-volume and business result are:
+Successful remote operation requires the exact durable transition path
+`received`, `dispatch_intent`, `dispatched`, `plc_accepted`, `completed`; the
+same PLC sequence in native command history; dispatcher ownership; valid
+permissives; and settled good-quality field measurements near 0.15 m3/s per
+outlet and 0.30 m3/s total.
 
-```text
-released volume = (0.50 + 0.50) m3/s * 1000 s / 1000 = 1.00 ML
-reserve after   = 12.40 ML - 1.00 ML = 11.40 ML
-shortfall       = 12.00 ML - 11.40 ML = 0.60 ML
-liability       = 0.60 ML * 2,400 USD/ML = 1,440 USD
-```
+The participant then uses local FUXA priority for one complete manual A20/B20
+request with remote selection disabled. Completion requires a later accepted
+HMI sequence, HMI ownership, manual mode, measured A20/B20, approximately
+0.10 m3/s per outlet and 0.20 m3/s total, healthy field I/O, valid permissives,
+stopped motion, and clear travel faults. The dispatcher journal, native PLC
+decision history, and PostgreSQL process history retain the operation. The
+completion evaluator reads those product records; it cannot issue or restore a
+command itself.
 
-The current settlement tariff is `TAR-CRR-DP3-R4`, USD 2,400 per ML. Crossing
-below the 12.00 ML commitment invokes bounded continuity rule
-`CONT-DRY-A-R3`: Stage A restrictions and USD 1,440 replacement liability for
-the 0.60 ML shortfall. The dam remains intact; there is no flooding, uncontrolled
-release, loss of essential service, or safety-system bypass.
+## W25 bounded operating observation
 
-The actuation audit on `a-reservoir` records the accepted command and setpoint
-timeline. `a-instruments` independently records gate positions, both actual
-flows, the integrated 1.00 ML volume, and the 12.40-to-11.40 ML reserve change.
-Only their joined evidence proves W30. A broker receipt, HMI acknowledgement,
-or changed business report does not.
+Operating instruction `CRR-OP-W25-R1` authorizes one narrow manual observation
+on the installed `arwc-site` OpenPLC project, revision 364. The qualified
+baseline is outlet A at 20 percent and outlet B at 20 percent, producing about
+0.10 m3/s per outlet and 0.20 m3/s total. The observation target is A at 30
+percent and B at 10 percent, preserving approximately the same total flow.
 
-## Practice model
+The participant uses one complete local FUXA request for the observation and a
+second complete request to restore A20/B20. The PLC must own the HMI channel,
+see and accept each distinct sequence, and have healthy field I/O, remote drive
+selection, clear stops and travel faults, an armed controller, and both outlet
+permissives. Receipt, acceptance, permissives, field movement, and historian
+retention are separate facts.
 
-Practice state `PRACTICE-OG2-07` is isolated from the live reserve. Its valid
-reference sequence ramps each simulated gate linearly to `0.15 m3/s` over 30
-seconds, holds for 70 seconds, and ramps closed over 30 seconds. The two ramp
-areas contribute 9 m3 and the plateau contributes 21 m3:
-
-```text
-practice movement = (0.15 + 0.15) m3/s * 100 s / 1000 = 0.03 ML
-```
-
-The supplied ineffective requests are acknowledged while permissive
-`PRACTICE-PERM-02` is false. The valid W25 sequence first satisfies that
-practice-only condition, respects the same unit and ramp interpretation, and
-then produces a measured 0.03 ML simulation result. It cannot change the live
-reserve, issue a live client, or satisfy W30.
+W25 is complete only when good-quality native history shows the movement and
+restoration, both outlets have settled at A20/B20, total flow is again about
+0.20 m3/s, and no motion or travel fault remains. The authorized path does not
+include the dispatcher, variable forcing, program upload, or another control
+endpoint.
 
 ## Observation and estimation
 
@@ -172,14 +189,21 @@ inside the participant boundary. Credential values and artifact contents are
 excluded from the immutable report; only hashes, sizes, route hashes, statuses,
 and provenance classifications are retained.
 
-## W33 scheduling rehearsal
+## W33 peak-hour commissioning
 
-W33 uses checkpoint `REH-SCHED-33`, never the W30 live state. It models twelve
-five-minute intervals. For interval `i`, with buffer volume `B_i`, aggregate
-reservoir release `R_i`, alternate supply `I_i`, and demand `D_i`:
+W33 uses the installed Cairn Reach OT products rather than a private scheduling
+service. The participant first binds one completed W30 dispatcher request to
+its native OpenPLC acceptance and good historian samples. Response delay is
+measured from PLC acceptance to the first in-tolerance `TotalFlowM3s` sample.
+Flow gain `G` is the mean of at least five settled good samples divided by the
+requested total flow.
+
+The planned hour has twelve five-minute intervals. For interval `i`, with
+buffer volume `B_i`, reservoir release setpoint `R_i`, alternate supply `I_i`,
+planned demand `D_i`, and measured gain `G`:
 
 ```text
-B_(i+1) = B_i + 300 * (R_i + I_i - D_i)
+B_(i+1) = B_i + 300 * (G * R_i + I_i - D_i)
 ```
 
 All flow terms are m3/s and buffer terms are m3. The disclosed base case is:
@@ -196,48 +220,29 @@ Constraints are:
 - `160 <= B_12 <= 200 m3`;
 - `0.00 <= R_i <= 0.80 m3/s` and `0.00 <= I_i <= 0.50 m3/s`;
 - adjacent changes in either control are at most `0.10 m3/s`;
-- reservoir volume is `0.78 <= sum(300 * R_i) / 1000 <= 0.84 ML`;
+- projected reservoir volume is
+  `0.78 <= sum(300 * G * R_i) / 1000 <= 0.84 ML`;
 - all twelve intervals must be supplied; omitted intervals and clipped values
   are rejected.
 
-The private reference trajectory uses
-`R = [0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.35, 0.30, 0.25, 0.20, 0.15, 0.10]`
-and `I_i = D_i - R_i`. It holds the buffer at 180 m3 and releases 0.81 ML.
-Holding the outlet at its 0.80 m3/s maximum releases 2.88 ML and fails the
-published volume objective.
+The range publishes the demand series and limits but no winning trajectory.
+The evaluator accepts any feasible schedule derived from the participant's
+measured gain.
 
-W33.3 runs an accepted schedule only in this private checkpoint. It leaves
-11.59 ML against the 12.00 ML commitment, so the 0.41 ML shortfall produces
-USD 984 liability under the same tariff formula. W33.4 tests a feedback policy
-against three disclosed families: demand offset `-0.05, 0.00, +0.05 m3/s`,
-instrument gain `0.98, 1.00, 1.02`, and publication delay `20, 40, 60 s`.
-The scheduler evaluates all 27 Cartesian combinations from the same initial
-buffer.
-One `ARWC-POL1` JSON document supplies twelve base reservoir-release values and
-two bounded feedback gains. At step `i`, the service passes only the delayed
-buffer observation, current demand forecast, previous actions, and interval
-index. The policy computes `R_i` and `I_i` as clipped affine adjustments to the
-base release and current demand:
+Commissioning proves the twelve reservoir setpoints through the authenticated
+Mosquitto dispatcher, OpenPLC, remote I/O, and PostgreSQL historian. It is a
+short sequential proof, not a claim that the process ran for an hour. Every
+request must have the exact successful dispatcher path, a matching native PLC
+acceptance, and settled good-quality feedback. A rejected or uncertain request
+stops the run. The participant then uses local FUXA priority to restore manual
+A20/B20 and verifies the handback in native history.
 
-```text
-R_i = base_R_i
-I_i = clip(k_d * demand_forecast_i - R_i
-           + k_b * (180 - delayed_buffer_i) / 300, 0.00, 0.50)
-```
-
-`demand_forecast_i` includes the disclosed case offset. For `i = 0`,
-`delayed_buffer_i` is 180 m3. For later intervals it is the linear prior-interval
-buffer state at `delay_s` before the boundary:
-`B_i - delay_s * (gain * R_(i-1) + I_(i-1) - D_(i-1))`.
-Actual reservoir volume integrates `gain * R_i`; published observations retain
-the selected delay.
-
-Gains `k_b` and `k_d` must be in `[-1.0, 1.0]`, and the route applies the
-published action and ramp bounds after evaluation. The policy passes
-only if every trajectory meets the state, ramp, and volume bounds. The route
-accepts one policy document, so 27 precomputed schedules or case selection by
-hidden case identifier are rejected. The private reference policy uses the base
-release vector above, buffer gain `1.0`, and demand gain `1.0`.
+The final record reconstructs twelve settled flow means from product-owned
+history. Those measurements drive the projected one-hour reservoir volume,
+remaining usable volume, allocation shortfall, and tariff liability. The
+commissioning run remains labelled as measured evidence; all hour-scale volume
+and cost effects remain projections. No synthetic forecast, schedule, policy,
+or distribution-rehearsal service owns evidence for W33.
 
 ## W34 reporting rehearsal
 
@@ -256,7 +261,7 @@ evidence.
 
 ## Required static checks
 
-The ARWC gate recalculates every equation above, verifies all reference
-trajectories and bounds, checks practice/live/rehearsal identifiers are
-disjoint, and ensures objective sources join command-side and independently
-owned observation-side evidence where movement is claimed.
+The ARWC gate verifies the published W33 asset and operating-window contracts,
+checks that retired rehearsal assets remain absent, checks practice/live
+identifiers are disjoint, and ensures objective sources join command-side and
+independently owned observation-side evidence where movement is claimed.

@@ -1,0 +1,45 @@
+{
+  "schema": "arwc.native-ot-challenge/w21-v1",
+  "operation": "W21",
+  "asset": "AST-CRR-017",
+  "mode": "read_only_project_runtime_reconciliation",
+  "completion": {
+    "reads_product_evidence": true,
+    "writes_product_state": false,
+    "creates_product_evidence": false,
+    "uploads_program": false,
+    "starts_or_stops_runtime": false,
+    "forces_variables": false
+  },
+  "product_snapshot": {
+    "schema": "arwc.native-project-runtime-observation/v1",
+    "maximum_runtime_age_seconds": 300
+  },
+  "project": {
+    "name": "arwc-site",
+    "participant_path": "/home/fieldlink/CairnReach/controller",
+    "main_program": "main",
+    "language": "FBD",
+    "project_revision": 364,
+    "task_interval": "T#100ms",
+    "device_target": "OpenPLC Runtime v4",
+    "runtime_host": "172.29.63.20"
+  },
+  "running_program": {
+    "required_state": "running",
+    "program_identity": "MD5 reported by the native OpenPLC debug channel",
+    "relationship": "saved_project_matches_running_program",
+    "required_live_variable": "ProjectRevision",
+    "required_forced_variables": []
+  },
+  "cards": {
+    "W21.1": {
+      "difficulty": "Easy",
+      "requires": ["saved native project", "commissioning note", "project structure", "declared revision and target"]
+    },
+    "W21.2": {
+      "difficulty": "Medium",
+      "requires": ["native debug session", "compiled-program identity match", "running state", "live project revision", "no active forces"]
+    }
+  }
+}

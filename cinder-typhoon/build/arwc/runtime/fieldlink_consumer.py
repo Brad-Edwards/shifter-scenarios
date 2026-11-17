@@ -200,13 +200,14 @@ def earn_corporate(route: str, receipt_id: str, version: str) -> None:
             "maintenance_case": "MTN-CRR-204",
             "customer_receipt": "RCP-742-047",
             "customer_handover": "https://customer-handover.arwc.test:8443",
-            "business_workplace": "https://business-workplace.arwc.test",
-            "planning_data": "https://planning-data.arwc.test",
-            "retained_archive": "https://retained-archive.arwc.test",
-            "corporate_identity": "https://corporate-identity.arwc.test",
-            "contractor_portal": "https://contractor-portal.arwc.test",
-            "field_gateway": "https://field-gateway.arwc.test",
-            "maintenance_review": "https://maintenance-review.arwc.test",
+            "corporate_records": "https://erp.arwc.test",
+            "documents": "https://documents.arwc.test",
+            "planning_reports": "https://reports.arwc.test",
+            "workforce_identity": "https://identity.arwc.test",
+            "supplier_portal": "https://suppliers.arwc.test/purchase-orders",
+            "engineering": "https://engineering.arwc.test",
+            "read_service": "https://read-data.arwc.test",
+            "document_conversion": "https://render.arwc.test",
             "client_reference": "https://customer-handover.arwc.test:8443/.well-known/arwc-client",
             "handover_id": handover_id,
             "session_file": "/var/lib/fieldlink-connector/handover/corporate-session",
@@ -215,7 +216,7 @@ def earn_corporate(route: str, receipt_id: str, version: str) -> None:
         atomic_json(TRANSITION, transition, 0o440)
         os.chown(TRANSITION, -1, FIELDLINK.stat().st_gid)
         # Publish the token last so consumers never observe it before its
-        # authenticated metadata and participant-facing transition record.
+        # authenticated metadata and customer transition record.
         atomic_bytes(TOKEN, (token + "\n").encode(), 0o440)
         os.chown(TOKEN, -1, FIELDLINK.stat().st_gid)
 

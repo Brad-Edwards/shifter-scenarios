@@ -1,0 +1,20 @@
+{
+  "issue": 366,
+  "timestamp": "2026-11-13T02:11:42.619272+00:00",
+  "scope": "native installation and read-only acquisition counters; operating/reconnect/browser QA pending",
+  "live_tags": 50,
+  "recent_records": 1450,
+  "quality_counts": {
+    "Good": 550
+  },
+  "sample": {
+    "source_time": "2026-11-13 02:11:42.006648+00:00",
+    "collected_time": "2026-11-13 02:11:42.008378+00:00",
+    "ingested_at": "2026-11-13 02:11:42.285907+00:00",
+    "value": "7.519000053405762",
+    "transport_quality": "Good",
+    "process_quality": "Good",
+    "node_id": "nsu=urn:arwc:crr:tags;s=CRR.LevelM",
+    "register_sha256": "df09d72a355340266896c59a204248e02aa277769f881e7a2f6ce6d15b6f7a3b"
+  }
+}

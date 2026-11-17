@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Engineering notes
+Exec=firefox-esr --new-window file:///usr/share/arwc-ot/start.html
+Icon=help-contents
+Terminal=false
+Categories=Development;Education;

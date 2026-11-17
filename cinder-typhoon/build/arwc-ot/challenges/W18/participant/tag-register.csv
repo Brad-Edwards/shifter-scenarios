@@ -1,0 +1,7 @@
+register_id,project_revision,loop,instrument,controlled_equipment,modbus_table,function_code,pdu_offset,iec_address,raw_variable,raw_type,counts_per_unit,engineering_unit,plc_value,opcua_node_id,historian_series
+CRR-IO-R364,364,CRR-L201,LIT-CRR-201,AST-CRR-017,input_register,4,0,%IW0,LevelRaw,UINT,1000,m,LevelM,nsu=urn:arwc:crr:tags;s=CRR.LevelM,level_m
+CRR-IO-R364,364,CRR-Z203A,ZT-CRR-203A,GT-CRR-02A,input_register,4,1,%IW1,PositionRaw,UINT,100,%,PositionPct,nsu=urn:arwc:crr:tags;s=CRR.PositionPct,position_pct
+CRR-IO-R364,364,CRR-F204A,FIT-CRR-204A,GT-CRR-02A,input_register,4,2,%IW2,FlowRaw,UINT,10000,m3/s,FlowM3s,nsu=urn:arwc:crr:tags;s=CRR.FlowM3s,flow_m3s
+CRR-IO-R364,364,CRR-IO001,IO-CRR-001,AST-CRR-017,input_register,4,3,%IW3,Heartbeat,UINT,1,count,IoHeartbeat,,
+CRR-IO-R364,364,CRR-Z203B,ZT-CRR-203B,GT-CRR-02B,input_register,4,4,%IW4,PositionBRaw,UINT,100,%,PositionBPct,nsu=urn:arwc:crr:tags;s=CRR.PositionBPct,position_b_pct
+CRR-IO-R364,364,CRR-F204B,FIT-CRR-204B,GT-CRR-02B,input_register,4,5,%IW5,FlowBRaw,UINT,10000,m3/s,FlowBM3s,nsu=urn:arwc:crr:tags;s=CRR.FlowBM3s,flow_b_m3s

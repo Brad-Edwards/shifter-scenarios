@@ -1,0 +1,186 @@
+{
+  "schema": "arwc.native-ot-challenges/v1",
+  "design_issue": 382,
+  "allowed_status": ["planned", "implemented"],
+  "completion_policy": {
+    "read_only": true,
+    "may_control_process": false,
+    "may_create_product_evidence": false,
+    "evaluate_after_participant_action": true
+  },
+  "operations": {
+    "W17": {
+      "issue": 389,
+      "status": "implemented",
+      "asset_root": "cinder-typhoon/build/arwc-ot/challenges/W17",
+      "native_surfaces": ["FUXA", "OpenPLC", "PostgreSQL historian", "remote I/O"],
+      "cards": [
+        {"id": "W17.1", "title": "The reservoir's present tense", "difficulty": "Easy", "work": "Separate current measured values from requested values in the live operator view."},
+        {"id": "W17.2", "title": "The mode the plant is in", "difficulty": "Easy", "work": "Identify the controller mode, command owner, and live permissive state."},
+        {"id": "W17.3", "title": "The instrument in the note", "difficulty": "Easy", "work": "Bind an engineering reference to its real live tag, unit, and asset."},
+        {"id": "W17.4", "title": "The first live trace", "difficulty": "Medium", "work": "Join FUXA, historian, and independent process observations for one interval."}
+      ],
+      "assets": [
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W17/participant/live-observation.md", "owner": "W17", "action": "create", "participant_facing": true},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W17/participant/engineering-reference.md", "owner": "W17", "action": "create", "participant_facing": true},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W17/contract.json", "owner": "W17", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W17/product_snapshot.sql", "owner": "W17", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W17/check_evidence.py", "owner": "W17", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W17/test_contract.py", "owner": "W17", "action": "create", "participant_facing": false}
+      ],
+      "retirements": [
+        {"mode": "remove_markers", "locations": ["cinder-typhoon/build/arwc/runtime/process_services.py", "cinder-typhoon/build/arwc/runtime/integration_gateway.py", "cinder-typhoon/build/arwc/runtime/planning_data.py", "cinder-typhoon/build/arwc/runtime/field_gateway.py", "cinder-typhoon/build/arwc/runtime/contractor_portal.py", "cinder-typhoon/build/arwc/images/hmi.Dockerfile", "cinder-typhoon/build/arwc/tests/test_w25_live.py", "cinder-typhoon/build/arwc/tests/test_known_solution_live.py", "cinder-typhoon/build/arwc/tests/test_w29_live.py", "cinder-typhoon/docs/design/challenges/W17"], "markers": ["HMI-EVT-114", "INST-EVT-114", "/api/process-views/state", "/api/process-views/mode", "/api/process-views/instruments/active", "process.state", "process.mode", "process.active-instrument", "process.observations", "/tmp/me-engineering-note-01-1.md", "/tmp/me-commissioning-01.md"]}
+      ],
+      "required_checks": ["positive", "negative", "reset", "product_evidence"]
+    },
+    "W18": {
+      "issue": 383,
+      "status": "implemented",
+      "asset_root": "cinder-typhoon/build/arwc-ot/challenges/W18",
+      "native_surfaces": ["OpenPLC OPC UA", "Modbus TCP", "Telegraf", "PostgreSQL historian"],
+      "cards": [
+        {"id": "W18.1", "title": "The tag export", "difficulty": "Easy", "work": "Recover the native register and identify the requested points."},
+        {"id": "W18.2", "title": "The scale kept elsewhere", "difficulty": "Easy", "work": "Resolve one point's address, type, scaling, and OPC UA identity."},
+        {"id": "W18.3", "title": "Three clocks and a gap", "difficulty": "Medium", "work": "Reconcile source, collection, and ingestion times with quality and a gap."},
+        {"id": "W18.4", "title": "Which outlet answers", "difficulty": "Medium", "work": "Map both outlets from native metadata and a bounded observation."}
+      ],
+      "assets": [
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W18/participant/tag-register.csv", "owner": "W18", "action": "create", "participant_facing": true},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W18/participant/history-provenance.md", "owner": "W18", "action": "create", "participant_facing": true},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W18/contract.json", "owner": "W18", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W18/product_snapshot.sql", "owner": "W18", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W18/check_evidence.py", "owner": "W18", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W18/test_contract.py", "owner": "W18", "action": "create", "participant_facing": false}
+      ],
+      "retirements": [
+        {"mode": "remove_markers", "locations": ["cinder-typhoon/build/arwc/runtime/process_services.py", "cinder-typhoon/build/arwc/runtime/integration_gateway.py", "cinder-typhoon/build/arwc/runtime/planning_data.py", "cinder-typhoon/build/arwc/runtime/field_gateway.py", "cinder-typhoon/build/arwc/runtime/contractor_portal.py", "cinder-typhoon/build/arwc/tests/test_w25_live.py", "cinder-typhoon/build/arwc/tests/test_known_solution_live.py", "cinder-typhoon/build/arwc/tests/test_w29_live.py", "cinder-typhoon/build/arwc/tests/test_w34_live.py", "cinder-typhoon/docs/design/challenges/W18", "cinder-typhoon/sdl/modules/content/arwc-a-historian.yaml", "cinder-typhoon/sdl/modules/world/a-control.yaml", "cinder-typhoon/sdl/modules/world/a-engineering.yaml"], "markers": ["TAGS-CRR-R21", "SCALE-CRR-R8", "SCALE-CHANGE-OG2-8", "/api/tag-exports/current", "/api/tag-scales/current", "/api/outlet-groups/current/instruments", "process.tag-export", "process.tag-scale", "process.tag-scale-history", "process.outlet-instruments", "W18-map.json", "outlet-map.json"]}
+      ],
+      "required_checks": ["positive", "negative", "reset", "product_evidence"]
+    },
+    "W21": {
+      "issue": 386,
+      "status": "implemented",
+      "asset_root": "cinder-typhoon/build/arwc-ot/challenges/W21",
+      "native_surfaces": ["OpenPLC Editor", "OpenPLC runtime", "engineering workstation"],
+      "cards": [
+        {"id": "W21.1", "title": "The project and the note", "difficulty": "Easy", "work": "Open the supplied project and deployment note and identify the declared revision."},
+        {"id": "W21.2", "title": "Which project is running", "difficulty": "Medium", "work": "Reconcile the saved project with the running program and native runtime or debug state."}
+      ],
+      "assets": [
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W21/participant/project-handover.md", "owner": "W21", "action": "create", "participant_facing": true},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W21/participant/deployment-note.md", "owner": "W21", "action": "create", "participant_facing": true},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W21/contract.json", "owner": "W21", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W21/product_snapshot.py", "owner": "W21", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W21/check_evidence.py", "owner": "W21", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W21/test_contract.py", "owner": "W21", "action": "create", "participant_facing": false}
+      ],
+      "retirements": [
+        {"mode": "remove_markers", "locations": ["cinder-typhoon/build/arwc/runtime/process_services.py", "cinder-typhoon/build/arwc/runtime/field_gateway.py", "cinder-typhoon/build/arwc/runtime/integration_gateway.py", "cinder-typhoon/build/arwc/runtime/planning_data.py", "cinder-typhoon/build/arwc/runtime/contractor_portal.py", "cinder-typhoon/build/arwc/runtime/diagnostic_services.py", "cinder-typhoon/build/arwc/runtime/reservoir_controller.py", "cinder-typhoon/build/arwc/tests/test_w25_live.py", "cinder-typhoon/build/arwc/tests/test_known_solution_live.py", "cinder-typhoon/docs/design/challenges/W21", "cinder-typhoon/sdl/modules/content/arwc-a-engineering.yaml", "cinder-typhoon/sdl/modules/world/a-control.yaml", "cinder-typhoon/sdl/modules/world/a-engineering.yaml"], "markers": ["PROJ-CRR-INDEX-R9", "ENG-DEPLOY-CRR-21", "DEPLOY-OBS-CRR-21", "/api/sealed-projects/current/note", "/api/vault-access", "project_bundle_observed", "deployed_revision_observed", "deployment-revision.json", "deployment-observation.json", "\"CMP-CRR-R21\""]}
+      ],
+      "required_checks": ["positive", "negative", "reset", "product_evidence"]
+    },
+    "W25": {
+      "issue": 385,
+      "status": "implemented",
+      "asset_root": "cinder-typhoon/build/arwc-ot/challenges/W25",
+      "native_surfaces": ["FUXA", "OpenPLC", "PostgreSQL historian", "remote I/O"],
+      "cards": [
+        {"id": "W25.1", "title": "The operating envelope", "difficulty": "Easy", "work": "Read the actual operating envelope from operator and engineering material."},
+        {"id": "W25.2", "title": "Conditions before movement", "difficulty": "Easy", "work": "Explain the live permissive chain and the current movement condition."},
+        {"id": "W25.3", "title": "Accepted is not actuated", "difficulty": "Medium", "work": "Separate request receipt, PLC decision, ownership, permissive, and field actuation."},
+        {"id": "W25.4", "title": "A sequence the process can follow", "difficulty": "Medium", "work": "Perform a bounded movement, prove history, and restore baseline."}
+      ],
+      "assets": [
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W25/participant/bounded-movement.md", "owner": "W25", "action": "create", "participant_facing": true},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W25/participant/operating-envelope.csv", "owner": "W25", "action": "create", "participant_facing": true},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W25/contract.json", "owner": "W25", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W25/product_snapshot.sql", "owner": "W25", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W25/check_evidence.py", "owner": "W25", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W25/test_contract.py", "owner": "W25", "action": "create", "participant_facing": false}
+      ],
+      "retirements": [
+        {"mode": "remove_markers", "locations": ["cinder-typhoon/build/arwc/runtime/process_services.py", "cinder-typhoon/build/arwc/runtime/field_gateway.py", "cinder-typhoon/build/arwc/runtime/integration_gateway.py", "cinder-typhoon/build/arwc/runtime/contractor_portal.py", "cinder-typhoon/build/arwc/tests/test_w25_live.py", "cinder-typhoon/build/arwc/tests/test_known_solution_live.py", "cinder-typhoon/docs/design/challenges/W25", "cinder-typhoon/docs/design/arwc-discovery-design.md"], "markers": ["PRACTICE-OG2-07", "PRACTICE-PERM-02", "PRACTICE-REQ-11", "/api/operating-envelopes/current", "/api/movement-conditions/current", "/api/commands", "/api/practice-sequences", "envelope_observed", "practice_conditions_observed", "practice_observed", "operating-envelope.json", "practice-sequence.json"]}
+      ],
+      "required_checks": ["positive", "negative", "reset", "product_evidence"]
+    },
+    "W29": {
+      "issue": 388,
+      "status": "implemented",
+      "asset_root": "cinder-typhoon/build/arwc-ot/challenges/W29",
+      "native_surfaces": ["corporate planning data", "OpenPLC", "PostgreSQL historian"],
+      "cards": [
+        {"id": "W29.1", "title": "The price of this planning window", "difficulty": "Easy", "work": "Recover the current tariff from the existing corporate material."},
+        {"id": "W29.2", "title": "What reserve remains uncommitted", "difficulty": "Medium", "work": "Join actual usable volume with committed allocation."},
+        {"id": "W29.3", "title": "Paper truth", "difficulty": "Medium", "work": "Reconcile the business report with native process history and explain the discrepancy."}
+      ],
+      "assets": [
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W29/participant/allocation-ledger.csv", "owner": "W29", "action": "create", "participant_facing": true},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W29/participant/reconciliation-method.md", "owner": "W29", "action": "create", "participant_facing": true},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W29/contract.json", "owner": "W29", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W29/corporate_snapshot.sql", "owner": "W29", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W29/product_snapshot.sql", "owner": "W29", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W29/check_evidence.py", "owner": "W29", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W29/test_contract.py", "owner": "W29", "action": "create", "participant_facing": false}
+      ],
+      "retirements": [
+        {"mode": "remove_markers", "locations": ["cinder-typhoon/build/arwc/runtime/process_services.py", "cinder-typhoon/build/arwc/runtime/planning_data.py", "cinder-typhoon/build/arwc/runtime/field_gateway.py", "cinder-typhoon/build/arwc/runtime/integration_gateway.py", "cinder-typhoon/build/arwc/runtime/contractor_portal.py", "cinder-typhoon/build/arwc/tests/test_w29_live.py", "cinder-typhoon/build/arwc/tests/test_known_solution_live.py", "cinder-typhoon/docs/design/challenges/W29", "cinder-typhoon/docs/design/arwc-discovery-design.md", "cinder-typhoon/sdl/modules/content/arwc-a-data.yaml", "cinder-typhoon/sdl/modules/content/arwc-a-hmi.yaml", "cinder-typhoon/sdl/modules/world/a-corporate.yaml", "cinder-typhoon/sdl/modules/world/a-engineering.yaml"], "markers": ["BAL-CRR-DP3-R29", "OBS-RESERVE-CRR-R29", "/api/planning-windows/current/economics", "/api/collision-solutions", "/api/reporting-checkpoints/current", "/internal/reserve-observations", "/internal/release-plan-assessments", "planning_tariff_observed", "reserve_balance_observed", "loss_plan_observed", "w29_internal", "w29_reserve", "w29_plan"]}
+      ],
+      "required_checks": ["positive", "negative", "reset", "product_evidence"]
+    },
+    "W30": {
+      "issue": 384,
+      "status": "implemented",
+      "asset_root": "cinder-typhoon/build/arwc-ot/challenges/W30",
+      "native_surfaces": ["Mosquitto", "dispatcher", "OpenPLC", "remote I/O", "PostgreSQL historian"],
+      "cards": [
+        {"id": "W30.1", "title": "Bind the plan to the plant", "difficulty": "Medium", "work": "Bind a release plan to the actual asset, limits, command identity, and dispatcher request."},
+        {"id": "W30.2", "title": "Operate and hand back", "difficulty": "Medium", "work": "Execute a bounded request and join dispatch, PLC, field, and history before restoring baseline."}
+      ],
+      "assets": [
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W30/participant/release-plan.json", "owner": "W30", "action": "create", "participant_facing": true},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W30/participant/operator-brief.md", "owner": "W30", "action": "create", "participant_facing": true},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W30/contract.json", "owner": "W30", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W30/product_snapshot.sql", "owner": "W30", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W30/check_evidence.py", "owner": "W30", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W30/test_contract.py", "owner": "W30", "action": "create", "participant_facing": false}
+      ],
+      "retirements": [
+        {"mode": "delete", "path": "cinder-typhoon/build/arwc/tests/test_w30_live.py"},
+        {"mode": "remove_markers", "locations": ["cinder-typhoon/build/arwc/runtime/process_services.py", "cinder-typhoon/build/arwc/runtime/reservoir_controller.py", "cinder-typhoon/build/arwc/tests/test_known_solution_live.py", "cinder-typhoon/docs/design/challenges/W30", "cinder-typhoon/challenges/challenges.yaml", "cinder-typhoon/sdl/modules/operations/w30.yaml"], "markers": ["release_plan_bound", "release-executions", "CMD-PLAN-CRR-30-R1", "ACT-CRR-OG2-30", "OBS-RELEASE-CRR-30", "CONT-DRY-A-R3"]}
+      ],
+      "required_checks": ["positive", "negative", "reset", "product_evidence"]
+    },
+    "W33": {
+      "issue": 387,
+      "status": "implemented",
+      "asset_root": "cinder-typhoon/build/arwc-ot/challenges/W33",
+      "native_surfaces": ["PostgreSQL historian", "Mosquitto", "dispatcher", "OpenPLC", "remote I/O"],
+      "cards": [
+        {"id": "W33.1", "title": "A forecast that matches the instrument", "difficulty": "Medium", "work": "Calibrate a forecast against real history, delay, and sample quality."},
+        {"id": "W33.2", "title": "The peak hour", "difficulty": "Hard", "work": "Construct a twelve-interval schedule from measured gain, demand, buffer, action, ramp, and projected-volume constraints."},
+        {"id": "W33.3", "title": "Commission the schedule", "difficulty": "Hard", "work": "Run the reviewed schedule through the bounded dispatcher and prove every native acceptance and measured result."},
+        {"id": "W33.4", "title": "Prove the operating projection", "difficulty": "Expert", "work": "Reconstruct the commissioning run from product history and separate measured evidence from the one-hour projection."}
+      ],
+      "assets": [
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W33/participant/operating-window.csv", "owner": "W33", "action": "create", "participant_facing": true},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W33/participant/schedule-template.json", "owner": "W33", "action": "create", "participant_facing": true},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W33/participant/scheduling-brief.md", "owner": "W33", "action": "create", "participant_facing": true},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W33/participant/run-schedule.py", "owner": "W33", "action": "create", "participant_facing": true},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W33/contract.json", "owner": "W33", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W33/product_snapshot.sql", "owner": "W33", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W33/corporate_snapshot.sql", "owner": "W33", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W33/check_evidence.py", "owner": "W33", "action": "create", "participant_facing": false},
+        {"path": "cinder-typhoon/build/arwc-ot/challenges/W33/test_contract.py", "owner": "W33", "action": "create", "participant_facing": false}
+      ],
+      "retirements": [
+        {"mode": "delete", "path": "cinder-typhoon/build/arwc/tests/test_w33_live.py"},
+        {"mode": "delete", "path": "cinder-typhoon/build/arwc/runtime/schedule33.py"},
+        {"mode": "delete", "path": "cinder-typhoon/build/arwc/runtime/distribution_controller.py"},
+        {"mode": "delete", "path": "cinder-typhoon/build/arwc/runtime/distribution-entrypoint.sh"},
+        {"mode": "delete", "path": "cinder-typhoon/build/arwc/images/distribution.Dockerfile"},
+        {"mode": "remove_markers", "locations": ["cinder-typhoon/build/arwc/runtime/process_services.py", "cinder-typhoon/build/arwc/runtime/reservoir_controller.py", "cinder-typhoon/build/arwc/runtime/distribution_controller.py", "cinder-typhoon/build/arwc/tests/test_known_solution_live.py", "cinder-typhoon/docs/design/challenges/W33", "cinder-typhoon/challenges/challenges.yaml", "cinder-typhoon/sdl/modules/operations/w33.yaml"], "markers": ["REH-SCHED-33", "FCST-CRR-33", "SCHED-CRR-33", "REH-RESULT-CRR-33", "POL-RESULT-CRR-33", "forecast-observation.json", "schedule-evaluation.json", "schedule-rehearsal.json", "forecast-policy.json", "process.schedule-window", "process.schedule-window-submit", "process.schedule-rehearsal", "process.feedback-policy"]}
+      ],
+      "required_checks": ["positive", "negative", "reset", "product_evidence"]
+    }
+  }
+}

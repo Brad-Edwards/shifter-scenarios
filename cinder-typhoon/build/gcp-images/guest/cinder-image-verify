@@ -67,6 +67,9 @@ if [[ $mode != --boot-only ]]; then
       ;;
     arwc)
       test -s /opt/cinder-typhoon/build/arwc/.operator/integration/keplerops-ca.crt
+      if [[ -x /usr/local/libexec/cinder-arwc-ot-first-boot ]]; then
+        /usr/local/libexec/cinder-arwc-ot-first-boot verify
+      fi
       ;;
   esac
 fi

@@ -1,0 +1,7 @@
+{
+  "issue": 370,
+  "status": "first-boot implementation in progress; image preparation and real fresh-range qualification pending",
+  "first_boot_state_cases": 4,
+  "readiness_mutations_detected": 3,
+  "scope": "isolated developer checks only; no live first-boot deployment claimed"
+}

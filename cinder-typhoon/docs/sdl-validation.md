@@ -75,11 +75,10 @@ The bounded process gate independently recalculates:
 - the 0.012 ML commissioning trace and isolated 0.030 ML practice movement;
 - the balanced 1.00 ML live release, 11.40 ML remaining reserve, 0.60 ML
   shortfall, USD 1,440 liability, and Stage A restriction;
-- the twelve-interval 0.81 ML scheduling rehearsal, 11.59 ML independent
-  reserve, 0.41 ML shortfall, and USD 984 liability; and
-- all 27 Cartesian demand-offset, outlet-gain, and observation-delay cases for
-  the single observation-driven `ARWC-POL1` policy, including state, action,
-  ramp, final-buffer, and reservoir-volume bounds.
+- the twelve-interval W33 operating-window contract, including demand, buffer,
+  action, ramp, final-buffer, and projected-volume bounds; and
+- the separation between measured W33 commissioning evidence and the
+  resulting one-hour volume and cost projections.
 
 Practice, live, scheduling-rehearsal, and reporting-rehearsal storage are
 disjoint. A planning estimate cannot change independent instrument truth, an

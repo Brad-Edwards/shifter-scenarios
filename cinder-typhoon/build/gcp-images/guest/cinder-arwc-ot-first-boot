@@ -1,0 +1,3 @@
+#!/bin/bash
+set -euo pipefail
+exec python3 /opt/cinder-typhoon/build/arwc-ot/image/first_boot.py "$@"

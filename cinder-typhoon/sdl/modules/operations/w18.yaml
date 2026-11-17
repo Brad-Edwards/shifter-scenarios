@@ -45,12 +45,13 @@ realization:
 evidence_requirements:
   c1:
     description: |-
-      Recover the actual export and its revision binding. Its names alone do not prove which outlet moves.
+      Record the register ID, project revision, native register digest, and required process variables, and confirm that the installed register, running revision, and native catalog agree. A copied filename or unverified table is insufficient.
 
-      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
 
-      Evidence sources are `features.a-engineering.a-historian`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence sources are `features.a-engineering.a-engineering`, `features.a-engineering.a-historian`. A wrong register digest, project revision, point identity, scale, time, quality, or outlet mapping is rejected.
     source_refs:
+    - features.a-engineering.a-engineering
     - features.a-engineering.a-historian
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -72,6 +73,7 @@ evidence_requirements:
         names:
         - cinder.w18-1.satisfied
         component_refs:
+        - features.a-engineering.a-engineering
         - features.a-engineering.a-historian
       collection: require
       retention: require
@@ -80,19 +82,20 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Verify the healthy baseline through the participant workstation. Complete the card using only
+      the declared native products and image-owned starting material. Confirm that a matching post-action product
+      snapshot accepts the observation, while a wrong asset, stale observation, mismatched native identity, participant-supplied
+      product evidence, or missing required product source prevents completion. Confirm the flow does not upload,
+      start, stop, force, or otherwise change controller state and reset leaves no work item-created process state.'
   c2:
     description: |-
-      Recover the scale table and its applicable revision. Individual entries in the table are one artifact result.
+      Produce the complete FIT-CRR-204B binding from Modbus function and PDU offset through `%IW5`, `FlowBRaw`, scaling, `FlowBM3s`, the stable OPC UA NodeId, and `flow_b_m3s`. Each native source must agree.
 
-      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
 
-      Evidence sources are `features.a-engineering.a-historian`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence sources are `features.a-engineering.a-engineering`, `features.a-engineering.a-historian`. A wrong register digest, project revision, point identity, scale, time, quality, or outlet mapping is rejected.
     source_refs:
+    - features.a-engineering.a-engineering
     - features.a-engineering.a-historian
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -114,6 +117,7 @@ evidence_requirements:
         names:
         - cinder.w18-2.satisfied
         component_refs:
+        - features.a-engineering.a-engineering
         - features.a-engineering.a-historian
       collection: require
       retention: require
@@ -122,19 +126,20 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Verify the healthy baseline through the participant workstation. Complete the card using only
+      the declared native products and image-owned starting material. Confirm that a matching post-action product
+      snapshot accepts the observation, while a wrong asset, stale observation, mismatched native identity, participant-supplied
+      product evidence, or missing required product source prevents completion. Confirm the flow does not upload,
+      start, stop, force, or otherwise change controller state and reset leaves no work item-created process state.'
   c3:
     description: |-
-      Produce the correct interpretation of the supplied readings with their relevant scale revision. Matching a tag name alone does not establish the result.
+      Identify the largest qualifying good-data source-time gap, record both bounding samples with all three timestamps and both quality fields, and establish that the engineering unit did not change. A row count or display gap alone is insufficient.
 
-      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
 
-      Evidence sources are `features.a-engineering.a-historian`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence sources are `features.a-engineering.a-engineering`, `features.a-engineering.a-historian`. A wrong register digest, project revision, point identity, scale, time, quality, or outlet mapping is rejected.
     source_refs:
+    - features.a-engineering.a-engineering
     - features.a-engineering.a-historian
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -156,6 +161,7 @@ evidence_requirements:
         names:
         - cinder.w18-3.satisfied
         component_refs:
+        - features.a-engineering.a-engineering
         - features.a-engineering.a-historian
       collection: require
       retention: require
@@ -164,19 +170,20 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Verify the healthy baseline through the participant workstation. Complete the card using only
+      the declared native products and image-owned starting material. Confirm that a matching post-action product
+      snapshot accepts the observation, while a wrong asset, stale observation, mismatched native identity, participant-supplied
+      product evidence, or missing required product source prevents completion. Confirm the flow does not upload,
+      start, stop, force, or otherwise change controller state and reset leaves no work item-created process state.'
   c4:
     description: |-
-      Establish the tag/scale-to-outlet mapping supported by observed behavior. This supplies W18.MAP and MAPPING, not allocation or current project-revision evidence. The conclusion associates the previously ambiguous identifiers with the physical outlet group and its recorded reference-event trace. The operator can now point to the part of the reservoir those values describe. It presents the mapping they established, not a new live command or a rehearsal that secretly moves the plant. W19.4 earns the same recognition through its alternative investigation.
+      Establish the complete A/B position-and-flow mapping for outlet group OG-CRR-02 and prove it with one good, time-aligned native observation. This supplies W18.MAP and MAPPING without issuing a command or changing process state. W19.4 remains an alternative path to the same operating context capability.
 
-      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
 
-      Evidence sources are `features.a-engineering.a-historian`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence sources are `features.a-engineering.a-engineering`, `features.a-engineering.a-historian`, `features.a-control.a-instruments`. A wrong register digest, project revision, point identity, scale, time, quality, or outlet mapping is rejected.
     source_refs:
+    - features.a-engineering.a-engineering
     - features.a-engineering.a-historian
     - features.a-control.a-instruments
     scope: Per-participant in-world evidence; no other participant state.
@@ -199,6 +206,7 @@ evidence_requirements:
         names:
         - cinder.w18-4.satisfied
         component_refs:
+        - features.a-engineering.a-engineering
         - features.a-engineering.a-historian
         - features.a-control.a-instruments
       collection: require
@@ -208,15 +216,18 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Verify the healthy baseline through the participant workstation. Complete the card using only
+      the declared native products and image-owned starting material. Confirm that a matching post-action product
+      snapshot accepts the observation, while a wrong asset, stale observation, mismatched native identity, participant-supplied
+      product evidence, or missing required product source prevents completion. Confirm the flow does not upload,
+      start, stop, force, or otherwise change controller state and reset leaves no work item-created process state.'
 propositions:
   c1:
-    description: Recover the actual export and its revision binding. Its names alone do not prove which outlet moves.
+    description: Record the register ID, project revision, native register digest, and required process variables,
+      and confirm that the installed register, running revision, and native catalog agree. A copied filename or
+      unverified table is insufficient.
     subjects:
+    - features.a-engineering.a-engineering
     - features.a-engineering.a-historian
     basis: observed_state
     predicate:
@@ -229,9 +240,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Recover the scale table and its applicable revision. Individual entries in the table are one artifact
-      result.
+    description: Produce the complete FIT-CRR-204B binding from Modbus function and PDU offset through `%IW5`, `FlowBRaw`,
+      scaling, `FlowBM3s`, the stable OPC UA NodeId, and `flow_b_m3s`. Each native source must agree.
     subjects:
+    - features.a-engineering.a-engineering
     - features.a-engineering.a-historian
     basis: observed_state
     predicate:
@@ -244,9 +256,11 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Produce the correct interpretation of the supplied readings with their relevant scale revision.
-      Matching a tag name alone does not establish the result.
+    description: Identify the largest qualifying good-data source-time gap, record both bounding samples with all
+      three timestamps and both quality fields, and establish that the engineering unit did not change. A row count
+      or display gap alone is insufficient.
     subjects:
+    - features.a-engineering.a-engineering
     - features.a-engineering.a-historian
     basis: observed_state
     predicate:
@@ -259,11 +273,11 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: |-
-      Establish the tag/scale-to-outlet mapping supported by observed behavior. This supplies W18.MAP and MAPPING, not allocation or current project-revision evidence.
-
-      The conclusion associates the previously ambiguous identifiers with the physical outlet group and its recorded reference-event trace. The operator can now point to the part of the reservoir those values describe. It presents the mapping they established, not a new live command or a rehearsal that secretly moves the plant. W19.4 earns the same recognition through its alternative investigation.
+    description: Establish the complete A/B position-and-flow mapping for outlet group OG-CRR-02 and prove it with
+      one good, time-aligned native observation. This supplies W18.MAP and MAPPING without issuing a command or
+      changing process state. W19.4 remains an alternative path to the same operating context capability.
     subjects:
+    - features.a-engineering.a-engineering
     - features.a-engineering.a-historian
     - features.a-control.a-instruments
     basis: observed_state
@@ -312,14 +326,13 @@ assertions:
 objectives:
   c1:
     name: 'This action: The tag export'
-    description: |-
-      Recover the engineering tag export used for the reservoir outlet group.
-
-      Supplies one half of the mapping evidence.
+    description: Identify the installed Cairn Reach native I/O register and prove that its revision and digest agree
+      with the running controller and historian catalog.
     assigned_participant: participant.operator
     actions:
     - w18.c1
     targets:
+    - features.a-engineering.a-engineering
     - features.a-engineering.a-historian
     success:
       mode: all_of
@@ -330,14 +343,13 @@ objectives:
       - w18.c1
   c2:
     name: 'This action: The scale kept elsewhere'
-    description: |-
-      Recover the separate scale table referenced by the outlet instrumentation records.
-
-      Adds independent interpretation evidence.
+    description: Reconcile one outlet flow point across its Modbus register, OpenPLC address, raw type and scale,
+      PLC value, OPC UA identity, and historian series.
     assigned_participant: participant.operator
     actions:
     - w18.c2
     targets:
+    - features.a-engineering.a-engineering
     - features.a-engineering.a-historian
     success:
       mode: all_of
@@ -347,15 +359,14 @@ objectives:
       workflows:
       - w18.c2
   c3:
-    name: 'This action: When the units changed'
-    description: |-
-      Reconcile the tag export and scale table so the outlet readings have the correct units and revision context.
-
-      Resolves a discoverable engineering-data mismatch.
+    name: 'This action: Three clocks and a gap'
+    description: Use retained native history to identify a genuine collection gap and explain it using source time,
+      collection time, ingestion time, transport quality, process quality, and engineering unit.
     assigned_participant: participant.operator
     actions:
     - w18.c3
     targets:
+    - features.a-engineering.a-engineering
     - features.a-engineering.a-historian
     success:
       mode: all_of
@@ -366,14 +377,13 @@ objectives:
       - w18.c3
   c4:
     name: 'This action: Which outlet answers'
-    description: |-
-      Use the interpreted engineering evidence and reference trace to identify the actual reservoir outlet group.
-
-      Completes the ordinary process-mapping route.
+    description: Map both Cairn Reach outlet gates from native register channels to PLC values, OPC UA identities,
+      historian series, and a time-aligned physical observation.
     assigned_participant: participant.operator
     actions:
     - w18.c4
     targets:
+    - features.a-engineering.a-engineering
     - features.a-engineering.a-historian
     - features.a-control.a-instruments
     success:
@@ -484,9 +494,9 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Engineering export TAGS-CRR-R21 lists outlet command, position, and flow tags with project revision CRR-CTRL-R21 and ambiguous legacy group labels. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+      This is a bounded operating observation and interpretation task, not a privilege flaw. The participant must use the installed products to reconcile the installed register with the running project and native catalog, distinguish Modbus PDU offsets from IEC addresses, interpret source, collection, and ingestion time with quality, and map both outlet channels from time-aligned native observations. A copied value, inferred default, or synthetic API response does not establish the result.
 
-      The required result is: Recover the actual export and its revision binding. Its names alone do not prove which outlet moves. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `MAP-OG2-R8`, `CRR-CTRL-R21`.
+      The required result is: Record the register ID, project revision, native register digest, and required process variables, and confirm that the installed register, running revision, and native catalog agree. A copied filename or unverified table is insufficient.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -498,44 +508,51 @@ action_contracts:
         to every listed surface.
       support_refs:
       - workflows.w18.c1
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-historian` and its `process-historian` application own this part of **The tag export**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Engineering export TAGS-CRR-R21 lists outlet command, position, and flow tags with project revision CRR-CTRL-R21 and ambiguous legacy group labels.
+        The installed Cairn Reach OT products own this part of **The tag export**. The exact initial state is: Image-owned native I/O register CRR-IO-R364 identifies six Modbus input registers for the Cairn Reach controller; its revision and digest must agree with the live ProjectRevision point and historian catalog.
 
         Native bindings:
 
-        - `a-engineering.a-historian/process-historian/the-tag-export`
+        - `a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W18/tag-register.csv`
+        - `a-engineering.a-hmi/OPC-UA:nsu=urn:arwc:crr:tags;s=CRR.ProjectRevision`
+        - `a-engineering.a-historian/PostgreSQL:public.historian_tag_catalog`
 
-        The private service-loader contract is `content.arwc-a-historian.w18-1-the-tag-export`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+        The image-owned W18 native I/O register and history-provenance note are starting material only. OpenPLC, OPC UA, Modbus TCP, the historian catalog, and retained process history remain the authoritative sources; no private service-loader route duplicates them.
       support_refs:
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
-      - content.arwc-a-historian.w18-1-the-tag-export
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+        The result remains local evidence unless a downstream workflow explicitly names it. The task is read-only and creates no process mutation to retain or reset. Ordinary historian retention continues independently. Infrastructure recovery and submission adjudication are external to the SDL.
 
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        The behavior is limited to the installed Cairn Reach products, the named asset, and the supplied participant material. It provides no alternate work item service, simulated completion endpoint, or authority not already present in the OT environment.
       support_refs:
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual export and its revision binding. Its names alone do not prove which outlet
-        moves.
+      description: Record the register ID, project revision, native register digest, and required process variables,
+        and confirm that the installed register, running revision, and native catalog agree. A copied filename or
+        unverified table is insufficient.
       target_refs:
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
       evidence_refs:
       - evidence_requirements.w18.c1
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
 
-        Evidence sources are `features.a-engineering.a-historian`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence sources are `features.a-engineering.a-engineering`, `features.a-engineering.a-historian`. A wrong register digest, project revision, point identity, scale, time, quality, or outlet mapping is rejected.
       target_refs:
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
       evidence_refs:
       - evidence_requirements.w18.c1
@@ -551,9 +568,9 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Separate scale table SCALE-CRR-R8 maps raw counts to percent-open and m3/s with signed engineering revision R8. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+      This is a bounded operating observation and interpretation task, not a privilege flaw. The participant must use the installed products to reconcile the installed register with the running project and native catalog, distinguish Modbus PDU offsets from IEC addresses, interpret source, collection, and ingestion time with quality, and map both outlet channels from time-aligned native observations. A copied value, inferred default, or synthetic API response does not establish the result.
 
-      The required result is: Recover the scale table and its applicable revision. Individual entries in the table are one artifact result. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `MAP-OG2-R8`, `CRR-CTRL-R21`.
+      The required result is: Produce the complete `FIT-CRR-204B` binding from Modbus function and PDU offset through `%IW5`, `FlowBRaw`, scaling, `FlowBM3s`, the stable OPC UA NodeId, and `flow_b_m3s`. Each native source must agree.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -565,44 +582,50 @@ action_contracts:
         to every listed surface.
       support_refs:
       - workflows.w18.c2
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-historian` and its `process-historian` application own this part of **The scale kept elsewhere**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Separate scale table SCALE-CRR-R8 maps raw counts to percent-open and m3/s with signed engineering revision R8.
+        The installed Cairn Reach OT products own this part of **The scale kept elsewhere**. The exact initial state is: The CRR-IO-R364 row for `FIT-CRR-204B` binds Modbus function 4 and zero-based PDU offset 5 to OpenPLC address %IW5, UINT raw variable FlowBRaw, 10000 counts per m3/s, PLC value FlowBM3s, its stable OPC UA NodeId, and historian series flow_b_m3s.
 
         Native bindings:
 
-        - `a-engineering.a-historian/process-historian/the-scale-kept-elsewhere`
+        - `a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W18/tag-register.csv`
+        - `a-engineering.a-hmi/OPC-UA:nsu=urn:arwc:crr:tags;s=CRR.FlowBM3s`
+        - `a-engineering.a-historian/PostgreSQL:public.historian_tag_catalog`
 
-        The private service-loader contract is `content.arwc-a-historian.w18-2-the-scale-kept-elsewhere`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+        The image-owned W18 native I/O register and history-provenance note are starting material only. OpenPLC, OPC UA, Modbus TCP, the historian catalog, and retained process history remain the authoritative sources; no private service-loader route duplicates them.
       support_refs:
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
-      - content.arwc-a-historian.w18-2-the-scale-kept-elsewhere
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+        The result remains local evidence unless a downstream workflow explicitly names it. The task is read-only and creates no process mutation to retain or reset. Ordinary historian retention continues independently. Infrastructure recovery and submission adjudication are external to the SDL.
 
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        The behavior is limited to the installed Cairn Reach products, the named asset, and the supplied participant material. It provides no alternate work item service, simulated completion endpoint, or authority not already present in the OT environment.
       support_refs:
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the scale table and its applicable revision. Individual entries in the table are one
-        artifact result.
+      description: Produce the complete FIT-CRR-204B binding from Modbus function and PDU offset through `%IW5`,
+        `FlowBRaw`, scaling, `FlowBM3s`, the stable OPC UA NodeId, and `flow_b_m3s`. Each native source must agree.
       target_refs:
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
       evidence_refs:
       - evidence_requirements.w18.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
 
-        Evidence sources are `features.a-engineering.a-historian`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence sources are `features.a-engineering.a-engineering`, `features.a-engineering.a-historian`. A wrong register digest, project revision, point identity, scale, time, quality, or outlet mapping is rejected.
       target_refs:
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
       evidence_refs:
       - evidence_requirements.w18.c2
@@ -618,9 +641,9 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Revision note SCALE-CHANGE-OG2-8 changes flow divisor from 8000 to 10000 counts per m3/s at deployment R21; retained R19 samples use the old scale. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+      This is a bounded operating observation and interpretation task, not a privilege flaw. The participant must use the installed products to reconcile the installed register with the running project and native catalog, distinguish Modbus PDU offsets from IEC addresses, interpret source, collection, and ingestion time with quality, and map both outlet channels from time-aligned native observations. A copied value, inferred default, or synthetic API response does not establish the result.
 
-      The required result is: Produce the correct interpretation of the supplied readings with their relevant scale revision. Matching a tag name alone does not establish the result. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `MAP-OG2-R8`, `CRR-CTRL-R21`.
+      The required result is: Identify the largest qualifying good-data source-time gap, record both bounding samples with all three timestamps and both quality fields, and establish that the engineering unit did not change. A row count or display gap alone is insufficient.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -632,44 +655,50 @@ action_contracts:
         to every listed surface.
       support_refs:
       - workflows.w18.c3
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-historian` and its `process-historian` application own this part of **When the units changed**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Revision note SCALE-CHANGE-OG2-8 changes flow divisor from 8000 to 10000 counts per m3/s at deployment R21; retained R19 samples use the old scale.
+        The installed Cairn Reach OT products own this part of **Three clocks and a gap**. The exact initial state is: The native historian records controller source time, Telegraf collection time, PostgreSQL ingestion time, transport quality, and process quality; retained history contains a real collection gap while the engineering unit remains m3/s.
 
         Native bindings:
 
-        - `a-engineering.a-historian/process-historian/when-the-units-changed`
+        - `a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W18/history-provenance.md`
+        - `a-engineering.a-historian/PostgreSQL:public.process_history`
 
-        The private service-loader contract is `content.arwc-a-historian.w18-3-when-the-units-changed`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+        The image-owned W18 native I/O register and history-provenance note are starting material only. OpenPLC, OPC UA, Modbus TCP, the historian catalog, and retained process history remain the authoritative sources; no private service-loader route duplicates them.
       support_refs:
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
-      - content.arwc-a-historian.w18-3-when-the-units-changed
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+        The result remains local evidence unless a downstream workflow explicitly names it. The task is read-only and creates no process mutation to retain or reset. Ordinary historian retention continues independently. Infrastructure recovery and submission adjudication are external to the SDL.
 
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        The behavior is limited to the installed Cairn Reach products, the named asset, and the supplied participant material. It provides no alternate work item service, simulated completion endpoint, or authority not already present in the OT environment.
       support_refs:
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce the correct interpretation of the supplied readings with their relevant scale revision.
-        Matching a tag name alone does not establish the result.
+      description: Identify the largest qualifying good-data source-time gap, record both bounding samples with
+        all three timestamps and both quality fields, and establish that the engineering unit did not change. A
+        row count or display gap alone is insufficient.
       target_refs:
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
       evidence_refs:
       - evidence_requirements.w18.c3
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
 
-        Evidence sources are `features.a-engineering.a-historian`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence sources are `features.a-engineering.a-engineering`, `features.a-engineering.a-historian`. A wrong register digest, project revision, point identity, scale, time, quality, or outlet mapping is rejected.
       target_refs:
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
       evidence_refs:
       - evidence_requirements.w18.c3
@@ -685,9 +714,9 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Observed commissioning trace EVT-COMM-OG2-114 and current scale resolve MAP-OG2-R8 from tag identifiers to gates GT-CRR-02A and GT-CRR-02B and outlet group OG-CRR-02. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
+      This is a bounded operating observation and interpretation task, not a privilege flaw. The participant must use the installed products to reconcile the installed register with the running project and native catalog, distinguish Modbus PDU offsets from IEC addresses, interpret source, collection, and ingestion time with quality, and map both outlet channels from time-aligned native observations. A copied value, inferred default, or synthetic API response does not establish the result.
 
-      The required result is: Establish the tag/scale-to-outlet mapping supported by observed behavior. This supplies W18.MAP and MAPPING, not allocation or current project-revision evidence. The conclusion associates the previously ambiguous identifiers with the physical outlet group and its recorded reference-event trace. The operator can now point to the part of the reservoir those values describe. It presents the mapping they established, not a new live command or a rehearsal that secretly moves the plant. W19.4 earns the same recognition through its alternative investigation. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `MAP-OG2-R8`, `CRR-CTRL-R21`.
+      The required result is: Establish the complete A/B position-and-flow mapping for outlet group OG-CRR-02 and prove it with one good, time-aligned native observation. This supplies W18.MAP and MAPPING without issuing a command or changing process state. W19.4 remains an alternative path to the same operating context capability.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -699,42 +728,44 @@ action_contracts:
         to every listed surface.
       support_refs:
       - workflows.w18.c4
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
       - features.a-control.a-instruments
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-historian` and its `process-historian` application own this part of **Which outlet answers**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Observed commissioning trace EVT-COMM-OG2-114 and current scale resolve MAP-OG2-R8 from tag identifiers to gates GT-CRR-02A and GT-CRR-02B and outlet group OG-CRR-02.
+        The installed Cairn Reach OT products own this part of **Which outlet answers**. The exact initial state is: CRR-IO-R364 and the native catalog map both gates' position and flow channels, while time-aligned good product samples show each measured flow agrees with its corresponding measured position.
 
         Native bindings:
 
-        - `a-engineering.a-historian/process-historian/which-outlet-answers`
-        - `a-control.a-instruments/independent-instruments/which-outlet-answers`
+        - `a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W18/tag-register.csv`
+        - `a-engineering.a-historian/PostgreSQL:public.historian_tag_catalog`
+        - `a-engineering.a-historian/PostgreSQL:public.process_history`
+        - `a-control.a-instruments/Modbus-TCP:outlet-A-and-B-input-registers`
 
-        The private service-loader contract is `content.arwc-a-historian.w18-4-which-outlet-answers`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+        The image-owned W18 native I/O register and history-provenance note are starting material only. OpenPLC, OPC UA, Modbus TCP, the historian catalog, and retained process history remain the authoritative sources; no private service-loader route duplicates them.
       support_refs:
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
       - features.a-control.a-instruments
-      - content.arwc-a-historian.w18-4-which-outlet-answers
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        Supplies W18.MAP and MAPPING. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+        Supplies W18.MAP and MAPPING. The task is read-only and creates no process mutation to retain or reset. Ordinary historian retention continues independently. Infrastructure recovery and submission adjudication are external to the SDL.
 
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        The behavior is limited to the installed Cairn Reach products, the named asset, and the supplied participant material. It provides no alternate work item service, simulated completion endpoint, or authority not already present in the OT environment.
       support_refs:
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
       - features.a-control.a-instruments
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Establish the tag/scale-to-outlet mapping supported by observed behavior. This supplies W18.MAP
-        and MAPPING, not allocation or current project-revision evidence. The conclusion associates the previously
-        ambiguous identifiers with the physical outlet group and its recorded reference-event trace. The operator
-        can now point to the part of the reservoir those values describe. It presents the mapping they established,
-        not a new live command or a rehearsal that secretly moves the plant. W19.4 earns the same recognition through
-        its alternative investigation.
+      description: Establish the complete A/B position-and-flow mapping for outlet group OG-CRR-02 and prove it
+        with one good, time-aligned native observation. This supplies W18.MAP and MAPPING without issuing a command
+        or changing process state. W19.4 remains an alternative path to the same operating context capability.
       target_refs:
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
       - features.a-control.a-instruments
       evidence_refs:
@@ -742,10 +773,11 @@ action_contracts:
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Completion compares the participant's observation with fresh, read-only product records. Product evidence is supplied by the range, never by the participant, and the completion path cannot write a tag, issue a command, change controller state, or create its own product evidence.
 
-        Evidence sources are `features.a-engineering.a-historian`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence sources are `features.a-engineering.a-engineering`, `features.a-engineering.a-historian`, `features.a-control.a-instruments`. A wrong register digest, project revision, point identity, scale, time, quality, or outlet mapping is rejected.
       target_refs:
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
       - features.a-control.a-instruments
       evidence_refs:

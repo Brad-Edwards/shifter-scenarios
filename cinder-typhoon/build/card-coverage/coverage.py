@@ -27,9 +27,13 @@ BRIEFS = ROOT / "docs" / "design" / "challenges"
 PHASES = {"T": "training", "K": "keplerops", "W": "arwc"}
 ALL_PHASES = tuple(PHASES.values())
 SUITES = {
-    phase: ROOT / "build" / phase / "tests" / "test_known_solution_live.py"
+    phase: (ROOT / "build" / phase / "tests" / "test_known_solution_live.py",)
     for phase in PHASES.values()
 }
+SUITES["arwc"] += tuple(
+    ROOT / "build" / "arwc-ot" / "challenges" / operation / "test_contract.py"
+    for operation in ("W17", "W18", "W21", "W25", "W29", "W30", "W33")
+)
 CARD = re.compile(r"[TKW]\d{2}\.\d")
 SEMANTIC_CARD = re.compile(r"urn:cinder-typhoon:fact:([TKW]\d{2}\.\d)")
 CATALOG_SPEC = importlib.util.spec_from_file_location(
@@ -50,7 +54,8 @@ SCORER_OWNER = "shifter.range-owned.cinder-scorer"
 SCORER_ORIGIN = "https://cinder-scorer.coverage.invalid"
 REQUEST_CALLS = {
     "request", "get_text", "get_json", "get_bytes", "curl", "curl_json",
-    "post_json_route", "cbor_request", "negotiate",
+    "post_json_route", "cbor_request", "negotiate", "evaluate_product_evidence",
+    "evaluate_after_participant_action",
 }
 ANALYSIS_CALLS = {
     "fromhex", "loads", "search", "findall", "fullmatch", "sha256", "sha512",
@@ -236,6 +241,8 @@ def call_name(call: ast.Call) -> str:
 
 def mutating_request(call: ast.Call) -> bool:
     name = call_name(call)
+    if name == "evaluate_after_participant_action":
+        return True
     if name in {"post_json_route", "cbor_request"}:
         return True
     if name == "request":
@@ -296,65 +303,65 @@ def subtest_inventory(
     phases = validated_phases(phases)
     result: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for phase in phases:
-        path = SUITES[phase]
-        tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
-        for method in (
-            node for node in ast.walk(tree)
-            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
-            and node.name.startswith("test_")
-        ):
-            for block in (node for node in ast.walk(method) if isinstance(node, ast.With)):
-                labels: list[str] = []
-                for item in block.items:
-                    context = item.context_expr
-                    if not (
-                        isinstance(context, ast.Call)
-                        and isinstance(context.func, ast.Attribute)
-                        and context.func.attr == "subTest"
-                    ):
-                        continue
-                    for keyword in context.keywords:
-                        if (
-                            keyword.arg in {"card", "challenge"}
-                            and isinstance(keyword.value, ast.Constant)
-                            and isinstance(keyword.value.value, str)
+        for path in SUITES[phase]:
+            tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+            for method in (
+                node for node in ast.walk(tree)
+                if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+                and node.name.startswith("test_")
+            ):
+                for block in (node for node in ast.walk(method) if isinstance(node, ast.With)):
+                    labels: list[str] = []
+                    for item in block.items:
+                        context = item.context_expr
+                        if not (
+                            isinstance(context, ast.Call)
+                            and isinstance(context.func, ast.Attribute)
+                            and context.func.attr == "subTest"
                         ):
-                            labels.append(keyword.value.value)
-                for label in labels:
-                    ids = CARD.findall(label)
-                    assertions = sorted(
-                        {
-                            (node.lineno, call_name(node))
+                            continue
+                        for keyword in context.keywords:
+                            if (
+                                keyword.arg in {"card", "challenge"}
+                                and isinstance(keyword.value, ast.Constant)
+                                and isinstance(keyword.value.value, str)
+                            ):
+                                labels.append(keyword.value.value)
+                    for label in labels:
+                        ids = CARD.findall(label)
+                        assertions = sorted(
+                            {
+                                (node.lineno, call_name(node))
+                                for statement in block.body
+                                for node in ast.walk(statement)
+                                if isinstance(node, ast.Call)
+                                and isinstance(node.func, ast.Attribute)
+                                and node.func.attr.startswith("assert")
+                            }
+                        )
+                        requests = [
+                            node
                             for statement in block.body
                             for node in ast.walk(statement)
-                            if isinstance(node, ast.Call)
-                            and isinstance(node.func, ast.Attribute)
-                            and node.func.attr.startswith("assert")
-                        }
-                    )
-                    requests = [
-                        node
-                        for statement in block.body
-                        for node in ast.walk(statement)
-                        if isinstance(node, ast.Call) and call_name(node) in REQUEST_CALLS
-                    ]
-                    for card_id in ids:
-                        result[card_id].append({
-                            "phase": phase,
-                            "suite": relative(path),
-                            "test_method": method.name,
-                            "subtest": label,
-                            "line": block.lineno,
-                            "combined_card_ids": ids,
-                            "assertions": [
-                                {"line": line, "method": name}
-                                for line, name in assertions
-                            ],
-                            "simple_read_candidate": simple_read_candidate(block),
-                            "state_change_candidate": any(
-                                mutating_request(request) for request in requests
-                            ),
-                        })
+                            if isinstance(node, ast.Call) and call_name(node) in REQUEST_CALLS
+                        ]
+                        for card_id in ids:
+                            result[card_id].append({
+                                "phase": phase,
+                                "suite": relative(path),
+                                "test_method": method.name,
+                                "subtest": label,
+                                "line": block.lineno,
+                                "combined_card_ids": ids,
+                                "assertions": [
+                                    {"line": line, "method": name}
+                                    for line, name in assertions
+                                ],
+                                "simple_read_candidate": simple_read_candidate(block),
+                                "state_change_candidate": any(
+                                    mutating_request(request) for request in requests
+                                ),
+                            })
     return dict(result)
 
 

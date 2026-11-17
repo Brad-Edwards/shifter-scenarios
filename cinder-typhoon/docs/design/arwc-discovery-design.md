@@ -33,51 +33,34 @@ must appear in the graph.
 
 ## Service domains
 
-### 1. customer_handover: `corporate.arwc.test`
+### 1. Customer handover: `customer-handover.arwc.test`
 
-Corporate work order and customer handover management.
-
-| Route key | Method | Template | Cards |
-|---|---|---|---|
-| `corporate.handover` | GET | `.../api/handovers/{handover_id}` | W01.1 |
-| `corporate.work-order` | GET | `.../api/work-orders/{wo_id}` | W01.2 |
-| `corporate.continuity-plan` | GET | `.../api/continuity-plans/{plan_id}` | W01.3 |
-| `corporate.work-order-update` | PATCH | `.../api/work-orders/{wo_id}` | W01.4 |
-
-Related: `business.arwc.test/.well-known/arwc-client`
-
-**Normal use**: operations staff read the current customer delivery handover,
-open work orders, and published continuity plans. Planners update work orders
-with inspection attachments.
-
----
-
-### 2. business_workplace: `business.arwc.test`
-
-Business asset records, associations, reports, and procurement.
+The connector publishes only the retained customer integration handover.
 
 | Route key | Method | Template | Cards |
 |---|---|---|---|
-| `business.asset-bundle` | GET | `.../api/asset-bundles/{bundle_id}` | W02.1 |
-| `business.association-record` | GET | `.../api/association-records/{assoc_id}` | W02.2 |
-| `business.work-order-attachment` | GET | `.../api/work-order-attachments/{attach_id}` | W02.3, W03.1 |
-| `business.work-order-references` | GET | `.../api/work-orders/{wo_id}/references` | W03.2 |
-| `business.integration-contract` | GET | `.../api/integration-contracts/{contract_id}` | W03.3 |
-| `business.report-sources` | GET | `.../api/reports/{report_id}/sources` | W10.1 |
-| `business.report-row` | GET | `.../api/reports/{report_id}/rows/{district_id}` | W10.2 |
-| `business.report-document` | GET | `.../api/reports/{report_id}/document` | W10.3 |
-| `business.procurement-quote` | GET | `.../api/procurement-quotes/{quote_id}` | W35.1 |
-| `business.district-quote` | GET | `.../api/procurement-quotes/{quote_id}/districts/{district_id}` | W35.2 |
-| `business.invoice` | GET | `.../api/invoices/{invoice_id}` | W35.3 |
+| `corporate.handover` | GET | `.../api/handovers/current` | W01.1 |
 
-Related: `planning.arwc.test/.well-known/arwc-client`
-
-**Normal use**: business staff manage asset-work associations, retrieve
-attachments for open orders, query district reports, and review procurement
-quotes and invoices.
+The response supplies the Veybridge supplier onboarding for ERPNext and
+Nextcloud. It does not exchange the connector capability for a product session.
 
 ---
 
+### 2. Native business products
+
+W01.2-W03.3 use normal upstream product interfaces. They do not use
+challenge-specific business routes.
+
+| Product | Interface | Cards |
+|---|---|---|
+| Nextcloud | Files and WebDAV under `documents.arwc.test` | W01.2, W01.3, W02.2, W03.2 |
+| ERPNext | Supplier purchase orders and native resource records under `suppliers.arwc.test` | W01.4, W02.1-W02.3, W03.1 |
+| PostgREST | OpenAPI and `/reserve_report` under `read-data.arwc.test` | W03.3 |
+
+The remaining `business.*` discovery routes belong only to W10 and W35.
+They remain until those operations move to native products.
+
+---
 ### 3. retained_archive: `archive.arwc.test`
 
 Retained archive contracts, bundles, and cold archive access.
@@ -230,33 +213,22 @@ The base URL is returned by the `planning.integration-session` response.
 | `process.firmware-image` | GET | `{view_base}/api/firmware-images/{image_id}` | W20.1 |
 | `process.maintenance-record` | GET | `{view_base}/api/maintenance-records/{record_id}` | W20.2 |
 | `process.maintenance-record-update` | PATCH | `{view_base}/api/maintenance-records/{record_id}` | W20.3 |
-| `process.sealed-project` | GET | `{view_base}/api/sealed-projects/{project_id}` | W21.1 |
-| `process.sealed-project-viewer` | GET | `{view_base}/api/sealed-projects/{project_id}/viewer` | W21.2 |
-| `process.sealed-viewer-execute` | POST | `{view_base}/api/sealed-viewers/{viewer_id}/execute` | W21.3 |
+| `process.sealed-project-viewer` | GET | `{view_base}/api/sealed-projects/{project_id}/viewer` | W22.1 |
+| `process.sealed-viewer-execute` | POST | `{view_base}/api/sealed-viewers/{viewer_id}/execute` | W22.2 |
 | `process.estimator-task` | GET | `{view_base}/api/estimator-tasks/{task_id}` | W22.1 |
 | `process.estimator-run` | POST | `{view_base}/api/estimator-runs` | W22.2 |
 | `process.estimator-result` | GET | `{view_base}/api/estimator-runs/{run_id}/result` | W22.3 |
 | `process.signature-record` | GET | `{view_base}/api/signature-records/{record_id}` | W23.1 |
 | `process.signature-request` | POST | `{view_base}/api/signature-requests` | W23.2 |
 | `process.signature-result` | GET | `{view_base}/api/signature-requests/{request_id}/result` | W23.3 |
-| `process.operating-envelope` | GET | `{view_base}/api/operating-envelopes/current` | W25.1 |
-| `process.movement-conditions` | GET | `{view_base}/api/movement-conditions/current` | W25.2 |
-| `process.command-accept` | POST | `{view_base}/api/commands` | W25.3 |
-| `process.practice-sequence` | POST | `{view_base}/api/practice-sequences` | W25.4 |
 | `process.control-authority` | GET | `{view_base}/api/control-authority` | W26.1 |
 | `process.control-command` | POST | `{view_base}/api/control-commands` | W26.2 |
 | `process.control-consequence` | GET | `{view_base}/api/control-commands/{cmd_id}/consequence` | W26.3 |
 | `process.collision-inputs` | GET | `{view_base}/api/collision-inputs/{collision_id}` | W27.1 |
-| `process.collision-solve` | POST | `{view_base}/api/collision-solutions` | W27.2 |
 | `process.vault-record` | GET | `{view_base}/api/vault-records/{record_id}` | W31.1 |
-| `process.vault-access` | POST | `{view_base}/api/vault-access` | W31.2 |
 | `process.replay-session` | GET | `{view_base}/api/replay-sessions/{session_id}` | W32.1 |
 | `process.replay-execute` | POST | `{view_base}/api/replay-sessions/{session_id}/execute` | W32.2 |
 | `process.replay-divergence` | GET | `{view_base}/api/replay-sessions/{session_id}/divergence` | W32.3 |
-| `process.forecast` | GET | `{view_base}/api/forecasts/{forecast_id}` | W33.1 |
-| `process.schedule-window` | GET | `{view_base}/api/schedule-windows/{window_id}` | W33.2 |
-| `process.schedule-submit` | POST | `{view_base}/api/schedules` | W33.3 |
-| `process.feedback-policy` | POST | `{view_base}/api/feedback-policies` | W33.4 |
 | `process.reporting-checkpoint` | GET | `{view_base}/api/reporting-checkpoints/{checkpoint_id}` | W34.1 |
 | `process.reporting-submit` | POST | `{view_base}/api/reporting-submissions` | W34.2 |
 | `process.reporting-result` | GET | `{view_base}/api/reporting-submissions/{submission_id}/result` | W34.3 |
@@ -265,21 +237,18 @@ The base URL is returned by the `planning.integration-session` response.
 by embedded binaries (`signer24`, `utility28`) discovered through maintenance
 records or project artifacts, not the process service HTTP API.
 
-**W29 (planning window economics)** extends `process.planning-window`:
+**W29 (allocation reconciliation)** uses the supplied corporate ledger and
+method note, PostgreSQL corporate records, and the native Grafana/PostgreSQL
+history for `UsableVolumeML`. It adds no process-service route and performs no
+control action. The evaluator captures those product records independently;
+participant-supplied copies are not accepted as product evidence.
 
-| Route key | Method | Template | Cards |
-|---|---|---|---|
-| `process.planning-window` | GET | `{view_base}/api/planning-windows/{window_id}` | W29.1 |
-| `process.planning-economics` | GET | `{view_base}/api/planning-windows/{window_id}/economics` | W29.2 |
-| `process.planning-bid` | POST | `{view_base}/api/planning-bids` | W29.3, W29.4 |
-
-**W30 (command release)** extends `process.control-command`:
-
-| Route key | Method | Template | Cards |
-|---|---|---|---|
-| `process.release-plan` | GET | `{view_base}/api/release-plans/{plan_id}` | W30.1 |
-| `process.release-execute` | POST | `{view_base}/api/release-plans/{plan_id}/execute` | W30.2 |
-| `process.release-confirmation` | GET | `{view_base}/api/release-plans/{plan_id}/confirmation` | W30.3 |
+**W30 (bounded plant operation)** uses the installed participant workstation,
+image-owned operating instruction, `arwc.remote-request/v1` contract, fixed
+authenticated Mosquitto topics, durable PostgreSQL `dispatch_history`, native
+OpenPLC decisions, FUXA, remote-I/O feedback, and PostgreSQL process history.
+It adds no process-service HTTP route. `process.release-confirmation` belongs to
+W28's utility path and does not bind or execute W30.
 
 ---
 
@@ -354,13 +323,14 @@ The binary path comes from the signature record's `signer_binary` field.
 Discovered from a maintenance record or archive job that names the utility
 binary artifact. Not served through the HTTP API.
 
-## W33: forecast scheduling
+## W33: peak-hour commissioning
 
-All W33 inputs (forecast, model, constraints, schema) are served from
-`process.forecast` and `process.schedule-window`. The schedule-window response
-publishes the interval, demand, initial state, every operating and terminal
-bound, the volume objective, and the request schema. It does not publish a
-winning release or alternate-supply series.
+W33 does not add a process-view client route. The participant workstation
+supplies the operating brief, demand window, schedule template, and bounded
+dispatcher client. Calibration and completion use the installed FUXA,
+Mosquitto dispatcher, OpenPLC controller, PostgreSQL historian, and corporate
+PostgreSQL rows. These product records remain the evidence; the supplied files
+only define and carry the work.
 
 ## W34: reporting checkpoint
 

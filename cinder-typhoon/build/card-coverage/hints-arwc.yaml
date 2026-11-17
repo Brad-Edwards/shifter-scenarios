@@ -2,105 +2,105 @@ schema_version: 2
 phase: arwc
 hints:
   W01.1:
-    h1: Begin with the corporate handover, work-order, and continuity records. Its published client document exposes
-      the handover operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as record-version binding and minimal corporate handover updates. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the handover operation in the published client reference. Capture one ordinary response and one denial,
-      then correlate the returned identifiers with evidence already earned.
+    h1: Start with the customer-owned handover associated with the accepted FieldLink delivery. Its ordinary
+      client reference identifies the retained handover route.
+    h2: Distinguish the customer record from the supplier delivery receipt. Match the current connector,
+      customer receipt and maintenance binding.
+    h3: Read the retained handover through its published client route and compare its business identifiers
+      with the accepted delivery record.
     references:
     - kind: client_route
       id: corporate.handover
   W01.2:
-    h1: Begin with the corporate handover, work-order, and continuity records. Its published client document exposes
-      the work order operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as record-version binding and minimal corporate handover updates. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the work order operation in the published client reference. Capture one ordinary response and one
-      denial, then correlate the returned identifiers with evidence already earned.
+    h1: The supplier onboarding material names the document service and the external handover folder.
+      Look among the ordinary planning and attendance documents.
+    h2: Use record correlation from the document itself rather than an old work-order API. The planning
+      assignee and physical inspection are distinct from software delivery acceptance.
+    h3: Open the planning handover in Nextcloud and retain its current file identity, revision and outstanding
+      inspection details.
     references:
-    - kind: client_route
-      id: corporate.work-order
+    - kind: participant_service
+      id: documents.arwc.test
   W01.3:
-    h1: Begin with the corporate handover, work-order, and continuity records. Its published client document exposes
-      the continuity plan operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as record-version binding and minimal corporate handover updates. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the continuity plan operation in the published client reference. Capture one ordinary response and
-      one denial, then correlate the returned identifiers with evidence already earned.
+    h1: The supplier handover includes an ordinary purchasing note. It explains which records Planning
+      and Procurement use for dry-period decisions.
+    h2: Use business-record classification to distinguish a supplier quotation, an accepted reservation
+      and a settlement tariff. They do not describe the same commitment.
+    h3: Read the continuity purchasing note and identify the stated measures and reservation condition
+      without borrowing authority from another supplier.
     references:
-    - kind: client_route
-      id: corporate.continuity-plan
+    - kind: participant_service
+      id: documents.arwc.test
   W01.4:
-    h1: Begin with the corporate handover, work-order, and continuity records. Its published client document exposes
-      the work order update operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as record-version binding and minimal corporate handover updates. Establish the denied and ordinary
-      baselines first, then vary only the boundary input the service is meant to bind.
-    h3: Locate the work order update operation in the published client reference. Read the current revision, submit
-      one minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    h1: The physical inspection and its supplier handback remain separate from the accepted software delivery.
+      Find the actual maintenance task in the ERP system for the current case.
+    h2: A native per-record share can grant more authority than the supplier role suggests. Compare the
+      available task permissions with neighboring inspection records.
+    h3: Reconcile the case, project and inspection first, make only the requested task change through
+      ERPNext, then inspect its native version history.
     references:
-    - kind: client_route
-      id: corporate.work-order-update
+    - kind: participant_service
+      id: erp.arwc.test
   W02.1:
-    h1: Begin with the business workplace asset, contractor, and association records. Its published client document
-      exposes the asset bundle operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as entity reconciliation followed by association-bound authorization testing. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the asset bundle operation in the published client reference. Capture one ordinary response and one
-      denial, then correlate the returned identifiers with evidence already earned.
+    h1: The supplier portal contains ordinary purchase orders with supplier relationships and service
+      line descriptions. Begin with the current outlet inspection order.
+    h2: A display label alone is weaker than correlation through the actual supplier relationship and asset
+      reference carried by the order.
+    h3: Open the permitted order and record its native identity, supplier and maintenance asset from the
+      order itself.
     references:
-    - kind: client_route
-      id: business.asset-bundle
+    - kind: participant_service
+      id: suppliers.arwc.test
   W02.2:
-    h1: Begin with the business workplace asset, contractor, and association records. Its published client document
-      exposes the association record operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as entity reconciliation followed by association-bound authorization testing. Correlate independently
-      owned records by identity, revision, units, and scope instead of trusting a display label.
-    h3: Locate the association record operation in the published client reference. Join the independent records
-      on their stable identifiers and revisions, then explain any mismatch before acting on it.
+    h1: The internal work order, supplier job and engineering drawing use different names. Each independent
+      order, annex and drawing-register record carries stable references.
+    h2: Use reconciliation across independently owned business records, matching their references and accepted
+      revisions rather than similar display labels.
+    h3: Compare the ERPNext project and order with the annex and native document register; retain a source
+      identity for each side of the join.
     references:
-    - kind: client_route
-      id: business.association-record
+    - kind: participant_service
+      id: documents.arwc.test
   W02.3:
-    h1: Begin with the business workplace asset, contractor, and association records. Its published client document
-      exposes the work order attachment operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as entity reconciliation followed by association-bound authorization testing. Carry forward only
-      earned identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
-    h3: Locate the work order attachment operation in the published client reference. Replay the preceding evidence
-      through the next documented boundary and verify the downstream service, not the client, records the outcome.
+    h1: The supplier account can see a small set of maintenance records. Check which are ordinary handback
+      work and which belong to engineering review.
+    h2: Compare native per-record authorization with the intended supplier job association. A readable
+      engineering record need not grant permission to edit it.
+    h3: Read the associated inspection record, inspect its actual sharing scope and establish the denied
+      neighboring record and write boundary.
     references:
-    - kind: client_route
-      id: business.work-order-attachment
+    - kind: participant_service
+      id: erp.arwc.test
   W03.1:
-    h1: Begin with the work-order annex, reference resolver, and integration contract. Its published client document
-      exposes the work order annex operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as reference normalization across an attachment namespace and protected export boundary. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the work order annex operation in the published client reference. Capture one ordinary response and
-      one denial, then correlate the returned identifiers with evidence already earned.
+    h1: The supplier handover has an ordinary order-document register. Keep its purchase order and attachment
+      identities together when following the retained annex link.
+    h2: Use the native attachment relationship instead of a guessed business-service route. Check the
+      annex revision and its drawing reference.
+    h3: Open the supplier document register, follow it to the native private annex, and retain its file identity
+      and content hash alongside the actual order reference.
     references:
-    - kind: client_route
-      id: business.work-order-annex
+    - kind: participant_service
+      id: suppliers.arwc.test
   W03.2:
-    h1: Begin with the work-order annex, reference resolver, and integration contract. Its published client document
-      exposes the work order references operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as reference normalization across an attachment namespace and protected export boundary. Establish
-      the denied and ordinary baselines first, then vary only the boundary input the service is meant to bind.
-    h3: Locate the work order references operation in the published client reference. Read the current revision,
-      submit one minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    h1: The current annex is only one revision of a logical file. Nextcloud also shows versions and files
+      shared directly with the supplier account.
+    h2: Compare the earlier distribution with the current recipient and the native incoming share. File
+      access does not imply access to its parent department folder.
+    h3: Download the previous annex version, compare its recipient with the current account and incoming
+      share, then establish the separately shared engineering file and denied parent.
     references:
-    - kind: client_route
-      id: business.work-order-references
+    - kind: participant_service
+      id: documents.arwc.test
   W03.3:
-    h1: Begin with the work-order annex, reference resolver, and integration contract. Its published client document
-      exposes the integration contract operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as reference normalization across an attachment namespace and protected export boundary. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the integration contract operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: The engineering acceptance note names the approved read service. Its live OpenAPI document describes
+      the relations and fields that are actually published.
+    h2: Reconcile a filtered live result with the accepted asset, planning window and source revision.
+      A role name in a note does not prove the current database boundary.
+    h3: Use the native schema document and a scoped read to establish the active record, then verify that
+      an unpublished base relation and a write remain denied.
     references:
-    - kind: client_route
-      id: business.integration-contract
+    - kind: participant_service
+      id: read-data.arwc.test
   W04.1:
     h1: Begin with the retained archive contract, identity query, and helper operation. Its published client document
       exposes the contract operation, so use that ordinary contract instead of guessing a path.
@@ -133,35 +133,35 @@ hints:
     - kind: client_route
       id: archive.run-operation
   W05.1:
-    h1: Begin with the onboarding package, activation roster, and temporary identity service. Its published client
-      document exposes the provisioning package operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as activation proof that is not correctly bound to the approved assignment. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the provisioning package operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: The external handover contains ordinary starting arrangements alongside supplier documents. Look
+      for the temporary employee named in the case.
+    h2: A starting letter identifies an actual work account and initial credential; it does not contain
+      a ready-made privileged session.
+    h3: Read the employee starting document and retain its employee, account and assignment references
+      with the native file identity.
     references:
-    - kind: client_route
-      id: identity.provisioning-package
+    - kind: participant_service
+      id: documents.arwc.test
   W05.2:
-    h1: Begin with the onboarding package, activation roster, and temporary identity service. Its published client
-      document exposes the activation roster operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as activation proof that is not correctly bound to the approved assignment. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the activation roster operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: An activation roster is retained separately from the starting letter. Each employee record includes
+      its native identity references.
+    h2: Correlate the employee number, username and identity UUID rather than relying on a similar display
+      name or a copied assignment label.
+    h3: Find the temporary employee in the activation export and compare its enabled state, assignment
+      and native identity with the starting arrangements.
     references:
-    - kind: client_route
-      id: identity.activation-roster
+    - kind: participant_service
+      id: documents.arwc.test
   W05.3:
-    h1: Begin with the onboarding package, activation roster, and temporary identity service. Its published client
-      document exposes the temporary credential operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as activation proof that is not correctly bound to the approved assignment. Correlate independently
-      owned records by identity, revision, units, and scope instead of trusting a display label.
-    h3: Locate the temporary credential operation in the published client reference. Join the independent records
-      on their stable identifiers and revisions, then explain any mismatch before acting on it.
+    h1: The starting arrangements point to the actual identity system account. Complete its normal first-sign-in
+      requirements before evaluating the access it provides.
+    h2: Account self-service and delegated administration are different client and permission boundaries.
+      Compare the actual native role scope with the approved work assignment.
+    h3: Use the native identity console and documented administration interface to establish permitted
+      directory reads and denied management actions under that same limited employee identity.
     references:
-    - kind: client_route
-      id: identity.temporary-credential
+    - kind: participant_service
+      id: identity.arwc.test
   W06.1:
     h1: Begin with the planning session audit, drawing context, and browser capability. Its published client document
       exposes the session audit operation, so use that ordinary contract instead of guessing a path.
@@ -372,423 +372,571 @@ hints:
     - kind: client_route
       id: planning.asset-lineage
   W12.1:
-    h1: Begin with the quarantined collector, collection policy, and cold archive. Start from retained-archive.arwc.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as collector cryptography reconstruction and archive-to-current collection correlation. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Query the quarantine record named by the archive lead, recover the associated collector artifact, and confirm
-      its recorded build identity before beginning cryptographic analysis.
+    h1: Submit the lineage record from W11.3 to the planning.lineage-record route first. This unlocks
+      the archive.quarantine-collector route in retained-archive.arwc.test's client document.
+    h2: Download the QTN-COL-2019-12.aqtn artifact and parse its AQTN1 binary frame. The frame begins
+      with the AQTN1 magic and fixed-width length and digest fields. The build ID and a JSON metadata
+      header follow and identify the collector without requiring payload decryption.
+    h3: Use the Gitea repository and access token from the quarantine response to download collector-crr
+      via the Gitea API contents endpoint. Verify its SHA256 and submit it to archive.collector-recovery
+      to earn the completion audit.
     references:
     - kind: participant_service
       id: retained-archive.arwc.test
+    - kind: participant_service
+      id: planning-data.arwc.test
+    - kind: participant_service
+      id: engineering.arwc.test
   W12.2:
-    h1: Begin with the quarantined collector, collection policy, and cold archive. Its published client document
-      exposes the bundle collection policy operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as collector cryptography reconstruction and archive-to-current collection correlation. Build
-      a local model from the supplied reference cases, then confirm it explains both accepted and rejected behavior.
-    h3: Locate the bundle collection policy operation in the published client reference. Extract the supplied cases
-      into a small local reproducer and do not use its result until every reference case matches.
+    h1: The collector binary's build ID (COLLECT-CRR-12) and the AQTN1 frame's archive ID (ARC-COLD-CRR-2019)
+      are the HKDF inputs. IKM is the build ID as bytes, salt is the archive ID as ASCII, info is "aqtn1/keys".
+      Derive 64 bytes and split into two 32-byte keys.
+    h2: Apply each operation from AQTN1-samples.json. The first 32 key bytes are the AES-256-GCM content key.
+      The second 32 bytes are the AES-256-KW wrapping key. For the authentication-failure sample, detect the
+      GCM tag mismatch and record the sentinel "authentication_failed" instead of plaintext.
+    h3: Submit a sample_results dict to archive.bundle-collection-policy mapping each sample ID to the SHA-256
+      hex digest of its computed output (or "authentication_failed" for the rejection case). Every sample must
+      match exactly. The returned PROTECTION record names the derivation scheme needed for W12.3.
     references:
     - kind: client_route
       id: archive.bundle-collection-policy
   W12.3:
-    h1: Begin with the quarantined collector, collection policy, and cold archive. Its published client document
-      exposes the cold archive job operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as collector cryptography reconstruction and archive-to-current collection correlation. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the cold archive job operation in the published client reference. Capture one ordinary response and
-      one denial, then correlate the returned identifiers with evidence already earned.
+    h1: The AQTN1 frame from W12.1 contains the nonce (12 bytes after the build ID) and the metadata header
+      JSON (immediately after the nonce). These are the GCM inputs. The encrypted payload with its 16-byte
+      tag follows the metadata header.
+    h2: Use the content key (first 32 HKDF bytes from W12.2) for AES-256-GCM decryption. The metadata header
+      bytes are the AAD. The decrypted JSON contains wrapped_pkcs8 — unwrap it with the wrapping key (bytes 32-63)
+      using AES-256-KW.
+    h3: Submit the decrypted plaintext and the unwrapped PKCS8 key (both as base64) to archive.cold-archive-job.
+      The service validates both and returns the ARC-COLD-CRR-2019 record naming the 37 maintenance records,
+      COLLECT-2019-12, and rollover IDREL-COL-R4.
     references:
     - kind: client_route
       id: archive.cold-archive-job
   W12.4:
-    h1: Begin with the quarantined collector, collection policy, and cold archive. Start from retained-archive.arwc.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as collector cryptography reconstruction and archive-to-current collection correlation. Build
-      a local model from the supplied reference cases, then confirm it explains both accepted and rejected behavior.
-    h3: Join the archive identity, build identity, and recovered collection policy in a local model, then test the
-      surviving current-data relationship without substituting a historical revision.
+    h1: The archive plaintext from W12.3 contains the retired_client_certificate (PEM) and rollover dict
+      (IDREL-COL-R4 with its CA-signed signature). These are the exchange inputs. The historical PKCS8 key
+      from W12.3 is an Ed25519 key — use it to sign the proof message.
+    h2: >-
+      Sign the message "collect-archive/v3|CUR-COL-CRR-R11|R11|<nonce>" with the historical Ed25519 key.
+      Submit operation: exchange to archive.collection-path. The service checks the cert chain and rollover
+      signature but not the retired_subject: true flag, so the retired identity succeeds.
+    h3: >-
+      Use the returned collection_session token with operation: read and dataset CUR-COL-CRR-R11 at
+      revision 11 to retrieve the current protected data for AST-CRR-017. Session expires in 10 minutes;
+      a second exchange while it is active returns 409.
     references:
     - kind: participant_service
       id: retained-archive.arwc.test
   W13.1:
-    h1: Begin with the inspection appointment, access roster, and contractor check-in. Its published client document
-      exposes the appointment window operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as appointment ownership confusion followed by a separately scoped check-in identity. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the appointment window operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: The contractor portal publishes its client document at contractor-portal.arwc.test/.well-known/arwc-client.
+      Traverse the published client reference graph — start from any service already reached and follow the
+      related links until you find the contractor portal service.
+    h2: The contractor portal client document lists the contractors.appointment-window route. Use your
+      corporate session to call it. No additional credential or session is required for this step.
+    h3: The route returns APT-CRR-2026-09-18 with inspection=INSP-CRR-2026-09-18, asset=AST-CRR-017,
+      and Thursday 09:00-11:00. Record all fields — appointment_id, inspection, asset, and window are
+      needed for W13.2 and later cards.
     references:
     - kind: client_route
       id: contractors.appointment-window
   W13.2:
-    h1: Begin with the inspection appointment, access roster, and contractor check-in. Its published client document
-      exposes the expected visitors operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as appointment ownership confusion followed by a separately scoped check-in identity. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the expected visitors operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: The contractor portal client document also exposes contractors.expected-visitors. This is a separate
+      route from contractors.appointment-window — the appointment record does not contain the full roster.
+      Call it with your corporate session.
+    h2: The roster record is ROSTER-CRR-SEP18-R2, held separately from the appointment. It identifies the
+      actual contractor who should appear at the gate, not just the appointment owner.
+      Record the identity and assignment fields.
+    h3: The roster gives you identity=veybridge.tech.204 and assignment=CTR-VEY-204. These differ from the
+      appointment's attendee field. They are needed to construct the correct check-in in W13.3.
     references:
     - kind: client_route
       id: contractors.expected-visitors
   W13.3:
-    h1: Begin with the inspection appointment, access roster, and contractor check-in. Its published client document
-      exposes the appointment operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as appointment ownership confusion followed by a separately scoped check-in identity. Establish
-      the denied and ordinary baselines first, then vary only the boundary input the service is meant to bind.
-    h3: Locate the appointment operation in the published client reference. Read the current revision, submit one
-      minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    h1: The contractors.appointment route expects appointment_id and expected_revision (from W13.1),
+      attendee and caller_organization from the W13.2 roster, and the immutable inspection, asset, and
+      window unchanged. Both W13.1 and W13.2 must be completed first.
+    h2: The route checks that the attendee belongs to your contractor organization — validated against the
+      roster. But it does not check if your organization is the appointment owner. Supply the roster
+      identity (veybridge.tech.204) and Veybridge Technical Services as the caller organization.
+    h3: >-
+      After the update: attendee=veybridge.tech.204 and owner_organization=Northbank Civil Inspections
+      is unchanged. Inspection, asset, and window are immutable. Record the updated revision for W13.4.
     references:
     - kind: client_route
       id: contractors.appointment
   W13.4:
-    h1: Begin with the inspection appointment, access roster, and contractor check-in. Its published client document
-      exposes the check in operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as appointment ownership confusion followed by a separately scoped check-in identity. Carry forward
-      only earned identities and record bindings; possession of a copied identifier alone does not cross the next
-      boundary.
-    h3: Locate the check in operation in the published client reference. Replay the preceding evidence through the
-      next documented boundary and verify the downstream service, not the client, records the outcome.
+    h1: contractors.check-in requires appointment_id (W13.1), roster_id (W13.2), and identity=veybridge.tech.204
+      (W13.2 roster identity). The W13.3 BOLA already set the appointment attendee to match your identity,
+      so the check-in service accepts it.
+    h2: After a successful check-in, the returned contractor_session is a real ERPNext-issued session token.
+      Use it as a bearer token to call contractors.field-kit — the protected field-work record for the
+      inspection scope.
+    h3: The field-kit record (FIELD-BAG-CRR-4417-R3) names the expected outlets and service manifest for
+      the inspection. The contractor session scope is field-work:read. Record the contractor_session token
+      for downstream use in W14+.
     references:
     - kind: client_route
       id: contractors.check-in
   W14.1:
-    h1: Begin with the contractor field kit and the current field-data interface. Its published client document
-      exposes the field kit operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as protocol migration, structured binary requests, and replay-resistant observations. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the field kit operation in the published client reference. Capture one ordinary response and one
-      denial, then correlate the returned identifiers with evidence already earned.
+    h1: The contractor portal client document exposes contractors.field-kit. Use the contractor session
+      from W13.4 as the bearer token. A corporate session alone returns 403.
+    h2: The route returns FIELD-BAG-CRR-4417-R3 with inspection=INSP-CRR-2026-09-18 and asset=AST-CRR-017.
+      Record the expected outlets (OG-CRR-02) and the service manifest with both legacy and current endpoints.
+    h3: The service manifest distinguishes the retired legacy endpoint (field-read-legacy.arwc.test) from the
+      current endpoint (process-read.arwc.test). Record both — W14.2 and W14.3 need the manifest to identify
+      which endpoint carries current data.
     references:
     - kind: client_route
       id: contractors.field-kit
   W14.2:
-    h1: Begin with the contractor field kit and the current field-data interface. Its published client document
-      exposes the instrument operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as protocol migration, structured binary requests, and replay-resistant observations. Correlate
-      independently owned records by identity, revision, units, and scope instead of trusting a display label.
-    h3: Locate the instrument operation in the published client reference. Join the independent records on their
-      stable identifiers and revisions, then explain any mismatch before acting on it.
+    h1: The field-read-legacy.arwc.test endpoint referenced in the W14.1 field bag is retired — it returns
+      HTTP 410 for all requests. Use the field.instrument route in the field-gateway client document instead.
+    h2: Call the field.instrument route with your W13.4 contractor session. It returns the live service manifest
+      from the field bag. The manifest identifies field-read-legacy.arwc.test as retired and
+      process-read.arwc.test as the active service.
+    h3: The active service uses process-read/v2 with CBOR encoding and inspection-scoped authentication at
+      revision 21. Record all three — they are required to build the correct read request in W14.3.
     references:
     - kind: client_route
       id: field.instrument
   W14.3:
-    h1: Begin with the contractor field kit and the current field-data interface. Its published client document
-      exposes the current reading operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as protocol migration, structured binary requests, and replay-resistant observations. Observe
-      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the current reading operation in the published client reference. Record the normal result and a denied
-      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: The active service from W14.2 is process-read/v2 with CBOR encoding. The retained fieldbag/v1 client
+      sends JSON — that is not accepted. Build a CBOR map with keys asset, group, observed_at, and nonce as
+      required by process-read/v2.
+    h2: >-
+      The asset must match the inspection asset (AST-CRR-017) and the group must be OG-CRR-02 (from the
+      expected_outlets in the field bag). Use a fresh observed_at timestamp (within 10 minutes) and a unique
+      nonce. Submit with Content-Type: application/cbor and your W13.4 contractor session.
+    h3: The route returns FEED-OG2-R21 with observations for FIT-CRR-204A and FIT-CRR-204B, the instruments
+      for OG-CRR-02. These are real readings from the OT operating-history service. Record the result for
+      downstream use in the W14.READ arc.
     references:
     - kind: client_route
       id: field.current-reading
   W15.1:
-    h1: Begin with the drawing cache, review workflow, and maintenance approval. Its published client document exposes
-      the drawing cache operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as cache-key normalization followed by reviewer and downstream authority checks. Separate the
-      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the drawing cache operation in the published client reference. Capture one ordinary response and
-      one denial, then correlate the returned identifiers with evidence already earned.
+    h1: The maintenance-review service publishes its client document at maintenance-review.arwc.test/.well-known/arwc-client.
+      Traverse the client reference graph starting from any service already reached and follow the related links
+      to find the maintenance-review service.
+    h2: The maintenance.drawing-cache route requires your W13.4 contractor session as the bearer token. Use the
+      same session earned from the check-in. A corporate session alone returns 403.
+    h3: The cache association identifies CACHE-DRW-OG2-R8 binding drawing DRW-OG2-R8 at revision R8 to reviewer
+      queue REV-CRR-4417 at drawings.arwc.test. Record all fields — the drawing identity, revision, and queue
+      are needed for W15.2 and later cards.
     references:
     - kind: client_route
       id: maintenance.drawing-cache
   W15.2:
-    h1: Begin with the drawing cache, review workflow, and maintenance approval. Its published client document exposes
-      the drawing cache update operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as cache-key normalization followed by reviewer and downstream authority checks. Establish the
-      denied and ordinary baselines first, then vary only the boundary input the service is meant to bind.
-    h3: Locate the drawing cache update operation in the published client reference. Read the current revision,
-      submit one minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    h1: >-
+      The drawing-cache-update route accepts a controlled HTML body from the allowlisted preview origin
+      preview-cinder.arwc.test. Set X-Preview-Origin: https://preview-cinder.arwc.test and submit your
+      controlled response with cache path /viewer/drawings/DRW-OG2-R8, preserving drawing_id and revision.
+    h2: The controlled body must be CRLF-free HTML. After a successful cache update (201), trigger the
+      reviewer browser via POST /api/drawing-approvals with cache_key=GET:/viewer/drawings/DRW-OG2-R8 and
+      reviewer_queue=REV-CRR-4417 using your W13.4 contractor session.
+    h3: The reviewer browser accepts the postMessage from a nested iframe despite a source-mismatch in the
+      event handler. A successful run returns CAP-REVIEW-CRR-4417 with review-submit scope, which is the
+      prerequisite for W15.3.
     references:
     - kind: client_route
       id: maintenance.drawing-cache-update
   W15.3:
-    h1: Begin with the drawing cache, review workflow, and maintenance approval. Its published client document exposes
-      the drawing approval operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as cache-key normalization followed by reviewer and downstream authority checks. Carry forward
-      only earned identities and record bindings; possession of a copied identifier alone does not cross the next
-      boundary.
-    h3: Locate the drawing approval operation in the published client reference. Replay the preceding evidence through
-      the next documented boundary and verify the downstream service, not the client, records the outcome.
+    h1: After completing the W15.2 cache update, call POST maintenance.drawing-approvals (from the client
+      document) with cache_key=GET:/viewer/drawings/DRW-OG2-R8 and reviewer_queue=REV-CRR-4417. Use your
+      W13.4 contractor session.
+    h2: >-
+      The service runs the real Chromium 128 reviewer browser on the controlled drawing you poisoned in
+      W15.2. The reviewer's JavaScript accepts the postMessage without checking event.source, which is the
+      source_check: "omitted" flaw.
+    h3: The returned CAP-REVIEW-CRR-4417 with source_check="omitted" and browser="Chromium 128" is the
+      submission capability for the reviewer session. Record the review_capability token — it is the access
+      token for W15.4.
     references:
     - kind: client_route
-      id: maintenance.drawing-approval
+      id: maintenance.drawing-approvals
   W15.4:
-    h1: Begin with the drawing cache, review workflow, and maintenance approval. Its published client document exposes
-      the approval token operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as cache-key normalization followed by reviewer and downstream authority checks. Separate the
-      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the approval token operation in the published client reference. Capture one ordinary response and
-      one denial, then correlate the returned identifiers with evidence already earned.
+    h1: After obtaining the W15.3 review capability token, call POST maintenance.approval-token with
+      review_capability, approval_id=APR-CRR-4417-R6, and inspection=INSP-CRR-2026-09-18. The endpoint
+      validates the audience but not the capability's subject-to-inspection binding.
+    h2: The review capability from W15.3 is scoped to DRW-OG2-R8 (the drawing). The approval endpoint
+      accepts it for inspection INSP-CRR-2026-09-18 because it omits the subject-to-inspection comparison.
+      This is the expert flaw that allows crossing from the drawing scope to the inspection approval.
+    h3: The returned APR-CRR-4417-R6 has the real ERPNext maintenance binding (WO-CRR-4417, INSP-CRR-2026-09-18,
+      AST-CRR-017) signed with Ed25519. Record the signing_public_key — it is the verification key for W26.
     references:
     - kind: client_route
       id: maintenance.approval-token
   W16.1:
-    h1: Begin with the archive sequencer, constrained observations, and calibration history. Its published client
-      document exposes the sequencer spec and signal experiment operation, so use that ordinary contract instead
-      of guessing a path.
-    h2: Treat this as instruction-sequence reconstruction with bounded out-of-window observation analysis. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the sequencer spec and signal experiment operation in the published client reference. Capture one
-      ordinary response and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Call GET retained-archive.arwc.test/api/sequencer-specs/current with your CORPORATE session to retrieve
+      the SEQ-CRR-4 descriptor. It contains the opcode table, authorized index range, and the ordinary trace
+      SEQ-BASE-17 with its program_hex.
+    h2: >-
+      Submit the ordinary trace with POST retained-archive.arwc.test/api/sequencer-programs and body
+      {"program_hex": "0104000007000000"}. The program decodes as LOAD slot 4 (the zero reference) followed
+      by HALT. The service checks that the descriptor was observed first.
+    h3: The expected result is authorized-load with cycles=228. Confirm the service-owned audit shows
+      sequencer-program-submitted with the correct cycle count before proceeding to W16.2.
     references:
     - kind: client_route
       id: archive.sequencer-spec
     - kind: client_route
-      id: archive.signal-experiment
+      id: archive.observations
   W16.2:
-    h1: Begin with the archive sequencer, constrained observations, and calibration history. Its published client
-      document exposes the observations operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as instruction-sequence reconstruction with bounded out-of-window observation analysis. Observe
-      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the observations operation in the published client reference. Record the normal result and a denied
-      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: The LOAD instruction reads the sample and adds its data-dependent cycle cost before the authorization check.
+      Submit a program to POST /api/observations with LOAD on a slot index outside 0-31 and observe the status
+      and cycle count in the response.
+    h2: Any LOAD with index >= 32 returns late-authorization-rejection with a non-null boundary_index. The cycle
+      cost 20 + 4 * bit_count(sample) is accumulated before the check, so the cycle count still encodes
+      information about the out-of-window slot's bit population.
+    h3: >-
+      Target slot 159 for the designated crossing. Program bytes 01 9F 00 00 07 00 00 00 (LOAD 159, HALT),
+      base64 AZ8AAAcAAAA=. Expected response: status=late-authorization-rejection, boundary_index=159, cycles=236.
     references:
     - kind: client_route
       id: archive.observations
   W16.3:
-    h1: Begin with the archive sequencer, constrained observations, and calibration history. Its published client
-      document exposes the signal experiment operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as instruction-sequence reconstruction with bounded out-of-window observation analysis. Derive
-      every constraint from supplied records or normal responses, test a deliberately failing candidate, and only
-      then produce a candidate.
-    h3: Locate the signal experiment operation in the published client reference. List the observed constraints,
-      exercise a known rejection, and use the difference to test a candidate that still requires service validation.
+    h1: Use POST /api/signal-experiments with operation=measure and TEST (opcode 5) instructions. Each TEST(slot,
+      probe) entry returns cycles = 1200 + 64*popcount(sample[slot] XOR probe) + jitter. Test slot 159 with
+      probe=0 for the baseline and also test reference slots 4, 5, 6 to validate the formula.
+    h2: For each bit i (0-7), submit TEST(159, 2**i). If cycles(probe=2^i) < cycles(probe=0), bit i is set.
+      The ±64 cycle signal dominates the ±2 jitter. Work through all eight positions to recover the full byte.
+    h3: After recovering the byte (165 = 0xA5), submit operation=verify with reference_values={"4":0,"5":1,
+      "6":255}, target_slot=159, recovered_byte=165, repetitions=8, bit_order="lsb0". Success returns
+      SEQ-DISCRIM-CRR-4 and sets the flag required for W16.4.
     references:
     - kind: client_route
       id: archive.signal-experiment
   W16.4:
-    h1: Begin with the archive sequencer, constrained observations, and calibration history. Its published client
-      document exposes the instrument history operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as instruction-sequence reconstruction with bounded out-of-window observation analysis. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the instrument history operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Slots 160-191 hold the 32-byte calibration record. Use POST /api/signal-experiments measure programs
+      targeting those slots. Max 63 TEST instructions per program (64-instruction limit includes HALT), so
+      cover 32 slots with 9 probes each across 5 programs.
+    h2: >-
+      Apply the W16.3 bit-discrimination to each of the 32 slots. Reconstruct all bytes, then verify the
+      CRC32C: last 4 bytes must equal crc32c(first 28 bytes) in big-endian. If the check passes, the
+      calibration is complete.
+    h3: Submit to POST /api/instrument-history/current with record_id="CAL-CRR-OG2-R8", field_revision="R8",
+      calibration=base64(recovered_32_bytes), plus the standard sequencer/revision/request_id. Success
+      returns revision=8 and slots=[160, 191].
     references:
     - kind: client_route
       id: archive.instrument-history
   W17.1:
-    h1: Begin with the current process state, operating mode, and independent instrument records. Its published
-      client document exposes the state operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as time-window and identity correlation across requested and measured process values. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the state operation in the published client reference. Capture one ordinary response and one denial,
-      then correlate the returned identifiers with evidence already earned.
+    h1: Navigate to FUXA (hmi.arwc.test) and open the Cairn Reach overview. The view shows live level, usable
+      volume, two outlet positions (%), two outlet flows (m3/s), total flow, mode, and owner — all updated in
+      real time from OPC UA tags polled from the PLC (opc.tcp://plc:4840/arwc, namespace urn:arwc:crr:tags).
+    h2: The measured actuator position (CRR.PositionPct, CRR.PositionBPct from sensors) is shown separately
+      from the accepted controller setpoint (CRR.RequestedTargetPct, CRR.RequestedTargetBPct). Record both
+      columns with the same UTC observation time visible in FUXA or from the historian.
+    h3: Verify against the PostgreSQL historian (ot_history.process_samples). Query SELECT DISTINCT ON
+      (tags->>"variable") time, tags->>"variable", tags->>"unit", fields->>"value" FROM
+      ot_history.process_samples ORDER BY tags->>"variable", time DESC to retrieve all 50 current tag values.
     references:
-    - kind: client_route
-      id: process.state
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W17/live-observation.md
   W17.2:
-    h1: Begin with the current process state, operating mode, and independent instrument records. Its published
-      client document exposes the mode operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as time-window and identity correlation across requested and measured process values. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the mode operation in the published client reference. Capture one ordinary response and one denial,
-      then correlate the returned identifiers with evidence already earned.
+    h1: The five fields come from FUXA crr-overview header and both outlet faceplates. Mode is CRR.AutoMode
+      (false=manual), owner is CRR.Owner (0=local/HMI, 1=remote), field-data state is CRR.IoHealthy, and
+      per-outlet permissives are CRR.PermissiveA and CRR.PermissiveB.
+    h2: All five tags are in ot_history.process_samples. Query SELECT DISTINCT ON (tags->>"variable") time,
+      tags->>"variable", fields->>"value" FROM ot_history.process_samples WHERE tags->>"variable" IN
+      ("AutoMode","Owner","IoHealthy","PermissiveA","PermissiveB") ORDER BY tags->>"variable", time DESC.
+    h3: Do not infer mode or owner from W17.1 — read the live tags at the current UTC time and bind all five
+      fields to that same timestamp. The historian must confirm good-quality samples at the recorded time.
     references:
-    - kind: client_route
-      id: process.mode
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W17/live-observation.md
   W17.3:
-    h1: Begin with the current process state, operating mode, and independent instrument records. Its published
-      client document exposes the active instrument operation, so use that ordinary contract instead of guessing
-      a path.
-    h2: Treat this as time-window and identity correlation across requested and measured process values. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the active instrument operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Read ~/CairnReach/Briefs/W17/engineering-reference.md (reference CRR-ENG-INST-204B-R1). It maps the
+      outlet B flow transmitter FIT-CRR-204B to IEC variable FlowBM3s, OPC UA NodeId, historian series, and
+      unit. The reference describes the identity but does not supply a current value or confirm quality.
+    h2: >-
+      Confirm in the historian catalog: SELECT variable, series, node_id, unit FROM ot_history.tag_catalog
+      WHERE series = 'flow_b_m3s'. The result must match the reference document exactly on all five fields.
+    h3: >-
+      Verify the point is live: SELECT time, fields->>"value" FROM ot_history.process_samples WHERE
+      tags->>"variable" = 'FlowBM3s' ORDER BY time DESC LIMIT 1 confirms recent StatusGood samples.
     references:
-    - kind: client_route
-      id: process.active-instrument
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W17/engineering-reference.md
   W17.4:
-    h1: Begin with the current process state, operating mode, and independent instrument records. Its published
-      client document exposes the observations operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as time-window and identity correlation across requested and measured process values. Observe
-      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Fetch observations spanning the commissioning reference event, align them by instrument identity and time,
-      and mark only changes independently present in both the reference and process records.
+    h1: Pick a 15-to-300-second interval and query ot_history.process_samples for FlowBM3s and PositionBPct.
+      The five identities from W17.3 (variable=FlowBM3s, NodeId, series=flow_b_m3s, unit=m3/s, historian path)
+      must all appear. Count samples with good transport quality. Do not use public.process_history (no B tags).
+    h2: The position-to-flow relationship is required evidence. At PositionBPct=20%, FlowBM3s should be ~20%
+      of the outlet B max capacity (0-0.5 m3/s, from ot_history.tag_catalog). Verify the ratio before
+      recording the trace.
+    h3: Record interval start/end UTC, good sample count, flow min/max/mean, and concurrent PositionBPct. All
+      six of FUXA variable, OPC UA NodeId, historian series, unit, good sample count, and position-flow ratio
+      must agree to supply W17.OBS.
     references:
-    - kind: client_route
-      id: process.observations
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W17/live-observation.md
   W18.1:
-    h1: Begin with the engineering tag export, separate scale table, and outlet instruments. Its published client
-      document exposes the tag export operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as revision-aware unit conversion across independently owned engineering records. Separate the
-      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the tag export operation in the published client reference. Capture one ordinary response and one
-      denial, then correlate the returned identifiers with evidence already earned.
+    h1: Read ~/CairnReach/Briefs/W18/tag-register.csv (register CRR-IO-R364, project_revision=364, 6 Modbus
+      input registers PDU offset 0-5). Then read /usr/share/arwc-ot/tags.json on the OT engineering host
+      to confirm its project_revision=364 matches.
+    h2: >-
+      Confirm the running revision via OPC UA: query nsu=urn:arwc:crr:tags;s=CRR.ProjectRevision from FUXA
+      or the historian; it must equal 364. Then confirm all five process variable entries in
+      ot_history.tag_catalog share register_sha256=df09d72a355340266896c59a204248e02aa277769f881e7a2f6ce6d15b6f7a3b.
+    h3: The five required process variables (non-heartbeat) are LevelM (%IW0), PositionPct (%IW1), FlowM3s
+      (%IW2), PositionBPct (%IW4), FlowBM3s (%IW5). The Heartbeat (%IW3) is an I/O health counter only.
     references:
-    - kind: client_route
-      id: process.tag-export
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W18/tag-register.csv
   W18.2:
-    h1: Begin with the engineering tag export, separate scale table, and outlet instruments. Its published client
-      document exposes the tag scale operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as revision-aware unit conversion across independently owned engineering records. Separate the
-      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the tag scale operation in the published client reference. Capture one ordinary response and one
-      denial, then correlate the returned identifiers with evidence already earned.
+    h1: >-
+      From CRR-IO-R364, find FIT-CRR-204B: FC4, PDU offset 5, IEC address %IW5, raw FlowBRaw (UINT,
+      10000 counts/m3/s), engineering FlowBM3s. The PDU offset (5) and IEC word offset (5 in %IW5) look
+      the same here because address_base=0, but they are different addressing layers.
+    h2: The scale factor (10000 counts/m3/s) is in the register definition, NOT in the OPC UA tag name or
+      historian series. A raw value of 1000 counts = 0.100 m3/s. Confirm the engineering value via FUXA
+      and via ot_history.tag_catalog (variable=FlowBM3s, unit=m3/s).
+    h3: >-
+      Catalog query: SELECT variable, series, node_id, unit FROM ot_history.tag_catalog WHERE
+      variable = 'FlowBM3s'. Returns flow_b_m3s, nsu=urn:arwc:crr:tags;s=CRR.FlowBM3s, m3/s. Record
+      all seven layers to complete the binding.
     references:
-    - kind: client_route
-      id: process.tag-scale
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W18/tag-register.csv
   W18.3:
-    h1: Begin with the engineering tag export, separate scale table, and outlet instruments. Its published client
-      document exposes the tag scale history operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as revision-aware unit conversion across independently owned engineering records. Correlate independently
-      owned records by identity, revision, units, and scope instead of trusting a display label.
-    h3: Locate the tag scale history operation in the published client reference. Join the independent records on
-      their stable identifiers and revisions, then explain any mismatch before acting on it.
+    h1: Read ~/CairnReach/Briefs/W18/history-provenance.md first. Run the LAG gap query against
+      public.process_history with tag = 'flow_b_m3s' (series name, not OPC UA variable name FlowBM3s)
+      and filter for transport_quality ILIKE '%Good%'. Order by source_gap DESC to find the largest gap.
+    h2: >-
+      The largest qualifying gap is about 1 day 3 hours 53 minutes: last good sample 2026-11-13 16:54:46
+      UTC, next good sample 2026-11-14 20:48:19 UTC. This is a real collection interruption. Record all
+      three timestamps and both quality fields for both bounding rows.
+    h3: Confirm unit=m3/s did not change across the gap (both sides show m3/s, value=0.100 m3/s). The gap
+      is in source_time (the controller clock gap), not just display rows missing. A display gap alone
+      does not prove a source-time gap.
     references:
-    - kind: client_route
-      id: process.tag-scale-history
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W18/history-provenance.md
   W18.4:
-    h1: Begin with the engineering tag export, separate scale table, and outlet instruments. Its published client
-      document exposes the outlet instruments operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as revision-aware unit conversion across independently owned engineering records. Carry forward
-      only earned identities and record bindings; possession of a copied identifier alone does not cross the next
-      boundary.
-    h3: Locate the outlet instruments operation in the published client reference. Replay the preceding evidence
-      through the next documented boundary and verify the downstream service, not the client, records the outcome.
+    h1: >-
+      Build the A/B mapping from CRR-IO-R364: outlet A uses PDU offsets 1 (%IW1, PositionPct) and 2
+      (%IW2, FlowM3s); outlet B uses PDU offsets 4 (%IW4, PositionBPct) and 5 (%IW5, FlowBM3s).
+      Confirm all four OPC UA NodeIds and historian series from ot_history.tag_catalog.
+    h2: >-
+      Choose a 1-second window in ot_history.process_samples and query all four variables at the same
+      source_time. Verify physical consistency: at 20% position, flow should be ~20% of 0.5m3/s = 0.100
+      m3/s. Both outlets currently show 20% position and 0.100m3/s flow — symmetric.
+    h3: The observation must show both outlets' position AND flow at the same UTC timestamp with Good
+      quality. Physical consistency (position matches flow for each outlet) is required. This supplies
+      W18.MAP. Do not move either gate to manufacture evidence.
     references:
-    - kind: client_route
-      id: process.outlet-instruments
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W18/tag-register.csv
   W19.1:
-    h1: Begin with the retained engineering diagnostic and signed decision records. Its published client document
-      exposes the diagnostic program operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as binary behavior reconstruction and hidden validation-logic analysis. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the diagnostic program operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Use the CORPORATE session from the FieldLink handover. The process.diagnostic-program route in the
+      published client reference points to the diagnostic endpoint at process-view.arwc.test. The binary in
+      Gitea (clara.morivelle/retained-engineering-tools/engineering/diag-crr-mixed-19) is starting material
+      for W19.2-W19.4, not the W19.1 answer path.
+    h2: Authenticate with your CORPORATE Bearer token and call GET https://process-view.arwc.test/api/
+      diagnostic-programs/current. The service returns an authoritative record with record_id, project_family,
+      sha256, format, and ordinary_traces. Record the audit_id as fresh evidence.
+    h3: Compare the returned project_family with the live CRR.ProjectRevision from FUXA or the historian
+      (ot_history.tag_catalog variable=ProjectRevision). The gap between the diagnostic's project generation
+      and the running system's revision is the finding.
     references:
-    - kind: client_route
-      id: process.diagnostic-program
+    - kind: participant_service
+      id: engineering.arwc.test
   W19.2:
-    h1: Begin with the retained engineering diagnostic and signed decision records. Its published client document
-      exposes the signature record operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as binary behavior reconstruction and hidden validation-logic analysis. Build a local model from
-      the supplied reference cases, then confirm it explains both accepted and rejected behavior.
-    h3: Locate the signature record operation in the published client reference. Extract the supplied cases into
-      a small local reproducer and do not use its result until every reference case matches.
+    h1: The binary has two entry points. The alternate path uses mixed_mode_entry which pushes CS=0x23 (32-bit
+      compatibility segment) and executes RETFQ. Use objdump -M intel -d to find the far return and the .code32
+      section. The alternate test record WRAP-FFFFFFFF-OG2 is embedded in the binary (visible via strings).
+    h2: >-
+      Implement the 32-bit decoder: value = (rotl32(value^byte, 5) + 0x9E3779B9) & 0xFFFFFFFF starting at
+      0x6D2B79F5. The 32-bit rotate is ((v<<5) | (v>>27)) & 0xFFFFFFFF. All wraps at 32 bits. The 64-bit
+      version without wraps produces a different value that the service rejects.
+    h3: >-
+      POST https://process-view.arwc.test/api/signature-records/current/interpretation with CORPORATE Bearer:
+      {"record":"WRAP-FFFFFFFF-OG2","rolling32":"<8-hex-digits>"}. Correct result returns DIAG-TRACE-COMPAT-19
+      with execution=i386-compatibility and sets compatibility_reproduced=True for W19.3.
     references:
     - kind: client_route
       id: process.signature-record
   W19.3:
-    h1: Begin with the retained engineering diagnostic and signed decision records. Its published client document
-      exposes the signature program operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as binary behavior reconstruction and hidden validation-logic analysis. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the signature program operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: W19.1 ordinary_traces gives rolling32 AND verifier64 for the first 4 records. The 5th is named
+      protected_record. Implement the same verifier formula for all 5. The verifier takes the 32-bit rolling
+      result and applies a 64-bit function embedded in the binary's long-mode verifier code.
+    h2: >-
+      Verifier formula: start v=0x243F6A8885A308D3 (pi constant). For each rolling32 r:
+      v=ROTL64(v XOR (zero_extend(r)*0x100000001B3), 9). Final verifier64=v XOR zero_extend(r).
+      The 64-bit constant and FNV-prime variant (0x100000001B3) are in the binary.
+    h3: >-
+      POST https://process-view.arwc.test/api/signature-programs/current with CORPORATE Bearer:
+      {"decisions":[{record,rolling32,verifier64}x5]} for all 5 in order. Service validates all and
+      returns MIG-OG2-R19-R21 with verifier64 and decision=valid, sets hidden_check_recovered=True.
     references:
     - kind: client_route
       id: process.signature-program
   W19.4:
-    h1: Begin with the retained engineering diagnostic and signed decision records. Its published client document
-      exposes the diagnostic program operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as binary behavior reconstruction and hidden validation-logic analysis. Carry forward only earned
-      identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
-    h3: Locate the diagnostic program operation in the published client reference. Replay the preceding evidence
-      through the next documented boundary and verify the downstream service, not the client, records the outcome.
+    h1: Use the process.diagnostic-program-legacy route from the engineering workbench client document
+      (/.well-known/arwc-client). POST https://process-view.arwc.test/api/diagnostic-programs/legacy with
+      CORPORATE Bearer. Gates on hidden_check_recovered (W19.3). Supplies W19.MAP.
+    h2: >-
+      Compute comparison_digest: SHA256 of the mapping JSON (sorted keys) with legacy_project=CRR-CTRL-R19,
+      current_project=CRR-CTRL-R21, instruments={OUTLET_A:FIT-CRR-204A,OUTLET_B:FIT-CRR-204B},
+      legacy_identifiers={OUTLET_A:OG-CRR-02/GT-CRR-02A,OUTLET_B:OG-CRR-02/GT-CRR-02B}. Not in any file.
+    h3: >-
+      Discover the observation: SELECT name, text, alarm_group FROM alarm_history WHERE
+      alarm_group='OG-CRR-02' to find the qualifying commissioning event name. Submit {"migration_record":
+      "MIG-OG2-R19-R21","comparison_digest":"<sha256>","observation":"<event_name>"}. Returns
+      MAP-OG2-LEGACY-R21 historical=true current_project=CRR-CTRL-R21. Do not replace the running revision.
     references:
     - kind: client_route
-      id: process.diagnostic-program
+      id: process.diagnostic-program-legacy
   W20.1:
-    h1: Begin with the retained device image and maintenance-record interface. Its published client document exposes
-      the firmware image operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as firmware record parsing, integrity validation, and minimal state-preserving update. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the firmware image operation in the published client reference. Capture one ordinary response and
-      one denial, then correlate the returned identifiers with evidence already earned.
+    h1: >-
+      Call GET https://independent-instruments.arwc.test/api/firmware-images/current with CORPORATE Bearer.
+      Returns the image manifest (sha256, record layout: magic=F204, 64-byte records, 4096-byte erase pages)
+      and the image base64. The image is also in Gitea clara.morivelle/retained-engineering-tools/instruments/.
+    h2: >-
+      Parse 8192 bytes into 64-byte records. Valid record: magic=F204, CRC32C of bytes 0-55 at bytes 56-59,
+      commit=0x00 at byte 63. Payload at bytes 12+: record_id\0asset\0inspection_date null-separated.
+      Status byte 10 (1=REVIEW, 2=ACCEPTED), status_bits byte 11. Highest sequence wins per record_id.
+    h3: >-
+      POST https://independent-instruments.arwc.test/api/maintenance-records/current with CORPORATE Bearer:
+      {image_sha256, record_id, asset, inspection_date, sequence, status, status_bits, crc32c, offset}.
+      All 8 fields validated. Returns inspection record with fresh audit. Sets inspection_recovered=True.
     references:
     - kind: client_route
       id: process.firmware-image
   W20.2:
-    h1: Begin with the retained device image and maintenance-record interface. Its published client document exposes
-      the maintenance record operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as firmware record parsing, integrity validation, and minimal state-preserving update. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the maintenance record operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: >-
+      The W20.1 record has status=REVIEW. To promote it to ACCEPTED, write a new record at offset 128
+      (the next erased slot, all 0xFF). NOR flash programming changes only 1→0, so writing to an erased
+      slot is always valid. New record: sequence=119, status=0x02 (ACCEPTED), same asset/date as original.
+    h2: >-
+      Build the 64-byte record: magic=F204, seq=119 (uint32 LE), payload_len=40 (uint16 LE), status=0x02,
+      status_bits=0x01, payload at bytes 12-51, CRC32C of bytes 0-55 at bytes 56-59, 0xFFFFFF at 60-62,
+      commit=0x00 at byte 63. Split: 3 operations at offsets 128 (56 bytes), 184 (4 bytes), 191 (1 byte).
+    h3: >-
+      POST https://independent-instruments.arwc.test/api/maintenance-records/current with CORPORATE Bearer:
+      {"operations":[{kind,offset,data_b64}x3],"image_b64":"<modified_8192_bytes>"}. Service validates NOR
+      semantics, confirms seq=119 status=ACCEPTED. Returns updated record. Sets image_rewrite_accepted=True.
     references:
     - kind: client_route
       id: process.maintenance-record
   W20.3:
-    h1: Begin with the retained device image and maintenance-record interface. Its published client document exposes
-      the maintenance record update operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as firmware record parsing, integrity validation, and minimal state-preserving update. Establish
-      the denied and ordinary baselines first, then vary only the boundary input the service is meant to bind.
-    h3: Locate the maintenance record update operation in the published client reference. Read the current revision,
-      submit one minimal variation, and compare the resulting audit and unaffected fields with the baseline.
+    h1: Correcting inspection_date from 2026-09-18 to 2026-09-19 flips bit 0 of the ASCII '8' byte (0x38)
+      to '9' (0x39) — a 0→1 transition requiring a page erase first. Submit erase page 0 as the first op,
+      then rewrite all 3 records (CAL at 0, REVIEW at 64, corrected ACCEPTED seq=120 at 128).
+    h2: >-
+      10 total operations: {"kind":"erase","page":0} + 3 program ops for CAL (offsets 0,56,63) + 3 for
+      REVIEW (offsets 64,120,127) + 3 for corrected record (offsets 128,184,191). The corrected record has
+      seq=120, status=ACCEPTED, inspection_date=2026-09-19, and new CRC32C of its first 56 bytes.
+    h3: Service validates NOR semantics, confirms seq=120 ACCEPTED date=2026-09-19, wear_counts=[18,9].
+      Returns corrected record with audit_id. erase_rewrite_accepted=True in state after success.
     references:
     - kind: client_route
       id: process.maintenance-record-update
   W21.1:
-    h1: Begin with the sealed engineering project and independently observed deployed revision. Its published client
-      document exposes the sealed project operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as claim-versus-deployment reconciliation across separate evidence owners. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the sealed project operation in the published client reference. Capture one ordinary response and
-      one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Read ~/CairnReach/Briefs/W21/deployment-note.md (CRR-PLC-COM-364) for five claims to verify. Open
+      ~/CairnReach/controller in OpenPLC Editor or inspect directly. The commissioning note is starting
+      material; the project files are authoritative.
+    h2: >-
+      project.json: name=arwc-site, task0 Cyclic T#100ms, program=main. devices/configuration.json:
+      deviceBoard=OpenPLC Runtime v4, runtimeIpAddress=172.29.63.20. pous/programs/main.fbd: declared
+      ProjectRevision : UINT := 364.
+    h3: >-
+      Independently observe ProjectRevision from the live OT: query CRR.ProjectRevision from FUXA or
+      ot_history.tag_catalog. Confirm the running value (364) matches the saved project's declared value.
+      Do not compile, upload, start, stop, or force anything.
     references:
-    - kind: client_route
-      id: process.sealed-project
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W21/deployment-note.md
   W21.2:
-    h1: Begin with the sealed engineering project and independently observed deployed revision. Its published client
-      document exposes the vault access operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as claim-versus-deployment reconciliation across separate evidence owners. Correlate independently
-      owned records by identity, revision, units, and scope instead of trusting a display label.
-    h3: Locate the vault access operation in the published client reference. Join the independent records on their
-      stable identifiers and revisions, then explain any mismatch before acting on it.
+    h1: Compile the saved project in OpenPLC Editor, connect to the runtime at 172.29.63.20:8443 without
+      accepting any upload offer. The editor's compiled-program MD5 must match the runtime's readProgramMd5.
+      Authenticate to the Runtime API (POST /api/login) to query GET /api/status for running state.
+    h2: >-
+      The program MD5 (from the debug channel or /api/readProgramMd5) is not in any shipped file — it
+      proves which compiled binary is scanning. Also verify: runtime state=STATUS:RUNNING, no active forces,
+      and live ProjectRevision=364 from the editor debugger or OT historian.
+    h3: >-
+      All four conditions required: program MD5 match, STATUS:RUNNING, no forces, live ProjectRevision=364.
+      A connection alone is insufficient. The program MD5 and runtime state are the independent live evidence.
+      This supplies W21.REVISION.
     references:
-    - kind: client_route
-      id: process.vault-access
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W21/deployment-note.md
   W22.1:
-    h1: Begin with the sealed viewer, project decision, and retained review context. Its published client document
-      exposes the sealed viewer operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as embedded-machine reconstruction followed by concealed reviewer-identity analysis. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the sealed viewer operation in the published client reference. Capture one ordinary response and
-      one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Call GET https://process-view.arwc.test/api/sealed-projects/current/viewer with CORPORATE Bearer.
+      Returns the delivery record with five binding fields plus SHA256 values and binary artifacts. Sets
+      viewer_observed=True in state for W22.2+.
+    h2: The viewer binary is also at clara.morivelle/retained-engineering-tools/engineering/sealed-viewer
+      in Gitea. Compute its SHA256 to verify against the service response viewer_sha256. The delivery IDs
+      and SHA256 are not in any shipped file — they come from the service call.
+    h3: Record all five binding fields (delivery_id, viewer_id, viewer_language, platform, project_id) and
+      viewer_sha256. The ordinary_cases field supplies reference cases for W22.2+. This establishes the
+      delivery-to-binary binding.
     references:
     - kind: client_route
       id: process.sealed-viewer
   W22.2:
-    h1: Begin with the sealed viewer, project decision, and retained review context. Its published client document
-      exposes the sealed viewer execute operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as embedded-machine reconstruction followed by concealed reviewer-identity analysis. Build a
-      local model from the supplied reference cases, then confirm it explains both accepted and rejected behavior.
-    h3: Locate the sealed viewer execute operation in the published client reference. Extract the supplied cases
-      into a small local reproducer and do not use its result until every reference case matches.
+    h1: >-
+      W22.1 ordinary_cases has 4 programs (program_b64, base64-encoded 6-byte-aligned bytecode). The
+      expected results are NOT included — implement the 16-bit VM from the architecture description or by
+      analyzing the sealed-viewer binary: 4 registers, 256 bytes memory, 6-byte LE instructions, 4096 cap.
+    h2: >-
+      8 opcodes: MOVI/LOAD8/XOR/ADD/ROTL/STORE8/JNZ/HALT with 16-bit wrap arithmetic. LOAD8 zero-extends
+      memory[(reg[src]+imm)&0xFF]. STORE8 writes reg[src]&0xFF. ROTL uses imm&15. JNZ adds signed imm to PC
+      only if zero flag is false. Each result needs registers, SHA256(memory[0x40:0x80]), and steps.
+    h3: >-
+      POST https://process-view.arwc.test/api/sealed-viewers/current/execute with CORPORATE Bearer:
+      {"cases":[result_0,result_1,result_2,result_3]}. Verify all 4 match the reference cases. Returns
+      VIEW-VM-R5 with full VM spec. Sets vm_reconstructed=True for W22.3+.
     references:
     - kind: client_route
       id: process.sealed-viewer-execute
   W22.3:
-    h1: Begin with the sealed viewer, project decision, and retained review context. Its published client document
-      exposes the sealed project operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as embedded-machine reconstruction followed by concealed reviewer-identity analysis. Observe
-      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the sealed project operation in the published client reference. Record the normal result and a denied
-      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: The W22.1 service response includes program_b64 (the viewer program) and package_b64 (the sealed project
+      package). Run the viewer program through your W22.2 reconstructed 16-bit VM to completion. Record the final
+      register values (r0–r3) and memory[0x40:0x80].
+    h2: >-
+      Derive the AES-256-GCM key from VM final state. SHA-256 of: ASCII "CRR-SEALED-PKG-R7", a NUL byte (0x00),
+      memory[0x40:0x80] (64 bytes), LE16(r0), LE16(r1), LE16(r2), LE16(r3). Decrypt the sealed package — first 12
+      bytes are the nonce, remaining bytes are ciphertext+tag, AAD is "CRR-SEALED-PKG-R7". Verify locally first.
+    h3: Submit POST https://process-view.arwc.test/api/sealed-projects/current with CORPORATE Bearer and body
+      {"project_id":"CRR-SEALED-PKG-R7","key_hex":"<64-hex-chars>"}. A wrong key returns 409 with no partial
+      plaintext. On success, service returns 201 with commissioning decision record DEC-CRR-OG2-R7 and the retained
+      review helper binary.
     references:
     - kind: client_route
-      id: process.sealed-project
+      id: process.sealed-project-open
   W22.4:
-    h1: Begin with the sealed viewer, project decision, and retained review context. Start from process-view.arwc.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as embedded-machine reconstruction followed by concealed reviewer-identity analysis. Observe
-      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Review the published client document and ordinary records for process-view.arwc.test. Record the normal
-      result and a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the
-      difference.
+    h1: Run the ReviewHelper.dll from W22.3 two ways — normally (dotnet ReviewHelper.dll) and with ReadyToRun
+      disabled (COMPlus_ReadyToRun=0 dotnet ReviewHelper.dll). The reviewer name changes between runs. The name
+      that appears only under native execution is the concealed identity; the managed metadata lists a different
+      reviewer.
+    h2: >-
+      The concealed reviewer is a Nextcloud user. List files shared with your CORPORATE Nextcloud account:
+      GET /ocs/v2.php/apps/files_sharing/api/v1/shares?format=json&shared_with_me=true with your CORPORATE
+      credentials. Find the share from the concealed reviewer — the share note contains the archive session ID.
+    h3: Submit POST https://process-view.arwc.test/api/unlisted-reviewers/current with CORPORATE Bearer and body
+      {"helper_sha256":"<dll_sha256>","reviewer":"<concealed_identity>","session":"<session_from_note>",
+      "comparison":"CMP-CRR-R21-R7","project":"CRR-CTRL-R21"}. Wrong reviewer returns 409. On success, returns
+      201 with CMP-CRR-R21-R7 marked historical, no current identity, maintenance approval, or control authority.
     references:
     - kind: participant_service
       id: process-view.arwc.test
   W23.1:
-    h1: Begin with the process estimator's measurement and planning-state interfaces. Start from process-view.arwc.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as controlled heap-state corruption while preserving the measurement service contract. Derive
-      every constraint from supplied records or normal responses, test a deliberately failing candidate, and only
-      then produce a candidate.
-    h3: Review the published client document and ordinary records for process-view.arwc.test. List the observed
-      constraints, exercise a known rejection, and use the difference to test a candidate that still requires service
-      validation.
+    h1: POST https://process-view.arwc.test/api/control-commands with CORPORATE Bearer and body
+      {"estimator":"EST-CRR-23","mode":"baseline"}. Response includes the estimator binary (artifact_b64,
+      144-byte Measurement objects), SHA256, and operation limit 8. Download and analyze the binary — static
+      C++ binary using Measurement objects in a vector AND a source-ID unordered_map index.
+    h2: >-
+      The UAF: adding a duplicate source_id coalesces measurements — vector element freed but source-ID index
+      retains the stale pointer. With glibc 2.39 tcache, the next 0x90-byte PlanningState allocation gets the
+      same chunk. Submit four ops: add FIT-CRR-204B twice, add PROBE-CRR-23, write-stale offset=64
+      u32=1129468466 (vtable 0x4553544352523233 >> 8, low 32 bits). Service returns EST-UAF-CRR-23.
+    h3: After EST-UAF-CRR-23, submit the controlled-state sequence to POST /api/control-commands/consequence
+      (remove-duplicate FIT-CRR-204B, add/remove/add-state Cairn Reach, write-stale offset=40 f64=13.4,
+      write-stale offset=48 u32=1). Then submit POST /api/estimator-runs with allocation_case=ALLOC-CASE-CRR-33,
+      district_id=Cairn Reach, reserve_ml=13.4, quality=1, unaffected={North:8.1,Merewick:7.65}.
     references:
     - kind: participant_service
       id: process-view.arwc.test
@@ -813,86 +961,122 @@ hints:
     - kind: participant_service
       id: process-view.arwc.test
   W24.1:
-    h1: Begin with the legacy recovery contract and its supplied engineering records. Collect the distinct response
-      classes before trying to predict which class any new query will produce.
-    h2: This stage is response-oracle classification. Hold the record constant, vary one allowed query property,
-      and label outcomes without inferring a key yet.
-    h3: Run the documented reference cases, group responses by observable class, and record the smallest input difference
-      that moves a case between two classes.
+    h1: Call GET https://process-view.arwc.test/api/signature-requests with CORPORATE Bearer. The response
+      includes RECOVERY-ORACLE-R4 with 4 labeled examples (class + ciphertext for A-D), 4 prediction cases
+      (request_id + epoch_bucket only — no class), and selector_validation_cases showing known selector
+      rotations. Study the labeled examples to understand the RSA PKCS#1 v1.5 class structure.
+    h2: >-
+      The oracle applies a rotation: observed_class = shift(padding_class, rotation) where rotation =
+      selector(request_id, epoch_bucket) & 3. Implement the xorshift128+ selector function using
+      selector_validation_cases to verify. Then compute the rotation for each prediction case's (request_id,
+      epoch_bucket) pair to determine its observed_class.
+    h3: Submit POST https://process-view.arwc.test/api/signature-oracles/current with CORPORATE Bearer and
+      body {"record_id":"ENG-REC-24","prediction_set":"SELECTOR-CRR-R4","predictions":[...4 predictions...]}.
+      All 4 must be correct. On success returns SELECTOR-CRR-R4 and sets selector_predicted=True for W24.2+.
     references:
     - kind: participant_service
       id: process-view.arwc.test
   W24.2:
-    h1: Use the classified recovery responses and the designated work-item cases. The sequence of classes is the
-      evidence source; individual response bodies are not the final objective.
-    h2: This is stateful response prediction. Model the selector from known cases and keep query order separate
-      from record content when testing the model.
-    h3: Replay the supplied cases into a local predictor, check every predicted class against an observation, then
-      submit only the next query required by the designated work item.
+    h1: >-
+      POST https://process-view.arwc.test/api/estimator-tasks/current with CORPORATE Bearer and body
+      {"operation":"oracle","ciphertext":"<512-hex>","request_id":"<16-hex>","epoch_bucket":1770000042}
+      (epoch_bucket must be exact). The oracle runs real RSA-2048 decryption and returns observed_class A/B/C/D.
+      Deduplicates ciphertexts; use unique ciphertexts or request_ids per query. Limit: 4096 total.
+    h2: >-
+      Before each query, predict observed_class = shift(raw_class, rotation) where rotation =
+      selector(request_id, 1770000042) & 3 (xorshift128+ from W24.1). Use class-D labeled example ciphertext
+      with varying request_ids to verify your selector. Confirmed: rid=2400000000000001 rot=2 → D+2=B.
+    h3: target_ciphertext in the oracle contract is RSA_TARGET — the encryption of the UNLOCK value needed
+      to open the diagnostic bundle. Query it with any valid request_id to observe its class. Use oracle
+      queries + RSA PKCS#1 v1.5 structure to recover UNLOCK for W24.3.
     references:
     - kind: participant_service
       id: process-view.arwc.test
   W24.3:
-    h1: The recovery contract also defines a bounded query allowance for the current project. Treat the archive-unlock
-      material and diagnostic bundle binding as two records that must agree.
-    h2: This stage uses bounded oracle recovery followed by project binding. A recovered value is not usable evidence
-      unless it matches the bundle's current project identity.
-    h3: Use the response model only within the stated allowance, recover the candidate unlock material, and verify
-      its project binding against the bundle metadata before opening anything.
+    h1: >-
+      RSA_TARGET from the oracle contract is RSA-encrypted UNLOCK. Use multiplicative blinding: submit
+      c*s^e mod N to the oracle, observe class of s*m mod N. Choose request_ids with rotation=0
+      (selector(rid,EPOCH_BUCKET)&3==0) to get unrotated classes. Class D = valid PKCS#1 AND ENG1 tag.
+    h2: 4-class oracle is faster than binary valid/invalid. Class C = valid structure BUT wrong payload tag.
+      Class D = valid AND ENG1. Standard Bleichenbacher interval narrowing with the ENG1 constraint
+      recovers UNLOCK within 4096 queries. Strips selector rotation before interpreting class.
+    h3: Submit POST /api/estimator-tasks/current with operation=open, bundle_id=DIAG-EVID-CRR-R7,
+      project_id=CRR-CTRL-R21, project_revision=21, archive_unlock_b64=base64(UNLOCK). Service decrypts
+      bundle with AES-GCM(SHA256(UNLOCK)). Returns signer DSIGN-CRR-R3 + 16 signed records + recovery
+      metadata for W24.4. Wrong UNLOCK returns 409 with no partial info.
     references:
     - kind: participant_service
       id: process-view.arwc.test
   W24.4:
-    h1: Start from the signed historical authorizations bundled with the diagnostic evidence. Compare their messages
-      and nonce relationship before attempting a fresh export request.
-    h2: This is partial nonce-reuse analysis with strict message binding. Recover signing authority from related
-      signatures, but create a new authorization for the current request.
-    h3: Validate the historical signatures, model their nonce relationship, and test the recovered signer on a harmless
-      local message before authorizing the fresh project-bound export.
+    h1: >-
+      From W24.3 bundle: extract nonce_bits_60_251 (k>>60) for records 1+2, signed_low60_delta from
+      recovery_metadata, fresh_export_request_b64, and signer.public_key. Compute challenge h =
+      int.from_bytes(SHA-512(R||public_key||canonical_message),"little") mod L for each record.
+    h2: >-
+      Apply HNP formula: x=((s2-s1)-((k2_hi-k1_hi)<<60)-delta)*inverse(h2-h1,L) mod L. Verify by
+      computing x*B and comparing to public key (Edwards25519: p=2^255-19, L=2^252+2774...). Use a
+      fresh nonce k_new for the new signature (do not reuse any record's nonce).
+    h3: >-
+      Sign FRESH_EXPORT (from bundle) with recovered x: k_new=any_fresh, R_new=k_new*B,
+      h_new=SHA-512(R_new||A||FRESH_EXPORT) mod L, s_new=(k_new+h_new*x) mod L. POST
+      /api/reporting-submissions with {"export_request_b64":base64(FRESH_EXPORT),"R":hex,"s":hex}.
+      Service genuinely verifies Ed25519. Returns CAL-EXCEPT-CRR-R21 with 2 calibration exceptions.
     references:
     - kind: participant_service
       id: process-view.arwc.test
   W25.1:
-    h1: Begin with the operating envelope, movement conditions, and practice sequencer. Its published client document
-      exposes the operating envelope operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as interlock-aware command sequencing within declared process safety bounds. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the operating envelope operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Read operating-envelope.csv (at /home/fieldlink/CairnReach/Briefs/W25/). It has CRR-OP-W25-R1 with
+      installed controller limits (manual 0-100%, auto 0-1.0 m3/s), physical capacity (0.5 m3/s per outlet),
+      and the authorized movement (baseline A20/B20, observation A30/B10, restoration A20/B20, mode=manual).
+      Confirm limits in FUXA Site controls view and the OpenPLC SiteRequests-and-OutletControl project.
+    h2: >-
+      Verify via real OT historian: SELECT variable, value FROM ot_history.process_samples to confirm
+      PositionPct=20% (outlet A) and PositionBPct=20% (outlet B) at baseline. Physical capacity 0.5 m3/s
+      per outlet is from the OPC UA tag catalog (FlowM3s range [0,0.5]). Total flow 0.20 m3/s at baseline.
+    h3: Submit POST https://process-view.arwc.test/api/process-estimator/current with CORPORATE Bearer and
+      body {record_id:CRR-OP-W25-R1, manual_position_min:0, manual_position_max:100,
+      manual_position_unit:percent, automatic_flow_min:0.0, automatic_flow_max:1.0, automatic_flow_unit:m3/s,
+      physical_capacity_per_outlet_max:0.5, physical_capacity_unit:m3/s, baseline_a:20, baseline_b:20,
+      observation_a:30, observation_b:10, restoration_a:20, restoration_b:20, mode:manual}.
     references:
-    - kind: client_route
-      id: process.operating-envelope
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W25/operating-envelope.csv
   W25.2:
-    h1: Begin with the operating envelope, movement conditions, and practice sequencer. Its published client document
-      exposes the movement conditions operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as interlock-aware command sequencing within declared process safety bounds. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the movement conditions operation in the published client reference. Capture one ordinary response
-      and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: >-
+      From FUXA overview + outlet faceplates + OT historian (ot_history.process_samples), read the permissive chain:
+      IoHealthy=true, PermissiveA=true, PermissiveB=true, TravelFaultA/B=false (clear),
+      LowLevelAlarm=false (clear), HmiStop=false (clear). These safety conditions are all good.
+    h2: >-
+      Check controller state: Armed=false (not armed for movement), Owner=0 (not HMI-owned). The controller is NOT
+      armed for an HMI-owned manual request. These two conditions block movement in the current state.
+    h3: >-
+      Submit POST /api/process-permissive/current with CORPORATE Bearer and body {record_id:CRR-OP-W25-R1,
+      io_healthy:true, permissive_a:true, permissive_b:true, travel_fault_a:false, travel_fault_b:false,
+      low_level_clear:true, operator_stop_clear:true, controller_armed:false, owner_hmi:false, may_move:false}.
+      Returns W25-PERMISSIVE-CRR-R1 with blocking conditions: controller_not_armed, owner_not_hmi.
     references:
-    - kind: client_route
-      id: process.movement-conditions
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W25/bounded-movement.md
   W25.3:
-    h1: Begin with the operating envelope, movement conditions, and practice sequencer. Its published client document
-      exposes the command accept operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as interlock-aware command sequencing within declared process safety bounds. Correlate independently
-      owned records by identity, revision, units, and scope instead of trusting a display label.
-    h3: Locate the command accept operation in the published client reference. Join the independent records on their
-      stable identifiers and revisions, then explain any mismatch before acting on it.
+    h1: From the qualified A20/B20 baseline record, use FUXA once for the prescribed manual A30/B10 observation request.
+      Preserve the new sequence and time so you can follow the request after the Apply action.
+    h2: Use correlation to join the staged request to OpenPLC seen and accepted sequence, HMI ownership, permissives, accepted settings,
+      and the later measured position and flow. A changed field or Apply acknowledgement is not actuation.
+    h3: Check that the same sequence and interval show accepted A30/B10 settings and settled product-owned
+      feedback near the corresponding outlet flows, with good quality and no active fault.
     references:
-    - kind: client_route
-      id: process.command-accept
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W25/bounded-movement.md
   W25.4:
-    h1: Begin with the operating envelope, movement conditions, and practice sequencer. Its published client document
-      exposes the practice sequence operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as interlock-aware command sequencing within declared process safety bounds. Derive every constraint
-      from supplied records or normal responses, test a deliberately failing candidate, and only then produce a
-      candidate.
-    h3: Locate the practice sequence operation in the published client reference. List the observed constraints,
-      exercise a known rejection, and use the difference to test a candidate that still requires service validation.
+    h1: Prove the A20/B20 to A30/B10 movement from good native position and flow history, then use a second FUXA request
+      for the prescribed manual A20/B20 restoration. Keep both accepted sequences.
+    h2: Correlate each accepted request with later process samples. The final state needs measured A20/B20, about 0.10
+      m3/s per outlet and 0.20 m3/s total, not merely restored input fields.
+    h3: Verify ownership, healthy field data, both permissives, stopped motion, and clear travel faults
+      agree with the restored measurements. Leave no unsettled movement for the next participant task.
     references:
-    - kind: client_route
-      id: process.practice-sequence
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W25/bounded-movement.md
   W26.1:
     h1: Begin with the maintenance renderer, approved inspection, and control-client issuer. Start from maintenance-renderer.arwc.test's
       published client document and records already earned in this operation, not from an invented endpoint.
@@ -906,7 +1090,8 @@ hints:
   W26.2:
     h1: Begin with the renderer profile and the approved inspection it names. Compare the contractor submission
       boundary with the reviewer-only preview boundary rather than guessing a renderer action.
-    h2: 'This is confused preview authority: a contractor-controlled package crosses into a preview evaluated with
+    h2: >-
+      'This is confused preview authority: a contractor-controlled package crosses into a preview evaluated with
       reviewer privileges. Keep inspection, renderer, and submitter identities distinct.'
     h3: Capture an ordinary contractor submission and a denied privileged preview, then vary only the work-package
       reference and compare which identity the renderer records for the preview.
@@ -936,268 +1121,355 @@ hints:
     - kind: participant_service
       id: maintenance-renderer.arwc.test
   W27.1:
-    h1: Begin with the legacy program verifier and planning diagnostic consumer. Its published client document exposes
-      the signature program reproduction operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as signature-equivalence modeling under structural and unaffected-output constraints. Separate
-      the authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the signature program reproduction operation in the published client reference. Capture one ordinary
-      response and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: POST https://process-view.arwc.test/api/signature-programs/current/reproductions with CORPORATE Bearer
+      and body {"operation":"materials","record_id":"VER-ROT128-R3"}. Returns the rot128-verifier ELF binary
+      (verifier_b64) and 6 DPG1 programs (program_b64). Reverse-engineer the ROT128 algorithm from the binary.
+    h2: >-
+      ROT128 algorithm: pad data with 0x80 then zeros to 16-byte boundary. IV=0x6a09e667f3bcc908bb67ae8584caa73b
+      (u128 LE). For each 16-byte block: s = ROTL128(s,17) XOR block XOR ROTL128(block,41). Final: s XOR
+      ROTL128(s,29) XOR unpadded_byte_length. Each block is little-endian u128. Six programs test header
+      inclusion, padding, rotation direction, endian order, and length handling.
+    h3: Submit POST /api/signature-programs/current/reproductions with body {"operation":"results",
+      "record_id":"VER-ROT128-R3","program_set":"DPG1-CASES-R3","results":[{"case_id":"DPG1-CASE-N",
+      "digest":"<32hex>","decision":"accepted"|"rejected"},...]}. All 6 must be correct (run verifier binary
+      or implement ROT128). Returns VER-ROT128-RESULT-R3.
     references:
     - kind: client_route
       id: process.signature-program-reproduction
   W27.2:
-    h1: Begin with the legacy program verifier and planning diagnostic consumer. Its published client document exposes
-      the signature program constraints and signature program reproduction operation, so use that ordinary contract
-      instead of guessing a path.
-    h2: Treat this as signature-equivalence modeling under structural and unaffected-output constraints. Derive
-      every constraint from supplied records or normal responses, test a deliberately failing candidate, and only
-      then produce a candidate.
-    h3: Locate the signature program constraints and signature program reproduction operation in the published client
-      reference. List the observed constraints, exercise a known rejection, and use the difference to test a candidate
-      that still requires service validation.
+    h1: POST /api/signature-programs/current/constraints with body {"operation":"contract","record_id":"DPG-CONTRACT-R8"}.
+      Returns base_program_b64, reservoir_bits (256 bit positions), and distinguishing_cases (3 cases). Read
+      model_program_id in the response — the collision candidate must use that identity, not BASE_ID or TARGET_ID.
+    h2: Build a 128-row GF(2) system over the 256 reservoir-bit variables. RHS = rot128(model_zero) XOR rot128(base),
+      where model_zero is the model-identity program with zero reservoir. Each matrix column is the digest delta
+      for flipping one reservoir bit in model_zero. Solve by Gaussian elimination; free variables stay 0.
+    h3: Submit POST /api/signature-programs/current/constraints with {"operation":"model","record_id":"DPG-MODEL-R8",
+      "cases":[<from contract>],"program_b64":"<solved candidate b64>"}. The candidate must differ from base only in
+      reservoir bytes and the program-id header field. Cairn Reach output stays at 12.4; only the identity changes.
     references:
     - kind: client_route
       id: process.signature-program-constraints
     - kind: client_route
       id: process.signature-program-reproduction
   W27.3:
-    h1: Begin with the legacy program verifier and planning diagnostic consumer. Its published client document exposes
-      the diagnostic run operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as signature-equivalence modeling under structural and unaffected-output constraints. Derive
-      every constraint from supplied records or normal responses, test a deliberately failing candidate, and only
-      then produce a candidate.
-    h3: Locate the diagnostic run operation in the published client reference. List the observed constraints, exercise
-      a known rejection, and use the difference to test a candidate that still requires service validation.
+    h1: POST /api/diagnostic-runs (via process-view.arwc.test, same proxy path as other diagnostic routes).
+      Body {"record_id":"DPG-CRR-CINDER","consumer":"PLAN-CONSUMER-R8","program_b64":"<b64>"}. Requires W27.2
+      collision_model_created state; gates on the planning consumer accepting the false estimate.
+    h2: >-
+      Build the GF(2) collision for TARGET_ID (DPG-CRR-CINDER) with cairn_reserve=13.4 instead of 12.4. Set up:
+      base = build_program(BASE_ID, cairn=12.4); target_zero = build_program(TARGET_ID, cairn=13.4, reservoir=0).
+      Solve 128-equation GF(2) system the same way as W27.2 but over target_zero. changed_only(candidate,
+      purpose="target") allows RESERVOIR_BYTES, program-id field (bytes 48-63), and CAIRN_VALUE_OFFSET range.
+    h3: >-
+      The service validates: program_id=DPG-CRR-CINDER, outputs={Cairn Reach:13.4, North:8.1, Merewick:7.65},
+      digest==base digest, changed_only(target). Then calls the planning consumer internally. The accepted program
+      and false estimate supply the W34 planning-view capability without altering raw OT observations.
     references:
     - kind: client_route
       id: process.diagnostic-run
   W28.1:
-    h1: Begin with the constrained engineering utility and its control-authority exchange. Its published client
-      document exposes the collision inputs operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as control-flow recovery within a deliberately small executable surface. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the collision inputs operation in the published client reference. Capture one ordinary response and
-      one denial, then correlate the returned identifiers with evidence already earned.
+    h1: POST /api/collision-inputs/current with body {"operation":"materials","project_revision":364}.
+      Returns the utility binary (utility_b64), relationship, ordinary_invocations, relocations, seccomp_policy,
+      and a signed status record with session_id, stack_canary, and return_address.
+    h2: The status record is signed with Ed25519 (key derived from SHA-256 of a fixed label). The canary and
+      return address are freshly generated per session and persist for the session lifetime. The return address
+      encodes the ELF-relative offset from status_return_offset in the relationship file and the current PIE base.
+    h3: This card only requires recovering the contract materials. Submit the materials request and retain the
+      full response (status record, binary, relationship) for use in W28.2 and W28.3.
     references:
     - kind: client_route
       id: process.collision-inputs
   W28.2:
-    h1: Begin with the constrained engineering utility and its control-authority exchange. Its published client
-      document exposes the release confirmation operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as control-flow recovery within a deliberately small executable surface. Observe the ordinary
-      and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the release confirmation operation in the published client reference. Record the normal result and
-      a denied variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: POST /api/release-plans/current/confirmation with {"session_id":"<W28.1 session>","length":240,
+      "frame_b64":"<frame>"}. The binary validates the frame with frame_valid() and outputs
+      {"controlled_flow":true} if it passes. No actual exploitation — it checks the proof-of-work structure.
+    h2: >-
+      Frame layout (240 bytes total): [192 zeros][8 zeros][canary LE][base+224 LE][pivot LE][pop_rdi LE][controlled LE].
+      pivot = base + stack_pivot_off (4752). pop_rdi = base + pop_rdi_off (4704). controlled = base + 4768.
+      base = session pie_base from W28.1. canary = session canary from W28.1.
+    h3: >-
+      Get all offsets from relationship.json (returned in W28.1 response). chain_offset=224, so saved_rbp=base+224.
+      The frame validates: canary at 200, saved_rbp at 208, saved_return (pivot) at 216, pop_rdi at 224, controlled at 232.
     references:
     - kind: client_route
       id: process.release-confirmation
   W28.3:
-    h1: Begin with the constrained engineering utility and its control-authority exchange. Its published client
-      document exposes the control authority operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as control-flow recovery within a deliberately small executable surface. Carry forward only earned
-      identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
+    h1: >-
+      POST /api/control-authority with {"operation":"issue","session_id":"<W28.1 session>","length":320,
+      "frame_b64":"<frame>"}. Frame is 320 bytes: same prefix as W28.2 but chain is 12 u64 values calling
+      setresuid(0,0,0) via vDSO, then issue_client(immutable_issuer_record, request_correlation).
+    h2: >-
+      Chain (96 bytes at offset 224): pop_rdi,0, pop_rsi,0, pop_rdx,0, vdso_setresuid, pop_rdi,
+      base+issuer_record_off, pop_rsi, base+request_correlation_off, base+issue_client_off. vdso_setresuid =
+      0x7fff000007B0 (fixed vDSO base + setresuid_syscall_offset from relationship.json).
+      The binary gains root via cap_setuid file capability, connects to /run/arwc/control-issuer.sock,
+      sends the issuer request, and returns the control_client token. The engineering container must NOT have
+      no-new-privileges:true (file capabilities would be blocked).
     h3: Locate the control authority operation in the published client reference. Replay the preceding evidence
       through the next documented boundary and verify the downstream service, not the client, records the outcome.
     references:
     - kind: client_route
       id: process.control-authority
   W29.1:
-    h1: Begin with the planning tariff, reserve commitments, and reporting checkpoint. Start from process-view.arwc.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as economic consequence modeling tied to independently measured reserve state. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Review the published client document and ordinary records for process-view.arwc.test. Capture one ordinary
-      response and one denial, then correlate the returned identifiers with evidence already earned.
+    h1: Read the allocation-ledger.csv from ~/CairnReach/Briefs/W29/ (shows TAR-CRR-DP3-R4 and ALLOC-2026-DP3-R9).
+      Then call GET /api/settlement-tariffs/current and GET /api/allocation-ledgers/current on planning-data.arwc.test
+      (requires corporate Bearer + X-ARWC-Planner-Session header from earned W06.3 session).
+    h2: >-
+      settlement_tariff row: TAR-CRR-DP3-R4 at 2400 USD/ML, planning window ALLOC-2026-DP3, asset AST-CRR-017,
+      effective 2026-11-01 to 2026-12-01. allocation_ledger row: ALLOC-2026-DP3-R9 at 12.00 ML. Keep rate and
+      committed volume separate — they describe different facts.
+    h3: Verify TAR-CRR-DP3-R4 and ALLOC-2026-DP3-R9 are bound to AST-CRR-017 and their common planning window
+      only after the native corporate rows agree with the supplied ledger. TAR-CRR-DP3-R4 is the settlement tariff;
+      do not substitute the W35 procurement catalog.
     references:
-    - kind: participant_service
-      id: process-view.arwc.test
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W29/allocation-ledger.csv
   W29.2:
-    h1: Begin with the planning tariff, reserve commitments, and reporting checkpoint. Start from process-view.arwc.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as economic consequence modeling tied to independently measured reserve state. Correlate independently
-      owned records by identity, revision, units, and scope instead of trusting a display label.
-    h3: Review the published client document and ordinary records for process-view.arwc.test. Join the independent
-      records on their stable identifiers and revisions, then explain any mismatch before acting on it.
+    h1: Submit the current reserve reconciliation for this planning window and asset via POST /api/reserve-reconciliations/current with {"planning_window":"ALLOC-2026-DP3","asset":"AST-CRR-017",
+      "observed_at":"<ISO 8601>","process_quality":"Good","measured_usable_volume_ml":<value>,
+      "committed_ml":12.0,"uncommitted_margin_ml":<margin>,"margin_state":"positive|zero|negative"}.
+    h2: >-
+      Query public.process_history JOIN public.historian_tag_catalog WHERE asset='AST-CRR-017' AND
+      variable='UsableVolumeML' for a recent Good-quality sample. margin = measured - 12.00 ML.
+      margin_state: positive if >0.005, negative if <-0.005, zero otherwise.
+    h3: The service validates the submitted values against the nearest OT historian sample within 5 seconds.
+      A stale (>5 min), bad-quality (not Good), or miscalculated margin is rejected. Use the source_time
+      from the historian row as observed_at.
     references:
-    - kind: participant_service
-      id: process-view.arwc.test
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W29/reconciliation-method.md
   W29.3:
-    h1: Begin with the planning tariff, reserve commitments, and reporting checkpoint. Its published client document
-      exposes the reporting checkpoint submit and state operation, so use that ordinary contract instead of guessing
-      a path.
-    h2: Treat this as economic consequence modeling tied to independently measured reserve state. Derive every constraint
-      from supplied records or normal responses, test a deliberately failing candidate, and only then produce a
-      candidate.
-    h3: Locate the reporting checkpoint submit and state operation in the published client reference. List the observed
-      constraints, exercise a known rejection, and use the difference to test a candidate that still requires service
-      validation.
+    h1: Submit the paper reconciliation comparing the signed report against current process truth via POST /api/paper-reconciliations/current with {"planning_window":"ALLOC-2026-DP3","asset":"AST-CRR-017",
+      "report_id":"RPT-CRR-DP3-R7","report_as_of":"2026-11-09T00:00:00Z","reported_ml":13.4,
+      "observed_at":"<ISO 8601>","measured_usable_volume_ml":<value>,"signed_paper_variance_ml":<var>,
+      "direction":"report_above|report_below|aligned","time_basis":"different_as_of_times",
+      "conclusion":"paper_report_is_not_current_process_truth"}.
+    h2: >-
+      variance = reported_ml - measured_usable_volume_ml (13.4 - ~10.85 = +2.55 ML currently).
+      direction: report_above_later_process_value if variance > 0.005, report_below if < -0.005.
+      observed_at must be AFTER 2026-11-09T00:00:00Z (the report as_of time).
+    h3: >-
+      The service validates the submitted variance and direction against the nearest OT historian UsableVolumeML
+      sample within 5 seconds. time_basis and conclusion are fixed strings — the report is dated paper truth,
+      not current process state. Prerequisites: W29.1 AND W29.2 (reserve_observed state).
     references:
-    - kind: client_route
-      id: process.reporting-checkpoint-submit
-    - kind: client_route
-      id: process.state
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W29/reconciliation-method.md
   W30.1:
-    h1: Begin with the live command-plan binder and bounded release executor. Its published client document exposes
-      the release plan operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as end-to-end binding of earned authority, engineering revisions, and idempotent actuation. Correlate
-      independently owned records by identity, revision, units, and scope instead of trusting a display label.
-    h3: Locate the release plan operation in the published client reference. Join the independent records on their
-      stable identifiers and revisions, then explain any mismatch before acting on it.
+    h1: >-
+      POST /api/request-plans/current with the exact planned request struct. Fields must match the installed
+      arwc.remote-request/v1 contract exactly: instruction=CRR-OP-W30-R1, asset=AST-CRR-017, project_revision=364,
+      delivery (schema/topic/principal/qos/retain=false), request (id_strategy/mode/positions/flow/expiry),
+      successful_states, retry rules, and restore={channel:hmi, manual A20/B20}.
+    h2: >-
+      The service validates: submission matches the contract plan exactly AND running ProjectRevision = 364 from
+      OT historian. id_strategy must be "fresh_uuid_v4_at_execution" (not an actual UUID). expiry_seconds=90.
+      This card prepares but does NOT issue the dispatcher request.
+    h3: >-
+      retain=false, qos=1, topic=arwc/crr/commands/operator. restore.remote_enabled=false. All numeric
+      position/flow values must be exact floats (20.0, 0.3, 0.2). Prerequisite: W29.3 (paper_variance_observed).
     references:
-    - kind: client_route
-      id: process.release-plan
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W30/release-plan.json
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W30/operator-brief.md
   W30.2:
-    h1: Begin with the live command-plan binder and bounded release executor. Its published client document exposes
-      the release execute operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as end-to-end binding of earned authority, engineering revisions, and idempotent actuation. Observe
-      the ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the release execute operation in the published client reference. Record the normal result and a denied
-      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: POST /api/remote-operations/current with the W30.2 submission after executing the real operation.
+      Requires W30.1 (request_planned). Submission must include request_id, remote_sequence, timestamps
+      (received_at, completed_at, restore_accepted_at, final_observed_at, interval_start, interval_end),
+      restore_sequence, and interpretation=durable_receipt_plc_acceptance_measured_completion_local_handback.
+    h2: >-
+      Publish the MQTT request (operator/Y7kjNV-... to mosquitto:8883, topic arwc/crr/commands/operator,
+      QoS 1 no-retain). The dispatcher records 5 states: received→dispatch_intent→dispatched→plc_accepted→completed.
+      Flows complete at ~0.15 m³/s each outlet. Restore via FUXA: HmiRemoteEnabled=false, HmiAutoMode=false,
+      HmiTargetPct=20, HmiTargetBPct=20, then increment HmiSequence. Owner returns to 1, AutoMode=false.
+    h3: The service validates dispatch_history (all 5 states, remote_sequence), command_history (dispatcher
+      and HMI acceptances), and flow tolerances (±0.0075 m³/s from 0.15). All timestamps must match
+      database records within 2 seconds. Reader must be granted SELECT on ot_dispatch schema.
     references:
-    - kind: client_route
-      id: process.release-execute
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W30/operator-brief.md
   W31.1:
-    h1: Begin with the diagnostic vault record, parser worker, and approval-history export. Its published client
-      document exposes the vault record operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as record-boundary analysis followed by protected saved-state control. Separate the authoritative
-      service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the vault record operation in the published client reference. Capture one ordinary response and one
-      denial, then correlate the returned identifiers with evidence already earned.
+    h1: GET /api/vault-records/current (via process-view.arwc.test proxy). Returns VAULT-CRR-R5 record with
+      case_id=DV-CRR-4417, protected_history_reference=HIST-APR-CRR-09, format=DVL1,
+      request_limit=512 bytes, declared_length_encoding=u16-le, header_length_encoding=u16-le,
+      integrity=CRC32C. Sets vault_contract_observed state.
+    h2: >-
+      The vault worker binary (dvl-worker-r5) is returned as worker_b64. The DVL1 record format:
+      u16 declared_length + u16 header_length + u32 CRC32C + payload. Requests are bounded at 512 bytes.
+      The status record exposes canary, stack frame offsets, and worker mapping for W31.2+.
+    h3: This card only requires the GET. Retain case_id=DV-CRR-4417 and protected_history_reference=HIST-APR-CRR-09
+      for use in W31.2 (vault boundary control) and W31.3 (vault saved-state control).
     references:
     - kind: client_route
       id: process.vault-record
   W31.2:
-    h1: Begin with the diagnostic vault record, parser worker, and approval-history export. Its published client
-      document exposes the signature record operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as record-boundary analysis followed by protected saved-state control. Carry forward only earned
-      identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
-    h3: Locate the signature record operation in the published client reference. Replay the preceding evidence through
-      the next documented boundary and verify the downstream service, not the client, records the outcome.
+    h1: >-
+      POST /api/signature-records/current with {"case_id":"DV-CRR-4417","build_id":"DVL-WORKER-R5",
+      "record_b64":"<512-byte DVL1 record>"}. DVL1: "DVL1" + declared(u16-le=0xfe08) + header(u16-le=0x01f8)
+      + CRC32C(u32-le over 500-byte payload) + 500-byte payload. Total = 512 bytes exactly.
+    h2: >-
+      The exploit: (declared + header) mod 2^16 = (0xfe08 + 0x01f8) mod 65536 = 0 (wraps), which passes
+      the <=504 check. header=504 bytes are then copied into the 288-byte workspace, overflowing into the
+      canary and control fields. CRC32C polynomial 0x82f63b78 (Castagnoli), computed over the 500-byte payload.
+    h3: For --boundary mode the binary only checks declared=0xfe08, header=0x01f8, length=512. Payload content
+      does not matter. Returns declared_length=65032, header_length=504, wrapped_sum=0, copied_bytes=504.
+      Sets vault_boundary_controlled state; gates W31.3 (--execute mode with ROP chain).
     references:
     - kind: client_route
       id: process.signature-record
   W31.3:
-    h1: Begin with the diagnostic vault record, parser worker, and approval-history export. Its published client
-      document exposes the replay divergence operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as record-boundary analysis followed by protected saved-state control. Correlate independently
-      owned records by identity, revision, units, and scope instead of trusting a display label.
-    h3: Locate the replay divergence operation in the published client reference. Join the independent records on
-      their stable identifiers and revisions, then explain any mismatch before acting on it.
+    h1: POST /api/replay-sessions/current/divergence with the same body format as W31.2. Use the same DVL1
+      record structure (declared=0xfe08, header=0x01f8, 512 bytes) but fill the payload with the controlled
+      frame values at their correct offsets within the 500-byte payload field.
+    h2: >-
+      Frame offsets within the payload (from W31.1 status record): workspace 0..287, canary at byte 288,
+      saved_rbp at 296, return_state at 304, argument at 312. VAULT_BASE=0x555550000000.
+      CANARY=0x91d4c6aa72be3f05. Offsets from metadata: export_history=4698, history_id=8576.
+    h3: The binary (--execute mode) validates that canary, return_state, and argument match the expected values,
+      and that saved_rbp is within the mapping. On success it outputs history_id=HIST-APR-CRR-09.
+      Sets vault_saved_state_controlled; gates W31.4.
     references:
     - kind: client_route
       id: process.replay-divergence
   W31.4:
-    h1: Begin with the diagnostic vault record, parser worker, and approval-history export. Its published client
-      document exposes the diagnostic program operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as record-boundary analysis followed by protected saved-state control. Carry forward only earned
-      identities and record bindings; possession of a copied identifier alone does not cross the next boundary.
-    h3: Carry the controlled saved-state result through the diagnostic program boundary, then verify the resulting
-      approval-history read is recorded under the diagnostic service identity and not the participant client.
+    h1: >-
+      POST /api/diagnostic-programs/authority (via process-view.arwc.test). Requires W31.3
+      (vault_saved_state_controlled). Submit the four execution fields from the W31.3 state record:
+      execution_id, correlation, history_id=HIST-APR-CRR-09, history_digest.
+    h2: Read execution_id, correlation, and history_digest from the DVL-STATE-CRR-R5 record returned
+      by W31.3. The service validates these exactly
+    h3: >-
+      Locate the diagnostic-program authority operation in the published client reference. Submit the W31.3
+      execution fields (execution_id, correlation, history_id=HIST-APR-CRR-09, history_digest) so the
+      diagnostic service runs export_history under svc-diagnostic-vault, then confirm the service records the
+      recovered approval history and its audit digest, not the caller.
     references:
     - kind: client_route
       id: process.diagnostic-program
   W32.1:
-    h1: Begin with the retained replay engine and current estimator observations. Its published client document
-      exposes the replay session operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as state-machine reconstruction and old-model-versus-current-reality comparison. Separate the
-      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Locate the replay session operation in the published client reference. Capture one ordinary response and
-      one denial, then correlate the returned identifiers with evidence already earned.
+    h1: >-
+      GET /api/replay-sessions/current (via process-view.arwc.test). Returns REPLAY-CRR-R19 record with
+      the C++20 ECS structure: entities (Reservoir, OutletGroup, GateA, GateB, Buffer) each with their
+      component lists. Also returns the replay binary (replay_b64) and distinguishing_cases.
+    h2: >-
+      Recover the entity-component-system layout the replay binary expects from the session record. ECS entity-component bindings: Reservoir=[Reserve,Revision], OutletGroup=[Setpoint,Flow,Mode,Revision],
+      GateA=[Setpoint,Position,Flow,Revision], GateB=[Setpoint,Position,Flow,Revision], Buffer=[Reserve,Revision].
+    h3: Sets replay_structure_recovered state; gates W32.2+. The outlet example component binding is GateA/GateB
+      with Setpoint, Position, Flow, and Revision components.
     references:
     - kind: client_route
       id: process.replay-session
   W32.2:
-    h1: Begin with the retained replay engine and current estimator observations. Its published client document
-      exposes the estimator task operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as state-machine reconstruction and old-model-versus-current-reality comparison. Build a local
-      model from the supplied reference cases, then confirm it explains both accepted and rejected behavior.
-    h3: Locate the estimator task operation in the published client reference. Extract the supplied cases into a
-      small local reproducer and do not use its result until every reference case matches.
+    h1: POST /api/estimator-tasks/current/inputs with {"record_id":"REPLAY-CRR-R19","revision":19,
+      "transitions":<transitions from binary>}. Run the replay-crr-r19 binary with mode "transitions"
+      to get the 4 distinguishing ECS state transition cases; submit them verbatim.
+    h2: >-
+      The service compares the submitted transitions against run_replay32("transitions") output exactly.
+      System order: CommandApply, RampLimit, FlowIntegrate, ReserveUpdate, ApprovalCheck.
+    h3: Call subprocess.run([replay_binary, "transitions"]) and parse stdout as JSON list (4 items).
+      Sets replay_transitions_reproduced state; gates W32.3 (retained approval condition).
     references:
     - kind: client_route
       id: process.estimator-task
   W32.3:
-    h1: Begin with the retained replay engine and current estimator observations. Start from process-view.arwc.test's
-      published client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as state-machine reconstruction and old-model-versus-current-reality comparison. Separate the
-      authoritative service record from stale or local copies, and preserve its identity, revision, and scope.
-    h3: Replay the supplied outlet case locally, vary one hidden-state candidate at a time, and retain the condition
-      only when it explains every old-model approval without changing unrelated component updates.
+    h1: POST /api/estimator-results/current with {"replay":"REPLAY-CRR-R19","trace":"TRACE-R19-DISPUTED",
+      "condition":<condition from binary>}. Run the replay binary with mode "condition" to get the
+      approval condition dict; submit it verbatim along with the fixed replay and trace identifiers.
+    h2: The service compares submitted condition against run_replay32("condition") output exactly.
+      Sets replay_condition_recovered state; gates W32.4 (witness submission).
+    h3: Call subprocess.run([replay_binary, "condition"]) and parse stdout as the condition JSON dict.
+      The condition includes record_id=APPROVAL-COND-R19, system_order, and the hidden state binding.
     references:
     - kind: participant_service
       id: process-view.arwc.test
   W32.4:
-    h1: Begin with the retained replay engine and current estimator observations. Its published client document
-      exposes the replay execute operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as state-machine reconstruction and old-model-versus-current-reality comparison. Derive every
-      constraint from supplied records or normal responses, test a deliberately failing candidate, and only then
-      produce a candidate.
-    h3: Locate the replay execute operation in the published client reference. List the observed constraints, exercise
-      a known rejection, and use the difference to test a candidate that still requires service validation.
+    h1: POST /api/replay-sessions/current/execute with {"replay":"REPLAY-CRR-R19",
+      "trace":"TRACE-R19-DISPUTED","witness":<witness from binary>}. Run replay binary
+      with mode "witness" to get the witness dict; submit verbatim.
+    h2: Path is /execute not /results. Requires W32.3 (replay_condition_recovered) state.
+      Sets replay_witness_response; completes W32 arc.
+    h3: >-
+      Execute the replay binary in witness mode and read the emitted proof from standard output. Call subprocess.run([replay_binary, "witness"]) and parse stdout. Proof: TRACE-R19-DISPUTED.
     references:
     - kind: client_route
       id: process.replay-execute
   W33.1:
-    h1: Begin with the forecast, schedule window, and feedback-policy services. Its published client document exposes
-      the forecast operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as model calibration and constrained time-series scheduling under disclosed bounds. Correlate
-      independently owned records by identity, revision, units, and scope instead of trusting a display label.
-    h3: Locate the forecast operation in the published client reference. Join the independent records on their stable
-      identifiers and revisions, then explain any mismatch before acting on it.
+    h1: POST /api/commissioning-calibrations/current with {request_id, requested_total_flow_m3s=0.3,
+      mean_total_flow_m3s, response_delay_seconds, flow_gain, good_sample_count}. Requires W30.RESULT
+      (w30_result state). Service validates against OT historian TotalFlowM3s samples after W30 PLC acceptance.
+    h2: Query process_history for TotalFlowM3s WHERE asset=AST-CRR-017, source_time after PLC acceptance,
+      process_quality=Good, abs(value-0.3)<=0.02. Response delay = time from PLC acceptance to first good
+      in-tolerance sample. Gain = mean_total_flow / 0.3. Need at least 5 good samples.
+    h3: Use command_history to find PLC acceptance time (channel=dispatcher, most recent). Tolerance on
+      calculated values is ±0.01. Sets w33_calibrated and w33_flow_gain state; gates W33.2.
     references:
-    - kind: client_route
-      id: process.forecast
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W33/scheduling-brief.md
   W33.2:
-    h1: Begin with the forecast, schedule window, and feedback-policy services. Its published client document exposes
-      the schedule window operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as model calibration and constrained time-series scheduling under disclosed bounds. Derive every
-      constraint from supplied records or normal responses, test a deliberately failing candidate, and only then
-      produce a candidate.
-    h3: Locate the schedule window operation in the published client reference. List the observed constraints, exercise
-      a known rejection, and use the difference to test a candidate that still requires service validation.
+    h1: POST /api/operating-schedules/current with {forecast:<W33.1 calibration>,schedule:{...}}.
+      Schedule must have schema=arwc.operating-schedule/v1, instruction=CRR-OP-W33-R1, asset=AST-CRR-017,
+      interval_seconds=300, reservoir_release_m3s=[12 values], alternate_supply_m3s=[12 values].
+    h2: >-
+      Buffer equation: buf[i+1] = buf[i] + 300*(gain*release[i]+alternate[i]-demand[i]).
+      Initial=180m3, min=120, max=240, final 160-200. Volume=sum(300*gain*release)/1000 in [0.78,0.84]ML.
+      Simple: constant release=0.224, alternate=demand-gain*0.224 gives buffer=180 and volume=0.81ML.
+    h3: Max release=0.8 m3/s, max alternate=0.5 m3/s. Demand=[0.45,0.5,0.55,0.6,0.65,0.7,0.7,0.65,0.6,0.55,0.5,0.45].
+      Sets w33_schedule state; gates W33.3.
     references:
-    - kind: client_route
-      id: process.schedule-window
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W33/operating-window.csv
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W33/schedule-template.json
   W33.3:
-    h1: Begin with the forecast, schedule window, and feedback-policy services. Its published client document exposes
-      the schedule submit operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as model calibration and constrained time-series scheduling under disclosed bounds. Carry forward
-      only earned identities and record bindings; possession of a copied identifier alone does not cross the next
-      boundary.
-    h3: Locate the schedule submit operation in the published client reference. Replay the preceding evidence through
-      the next documented boundary and verify the downstream service, not the client, records the outcome.
+    h1: POST /api/commissioning-runs/current with {asset, forecast, schedule, request_ids (12 UUIDs),
+      started_at, completed_at, restore_sequence, restore_accepted_at, final_observed_at,
+      interpretation="measured_twelve_step_commissioning_run_with_local_handback"}.
+    h2: Let each fresh request reach a completed product state before the next. Stop on rejection or uncertainty, and
+      bind every request UUID to its durable dispatcher path, native PLC acceptance, and settled feedback.
+    h3: After all twelve steps, restore manual A20/B20 with local FUXA priority. Confirm the later local acceptance,
+      measured baseline, healthy I/O, permissives, stopped motion, and clear travel faults in native history.
     references:
-    - kind: client_route
-      id: process.schedule-submit
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W33/run-schedule.py
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W33/scheduling-brief.md
   W33.4:
-    h1: Begin with the forecast, schedule window, and feedback-policy services. Its published client document exposes
-      the feedback policy operation, so use that ordinary contract instead of guessing a path.
-    h2: Treat this as model calibration and constrained time-series scheduling under disclosed bounds. Observe the
-      ordinary and denied cases first, then change one input at a time and keep every unrelated binding fixed.
-    h3: Locate the feedback policy operation in the published client reference. Record the normal result and a denied
-      variant, alter one dimension, and keep the service-owned evidence needed to explain the difference.
+    h1: POST /api/operating-projections/current with commissioning (W33.3 body), observed_mean_total_flow_m3s
+      (12 means from settled 4-second windows), projected_reservoir_volume_ml, starting_usable_volume_ml,
+      remaining_usable_volume_ml, committed_volume_ml=12.0, projected_shortfall_ml, tariff_rate_per_ml=2400,
+      projected_liability_usd, interpretation=measured_commissioning_evidence_with_projected_one_hour_effect.
+    h2: >-
+      For each step: TotalFlowM3s where source_time in [completed-4s, completed], Good quality, mean.
+      projected_volume=sum(300*mean_i)/1000. starting=UsableVolumeML before first request. remaining=starting-projected.
+    h3: shortfall=max(0,12-remaining). liability=shortfall*2400. Service validates all values ±0.005.
+      Sets w33_complete state; completes W33 arc.
     references:
-    - kind: client_route
-      id: process.feedback-policy
+    - kind: participant_artifact
+      id: /home/fieldlink/CairnReach/Briefs/W33/scheduling-brief.md
   W34.1:
-    h1: Begin with the planning estimate consumer and reporting handover. Start from planning-data.arwc.test's published
-      client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as trusted-view manipulation while preserving raw-measurement integrity. Correlate independently
-      owned records by identity, revision, units, and scope instead of trusting a display label.
-    h3: Review the published client document and ordinary records for planning-data.arwc.test. Join the independent
-      records on their stable identifiers and revisions, then explain any mismatch before acting on it.
+    h1: >-
+      POST /api/reporting-submissions/current/result on planning-data.arwc.test (requires corporate Bearer
+      + X-ARWC-Planner-Session). Body: {checkpoint:REH-REPORT-34, consumer:PLAN-CONSUMER-R8,
+      consumer_revision:8, source:DPG-CRR-CINDER, estimate:{Cairn Reach:13.4,North:8.1,Merewick:7.65},
+      refresh_interval_seconds:300, raw_observations:[MTR-CRR-DP3-R12,FIT-CRR-204A,FIT-CRR-204B]}.
+    h2: Source must be DPG-CRR-CINDER (W27.3 path) or ALLOC-CASE-CRR-33 (W23.3 path).
+      Requires process_interpretation_prerequisite (reserve_reconciled + REC-CRR-DP3-17 integration evidence).
+      Also requires the PLAN-CONSUMER-R8 result file from W27.3 (diagnostic_estimate_observed).
+    h3: Returns VIEW-CRR-34 record showing the planning consumer bound to the controlled estimate.
+      Sets reporting_view_observed state; gates W34.2.
     references:
     - kind: participant_service
       id: planning-data.arwc.test
   W34.2:
-    h1: Begin with the planning estimate consumer and reporting handover. Start from planning-data.arwc.test's published
-      client document and records already earned in this operation, not from an invented endpoint.
-    h2: Treat this as trusted-view manipulation while preserving raw-measurement integrity. Derive every constraint
-      from supplied records or normal responses, test a deliberately failing candidate, and only then produce a
-      candidate.
-    h3: Review the published client document and ordinary records for planning-data.arwc.test. List the observed
-      constraints, exercise a known rejection, and use the difference to test a candidate that still requires service
-      validation.
+    h1: >-
+      POST /api/planning-bids on planning-data.arwc.test (requires corporate Bearer + X-ARWC-Planner-Session).
+      Body: {view:VIEW-CRR-34, checkpoint:REH-REPORT-34, unit:ML, freshness_seconds:40,
+      source_set:[Cairn Reach,North,Merewick], unaffected:{North:8.1,Merewick:7.65},
+      meter_reserve_ml:12.4, variance_limit_ml:1.2}. Requires W34.1.
+    h2: Service checks estimate from VIEW-CRR-34, variance=Cairn Reach-12.4=1.0 less than 1.2.
+      Returns DECISION-CRR-34 with decision=ALLOC-EXPAND-R2 (different from ordinary ALLOC-HOLD-R3).
+    h3: Submitting the planning bid returns the reporting decision and sets reporting_decision_observed state, which gates W34.3.
     references:
     - kind: participant_service
       id: planning-data.arwc.test

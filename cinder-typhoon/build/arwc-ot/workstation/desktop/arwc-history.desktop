@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Cairn Reach history
+Comment=PostgreSQL process history and native events
+Exec=firefox-esr --new-window http://grafana:3000/d/arwc-history
+Icon=office-chart-line
+Terminal=false
+Categories=Development;Education;

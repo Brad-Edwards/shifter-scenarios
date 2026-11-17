@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import base64
-import binascii
 import hashlib
 import hmac
 import grp
@@ -11,7 +9,6 @@ import os
 import pathlib
 import re
 import ssl
-import struct
 import tempfile
 import time
 import urllib.error
@@ -23,29 +20,36 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
 
 import psycopg2
-import schedule33
+import reporting_schedule
 
 
 ROOT = pathlib.Path("/var/lib/arwc-data")
 STATE = ROOT / "state" / "planning.json"
+REPORTS_STATE_PATH = pathlib.Path("/run/arwc-reports-state.json")
+
+
+def _load_reports_state() -> dict:
+    """Load Metabase question IDs and URLs from the reports state file seeded at deploy time."""
+    try:
+        return json.loads(REPORTS_STATE_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
+def _metabase_card_url(state: dict, key: str, fallback: str) -> str:
+    """Return the Metabase URL for a card ID from state, or fall back to a stable string."""
+    metabase_url = state.get("metabase_url", "https://reports.arwc.test")
+    card_id = state.get(key, "")
+    return f"{metabase_url}/api/card/{card_id}" if card_id else fallback
 AUDIT = ROOT / "audit" / "events.jsonl"
 TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 PLANNER_EVIDENCE = pathlib.Path("/run/arwc-planning-evidence/planner-session.json")
 INTEGRATION_EVIDENCE = ROOT / "integration" / "planning-data.json"
-ARCHIVE_EVIDENCE = ROOT / "archive" / "archive-lineage.json"
-BUSINESS_RELATION_EVIDENCE = pathlib.Path("/run/arwc-business-relation/drawing-association.json")
+ARCHIVE_EVIDENCE = pathlib.Path("/run/arwc-planning-evidence/archive-lineage.json")
 OT_READ_EVIDENCE = pathlib.Path("/run/arwc-ot-read")
 PROCESS_EVIDENCE = pathlib.Path("/run/arwc-process-evidence")
-PLAN_METHOD = pathlib.Path("/opt/planning-data/assets/pl-arwc-plan-method-01-method.md")
 PROCESS_PATHS = {
     "/.well-known/arwc-client",
-    "/api/process-views/state", "/api/process-views/mode",
-    "/api/process-views/instruments/active", "/api/observations",
-    "/api/tag-exports/current", "/api/tag-scales/current",
-    "/api/tag-scales/current/history", "/api/outlet-groups/current/instruments",
-    "/api/sealed-projects/current/note", "/api/vault-access",
-    "/api/operating-envelopes/current", "/api/movement-conditions/current",
-    "/api/commands", "/api/practice-sequences",
     "/api/diagnostic-programs/current", "/api/signature-records/current/interpretation",
     "/api/signature-programs/current", "/api/diagnostic-programs/legacy",
     "/api/sealed-projects/current/viewer", "/api/sealed-viewers/current/execute",
@@ -59,13 +63,9 @@ PROCESS_PATHS = {
     "/api/diagnostic-runs",
     "/api/collision-inputs/current", "/api/release-plans/current/confirmation",
     "/api/control-authority",
-    "/api/collision-solutions", "/api/reporting-checkpoints/current",
-    "/api/release-plans/current", "/api/release-plans/current/execute",
     "/api/vault-records/current", "/api/signature-records/current",
     "/api/replay-sessions/current/divergence", "/api/diagnostic-programs/authority",
     "/api/replay-sessions/current", "/api/estimator-tasks/current/inputs",
-    "/api/forecasts/current", "/api/schedule-windows/current",
-    "/api/schedules", "/api/feedback-policies",
     "/api/estimator-results/current", "/api/replay-sessions/current/execute",
 }
 
@@ -81,46 +81,15 @@ DEFINITION = {
 }
 
 ALLOCATION_ID = "ALLOC-2026-DP3-R9"
+TARIFF_ID = "TAR-CRR-DP3-R4"
 METER_ID = "MTR-CRR-DP3-R12"
 REPORT_ID = "RPT-CRR-DP3-R7"
 
-BOLT_MAGIC = bytes.fromhex("6060b017")
-BOLT_54 = bytes.fromhex("00000405")
-BOLT_QUERY = (
-    "MATCH (a:Asset {record_id: $asset})-[r:RELATION]->(w:Work) "
-    "RETURN r.record_id,w.record_id"
-)
-LINEAGE_OU = (
-    "ASSET_WORK]->(w) WITH a MATCH p=(legacy:Legacy)-[:SUPERSEDES]->"
-    "(group:OutletGroup)-[:CURRENT_ASSET]->(a)<-[:ARCHIVED_ASSET]-"
-    "(archive:Archive) RETURN p //"
-)
-
-RELATION_CONTRACT = {
-    "record_id": "RELPROTO-CRR-R3",
-    "revision": 3,
-    "protocol": "Neo4j Bolt 5.4",
-    "magic": "60 60 b0 17",
-    "version_bytes": "00 00 04 05",
-    "framing": "two-byte big-endian chunks terminated by 00 00",
-    "packstream": {
-        "HELLO": {"signature": "01", "fields": ["metadata"]},
-        "RUN": {"signature": "10", "fields": ["query", "parameters", "extra"]},
-        "PULL": {"signature": "3f", "fields": ["extra"]},
-    },
-    "query": BOLT_QUERY,
-    "relation": "ASSET_WORK",
-    "association": "ASC-CRR-4417",
-}
-
-RELATION_RESPONSE = {
-    "record_id": "REL-ASC-CRR-4417-R3",
-    "revision": 3,
-    "association": "ASC-CRR-4417",
-    "relation": "ASSET_WORK",
-    "asset": "AST-CRR-017",
-    "work_order": "WO-CRR-4417",
-}
+# BOLT_MAGIC, BOLT_54, BOLT_QUERY, LINEAGE_OU, RELATION_CONTRACT, RELATION_RESPONSE
+# removed: W11 Bolt facade dead code. All three W11 routes return 410.
+# W11.1 → native Metabase RELPROTO-CRR-R3 question on relation_contracts.
+# W11.2 → native Metabase REL-QUERY-CRR-R3 UNION injection → relation_responses.
+# W11.3 → native SECURITY DEFINER get_asset_lineage() → lineage_records.
 
 REPORTING_CONTRACT = {
     "schema": "arwc.reporting-checkpoint/v1",
@@ -144,184 +113,10 @@ REPORTING_CONTRACT = {
     "handover": {"status": "consistent"},
 }
 
-LINEAGE = {
-    "record_id": "LIN-AST-CRR-017-R8",
-    "revision": 8,
-    "legacy": "CRR-OG-LEGACY-2",
-    "outlet_group": "OG-CRR-02",
-    "current_asset": "AST-CRR-017",
-    "archive": "ARC-COLD-CRR-2019",
-}
+# LINEAGE, BoltError, bolt_messages, bolt_response, PackStream parser removed: W11 dead code.
 
 
-class BoltError(ValueError):
-    pass
 
-
-def unpack_value(data: bytes, offset: int = 0) -> tuple[object, int]:
-    if offset >= len(data):
-        raise BoltError("truncated PackStream value")
-    marker = data[offset]
-    offset += 1
-    if marker <= 0x7F:
-        return marker, offset
-    if marker >= 0xF0:
-        return marker - 256, offset
-    if 0x80 <= marker <= 0x8F:
-        length = marker & 0x0F
-        end = offset + length
-        if end > len(data):
-            raise BoltError("truncated PackStream string")
-        try:
-            return data[offset:end].decode(), end
-        except UnicodeDecodeError as error:
-            raise BoltError("invalid PackStream UTF-8") from error
-    if marker == 0xD0:
-        if offset >= len(data):
-            raise BoltError("truncated PackStream string length")
-        length = data[offset]
-        offset += 1
-        end = offset + length
-        if end > len(data):
-            raise BoltError("truncated PackStream string")
-        try:
-            return data[offset:end].decode(), end
-        except UnicodeDecodeError as error:
-            raise BoltError("invalid PackStream UTF-8") from error
-    if marker == 0xD1:
-        if offset + 2 > len(data):
-            raise BoltError("truncated PackStream string length")
-        length = int.from_bytes(data[offset:offset + 2], "big")
-        offset += 2
-        end = offset + length
-        if end > len(data):
-            raise BoltError("truncated PackStream string")
-        try:
-            return data[offset:end].decode(), end
-        except UnicodeDecodeError as error:
-            raise BoltError("invalid PackStream UTF-8") from error
-    if 0x90 <= marker <= 0x9F:
-        values: list[object] = []
-        for _ in range(marker & 0x0F):
-            value, offset = unpack_value(data, offset)
-            values.append(value)
-        return values, offset
-    if 0xA0 <= marker <= 0xAF:
-        values: dict[str, object] = {}
-        for _ in range(marker & 0x0F):
-            key, offset = unpack_value(data, offset)
-            value, offset = unpack_value(data, offset)
-            if not isinstance(key, str):
-                raise BoltError("PackStream map key is not a string")
-            values[key] = value
-        return values, offset
-    if 0xB0 <= marker <= 0xBF:
-        if offset >= len(data):
-            raise BoltError("truncated PackStream structure")
-        signature = data[offset]
-        offset += 1
-        fields: list[object] = []
-        for _ in range(marker & 0x0F):
-            value, offset = unpack_value(data, offset)
-            fields.append(value)
-        return {"signature": signature, "fields": fields}, offset
-    if marker == 0xC0:
-        return None, offset
-    if marker == 0xC2:
-        return False, offset
-    if marker == 0xC3:
-        return True, offset
-    if marker == 0xC8:
-        if offset >= len(data):
-            raise BoltError("truncated PackStream integer")
-        return struct.unpack("b", data[offset:offset + 1])[0], offset + 1
-    raise BoltError("unsupported PackStream marker")
-
-
-def bolt_messages(exchange: bytes) -> list[dict[str, object]]:
-    if len(exchange) < 20 or exchange[:4] != BOLT_MAGIC:
-        raise BoltError("Bolt magic does not match")
-    proposals = [exchange[index:index + 4] for index in range(4, 20, 4)]
-    if BOLT_54 not in proposals:
-        raise BoltError("Bolt 5.4 was not proposed")
-    messages: list[dict[str, object]] = []
-    offset = 20
-    while offset < len(exchange):
-        payload = bytearray()
-        while True:
-            if offset + 2 > len(exchange):
-                raise BoltError("truncated Bolt chunk")
-            length = int.from_bytes(exchange[offset:offset + 2], "big")
-            offset += 2
-            if length == 0:
-                break
-            if offset + length > len(exchange):
-                raise BoltError("truncated Bolt payload")
-            payload.extend(exchange[offset:offset + length])
-            offset += length
-        value, used = unpack_value(bytes(payload))
-        if used != len(payload) or not isinstance(value, dict) or "signature" not in value:
-            raise BoltError("Bolt message is not one PackStream structure")
-        messages.append(value)
-    if [value["signature"] for value in messages] != [0x01, 0x10, 0x3F]:
-        raise BoltError("expected HELLO, RUN, and PULL")
-    hello, run, pull = messages
-    if (len(hello["fields"]) != 1 or not isinstance(hello["fields"][0], dict) or
-            not isinstance(hello["fields"][0].get("user_agent"), str)):
-        raise BoltError("HELLO metadata is incomplete")
-    if (len(run["fields"]) != 3 or run["fields"][0] != BOLT_QUERY or
-            not isinstance(run["fields"][1], dict) or not isinstance(run["fields"][2], dict)):
-        raise BoltError("RUN fields do not match the relation contract")
-    if len(pull["fields"]) != 1 or not isinstance(pull["fields"][0], dict):
-        raise BoltError("PULL fields do not match the relation contract")
-    return messages
-
-
-def pack_value(value: object) -> bytes:
-    if value is None:
-        return b"\xc0"
-    if value is False:
-        return b"\xc2"
-    if value is True:
-        return b"\xc3"
-    if isinstance(value, int) and -16 <= value < 128:
-        return bytes([value & 0xFF])
-    if isinstance(value, str):
-        encoded = value.encode()
-        if len(encoded) < 16:
-            return bytes([0x80 + len(encoded)]) + encoded
-        if len(encoded) < 256:
-            return b"\xd0" + bytes([len(encoded)]) + encoded
-        return b"\xd1" + len(encoded).to_bytes(2, "big") + encoded
-    if isinstance(value, list):
-        if len(value) >= 16:
-            raise BoltError("response list is too long")
-        return bytes([0x90 + len(value)]) + b"".join(pack_value(item) for item in value)
-    if isinstance(value, dict):
-        if len(value) >= 16:
-            raise BoltError("response map is too large")
-        return bytes([0xA0 + len(value)]) + b"".join(
-            pack_value(str(key)) + pack_value(item) for key, item in value.items()
-        )
-    raise BoltError("unsupported response value")
-
-
-def pack_struct(signature: int, *fields: object) -> bytes:
-    return bytes([0xB0 + len(fields), signature]) + b"".join(pack_value(field) for field in fields)
-
-
-def chunk(payload: bytes) -> bytes:
-    return len(payload).to_bytes(2, "big") + payload + b"\x00\x00"
-
-
-def bolt_response(record: dict[str, object]) -> str:
-    values = [value for key, value in record.items() if key != "revision"]
-    exchange = BOLT_54
-    exchange += chunk(pack_struct(0x70, {"server": "ARWC-Relation/5.4"}))
-    exchange += chunk(pack_struct(0x70, {"fields": list(record)}))
-    exchange += chunk(pack_struct(0x71, values))
-    exchange += chunk(pack_struct(0x70, {"has_more": False}))
-    return base64.b64encode(exchange).decode()
 
 
 def atomic_json(path: pathlib.Path, value: object) -> None:
@@ -346,18 +141,13 @@ def initialize() -> None:
             "adjustment_observed": False,
             "reconciliation_copy_created": False,
             "allocation_observed": False,
+            "tariff_observed": False,
             "meter_observed": False,
             "reserve_reconciled": False,
             "relation_contract_observed": False,
             "relation_exchange_observed": False,
             "lineage_observed": False,
             "diagnostic_estimate_observed": False,
-            "planning_tariff_observed": False,
-            "reserve_balance_observed": False,
-            "loss_plan_observed": False,
-            "planning_tariff": None,
-            "reserve_balance": None,
-            "schedule_observed": False, "schedule_response": None,
             "reporting_view_observed": False, "reporting_decision_observed": False,
             "reporting_handover_observed": False, "reporting_view_response": None,
             "reporting_decision_response": None, "reporting_handover_response": None,
@@ -366,17 +156,15 @@ def initialize() -> None:
         state = load_state()
         changed = False
         for key in (
-            "allocation_observed", "meter_observed", "reserve_reconciled",
+            "allocation_observed", "tariff_observed", "meter_observed", "reserve_reconciled",
             "relation_contract_observed", "relation_exchange_observed", "lineage_observed",
             "diagnostic_estimate_observed",
-            "planning_tariff_observed", "reserve_balance_observed", "loss_plan_observed",
-            "schedule_observed",
             "reporting_view_observed", "reporting_decision_observed", "reporting_handover_observed",
         ):
             if key not in state:
                 state[key] = False
                 changed = True
-        for key in ("planning_tariff", "reserve_balance", "schedule_response", "reporting_view_response",
+        for key in ("reporting_view_response",
                     "reporting_decision_response", "reporting_handover_response"):
             if key not in state:
                 state[key] = None
@@ -393,20 +181,6 @@ def load_state() -> dict[str, object]:
 
 def save_state(value: dict[str, object]) -> None:
     atomic_json(STATE, value)
-
-
-def relation_prerequisite() -> bool:
-    if load_state().get("reserve_reconciled"):
-        return True
-    try:
-        evidence = json.loads(BUSINESS_RELATION_EVIDENCE.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return False
-    return evidence == {
-        "association": "ASC-CRR-4417",
-        "asset": "AST-CRR-017",
-        "record_id": "ASSOC-CRR-4417-R6",
-    }
 
 
 def load_evidence(path: pathlib.Path) -> dict[str, object] | None:
@@ -436,19 +210,10 @@ def process_interpretation_prerequisite() -> bool:
     if not load_state().get("reserve_reconciled"):
         return False
     integration = load_evidence(INTEGRATION_EVIDENCE)
-    mapping = load_evidence(PROCESS_EVIDENCE / "historian" / "outlet-map.json")
-    revision = load_evidence(PROCESS_EVIDENCE / "engineering" / "deployment-revision.json")
-    envelope = load_evidence(PROCESS_EVIDENCE / "hmi" / "operating-envelope.json")
     return bool(
         integration is not None and
         integration.get("record_id") == "REC-CRR-DP3-17" and
-        integration.get("planning_window") == "ALLOC-2026-DP3" and
-        mapping is not None and mapping.get("record_id") == "MAP-OG2-R8" and
-        mapping.get("project") == "CRR-CTRL-R21" and
-        revision is not None and revision.get("record_id") == "CMP-CRR-R21" and
-        revision.get("deployed_project") == "CRR-CTRL-R21" and
-        envelope is not None and envelope.get("record_id") == "ENV-OG2-R6" and
-        envelope.get("outlet_group") == "OG-CRR-02"
+        integration.get("planning_window") == "ALLOC-2026-DP3"
     )
 
 
@@ -604,38 +369,17 @@ class Handler(BaseHTTPRequestHandler):
             return
         self.send_json(response.status, payload)
 
-    def w29_internal(self, path: str, request: dict[str, object]) -> tuple[int, dict[str, object]]:
-        data = json.dumps(request, sort_keys=True, separators=(",", ":")).encode()
-        outbound = urllib.request.Request(
-            "https://10.77.62.20" + path, data=data,
-            headers={
-                "Content-Type": "application/json", "X-ARWC-Internal": "planning-data-reserve",
-                "X-ARWC-Tenant": "arwc",
-            }, method="POST",
-        )
-        context = ssl.create_default_context(cafile="/run/arwc-tls/ca.crt")
-        try:
-            response = urllib.request.urlopen(outbound, context=context, timeout=5)
-        except urllib.error.HTTPError as error:
-            response = error
-        except OSError:
-            return 409, {"error": "current process evidence is unavailable"}
-        try:
-            result = json.loads(response.read())
-        except json.JSONDecodeError:
-            return 409, {"error": "current process evidence is invalid"}
-        return response.status, result
-
     def w34_internal(self, path: str, request: dict[str, object]) -> tuple[int, dict[str, object]]:
         data = json.dumps(request, sort_keys=True, separators=(",", ":")).encode()
         outbound = urllib.request.Request(
-            "https://10.77.62.20" + path, data=data,
+            "https://10.77.60.56" + path, data=data,
             headers={"Content-Type": "application/json", "X-ARWC-Internal": "planning-data-reporting",
-                     "X-ARWC-Tenant": "arwc"}, method="POST",
+                     "X-ARWC-Tenant": "arwc", "Host": "independent-instruments.arwc.test"}, method="POST",
         )
         context = ssl.create_default_context(cafile="/run/arwc-tls/ca.crt")
+        context.check_hostname = False
         try:
-            response = urllib.request.urlopen(outbound, context=context, timeout=5)
+            response = urllib.request.urlopen(outbound, context=context, timeout=20)
         except urllib.error.HTTPError as error:
             response = error
         except OSError:
@@ -647,6 +391,30 @@ class Handler(BaseHTTPRequestHandler):
     def _serve_client_document(self) -> bool:
         if urlsplit(self.path).path != "/.well-known/arwc-client":
             return False
+        reports = _load_reports_state()
+        # planning.saved-query, planning.query-run, and planning.allocation-ledger
+        # route to native Metabase. The participant uses the W06.3 Metabase session
+        # (X-Metabase-Session header) against the real Metabase/PostgreSQL stack.
+        saved_query_template = _metabase_card_url(
+            reports, "qry_reserve_r7_id", "https://reports.arwc.test/api/card/qry-reserve-r7"
+        )
+        query_run_template = reports.get("metabase_url", "https://reports.arwc.test") + "/api/dataset"
+        alloc_ledger_template = _metabase_card_url(
+            reports, "alloc_dp3_question_id", "https://reports.arwc.test/api/card/alloc-dp3-current"
+        )
+        meter_alloc_template = _metabase_card_url(
+            reports, "meter_dp3_question_id", "https://reports.arwc.test/api/card/meter-dp3-current"
+        )
+        alloc_discrepancy_template = _metabase_card_url(
+            reports, "recon_dp3_question_id", "https://reports.arwc.test/api/card/recon-dp3-current"
+        )
+        report_sources_template = _metabase_card_url(
+            reports, "sel_dp3_question_id", "https://reports.arwc.test/api/card/sel-crr-dp3-7"
+        )
+        report_row_ext_template = _metabase_card_url(
+            reports, "ext_dp3_question_id", "https://reports.arwc.test/api/card/ext-excerpts-dp3"
+        )
+        # W11.1: planning.relation-schema routes to native Metabase question on relation_contracts.
         self.send_json(200, {
             "schema": "arwc.client-documents/v1",
             "service": "planning-data.arwc.test",
@@ -655,47 +423,72 @@ class Handler(BaseHTTPRequestHandler):
                 {
                     "key": "planning.saved-query",
                     "method": "GET",
-                    "template": "https://planning-data.arwc.test/api/saved-queries/current"
+                    "template": saved_query_template
                 },
                 {
                     "key": "planning.query-run",
                     "method": "POST",
-                    "template": "https://planning-data.arwc.test/api/query-runs"
+                    "template": query_run_template
                 },
                 {
                     "key": "planning.allocation-ledger",
                     "method": "GET",
-                    "template": "https://planning-data.arwc.test/api/allocation-ledgers/current"
+                    "template": alloc_ledger_template
                 },
                 {
                     "key": "planning.meter-allocation",
                     "method": "GET",
-                    "template": "https://planning-data.arwc.test/api/meter-allocations/current"
+                    "template": meter_alloc_template
                 },
                 {
                     "key": "planning.allocation-discrepancy",
                     "method": "GET",
-                    "template": "https://planning-data.arwc.test/api/allocation-discrepancies/current"
+                    "template": alloc_discrepancy_template
+                },
+                {
+                    "key": "business.report-sources",
+                    "method": "GET",
+                    "template": report_sources_template
+                },
+                {
+                    "key": "business.report-row-external",
+                    "method": "GET",
+                    "template": report_row_ext_template
+                },
+                {
+                    "key": "business.report-document",
+                    "method": "GET",
+                    "template": "https://documents.arwc.test/remote.php/dav/files/jules.orswick@veybridge.test/PLN-MER-DP3-R6.json"
                 },
                 {
                     "key": "planning.live-feed",
                     "method": "GET",
-                    "template": "https://planning-data.arwc.test/api/live-feeds/current"
+                    "template": "https://read-data.arwc.test/api/operating-history"
                 },
                 {
                     "key": "planning.relation-schema",
                     "method": "GET",
-                    "template": "https://planning-data.arwc.test/api/relation-schemas/current"
+                    "template": _metabase_card_url(reports, "relproto_question_id", "https://reports.arwc.test/api/card/relproto-crr-r3")
                 },
                 {
                     "key": "planning.relation-exchange",
-                    "method": "POST",
-                    "template": "https://planning-data.arwc.test/api/relation-exchanges"
+                    "method": "GET",
+                    "template": _metabase_card_url(reports, "rel_query_question_id", "https://reports.arwc.test/api/card/rel-query-crr-r3")
+                },
+                {
+                    "key": "planning.settlement-tariff",
+                    "method": "GET",
+                    "template": "https://planning-data.arwc.test/api/settlement-tariffs/current"
                 },
                 {
                     "key": "planning.asset-lineage",
                     "method": "GET",
                     "template": "https://planning-data.arwc.test/api/asset-lineage/current"
+                },
+                {
+                    "key": "planning.lineage-record",
+                    "method": "POST",
+                    "template": "https://planning-data.arwc.test/api/lineage-records/current"
                 },
                 {
                     "key": "planning.integration-session",
@@ -732,6 +525,35 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:
         path = urlsplit(self.path).path
+        # W23.3: internal allocation status for engineering container.
+        # Engineering reads real committed_ml from PostgreSQL to validate sufficiency.
+        if path == "/internal/allocation-status":
+            if (self.headers.get("X-ARWC-Internal") != "engineering-r27" or
+                    self.headers.get("X-ARWC-Tenant") != "arwc" or
+                    self.client_address[0] not in {"10.77.60.55", "10.77.60.51"}):
+                self.send_json(403, {"error": "engineering service context required"})
+                return
+            try:
+                with database() as conn:
+                    with conn.cursor() as cur:
+                        cur.execute(
+                            "SELECT district, committed_ml, revision, planning_window "
+                            "FROM allocation_ledger WHERE district=%s",
+                            ("Cairn Reach",)
+                        )
+                        row = cur.fetchone()
+                if row is None:
+                    self.send_json(404, {"error": "allocation ledger entry not found"})
+                    return
+                self.send_json(200, {
+                    "district": row[0],
+                    "committed_ml": float(row[1]),
+                    "revision": row[2],
+                    "planning_window": row[3],
+                })
+            except Exception as exc:
+                self.send_json(503, {"error": f"database read failed: {exc}"})
+            return
         if self.headers.get("Host", "").split(":", 1)[0] == "process-view.arwc.test":
             if path in PROCESS_PATHS:
                 self.process_proxy()
@@ -742,40 +564,25 @@ class Handler(BaseHTTPRequestHandler):
             return
         if not self.authorized():
             return
-        if path == "/api/planning-windows/current/economics":
-            if not ot_read_prerequisite():
-                self.send_json(403, {"error": "scoped process-read evidence required"})
-                return
-            state = load_state()
-            result = {
-                "record_id": "TAR-CRR-DP3-R4", "revision": 4,
-                "planning_window": "ALLOC-2026-DP3", "currency": "USD",
-                "rate_per_ml": 2400, "unit": "USD/ML", "status": "current",
-            }
-            state["planning_tariff_observed"] = True
-            state["planning_tariff"] = result
-            save_state(state)
-            self.accepted("planning-tariff-read", result, extra={
-                "planning_method": PLAN_METHOD.read_text(encoding="utf-8"),
-            })
-            return
         if path == "/api/allocation-ledgers/current":
             self.allocation()
+            return
+        if path == "/api/settlement-tariffs/current":
+            self.tariff()
             return
         if path == "/api/meter-allocations/current":
             self.meter()
             return
         if path == "/api/allocation-discrepancies/current":
-            self.reserve_reconciliation()
+            # W09.3: canned tolerance facade removed. The reconciliation is a real
+            # native Metabase question on reserve_reconciliation view in corporate-db.
+            self.send_json(410, {"error": "allocation-discrepancies endpoint retired; use planning.allocation-discrepancy route"})
             return
         if path == "/api/relation-schemas/current":
-            if not relation_prerequisite():
-                self.send_json(403, {"error": "asset association or reconciled allocation is required"})
-                return
-            state = load_state()
-            state["relation_contract_observed"] = True
-            save_state(state)
-            self.accepted("relation-contract-read", RELATION_CONTRACT)
+            # W11.1 Bolt facade removed. The relation contract RELPROTO-CRR-R3 is now
+            # a native Metabase question on relation_contracts in corporate-db.
+            # Use planning.relation-schema route in the client doc.
+            self.send_json(410, {"error": "relation-schemas endpoint retired; use planning.relation-schema route"})
             return
         if path == "/api/reporting-contracts/current":
             self.send_json(200, REPORTING_CONTRACT)
@@ -789,43 +596,53 @@ class Handler(BaseHTTPRequestHandler):
         self.accepted("saved-query-read", DEFINITION)
 
     def do_POST(self) -> None:
-        if urlsplit(self.path).path == "/internal/schedule-validations":
-            if (self.headers.get("X-ARWC-Internal") != "data-bridge-scheduling" or
+        # W29.2: reserve reconciliation state setter called by engineering workbench
+        # after the participant submits a valid UsableVolumeML reconciliation.
+        if urlsplit(self.path).path == "/internal/reserve-reconciled":
+            if (self.headers.get("X-ARWC-Internal") != "engineering-r29" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or
-                    self.client_address[0] != "10.77.62.20"):
-                self.send_json(403, {"error": "integration service context required"}); return
-            request = self.body()
-            if request is None: return
-            correlation = request.get("correlation"); binding = request.get("request"); supplied = request.get("evaluation")
-            try: correlation_valid = str(uuid.UUID(str(correlation))) == str(correlation)
-            except (TypeError, ValueError): correlation_valid = False
-            evaluated = None if not isinstance(binding, dict) else schedule33.evaluate_schedule(
-                binding.get("reservoir_release_m3s"), binding.get("alternate_supply_m3s"),
-                binding.get("demand_m3s"))
-            if (set(request) != {"correlation", "request", "evaluation"} or not correlation_valid or
-                    binding.get("checkpoint") != schedule33.CHECKPOINT or binding.get("interval_seconds") != 300 or
-                    binding.get("demand_m3s") != schedule33.DEMAND or evaluated is None or supplied != evaluated):
-                self.send_json(409, {"error": "planning schedule rejected"}); return
-            state = load_state(); existing = state.get("schedule_response")
-            if isinstance(existing, dict):
-                if existing.get("audit_id") == correlation: self.send_json(201, existing)
-                else: self.send_json(409, {"error": "schedule already recorded under another correlation"})
+                    self.client_address[0] not in {"10.77.60.55", "10.77.60.51"}):
+                self.send_json(403, {"error": "engineering service context required"})
                 return
-            record = {"record_id": "PLAN-SCHED-CRR-33", "revision": 1,
-                      "request_correlation": correlation, **evaluated,
-                      "demand_m3s": binding["demand_m3s"],
-                      "reservoir_release_m3s": binding["reservoir_release_m3s"],
-                      "alternate_supply_m3s": binding["alternate_supply_m3s"]}
-            response = {"audit_id": append_audit("schedule-window-read", record, str(correlation)),
-                        "record": record}
-            state["schedule_observed"] = True; state["schedule_response"] = response; save_state(state)
-            atomic_json(ROOT / "results/PLAN-SCHED-CRR-33.json", record)
-            self.send_json(201, response); return
+            request = self.body()
+            if request is None:
+                return
+            expected_fields = {
+                "planning_window", "asset", "observed_at", "process_quality",
+                "measured_usable_volume_ml", "committed_ml", "uncommitted_margin_ml",
+                "margin_state", "source_digest",
+            }
+            if (set(request) != expected_fields or
+                    request.get("planning_window") != "ALLOC-2026-DP3" or
+                    request.get("asset") != "AST-CRR-017" or
+                    request.get("process_quality") != "Good" or
+                    request.get("margin_state") not in {"positive", "zero", "negative"}):
+                self.send_json(409, {"error": "reserve reconciliation binding rejected"})
+                return
+            state = load_state()
+            state["reserve_reconciled"] = True
+            save_state(state)
+            result = {
+                "record_id": "REC-CRR-DP3-17", "revision": 1,
+                "planning_window": "ALLOC-2026-DP3", "asset": "AST-CRR-017",
+                "observed_at": request["observed_at"],
+                "measured_usable_volume_ml": request["measured_usable_volume_ml"],
+                "committed_ml": request["committed_ml"],
+                "uncommitted_margin_ml": request["uncommitted_margin_ml"],
+                "margin_state": request["margin_state"],
+                "process_quality": request["process_quality"],
+                "source_digest": request["source_digest"],
+            }
+            atomic_json(INTEGRATION_EVIDENCE, result)
+            os.chown(INTEGRATION_EVIDENCE, -1, grp.getgrnam("arwc-integration").gr_gid)
+            os.chmod(INTEGRATION_EVIDENCE, 0o640)
+            self.accepted("reserve-reconciliation-recorded", result, 201)
+            return
         if urlsplit(self.path).path == "/internal/diagnostic-estimate":
-            if (self.headers.get("X-ARWC-Internal") != "data-bridge-r27" or
+            if (self.headers.get("X-ARWC-Internal") != "diagnostics-r27" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or
-                    self.client_address[0] != "10.77.62.20"):
-                self.send_json(403, {"error": "integration service context required"})
+                    self.client_address[0] != "10.77.60.58"):
+                self.send_json(403, {"error": "diagnostic service context required"})
                 return
             request = self.body()
             if request is None:
@@ -856,15 +673,90 @@ class Handler(BaseHTTPRequestHandler):
             atomic_json(ROOT / "results/PLAN-CONSUMER-R8.json", result)
             self.accepted("diagnostic-estimate-consumed", result, 201)
             return
+        # W23.2: controlled-allocation write from engineering workbench.
+        # Engineering container at 10.77.60.55 calls this after a valid estimator-runs
+        # result to commit the false estimate into the allocation_ledger.
+        if urlsplit(self.path).path == "/internal/estimator-controlled-allocation":
+            if (self.headers.get("X-ARWC-Internal") != "engineering-r27" or
+                    self.headers.get("X-ARWC-Tenant") != "arwc" or
+                    self.client_address[0] not in {"10.77.60.55", "10.77.60.51"}):
+                self.send_json(403, {"error": "engineering service context required"})
+                return
+            request = self.body()
+            if request is None:
+                return
+            expected = {
+                "allocation_case": "ALLOC-CASE-CRR-33",
+                "district": "Cairn Reach",
+                "controlled_reserve_ml": 13.4,
+                "ordinary_reserve_ml": 12.4,
+                "quality": "valid",
+                "unaffected": {"North": 8.1, "Merewick": 7.65},
+            }
+            if request != expected:
+                self.send_json(409, {"error": "controlled allocation binding rejected"})
+                return
+            state = load_state()
+            if state.get("controlled_allocation_committed"):
+                existing = state.get("controlled_allocation_response")
+                if isinstance(existing, dict):
+                    self.send_json(201, existing)
+                    return
+            # Read the current committed_ml to confirm ordinary baseline.
+            try:
+                with database() as conn:
+                    with conn.cursor() as cur:
+                        cur.execute(
+                            "SELECT committed_ml FROM allocation_ledger WHERE district=%s",
+                            (expected["district"],)
+                        )
+                        row = cur.fetchone()
+                        ordinary_committed_ml = float(row[0]) if row else 12.0
+            except Exception:
+                ordinary_committed_ml = 12.0
+            # Write the false estimate to the allocation_ledger.
+            # svc-planner-write has UPDATE on allocation_ledger for this controlled write.
+            try:
+                import psycopg2 as _pg
+                write_conn = _pg.connect(
+                    dbname="arwc", user="svc-planner-write", host="/var/run/postgresql"
+                )
+                write_conn.autocommit = True
+                with write_conn.cursor() as cur:
+                    cur.execute(
+                        "UPDATE allocation_ledger SET committed_ml=%s, revision=revision+1 "
+                        "WHERE district=%s",
+                        (13.0, expected["district"])
+                    )
+                    rows = cur.rowcount
+                write_conn.close()
+            except Exception as exc:
+                self.send_json(503, {"error": f"database write failed: {exc}"}); return
+            if rows == 0:
+                self.send_json(409, {"error": "allocation ledger district not found"}); return
+            result = {
+                "record_id": "ALLOC-CASE-CRR-33", "revision": 33,
+                "allocation_case": "ALLOC-CASE-CRR-33",
+                "district": expected["district"],
+                "ordinary_reserve_ml": expected["ordinary_reserve_ml"],
+                "controlled_reserve_ml": expected["controlled_reserve_ml"],
+                "committed_ml": 13.0,
+                "ordinary_committed_ml": ordinary_committed_ml,
+                "quality": "valid",
+                "unaffected": expected["unaffected"],
+                "allocation_ledger_updated": True,
+            }
+            response = {
+                "audit_id": append_audit("controlled-allocation-committed", result),
+                "record": result,
+            }
+            state["controlled_allocation_committed"] = True
+            state["controlled_allocation_response"] = response
+            save_state(state)
+            self.send_json(201, response)
+            return
         path = urlsplit(self.path).path
         if self.headers.get("Host", "").split(":", 1)[0] == "process-view.arwc.test":
-            if path == "/api/reporting-checkpoints/current":
-                if not self.process_authorized():
-                    return
-                request = self.body()
-                if request is not None:
-                    self.w29_plan(request)
-                return
             if path in PROCESS_PATHS:
                 self.process_proxy()
             else:
@@ -876,20 +768,24 @@ class Handler(BaseHTTPRequestHandler):
         if request is None:
             return
         if path == "/api/query-runs":
-            if "function" in request:
-                self.reconcile(request)
-            else:
-                self.query_report(request)
+            # W07.3: the canned reconcile gate is removed. arwc_reconcile_copy is only
+            # invokable via the real quoted-identifier injection through native Metabase
+            # /api/dataset against corporate-db under planning_reader.
+            self.query_report(request)
         elif path == "/api/integration-sessions":
             self.integration(request)
         elif path == "/api/relation-exchanges":
-            self.relation_exchange(request, lineage=False)
+            # W11.2 Bolt facade removed. Use planning.relation-exchange route
+            # (suppliers.arwc.test/api/resource/Task) with Jules credentials and
+            # the W11.1 query template to find ASC-CRR-4417.
+            self.send_json(410, {"error": "relation-exchanges endpoint retired; use planning.relation-exchange route"})
         elif path == "/api/asset-lineage/current":
-            self.relation_exchange(request, lineage=True)
-        elif path == "/api/collision-solutions":
-            self.reserve_balance(request)
-        elif path == "/api/reporting-checkpoints/current":
-            self.w29_plan(request)
+            # W11.3 Bolt lineage facade removed. The asset lineage LIN-AST-CRR-017-R8
+            # is behind the SECURITY DEFINER get_asset_lineage() function in corporate-db.
+            # Reached via UNION injection calling the function with the W11.2 asset identity.
+            self.send_json(410, {"error": "asset-lineage endpoint retired; use the W11.2 injection surface with get_asset_lineage()"})
+        elif path == "/api/lineage-records/current":
+            self.lineage_record(request)
         elif path == "/api/reporting-submissions/current/result":
             self.w34_view(request)
         elif path == "/api/planning-bids":
@@ -898,6 +794,50 @@ class Handler(BaseHTTPRequestHandler):
             self.w34_handover(request)
         else:
             self.send_json(404, {"error": "record not found"})
+
+    def lineage_record(self, request: dict[str, object]) -> None:
+        """W11.3 completion: participant submits the recovered lineage record.
+
+        Validates the submitted LIN-AST-CRR-017-R8 fields against the known lineage.
+        Writes archive-lineage.json to the shared planning-evidence volume so the
+        archive service can verify W12.1 prerequisite satisfaction.
+        """
+        expected = {
+            "record_id": "LIN-AST-CRR-017-R8",
+            "asset": "AST-CRR-017",
+            "archive": "ARC-COLD-CRR-2019",
+        }
+        for field, value in expected.items():
+            if request.get(field) != value:
+                self.send_json(409, {"error": f"lineage field {field!r} does not match the recovered record"})
+                return
+        state = load_state()
+        state["lineage_observed"] = True
+        save_state(state)
+        evidence = {
+            "record_id": "LIN-AST-CRR-017-R8",
+            "revision": 8,
+            "asset": "AST-CRR-017",
+            "archive": "ARC-COLD-CRR-2019",
+            "current_asset": "AST-CRR-017",
+        }
+        try:
+            ARCHIVE_EVIDENCE.parent.mkdir(parents=True, exist_ok=True)
+            import tempfile as _tempfile, os as _os
+            descriptor, temporary = _tempfile.mkstemp(
+                dir=ARCHIVE_EVIDENCE.parent, prefix=f".{ARCHIVE_EVIDENCE.name}."
+            )
+            with _os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+                import json as _json
+                _json.dump(evidence, handle, sort_keys=True, separators=(",", ":"))
+                handle.write("\n")
+                handle.flush()
+                _os.fsync(handle.fileno())
+            _os.chmod(temporary, 0o644)
+            _os.replace(temporary, ARCHIVE_EVIDENCE)
+        except OSError:
+            pass
+        self.accepted("lineage-record-submitted", evidence, 201)
 
     def w34_view(self, request: dict[str, object]) -> None:
         if not process_interpretation_prerequisite():
@@ -983,7 +923,7 @@ class Handler(BaseHTTPRequestHandler):
         if not isinstance(state.get("reporting_decision_response"), dict):
             self.send_json(403, {"error": "accepted changed planning decision required"}); return
         schedule = request.get("schedule")
-        evaluated = None if not isinstance(schedule, dict) else schedule33.evaluate_schedule(
+        evaluated = None if not isinstance(schedule, dict) else reporting_schedule.evaluate_schedule(
             schedule.get("reservoir_release_m3s"), schedule.get("alternate_supply_m3s"),
             schedule.get("demand_m3s"))
         expected_keys = {"checkpoint", "view", "decision", "control_client", "schedule", "handover"}
@@ -1006,17 +946,26 @@ class Handler(BaseHTTPRequestHandler):
             "correlation": correlation, "request": request, "evaluation": evaluated,
         })
         instrument = observed.get("record")
+        inst_release = instrument.get("measured_release_ml") if isinstance(instrument, dict) else None
+        inst_reserve_before = instrument.get("reserve_before_ml") if isinstance(instrument, dict) else None
+        inst_reserve_after = instrument.get("reserve_after_ml") if isinstance(instrument, dict) else None
         if (status != 201 or observed.get("audit_id") != correlation or not isinstance(instrument, dict) or
                 instrument.get("record_id") != "INST-REPORT-CRR-34" or
-                instrument.get("measured_release_ml") != 0.81 or instrument.get("reserve_after_ml") != 11.59):
+                inst_release != 0.81 or
+                not isinstance(inst_reserve_before, (int, float)) or
+                not isinstance(inst_reserve_after, (int, float)) or
+                inst_reserve_after >= 13.4):
             self.send_json(status if status in {403, 409} else 409, observed); return
+        truth_difference = round(13.4 - float(inst_reserve_after), 6)
         record = {"record_id": "REPORT-CRR-34", "revision": 1, "request_correlation": correlation,
                   "checkpoint": "REH-REPORT-34", "interval": "ALLOC-2026-DP3",
                   "view": "VIEW-CRR-34", "decision_record": "DECISION-CRR-34",
                   "ordinary_decision": "ALLOC-HOLD-R3", "decision": "ALLOC-EXPAND-R2",
                   "planning_handover_reserve_ml": 13.4, "report_consistency": "accepted",
-                  "independent_release_ml": 0.81, "independent_reserve_before_ml": 12.4,
-                  "independent_reserve_after_ml": 11.59, "reported_truth_difference_ml": 1.81,
+                  "independent_release_ml": float(inst_release),
+                  "independent_reserve_before_ml": float(inst_reserve_before),
+                  "independent_reserve_after_ml": float(inst_reserve_after),
+                  "reported_truth_difference_ml": truth_difference,
                   "schedule_sha256": evaluated["schedule_sha256"],
                   "live_process_state_changed": False, "prior_evidence_changed": False}
         response = {"audit_id": append_audit("reporting-handover-created", record, correlation),
@@ -1026,155 +975,6 @@ class Handler(BaseHTTPRequestHandler):
                     "reservoir_observation": observed["reservoir_observation"]}
         state["reporting_handover_observed"] = True; state["reporting_handover_response"] = response; save_state(state)
         atomic_json(ROOT / "results/REPORT-CRR-34.json", record); self.send_json(201, response)
-
-    def reserve_balance(self, request: dict[str, object]) -> None:
-        if not process_interpretation_prerequisite():
-            self.send_json(403, {"error": "current process interpretation evidence required"})
-            return
-        expected = {
-            "allocation": "ALLOC-2026-DP3-R9",
-            "reserve_observation": "OBS-RESERVE-CRR-R29",
-            "planning_window": "ALLOC-2026-DP3",
-            "expected_margin_ml": 0.4,
-        }
-        if request != expected:
-            self.send_json(409, {"error": "reserve and allocation binding does not match"})
-            return
-        with database() as connection, connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT record_id,revision,planning_window,committed_ml,unit "
-                "FROM allocation_ledger WHERE record_id=%s", (expected["allocation"],),
-            )
-            allocation = cursor.fetchone()
-        if allocation is None:
-            self.send_json(409, {"error": "current allocation record is unavailable"})
-            return
-        correlation = str(uuid.uuid4())
-        status, response = self.w29_internal("/internal/reserve-observations", {
-            "correlation": correlation,
-            "record_id": "OBS-RESERVE-CRR-R29",
-            "planning_window": "ALLOC-2026-DP3",
-        })
-        observation = response.get("record")
-        if (status != 201 or not isinstance(observation, dict) or
-                observation.get("record_id") != "OBS-RESERVE-CRR-R29" or
-                observation.get("planning_window") != allocation[2] or
-                observation.get("usable_reserve_ml") != 12.4 or
-                observation.get("unit") != allocation[4] or
-                response.get("audit_id") != correlation):
-            self.send_json(409, {"error": "independent reserve observation did not join"})
-            return
-        committed = Decimal(str(allocation[3]))
-        reserve = Decimal(str(observation["usable_reserve_ml"]))
-        margin = reserve - committed
-        if margin != Decimal("0.40"):
-            self.send_json(409, {"error": "current reserve balance does not reconcile"})
-            return
-        result = {
-            "record_id": "BAL-CRR-DP3-R29", "revision": 29,
-            "request_correlation": correlation, "planning_window": allocation[2],
-            "allocation": allocation[0], "allocation_revision": allocation[1],
-            "reserve_observation": observation["record_id"],
-            "observation_revision": observation["revision"],
-            "usable_reserve_ml": float(reserve), "committed_ml": float(committed),
-            "uncommitted_margin_ml": float(margin), "unit": allocation[4],
-            "before_release": True,
-        }
-        state = load_state()
-        state["reserve_balance_observed"] = True
-        state["reserve_balance"] = result
-        save_state(state)
-        self.accepted("reserve-balance-created", result, 201, {
-            "instrument_audit_id": response["audit_id"],
-        }, correlation=correlation)
-
-    def w29_plan(self, request: dict[str, object]) -> None:
-        expected = {
-            "plan_id": "PLAN-CRR-LOSS-1000", "tariff": "TAR-CRR-DP3-R4",
-            "balance": "BAL-CRR-DP3-R29", "mode": "MODE-CRR-17",
-            "outlet_group": "OG-CRR-02", "ramp_open_seconds": 100,
-            "each_gate_target_m3s": 0.5, "hold_seconds": 900,
-            "ramp_close_seconds": 100,
-        }
-        if request != expected:
-            self.send_json(409, {"error": "release-plan binding or quantity does not match"})
-            return
-        state = load_state()
-        tariff = state.get("planning_tariff")
-        balance = state.get("reserve_balance")
-        if (not state["planning_tariff_observed"] or not state["reserve_balance_observed"] or
-                not isinstance(tariff, dict) or not isinstance(balance, dict)):
-            self.send_json(403, {"error": "current tariff and reserve balance are required"})
-            return
-        correlation = str(uuid.uuid4())
-        status, response = self.w29_internal("/internal/release-plan-assessments", {
-            "correlation": correlation, "request": request,
-            "tariff": tariff, "balance": balance,
-        })
-        result = response.get("record")
-        if status == 403:
-            self.send_json(403, {"error": "validated current operating mode evidence required"})
-            return
-        if (status != 201 or not isinstance(result, dict) or
-                result.get("record_id") != "PLAN-CRR-LOSS-1000" or
-                result.get("request_correlation") != correlation or
-                response.get("audit_id") != correlation):
-            self.send_json(409, {"error": "supervisory plan calculation did not join"})
-            return
-        state["loss_plan_observed"] = True
-        save_state(state)
-        atomic_json(ROOT / "results" / "PLAN-CRR-LOSS-1000.json", result)
-        self.accepted("loss-plan-created", result, 201, {
-            "supervisory_audit_id": response["audit_id"],
-        }, correlation=correlation)
-
-    def relation_exchange(self, request: dict[str, object], *, lineage: bool) -> None:
-        state = load_state()
-        if not state["relation_contract_observed"]:
-            self.send_json(403, {"error": "relation contract has not been read"})
-            return
-        if lineage and not state["relation_exchange_observed"]:
-            self.send_json(403, {"error": "accepted relation exchange is required"})
-            return
-        encoded = request.get("exchange")
-        if not isinstance(encoded, str) or len(encoded) > 12288:
-            self.send_json(409, {"error": "Bolt exchange is missing"})
-            return
-        try:
-            raw = base64.b64decode(encoded, validate=True)
-            messages = bolt_messages(raw)
-        except (binascii.Error, BoltError):
-            self.send_json(409, {"error": "Bolt exchange was rejected"})
-            return
-        parameters = messages[1]["fields"][1]
-        assert isinstance(parameters, dict)
-        if parameters.get("asset") != "AST-CRR-017":
-            self.send_json(409, {"error": "asset key does not match"})
-            return
-        if parameters.get("association") != "ASC-CRR-4417":
-            self.send_json(409, {"error": "association does not match"})
-            return
-        expected_ou = LINEAGE_OU if lineage else "ASSET_WORK"
-        if parameters.get("certificate_ou") != expected_ou:
-            self.send_json(409, {"error": "relationship type was not accepted"})
-            return
-        if lineage:
-            atomic_json(ARCHIVE_EVIDENCE, LINEAGE)
-            os.chown(ARCHIVE_EVIDENCE, -1, grp.getgrnam("arwc-archive-source").gr_gid)
-            os.chmod(ARCHIVE_EVIDENCE, 0o640)
-            state["lineage_observed"] = True
-            save_state(state)
-            self.accepted(
-                "asset-lineage-created", LINEAGE, 201,
-                extra={"bolt_response": bolt_response(LINEAGE)},
-            )
-        else:
-            state["relation_exchange_observed"] = True
-            save_state(state)
-            self.accepted(
-                "relation-exchange-created", RELATION_RESPONSE, 201,
-                extra={"bolt_response": bolt_response(RELATION_RESPONSE)},
-            )
 
     def allocation(self) -> None:
         with database() as connection, connection.cursor() as cursor:
@@ -1191,6 +991,24 @@ class Handler(BaseHTTPRequestHandler):
         state["allocation_observed"] = True
         save_state(state)
         self.accepted("allocation-ledger-read", result)
+
+    def tariff(self) -> None:
+        with database() as connection, connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT record_id,revision,planning_window,asset,currency,rate_per_ml,unit,"
+                "effective_from,effective_to FROM settlement_tariff WHERE record_id=%s", (TARIFF_ID,),
+            )
+            row = cursor.fetchone()
+        result = {
+            "record_id": row[0], "revision": row[1], "planning_window": row[2], "asset": row[3],
+            "currency": row[4], "rate_per_ml": float(row[5]), "unit": row[6],
+            "effective_from": row[7].isoformat().replace("+00:00", "Z"),
+            "effective_to": row[8].isoformat().replace("+00:00", "Z"),
+        }
+        state = load_state()
+        state["tariff_observed"] = True
+        save_state(state)
+        self.accepted("settlement-tariff-read", result)
 
     def meter(self) -> None:
         with database() as connection, connection.cursor() as cursor:
@@ -1209,83 +1027,39 @@ class Handler(BaseHTTPRequestHandler):
         save_state(state)
         self.accepted("meter-allocation-read", result)
 
-    def reserve_reconciliation(self) -> None:
-        state = load_state()
-        if not state["allocation_observed"] or not state["meter_observed"]:
-            self.send_json(403, {"error": "allocation ledger and meter export are required"})
+    # reserve_reconciliation() removed: W09.3 facade with 1.0/0.4 tolerance
+    # accept is gone. The real reconciliation is RECON-DP3-CURRENT on
+    # reserve_reconciliation view in corporate-db, accessed via native Metabase.
+
+    def integration(self, request: dict[str, object]) -> None:
+        # W09.4: return operating-reader credentials for the live process feed.
+        # The participant uses these with the planning.live-feed route
+        # (read-data.arwc.test/api/operating-history) to get fresh OT observations.
+        # Credentials are sourced from the bind-mounted ot-operating-reader.json.
+        try:
+            reader_creds = json.loads(pathlib.Path("/run/arwc-ot-reader.json").read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            self.send_json(503, {"error": "integration gateway is unavailable"})
             return
-        with database() as connection, connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT a.record_id,a.planning_window,a.committed_ml,a.unit,m.record_id,m.usable_reserve_ml,"
-                "r.record_id,r.reported_ml,r.duplicate_transfer "
-                "FROM allocation_ledger a JOIN meter_export m USING (planning_window) "
-                "JOIN business_reserve_report r USING (planning_window) "
-                "WHERE a.record_id=%s AND m.record_id=%s AND r.record_id=%s",
-                (ALLOCATION_ID, METER_ID, REPORT_ID),
-            )
-            row = cursor.fetchone()
-        committed, reserve, reported = Decimal(row[2]), Decimal(row[5]), Decimal(row[7])
+        import base64 as _b64
+        auth_header = "Basic " + _b64.b64encode(
+            f"{reader_creds['username']}:{reader_creds['password']}".encode()
+        ).decode()
         result = {
-            "record_id": "REC-CRR-DP3-17",
-            "revision": 17,
-            "planning_window": row[1],
-            "unit": row[3],
-            "allocation_ledger": row[0],
-            "meter_export": row[4],
-            "business_report": row[6],
-            "reported_ml": float(reported),
-            "usable_reserve_ml": float(reserve),
-            "committed_ml": float(committed),
-            "overstatement_ml": float(reported - reserve),
-            "uncommitted_margin_ml": float(reserve - committed),
-            "duplicate_transfer": row[8],
-            "asset": "AST-CRR-017",
-            "outlet_group": "OG-CRR-02",
+            "record_id": "INT-CRR-08",
+            "revision": 8,
+            "integration_id": "INT-CRR-08",
+            "feed": "FEED-OG2-R21",
+            "source_binding": request.get("source", "REC-CRR-DP3-17"),
+            "credential_type": "Basic",
+            "live_feed_url": "https://read-data.arwc.test/api/operating-history",
         }
-        if result["overstatement_ml"] != 1.0 or result["uncommitted_margin_ml"] != 0.4:
-            self.send_json(409, {"error": "reserve records do not reconcile"})
-            return
         atomic_json(INTEGRATION_EVIDENCE, result)
         os.chown(INTEGRATION_EVIDENCE, -1, grp.getgrnam("arwc-integration").gr_gid)
         os.chmod(INTEGRATION_EVIDENCE, 0o640)
-        state["reserve_reconciled"] = True
-        save_state(state)
-        self.accepted("allocation-discrepancy-created", result)
+        self.accepted("integration-session-issued", result, 201,
+                      {"authorization": auth_header})
 
-    def integration(self, request: dict[str, object]) -> None:
-        state = load_state()
-        if not state["reserve_reconciled"]:
-            self.send_json(403, {"error": "reserve reconciliation is required"})
-            return
-        supplied = self.headers.get("X-ARWC-Integration-Session", "")
-        if not supplied:
-            self.send_json(403, {"error": "integration read session required"})
-            return
-        data = json.dumps(request, sort_keys=True, separators=(",", ":")).encode()
-        outbound = urllib.request.Request(
-            "https://10.77.62.20/api/integration/process-session",
-            data=data,
-            headers={
-                "Authorization": "Bearer " + supplied,
-                "X-ARWC-Tenant": self.headers.get("X-ARWC-Tenant", "arwc"),
-                "Content-Type": "application/json",
-            },
-            method="POST",
-        )
-        context = ssl.create_default_context(cafile="/run/arwc-tls/ca.crt")
-        try:
-            response = urllib.request.urlopen(outbound, context=context, timeout=5)
-        except urllib.error.HTTPError as error:
-            response = error
-        except OSError:
-            self.send_json(409, {"error": "integration gateway is unavailable"})
-            return
-        try:
-            payload = json.loads(response.read())
-        except json.JSONDecodeError:
-            self.send_json(409, {"error": "integration gateway returned an invalid response"})
-            return
-        self.send_json(response.status, payload)
 
     def query_report(self, request: dict[str, object]) -> None:
         state = load_state()
@@ -1321,32 +1095,9 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("archived-query-created", records[0], 201,
                           {"statement": statement, "row_count": 1})
 
-    def reconcile(self, request: dict[str, object]) -> None:
-        state = load_state()
-        if not state["adjustment_observed"]:
-            self.send_json(403, {"error": "allocation adjustment has not been observed"})
-            return
-        if request.get("function") != "arwc_reconcile_copy" or request.get("record_id") != "REC-CRR-DP3-17":
-            self.send_json(409, {"error": "reconciliation invocation is not accepted"})
-            return
-        try:
-            with database() as connection, connection.cursor() as cursor:
-                cursor.execute("SELECT * FROM arwc_reconcile_copy(%s)", (request["record_id"],))
-                row = cursor.fetchone()
-        except psycopg2.Error:
-            self.send_json(409, {"error": "reconciliation function rejected the request"})
-            return
-        result = {
-            "record_id": row[0],
-            "revision": row[1],
-            "source_record": row[2],
-            "database_identity": row[3],
-            "execution_context": "SECURITY DEFINER",
-        }
-        atomic_json(ROOT / "results" / "REC-CRR-DP3-17-COPY.json", result)
-        state["reconciliation_copy_created"] = True
-        save_state(state)
-        self.accepted("archived-write-created", result, 201)
+    # reconcile() removed: the canned two-field gate against the embedded Postgres was
+    # a facade for W07.3. The only valid invocation of arwc_reconcile_copy is the real
+    # quoted-identifier injection through native Metabase /api/dataset against corporate-db.
 
 
 def main() -> None:

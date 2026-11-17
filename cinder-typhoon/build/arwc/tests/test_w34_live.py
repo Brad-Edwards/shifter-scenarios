@@ -9,9 +9,9 @@ import time
 import unittest
 
 import test_w23_live as w23
+import test_w26_live as w26
 import test_w27_live as w27
 import test_w29_live as w29
-import test_w30_live as w30
 
 
 CLIENT = "cinder-arwc-connector"
@@ -39,7 +39,6 @@ class W34Live(unittest.TestCase):
     source = os.environ.get("ARWC_W34_SOURCE", "DPG-CRR-CINDER")
     control_client = ""
     live_state: tuple[float, float] = (0.0, 0.0)
-    w30_result_present = False
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -75,18 +74,45 @@ class W34Live(unittest.TestCase):
         broker = cjson("cinder-arwc-control-broker", "arwc-control-broker",
                        "/var/lib/arwc-control-broker/state/control-broker.json")
         if not isinstance(broker.get("control_client"), str):
-            w30.W30Live.setUpClass(); cls.control_client = w30.W30Live.control_client
+            w26.W26Live.setUpClass()
+            for name in (
+                "test_01_current_renderer_requires_both_prior_authorities",
+                "test_02_signed_approval_maps_contractor_package_to_restricted_preview",
+                "test_03_only_bounded_renderer_action_recovers_handover",
+                "test_04_role_omission_issues_exact_48_hour_client",
+            ):
+                getattr(w26.W26Live(methodName=name), name)()
+            cls.control_client = w26.W26Live.control_client
         else:
             cls.control_client = str(broker["control_client"])
         reservoir = cjson(RESERVOIR, "arwc-reservoir", "/var/lib/arwc-reservoir/state/reservoir.json")
         cls.live_state = (float(reservoir["reserve_ml"]), float(reservoir["released_ml"]))
-        cls.w30_result_present = exists(
-            RESERVOIR, "arwc-reservoir", "/var/lib/arwc-reservoir/results/ACT-CRR-OG2-30.json")
 
     def planning(self, path: str, body: dict, *, token: str = "@corporate",
                  tenant: str = "arwc") -> tuple[int, dict]:
-        return w30.request(BASE, path, method="POST", body=body, token=token,
-                           tenant=tenant, planner=True)
+        script = r'''
+import json,pathlib,ssl,sys,urllib.error,urllib.request
+method,url,tenant,supplied,body=sys.argv[1:]
+if supplied=="@corporate": supplied=pathlib.Path("/var/lib/fieldlink-connector/handover/corporate-session").read_text().strip()
+headers={"Authorization":"Bearer "+supplied,"X-ARWC-Tenant":tenant,
+         "X-ARWC-Planner-Session":pathlib.Path("/var/lib/fieldlink-connector/receipts/planner-session").read_text().strip()}
+data=None if not body else body.encode()
+if data is not None: headers["Content-Type"]="application/json"
+context=ssl.create_default_context(cafile="/tmp/arwc-ca.crt")
+try: response=urllib.request.urlopen(urllib.request.Request(url,data=data,headers=headers,method=method),context=context)
+except urllib.error.HTTPError as error: response=error
+print(response.status); print(response.read().decode())
+'''
+        completed = subprocess.run(
+            ["docker", "exec", "-i", "--user", "fieldlink", CLIENT,
+             "python3", "-c", script, "POST", BASE + path, tenant, token,
+             json.dumps(body, separators=(",", ":"))],
+            text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False,
+        )
+        if completed.returncode:
+            raise AssertionError(completed.stderr)
+        status, payload = completed.stdout.splitlines()
+        return int(status), json.loads(payload)
 
     def view(self) -> dict:
         return {"checkpoint": "REH-REPORT-34", "consumer": "PLAN-CONSUMER-R8",
@@ -116,14 +142,14 @@ class W34Live(unittest.TestCase):
         self.assertEqual(status, 403)
         wrong = self.view(); wrong["consumer_revision"] = 7
         status, _ = self.planning("/api/reporting-submissions/current/result", wrong); self.assertEqual(status, 409)
-        evidence = "/run/arwc-process-evidence/historian/W18-map.json"
-        subprocess.run(["docker", "exec", "--user", "arwc-historian", "cinder-arwc-historian",
+        evidence = "/var/lib/arwc-data/integration/planning-data.json"
+        subprocess.run(["docker", "exec", "--user", "arwc-data", DATA,
                         "mv", evidence, evidence + ".held"], check=True)
         try:
             status, _ = self.planning("/api/reporting-submissions/current/result", self.view())
             self.assertEqual(status, 403)
         finally:
-            subprocess.run(["docker", "exec", "--user", "arwc-historian", "cinder-arwc-historian",
+            subprocess.run(["docker", "exec", "--user", "arwc-data", DATA,
                             "mv", evidence + ".held", evidence], check=True)
         status, result = self.planning("/api/reporting-submissions/current/result", self.view())
         self.assertEqual(status, 201, result); record = result["record"]
@@ -196,9 +222,6 @@ class W34Live(unittest.TestCase):
         reservoir = cjson(RESERVOIR, "arwc-reservoir", "/var/lib/arwc-reservoir/state/reservoir.json")
         self.assertEqual((float(reservoir["reserve_ml"]), float(reservoir["released_ml"])),
                          type(self).live_state)
-        self.assertEqual(exists(RESERVOIR, "arwc-reservoir",
-                                "/var/lib/arwc-reservoir/results/ACT-CRR-OG2-30.json"),
-                         type(self).w30_result_present)
 
     def test_05_exact_addresses_and_security_posture(self) -> None:
         expected = {DATA: ("cinder-arwc-corporate", "10.77.60.40"),

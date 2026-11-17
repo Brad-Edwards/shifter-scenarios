@@ -311,7 +311,7 @@ class DomainInterfaceTests(unittest.TestCase):
             for item in findings
         ))
         self.assertTrue(any(
-            item["match"] == "/api/schedule-windows/current" for item in findings
+            item["match"] == "/api/reporting-checkpoints/current" for item in findings
         ))
 
 
@@ -362,13 +362,8 @@ class StaticAndLiveContractTests(unittest.TestCase):
             '"template": "PROCESS_VIEW_BASE/api/signature-programs/current/reproductions"',
             process,
         )
-        self.assertIn(
-            '"key": "process.reporting-checkpoint-submit"', process,
-        )
-        self.assertIn(
-            '"template": "PROCESS_VIEW_BASE/api/reporting-checkpoints/current"',
-            process,
-        )
+        self.assertNotIn('"key": "process.reporting-checkpoint-submit"', process)
+        self.assertNotIn("/api/reporting-checkpoints/current", process)
         self.assertIn(
             '"client_reference": "https://process-view.arwc.test/.well-known/arwc-client"',
             integration,

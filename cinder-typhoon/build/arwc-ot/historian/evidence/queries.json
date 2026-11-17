@@ -1,0 +1,38 @@
+[
+  {
+    "panel": "Reservoir measured level",
+    "returned_rows": 900
+  },
+  {
+    "panel": "Usable reservoir volume",
+    "returned_rows": 900
+  },
+  {
+    "panel": "Outlet A measured position",
+    "returned_rows": 900
+  },
+  {
+    "panel": "Outlet B measured position",
+    "returned_rows": 900
+  },
+  {
+    "panel": "Outlet A measured flow",
+    "returned_rows": 900
+  },
+  {
+    "panel": "Outlet B measured flow",
+    "returned_rows": 900
+  },
+  {
+    "panel": "Measured total flow",
+    "returned_rows": 900
+  },
+  {
+    "panel": "Native alarms and acknowledgements",
+    "returned_rows": 1
+  },
+  {
+    "panel": "Observed PLC command decisions",
+    "returned_rows": 0
+  }
+]

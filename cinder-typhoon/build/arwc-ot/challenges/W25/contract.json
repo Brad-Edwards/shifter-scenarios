@@ -1,0 +1,37 @@
+{
+  "schema": "arwc.native-ot-challenge/w25-v1",
+  "operation": "W25",
+  "asset": "AST-CRR-017",
+  "instruction": "CRR-OP-W25-R1",
+  "movement": "CRR-W25-MOVE-01",
+  "project_revision": 364,
+  "completion": {
+    "reads_product_evidence": true,
+    "writes_product_state": false,
+    "creates_product_evidence": false,
+    "replays_product_requests": false
+  },
+  "installed_limits": {
+    "manual_position_pct": [0.0, 100.0],
+    "automatic_total_flow_m3s": [0.0, 1.0],
+    "per_outlet_capacity_m3s": 0.5
+  },
+  "authorized_work": {
+    "mode": "manual",
+    "baseline": {"outlet_a_position_pct": 20.0, "outlet_b_position_pct": 20.0, "total_flow_m3s": 0.2},
+    "observation": {"outlet_a_position_pct": 30.0, "outlet_b_position_pct": 10.0, "total_flow_m3s": 0.2},
+    "restore": {"outlet_a_position_pct": 20.0, "outlet_b_position_pct": 20.0, "total_flow_m3s": 0.2}
+  },
+  "permissive_chain": ["IoHealthy", "AvailableARaw", "AvailableBRaw", "RemoteARaw", "RemoteBRaw", "LowLevelAlarm", "HmiStop", "TravelFaultA", "TravelFaultB", "Armed", "PermissiveA", "PermissiveB"],
+  "product_snapshot": {
+    "schema": "arwc.native-bounded-movement-observation/v1",
+    "maximum_point_distance_seconds": 3,
+    "minimum_trace_samples": 5,
+    "accepted_quality": "Good"
+  },
+  "tolerance": {
+    "position_pct": 0.5,
+    "outlet_flow_m3s": 0.01,
+    "total_flow_m3s": 0.02
+  }
+}

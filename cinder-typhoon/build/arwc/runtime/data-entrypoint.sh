@@ -25,6 +25,7 @@ for file in server.crt server.key; do
 done
 
 install -d -o postgres -g postgres -m 0700 "$PGDATA"
+install -d -o postgres -g postgres -m 2775 /var/run/postgresql
 chown postgres:postgres /var/run/postgresql
 chmod 2775 /var/run/postgresql
 if [ ! -s "$PGDATA/PG_VERSION" ]; then
@@ -46,6 +47,12 @@ if ! gosu postgres psql -Atqc "SELECT 1 FROM pg_roles WHERE rolname='svc-planner
   gosu postgres psql -v ON_ERROR_STOP=1 <<'SQL' >/dev/null
 CREATE ROLE "svc-planner-query" LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT;
 CREATE DATABASE arwc;
+SQL
+fi
+# W23.2: write role for the controlled-allocation endpoint (UPDATE on allocation_ledger only).
+if ! gosu postgres psql -Atqc "SELECT 1 FROM pg_roles WHERE rolname='svc-planner-write'" | grep -qx 1; then
+  gosu postgres psql -d arwc -v ON_ERROR_STOP=1 <<'SQL' >/dev/null
+CREATE ROLE "svc-planner-write" LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT;
 SQL
 fi
 
@@ -72,12 +79,9 @@ INSERT INTO district_allocation_adjustment VALUES
   ('ADJ-CRR-DP3-17','Cairn Reach','ALLOC-2026-DP3',-1.00,'duplicate transfer TRN-DP3-118')
 ON CONFLICT (record_id) DO NOTHING;
 
-CREATE TABLE IF NOT EXISTS reconciliation_copy (
-  record_id text PRIMARY KEY,
-  revision integer NOT NULL,
-  source_record text NOT NULL,
-  database_identity text NOT NULL
-);
+-- reconciliation_copy and arwc_reconcile_copy removed from embedded Postgres:
+-- W07.3 uses the real SECURITY DEFINER function and table in corporate-db instead.
+-- The only valid invocation is via the native Metabase /api/dataset injection.
 
 CREATE TABLE IF NOT EXISTS allocation_ledger (
   record_id text PRIMARY KEY,
@@ -86,10 +90,36 @@ CREATE TABLE IF NOT EXISTS allocation_ledger (
   asset text NOT NULL,
   planning_window text NOT NULL,
   committed_ml numeric(5,2) NOT NULL,
-  unit text NOT NULL
+  unit text NOT NULL,
+  effective_from timestamptz NOT NULL,
+  effective_to timestamptz NOT NULL
 );
-INSERT INTO allocation_ledger VALUES
-  ('ALLOC-2026-DP3-R9',9,'Cairn Reach','AST-CRR-017','ALLOC-2026-DP3',12.00,'ML')
+ALTER TABLE allocation_ledger ADD COLUMN IF NOT EXISTS effective_from timestamptz;
+ALTER TABLE allocation_ledger ADD COLUMN IF NOT EXISTS effective_to timestamptz;
+INSERT INTO allocation_ledger
+  (record_id,revision,district,asset,planning_window,committed_ml,unit,effective_from,effective_to)
+VALUES
+  ('ALLOC-2026-DP3-R9',9,'Cairn Reach','AST-CRR-017','ALLOC-2026-DP3',12.00,'ML',
+   '2026-11-01T00:00:00Z','2026-12-01T00:00:00Z')
+ON CONFLICT (record_id) DO UPDATE SET
+  effective_from=EXCLUDED.effective_from,effective_to=EXCLUDED.effective_to;
+ALTER TABLE allocation_ledger ALTER COLUMN effective_from SET NOT NULL;
+ALTER TABLE allocation_ledger ALTER COLUMN effective_to SET NOT NULL;
+
+CREATE TABLE IF NOT EXISTS settlement_tariff (
+  record_id text PRIMARY KEY,
+  revision integer NOT NULL,
+  planning_window text NOT NULL,
+  asset text NOT NULL,
+  currency text NOT NULL,
+  rate_per_ml numeric(9,2) NOT NULL,
+  unit text NOT NULL,
+  effective_from timestamptz NOT NULL,
+  effective_to timestamptz NOT NULL
+);
+INSERT INTO settlement_tariff VALUES
+  ('TAR-CRR-DP3-R4',4,'ALLOC-2026-DP3','AST-CRR-017','USD',2400.00,'USD/ML',
+   '2026-11-01T00:00:00Z','2026-12-01T00:00:00Z')
 ON CONFLICT (record_id) DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS meter_export (
@@ -110,34 +140,30 @@ CREATE TABLE IF NOT EXISTS business_reserve_report (
   revision integer NOT NULL,
   planning_window text NOT NULL,
   reported_ml numeric(5,2) NOT NULL,
-  duplicate_transfer text NOT NULL
+  duplicate_transfer text NOT NULL,
+  asset text NOT NULL,
+  unit text NOT NULL,
+  as_of timestamptz NOT NULL
 );
-INSERT INTO business_reserve_report VALUES
-  ('RPT-CRR-DP3-R7',7,'ALLOC-2026-DP3',13.40,'TRN-DP3-118')
-ON CONFLICT (record_id) DO NOTHING;
+ALTER TABLE business_reserve_report ADD COLUMN IF NOT EXISTS asset text;
+ALTER TABLE business_reserve_report ADD COLUMN IF NOT EXISTS unit text;
+ALTER TABLE business_reserve_report ADD COLUMN IF NOT EXISTS as_of timestamptz;
+INSERT INTO business_reserve_report
+  (record_id,revision,planning_window,reported_ml,duplicate_transfer,asset,unit,as_of)
+VALUES
+  ('RPT-CRR-DP3-R7',7,'ALLOC-2026-DP3',13.40,'TRN-DP3-118','AST-CRR-017','ML',
+   '2026-11-09T00:00:00Z')
+ON CONFLICT (record_id) DO UPDATE SET
+  asset=EXCLUDED.asset,unit=EXCLUDED.unit,as_of=EXCLUDED.as_of;
+ALTER TABLE business_reserve_report ALTER COLUMN asset SET NOT NULL;
+ALTER TABLE business_reserve_report ALTER COLUMN unit SET NOT NULL;
+ALTER TABLE business_reserve_report ALTER COLUMN as_of SET NOT NULL;
 
-CREATE OR REPLACE FUNCTION arwc_reconcile_copy(requested text)
-RETURNS TABLE(record_id text, revision integer, source_record text, database_identity text)
-LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp AS $$
-BEGIN
-  IF requested <> 'REC-CRR-DP3-17' THEN
-    RAISE EXCEPTION 'reconciliation record is not available';
-  END IF;
-  INSERT INTO reconciliation_copy VALUES
-    ('REC-CRR-DP3-17-COPY',1,'REC-CRR-DP3-17','svc-planner-query')
-  ON CONFLICT ON CONSTRAINT reconciliation_copy_pkey DO NOTHING;
-  RETURN QUERY
-    SELECT r.record_id, r.revision, r.source_record, r.database_identity
-    FROM reconciliation_copy AS r WHERE r.record_id='REC-CRR-DP3-17-COPY';
-END;
-$$;
-
-REVOKE ALL ON reserve_report_current, district_allocation_adjustment, reconciliation_copy,
-  allocation_ledger, meter_export, business_reserve_report FROM PUBLIC;
+REVOKE ALL ON reserve_report_current, district_allocation_adjustment,
+  allocation_ledger, settlement_tariff, meter_export, business_reserve_report FROM PUBLIC;
 GRANT SELECT ON reserve_report_current, district_allocation_adjustment,
-  allocation_ledger, meter_export, business_reserve_report TO "svc-planner-query";
-REVOKE ALL ON FUNCTION arwc_reconcile_copy(text) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION arwc_reconcile_copy(text) TO "svc-planner-query";
+  allocation_ledger, settlement_tariff, meter_export, business_reserve_report TO "svc-planner-query";
+GRANT UPDATE (committed_ml, revision) ON public.allocation_ledger TO "svc-planner-write";
 SQL
 
 exec setpriv --reuid=arwc-data --regid=arwc-data --init-groups \

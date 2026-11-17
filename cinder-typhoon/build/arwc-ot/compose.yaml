@@ -1,6 +1,10 @@
 name: arwc-ot-compat
+x-ot-logging: &ot-logging
+  driver: json-file
+  options: {max-size: 10m, max-file: "3"}
 services:
   plc:
+    logging: *ot-logging
     build: {context: ., dockerfile: plc.Dockerfile}
     image: arwc-ot-openplc:4.3.2-identity1
     hostname: plc
@@ -12,6 +16,7 @@ services:
       supervisory: {ipv4_address: 172.29.63.20}
       field: {ipv4_address: 172.29.64.20}
   io:
+    logging: *ot-logging
     build: {context: ., dockerfile: tools.Dockerfile}
     command: [python, /slice/remote_io.py]
     volumes: [".:/slice:ro"]
@@ -24,6 +29,7 @@ services:
     volumes: [".:/slice:ro", "./.operator:/slice/.operator"]
     networks: [supervisory, field]
   fuxa:
+    logging: *ot-logging
     build: {context: ., dockerfile: fuxa.Dockerfile}
     image: arwc-ot-fuxa:1.3.5-opcua1
     volumes:
@@ -33,6 +39,7 @@ services:
     networks:
       supervisory: {ipv4_address: 172.29.63.21}
   postgres:
+    logging: *ot-logging
     image: postgres:18.6-trixie@sha256:e3d24f6906d0760bf4da0dae872415391ededefad23fd471c47dc53b0ddf3c42
     environment:
       POSTGRES_DB: historian
@@ -43,6 +50,7 @@ services:
     networks:
       supervisory: {ipv4_address: 172.29.63.22}
   telegraf:
+    logging: *ot-logging
     image: telegraf:1.39.1@sha256:8c1bc372ffa128be2febfe25f1fe092333d3d6c2293cf5e57176582179ba358a
     user: "0:0"
     entrypoint: [/usr/bin/telegraf]
@@ -56,6 +64,7 @@ services:
       - ./.operator/telegraf-pki:/run/pki
     networks: [supervisory]
   grafana:
+    logging: *ot-logging
     image: grafana/grafana:12.2.1@sha256:35c41e0fd0295f5d0ee5db7e780cf33506abfaf47686196f825364889dee878b
     env_file: [.operator/grafana.env]
     environment:
@@ -68,11 +77,13 @@ services:
     networks:
       supervisory: {ipv4_address: 172.29.63.25}
   mosquitto:
+    logging: *ot-logging
     image: eclipse-mosquitto:2.0.22@sha256:81a6193ae693942a3231cd3ac52875b02b7e3a19da671b2fb4b55cc874c5b279
     volumes: ["./.operator/mosquitto:/mosquitto/config:ro", "mqtt-state:/mosquitto/data"]
     networks:
       supervisory: {ipv4_address: 172.29.63.23}
   dispatcher:
+    profiles: [compatibility]
     image: arwc-ot-compat-io
     command: [python, /slice/dispatcher.py]
     volumes: [".:/slice:ro", "./.operator:/slice/.operator"]

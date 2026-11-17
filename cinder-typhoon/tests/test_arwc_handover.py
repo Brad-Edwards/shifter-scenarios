@@ -133,26 +133,21 @@ class ArwcHandoverTests(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError, "process.sealed-project"):
             client_references.validate_ending_routes(mutant)
 
-    def test_ending_shared_paths_dispatch_by_request_shape(self) -> None:
+    def test_retired_w29_dispatch_is_absent(self) -> None:
         planning = (RUNTIME / "planning_data.py").read_text(encoding="utf-8")
         self.assertEqual(planning.count('path == "/api/query-runs"'), 1)
         self.assertIn('if "function" in request:', planning)
-        process_host = planning.index(
-            'self.headers.get("Host", "").split(":", 1)[0] == "process-view.arwc.test"',
-            planning.index("    def do_POST(self) -> None:"),
-        )
-        reporting_dispatch = planning.index(
-            'if path == "/api/reporting-checkpoints/current":', process_host,
-        )
-        generic_proxy = planning.index("if path in PROCESS_PATHS:", reporting_dispatch)
-        self.assertLess(reporting_dispatch, generic_proxy)
-        dispatch = planning[reporting_dispatch:generic_proxy]
-        self.assertIn("self.process_authorized()", dispatch)
-        self.assertIn("self.w29_plan(request)", dispatch)
+        self.assertNotIn('/api/reporting-checkpoints/current', planning)
+        self.assertNotIn('/api/collision-solutions', planning)
+        self.assertNotIn('def w29_plan(', planning)
         self.assertIn('set(source_set) != set(expected["source_set"])', planning)
         self.assertIn('len(source_set) != len(expected["source_set"])', planning)
 
         process = (RUNTIME / "process_services.py").read_text(encoding="utf-8")
+        self.assertNotIn('/api/reporting-checkpoints/current', process)
+        self.assertNotIn('/api/collision-solutions', process)
+        self.assertNotIn('def w29_plan(', process)
+        self.assertNotIn('def w29_reserve(', process)
         self.assertIn('and not {\n                "operations", "image_b64"', process)
         self.assertNotIn(
             '"/api/maintenance-records/current", "/api/maintenance-records/current"',
@@ -170,7 +165,7 @@ class ArwcHandoverTests(unittest.TestCase):
         )
         self.assertIn('.replace("{wo_id}", "current")', ending)
         self.assertEqual(ending.count('f"{base}/api/integrity-verifier"'), 2)
-        self.assertEqual(ending.count('plan("/api/release-plans/current"'), 2)
+        self.assertNotIn('plan("/api/release-plans/current"', ending)
         self.assertNotIn('plan("/api/reporting-checkpoints/current"', ending)
 
     def test_engineering_utility_is_built_from_the_declared_local_stage(self) -> None:

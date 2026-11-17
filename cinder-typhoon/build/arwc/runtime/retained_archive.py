@@ -12,11 +12,13 @@ import re
 import secrets
 import ssl
 import subprocess
+import time
 import tempfile
 import unicodedata
 import uuid
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import urllib.parse
 from urllib.parse import urlsplit
 
 from cryptography import x509
@@ -32,26 +34,136 @@ STATE = ROOT / "state" / "archive.json"
 RESULT = ROOT / "results" / "HND-PLANNER-06.json"
 HANDOVER_EVIDENCE = ROOT / "handover" / "access-grant.json"
 ARTIFACTS = ROOT / "artifacts"
+WORKFLOW_PATH = ROOT / "workflow" / "AWF-CRR-229-R4.json"
+SHARE_URL_PATH = ROOT / "workflow" / "contract-share-url"
+DB_STATE_PATH = pathlib.Path("/run/arwc-archive-workflow/db-reader.json")
 BUSINESS_SOURCE = pathlib.Path("/run/arwc-business-evidence/archive-source.json")
 IDENTITY_SOURCE = pathlib.Path("/run/arwc-identity-evidence/archive-source.json")
-DATA_SOURCE = pathlib.Path("/run/arwc-data-evidence/archive-lineage.json")
-ARCHIVE_CA = "/tmp/archive-ca.crt"
-ARCHIVE_CA_KEY = "/tmp/archive-ca.key"
+DATA_SOURCE = pathlib.Path("/run/arwc-planning-evidence/archive-lineage.json")
+STEP_CA_ROOT = "/run/arwc-step-ca/root.crt"
+STEP_CA_INTERMEDIATE = "/run/arwc-step-ca/intermediate.crt"
+ARCHIVE_CA_PATH = "/run/arwc-tls/archive-ca.crt"
+STEP_CA_URL = "https://ca.arwc.test:9000"
+OTT_POOL = pathlib.Path("/run/arwc-tokens")
+GITEA_STATE_PATH = pathlib.Path("/run/arwc-archive-workflow/gitea-reader.json")
+NADIA_METABASE_PATH = pathlib.Path("/run/arwc-planning/nadia-metabase.json")
+INSTRUMENT_IMAGE_PATH = pathlib.Path("/run/arwc-instruments/IMG-FIT-204-R6.bin")
+OT_READER_PATH = pathlib.Path("/run/arwc-archive-workflow/ot-operating-reader.json")
+OT_HISTORY_URL = "https://read-data.arwc.test/api/operating-history"
+_SEQUENCER_ASSET = "AST-CRR-017"
+_SEQUENCER_INSTRUMENTS = ["FIT-CRR-204A", "FIT-CRR-204B"]
+# W04.3 helper staging: the handover artifact is staged one level above the
+# per-request extraction directory. The Unicode NFKC traversal in the archive
+# member name escapes the extraction boundary and resolves to this path.
+HELPER_STAGING_DIR = ROOT / "helper-staging"
+HANDOVER_STAGING_PATH = HELPER_STAGING_DIR / "copy_handover(HND-PLANNER-06)"
 
-WORKFLOW = {
-    "record_id": "AWF-CRR-229-R4",
-    "revision": 4,
-    "attachment": "ARC-229-A",
-    "protected_record": "AR-CRR-229",
-    "planner_handover_target": "HND-PLANNER-06",
-    "enrollment_profile": {
-        "name": "ArchiveSubmitter",
-        "common_name": "corporate-reader-principal",
-        "extended_key_usage": "clientAuth",
-        "organizational_unit": "caller supplied",
-        "use": "one time",
-    },
-}
+def _load_workflow() -> dict:
+    """Load the workflow record from the Nextcloud-sourced file.
+
+    Exits if the file is absent or invalid. Nextcloud is the authoritative
+    source; the service must not start without it.
+    """
+    if not WORKFLOW_PATH.exists():
+        raise SystemExit(
+            f"archive-workflow: {WORKFLOW_PATH} is absent; "
+            "run seed-archive before starting the archive service"
+        )
+    value = json.loads(WORKFLOW_PATH.read_text(encoding="utf-8"))
+    if not isinstance(value, dict) or value.get("record_id") != "AWF-CRR-229-R4":
+        raise SystemExit(
+            f"archive-workflow: {WORKFLOW_PATH} contains an unexpected record; "
+            "re-run seed-archive"
+        )
+    return value
+
+
+def _load_contract_webdav_url() -> str:
+    """Return the authenticated Nextcloud WebDAV URL for the workflow contract.
+
+    The archive service's client document exposes this as the archive.contract
+    route. The participant must supply the archive access credentials (from the
+    FieldLink handover record) to fetch the file.
+    """
+    if not SHARE_URL_PATH.exists():
+        raise SystemExit(
+            f"archive-workflow: contract URL not found at {SHARE_URL_PATH}; "
+            "run seed-archive before starting the archive service"
+        )
+    return SHARE_URL_PATH.read_text(encoding="utf-8").strip()
+
+
+def _load_db_state() -> dict | None:
+    """Load PostgreSQL query credentials if available."""
+    if not DB_STATE_PATH.exists():
+        return None
+    try:
+        state = json.loads(DB_STATE_PATH.read_text(encoding="utf-8"))
+        if state.get("host") and state.get("user") and state.get("password"):
+            return state
+    except (OSError, json.JSONDecodeError):
+        pass
+    return None
+
+
+def archive_db_query(organizational_unit: str) -> tuple[dict | None, str, str]:
+    """Execute a real PostgreSQL query using the OU from the client certificate.
+
+    Returns (record, query_string, error_code) where error_code is '' on success,
+    'write' if a write keyword was detected, or 'forbidden' if no matching record.
+    The query is built without parameterization so the OU is injectable.
+    """
+    db = _load_db_state()
+    if db is None:
+        return None, "", "unavailable"
+    query = (
+        "SELECT record_id, revision, workflow, attachment, classification "
+        "FROM archive.records WHERE organizational_unit = '"
+        + organizational_unit + "'"
+    )
+    if re.search(
+        r"\b(INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|GRANT|REVOKE|TRUNCATE|EXECUTE)\b",
+        query, re.IGNORECASE,
+    ):
+        return None, query, "write"
+    try:
+        import psycopg2
+        conn = psycopg2.connect(
+            host=db["host"], dbname=db["database"],
+            user=db["user"], password=db["password"],
+            connect_timeout=5,
+        )
+        conn.set_session(readonly=True, autocommit=True)
+        with conn.cursor() as cursor:
+            cursor.execute(query)
+            rows = cursor.fetchall()
+        conn.close()
+    except Exception as error:
+        return None, query, f"db_error:{error}"
+    if not rows:
+        return None, query, "forbidden"
+    # If multiple rows, prefer AR-CRR-229 (injection result) over ordinary record.
+    for row in rows:
+        if row[0] == "AR-CRR-229":
+            record = {
+                "record_id": row[0], "revision": row[1], "workflow": row[2],
+                "attachment": row[3], "classification": row[4],
+            }
+            return record, query, ""
+    # Return the first (ordinary) row.
+    row = rows[0]
+    # Only return records that belong to the archive's declared scope.
+    if row[0] not in ("AR-MAINT-017", "AR-CRR-229"):
+        return None, query, "forbidden"
+    record = {
+        "record_id": row[0], "revision": row[1], "workflow": row[2],
+        "attachment": row[3], "classification": row[4],
+    }
+    return record, query, ""
+
+
+WORKFLOW = _load_workflow()
+CONTRACT_SHARE_URL = _load_contract_webdav_url()
 
 CALLER_RECORD = {
     "record_id": "AR-MAINT-017",
@@ -119,6 +231,7 @@ QUARANTINE = {
     "collector_build_id": "COLLECT-CRR-12",
     "archive": "ARC-COLD-CRR-2019",
     "digest": "SHA-256",
+    "collector_repository": "arwc-archive/retained-collectors",
 }
 
 PROTECTION = {
@@ -177,11 +290,58 @@ def crc32c(value: bytes) -> int:
 
 CALIBRATION_PAYLOAD = b"R8|OG2|GAIN=1.003|ZERO=0.012"
 CALIBRATION = CALIBRATION_PAYLOAD + crc32c(CALIBRATION_PAYLOAD).to_bytes(4, "big")
-SAMPLE_SLOTS = bytearray((index * 73 + 19) & 0xFF for index in range(256))
-SAMPLE_SLOTS[4:7] = b"\x00\x01\xff"
-SAMPLE_SLOTS[159] = 0xA5
+# SAMPLE_SLOTS: populated at startup from IMG-FIT-204-R6.bin and OT historian
+# via _populate_sample_slots(); reference test points and calibration applied there.
+SAMPLE_SLOTS = bytearray(256)
 SAMPLE_SLOTS[160:192] = CALIBRATION
 JITTER = (0, 1, -1, 2, -2, -1, 1, 0)
+
+
+def _populate_sample_slots() -> None:
+    """Load SAMPLE_SLOTS from the instrument image and overlay live OT readings."""
+    img = INSTRUMENT_IMAGE_PATH.read_bytes()
+    if not img.startswith(b"F204["):
+        raise RuntimeError(f"unexpected instrument image magic: {img[:8].hex()}")
+    # First 256 bytes of the image form the base slot map.
+    SAMPLE_SLOTS[:] = bytearray(img[:256])
+    # Instrument specification defines fixed reference test points for W16.3.
+    SAMPLE_SLOTS[4] = 0x00   # zero reference
+    SAMPLE_SLOTS[5] = 0x01   # single-bit reference
+    SAMPLE_SLOTS[6] = 0xFF   # saturation reference
+    SAMPLE_SLOTS[159] = 0xA5  # signal-discrimination target slot
+    SAMPLE_SLOTS[160:192] = CALIBRATION
+    # Overlay authorized measurement slots with live OT historian readings.
+    try:
+        import base64 as _b64
+        config = json.loads(OT_READER_PATH.read_text(encoding="utf-8"))
+        username = config.get("username", "")
+        password = config.get("password", "")
+        if username and password:
+            ca_path = "/run/arwc-native/root-ca.crt"
+            ctx = ssl.create_default_context(
+                cafile=ca_path if pathlib.Path(ca_path).exists() else None
+            )
+            auth = "Basic " + _b64.b64encode(f"{username}:{password}".encode()).decode()
+            import urllib.request as _req
+            resp = _req.urlopen(
+                _req.Request(OT_HISTORY_URL, headers={"Authorization": auth}),
+                context=ctx, timeout=10,
+            )
+            samples = json.loads(resp.read()).get("samples", [])
+            obs: dict[str, float] = {}
+            for s in samples:
+                tag = s.get("tag")
+                if s.get("asset") == _SEQUENCER_ASSET and tag in _SEQUENCER_INSTRUMENTS:
+                    if tag not in obs:
+                        try:
+                            obs[tag] = float(s.get("value", 0.0))
+                        except (TypeError, ValueError):
+                            obs[tag] = 0.0
+            for idx, instrument in enumerate(_SEQUENCER_INSTRUMENTS):
+                flow = obs.get(instrument, 0.0)
+                SAMPLE_SLOTS[idx] = min(255, max(0, round(flow * 10)))
+    except Exception:
+        pass  # OT unavailable; IMG-sourced values remain
 
 
 def atomic_json(path: pathlib.Path, value: object) -> None:
@@ -215,11 +375,15 @@ def initialize() -> None:
             "protected_record_observed": False,
             "helper_handover_copied": False,
             "planner_handover_token": None,
+            "drawing_context_attached": False,
+            "drawing_context_preview_origin": None,
+            "drawing_context_render_hash": None,
             "work_bundle_observed": False,
             "exchange_reconstructed": False,
             "collector_reconstructed": False,
             "collector_config_recovered": False,
             "quarantine_observed": False,
+            "collector_recovered": False,
             "protection_reconstructed": False,
             "cold_archive_recovered": False,
             "current_session": None,
@@ -235,9 +399,10 @@ def initialize() -> None:
         state = load_state()
         changed = False
         for key in (
+            "drawing_context_attached", "drawing_context_preview_origin", "drawing_context_render_hash",
             "work_bundle_observed", "exchange_reconstructed",
             "collector_reconstructed", "collector_config_recovered",
-            "quarantine_observed", "protection_reconstructed",
+            "quarantine_observed", "collector_recovered", "protection_reconstructed",
             "cold_archive_recovered", "current_session", "current_data_observed",
             "sequencer_descriptor_observed", "sequencer_boundary_observed",
             "sequencer_signal_discriminated", "sequencer_calibration_recovered",
@@ -253,6 +418,21 @@ def initialize() -> None:
         atomic_json(descriptor, SEQUENCER)
     AUDIT.touch(mode=0o600, exist_ok=True)
     os.chmod(AUDIT, 0o600)
+    # Populate SAMPLE_SLOTS from the instrument image and live OT historian.
+    _populate_sample_slots()
+    # Stage the W04.3 handover artifact from Gitea so the helper can read it
+    # via the filesystem after the Unicode traversal resolves the path.
+    _stage_handover_from_gitea()
+
+
+def _stage_handover_from_gitea() -> None:
+    """Fetch HND-PLANNER-06 from Gitea and stage it for the helper filesystem read."""
+    handover = _fetch_gitea_handover()
+    if handover is None:
+        return
+    HELPER_STAGING_DIR.mkdir(mode=0o700, exist_ok=True)
+    atomic_json(HANDOVER_STAGING_PATH, handover)
+    HANDOVER_STAGING_PATH.chmod(0o600)
 
 
 def load_state() -> dict[str, object]:
@@ -309,45 +489,38 @@ def has_w12_source() -> bool:
     )
 
 
-def issue_certificate(organizational_unit: str) -> tuple[str, str, str]:
-    if not (1 <= len(organizational_unit) <= 160):
-        raise ValueError("organizational unit has an invalid length")
-    if any(character in organizational_unit for character in "\r\n\x00/"):
-        raise ValueError("organizational unit contains an invalid character")
-    with tempfile.TemporaryDirectory() as directory:
-        work = pathlib.Path(directory)
-        key = work / "client.key"
-        request = work / "client.csr"
-        certificate = work / "client.crt"
-        extensions = work / "client.ext"
-        extensions.write_text(
-            "basicConstraints=critical,CA:FALSE\n"
-            "keyUsage=critical,digitalSignature\n"
-            "extendedKeyUsage=clientAuth\n",
-            encoding="utf-8",
-        )
-        subprocess.run(
-            ["openssl", "req", "-new", "-newkey", "rsa:2048", "-nodes",
-             "-subj", "/CN=corporate-reader-principal/O=Alterra Regional Water Company/"
-             f"OU={organizational_unit}",
-             "-keyout", str(key), "-out", str(request)],
-            check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-        )
-        serial = "0x" + secrets.token_hex(16)
-        subprocess.run(
-            ["openssl", "x509", "-req", "-days", "30", "-sha256",
-             "-in", str(request), "-CA", ARCHIVE_CA, "-CAkey", ARCHIVE_CA_KEY,
-             "-set_serial", serial, "-extfile", str(extensions), "-out", str(certificate)],
-            check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-        )
-        return (
-            certificate.read_text(encoding="utf-8"),
-            key.read_text(encoding="utf-8"),
-            serial,
-        )
+def consume_enrollment_token() -> str:
+    """Return the next pre-generated step-ca OTT from the token pool.
+
+    The archive service does NOT hold CA provisioner secrets. OTTs are
+    generated during seeding (by manage.sh using the provisioner key on the
+    host) and stored in a read-only bind mount. Each OTT is single-use;
+    step-ca enforces this via jti uniqueness. The archive tracks which OTT
+    to serve next using a counter in its persistent state.
+    """
+    pool = OTT_POOL
+    tokens = sorted(pool.glob("ott-*.jwt")) if pool.exists() else []
+    if not tokens:
+        raise ValueError("no enrollment tokens available; re-run seed-archive")
+    state = load_state()
+    index = int(state.get("ott_index", 0)) % len(tokens)
+    state["ott_index"] = index + 1
+    save_state(state)
+    token_path = tokens[index]
+    ott = token_path.read_text(encoding="utf-8").strip()
+    if not ott:
+        raise ValueError("enrollment token file is empty; re-run seed-archive")
+    return ott
 
 
 def peer_organizational_unit(socket: ssl.SSLSocket) -> str | None:
+    """Return the archive identity from the client certificate's OrganizationalUnit.
+
+    The step-ca infrastructure provisioner signs certificates with the
+    participant-supplied OU value via the archive-submitter x509 template
+    (which uses .Insecure.CR.Subject.OrganizationalUnit). The OU is the
+    identity field that flows into the unparameterized SQL query.
+    """
     der = socket.getpeercert(binary_form=True)
     if not der:
         return None
@@ -359,11 +532,22 @@ def peer_organizational_unit(socket: ssl.SSLSocket) -> str | None:
             ["openssl", "x509", "-in", handle.name, "-noout", "-subject", "-nameopt", "multiline"],
             check=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
         )
-    for line in completed.stdout.splitlines():
+    # Collect all OU lines (openssl may wrap long values across continuation lines).
+    lines = completed.stdout.splitlines()
+    ou_parts: list[str] = []
+    collecting = False
+    for line in lines:
         match = re.match(r"\s*organizationalUnitName\s*=\s*(.*)$", line)
         if match:
-            return match.group(1)
-    return None
+            collecting = True
+            ou_parts.append(match.group(1))
+        elif collecting:
+            stripped = line.strip()
+            if stripped and not re.match(r"\w+\s*=", stripped):
+                ou_parts.append(stripped)
+            else:
+                break
+    return "".join(ou_parts) if ou_parts else None
 
 
 def archive_member(data: bytes) -> str:
@@ -510,6 +694,23 @@ class Handler(BaseHTTPRequestHandler):
             return False
         return True
 
+    def planning_authorized(self, token: str) -> bool:
+        """Validate a W04.3 planner handover token against the stored evidence."""
+        try:
+            evidence = json.loads(HANDOVER_EVIDENCE.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            self.send_json(403, {"error": "planning access required"})
+            return False
+        if evidence.get("record_id") != "HND-PLANNER-06":
+            self.send_json(403, {"error": "planning access required"})
+            return False
+        expected = str(evidence.get("token_sha256", ""))
+        supplied_digest = hashlib.sha256(token.encode()).hexdigest()
+        if not hmac.compare_digest(supplied_digest, expected):
+            self.send_json(403, {"error": "planning access required"})
+            return False
+        return True
+
     def body(self) -> dict[str, object] | None:
         try:
             length = int(self.headers.get("Content-Length", "0"))
@@ -569,7 +770,7 @@ class Handler(BaseHTTPRequestHandler):
                 {
                     "key": "archive.contract",
                     "method": "GET",
-                    "template": "https://retained-archive.arwc.test/api/archive-contracts/current"
+                    "template": CONTRACT_SHARE_URL,
                 },
                 {
                     "key": "archive.archived-query",
@@ -600,6 +801,11 @@ class Handler(BaseHTTPRequestHandler):
                     "key": "archive.quarantine-collector",
                     "method": "GET",
                     "template": "https://retained-archive.arwc.test/api/collectors/quarantine"
+                },
+                {
+                    "key": "archive.collector-recovery",
+                    "method": "POST",
+                    "template": "https://retained-archive.arwc.test/api/collector-recoveries"
                 },
                 {
                     "key": "archive.collection-path",
@@ -640,9 +846,28 @@ class Handler(BaseHTTPRequestHandler):
                     "key": "archive.cold-archive-job",
                     "method": "POST",
                     "template": "https://retained-archive.arwc.test/api/archive-jobs"
+                },
+                {
+                    "key": "identity.session-audit",
+                    "method": "GET",
+                    "template": "https://documents.arwc.test/remote.php/dav/files/"
+                                "arwc-planner-reader/RENDER-CRR-882.json"
+                },
+                {
+                    "key": "identity.drawing-context",
+                    "method": "POST",
+                    "template": "https://retained-archive.arwc.test/api/drawing-contexts"
+                },
+                {
+                    "key": "identity.sessions",
+                    "method": "POST",
+                    "template": "https://retained-archive.arwc.test/api/sessions"
                 }
             ],
-            "related": ["https://business-workplace.arwc.test/.well-known/arwc-client"],
+            "related": [
+                "https://business-workplace.arwc.test/.well-known/arwc-client",
+                "https://planning-data.arwc.test/.well-known/arwc-client",
+            ],
         })
         return True
 
@@ -652,6 +877,32 @@ class Handler(BaseHTTPRequestHandler):
         if not self.authorized():
             return
         path = urlsplit(self.path).path
+        if path == "/api/archived-queries/current":
+            # Return a pre-generated step-ca OTT from the pool, plus the
+            # step-ca connection info. The participant calls step-ca directly
+            # with the OTT and their CSR to obtain a certificate. The archive
+            # service does not hold CA provisioner secrets.
+            try:
+                ott = consume_enrollment_token()
+            except ValueError as err:
+                self.send_json(503, {"error": str(err)})
+                return
+            # Compute step-ca root fingerprint for the participant to trust the CA.
+            root_cert_pem = pathlib.Path(STEP_CA_ROOT).read_bytes()
+            from cryptography.hazmat.primitives import hashes
+            from cryptography import x509 as _x509
+            root_cert = _x509.load_pem_x509_certificate(root_cert_pem)
+            fingerprint = root_cert.fingerprint(hashes.SHA256()).hex()
+            self.send_json(200, {
+                "ott": ott,
+                "ca_url": STEP_CA_URL,
+                "ca_fingerprint": fingerprint,
+                "profile": "ArchiveSubmitter",
+                "sign_endpoint": STEP_CA_URL + "/1.0/sign",
+                "enrollment_cn": "archive-submitter",
+                "identity_field": "organizationalUnit",
+            })
+            return
         if path == "/api/sequencer-specs/current":
             state = load_state()
             state["sequencer_descriptor_observed"] = True
@@ -712,8 +963,18 @@ class Handler(BaseHTTPRequestHandler):
             state = load_state()
             state["quarantine_observed"] = True
             save_state(state)
+            # Include the Gitea reader token so the participant can fetch collector-crr.
+            gitea_token = ""
+            try:
+                gitea_state = json.loads(GITEA_STATE_PATH.read_text(encoding="utf-8"))
+                gitea_token = gitea_state.get("token", "")
+            except (OSError, json.JSONDecodeError):
+                pass
+            quarantine = dict(QUARANTINE)
+            if gitea_token:
+                quarantine["collector_access_token"] = gitea_token
             self.accepted(
-                "collection-quarantine-read", QUARANTINE, "corporate-reader-principal", 200,
+                "collection-quarantine-read", quarantine, "corporate-reader-principal", 200,
                 {"download": "/api/artifacts/QTN-COL-2019-12.aqtn",
                  "samples": "/api/artifacts/AQTN1-samples.json"},
             )
@@ -726,19 +987,7 @@ class Handler(BaseHTTPRequestHandler):
             content_type = "application/octet-stream" if name.endswith(".aqtn") else "application/json"
             self.send_bytes((ARTIFACTS / name).read_bytes(), content_type, name)
             return
-        if path != "/api/archive-contracts/current":
-            self.send_json(404, {"error": "record not found"})
-            return
-        state = load_state()
-        if state["enrollment_consumed"]:
-            token, digest = new_enrollment()
-            state["enrollment_token"] = token
-            state["enrollment_token_sha256"] = digest
-            state["enrollment_consumed"] = False
-            save_state(state)
-        result = dict(WORKFLOW)
-        result["enrollment_token"] = state["enrollment_token"]
-        self.accepted("archive-contract-read", result, "corporate-reader-principal", 200)
+        self.send_json(404, {"error": "record not found"})
 
     def do_POST(self) -> None:
         if not self.authorized():
@@ -747,12 +996,18 @@ class Handler(BaseHTTPRequestHandler):
         request = self.body()
         if request is None:
             return
-        if path == "/api/archived-queries/current":
+        if path == "/api/sessions":
+            self.planner_session(request)
+        elif path == "/api/drawing-contexts":
+            self.drawing_context(request)
+        elif path == "/api/archived-queries/current":
             self.query(request)
         elif path == "/api/archive-operations":
             self.helper(request)
         elif path == "/api/replay-exchange/current":
             self.reassemble_exchange(request)
+        elif path == "/api/collector-recoveries":
+            self.recover_collector(request)
         elif path == "/api/collectors/handover":
             self.reconstruct_collector(request)
         elif path == "/api/collection-artifacts/current":
@@ -899,8 +1154,8 @@ class Handler(BaseHTTPRequestHandler):
 
     def reconstruct_protection(self, request: dict[str, object]) -> None:
         state = load_state()
-        if not state["quarantine_observed"]:
-            self.send_json(403, {"error": "quarantine object has not been located"})
+        if not state.get("collector_recovered"):
+            self.send_json(403, {"error": "collector must be recovered before reconstructing protection"})
             return
         expected = json.loads((ARTIFACTS / "sample-results.json").read_text(encoding="utf-8"))
         supplied = request.get("sample_results")
@@ -977,7 +1232,7 @@ class Handler(BaseHTTPRequestHandler):
                 if not isinstance(rollover, dict):
                     raise ValueError
                 certificate = x509.load_pem_x509_certificate(certificate_pem)
-                ca = x509.load_pem_x509_certificate(pathlib.Path(ARCHIVE_CA).read_bytes())
+                ca = x509.load_pem_x509_certificate(pathlib.Path(ARCHIVE_CA_PATH).read_bytes())
                 ca.public_key().verify(
                     certificate.signature, certificate.tbs_certificate_bytes,
                     padding.PKCS1v15(), certificate.signature_hash_algorithm,
@@ -1032,10 +1287,36 @@ class Handler(BaseHTTPRequestHandler):
         if request.get("dataset") != "CUR-COL-CRR-R11" or request.get("revision") != 11:
             self.send_json(409, {"error": "current dataset binding does not match"})
             return
+        db = _load_db_state()
+        if db is None:
+            self.send_json(503, {"error": "current collection service unavailable"})
+            return
+        try:
+            import psycopg2 as _psycopg2
+            conn = _psycopg2.connect(
+                host=db["host"], dbname=db["database"],
+                user=db["user"], password=db["password"],
+                connect_timeout=5,
+            )
+            conn.set_session(readonly=True, autocommit=True)
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    "SELECT record_id, revision, asset, outlet_group, scope, source "
+                    "FROM public.current_collection WHERE record_id = %s AND revision = %s",
+                    ("CUR-COL-CRR-R11", 11),
+                )
+                row = cursor.fetchone()
+            conn.close()
+        except Exception:
+            self.send_json(503, {"error": "current collection service unavailable"})
+            return
+        if not row:
+            self.send_json(404, {"error": "current collection record not found"})
+            return
         result = {
-            "record_id": "CUR-COL-CRR-R11", "revision": 11, "current": True,
-            "scope": "read-only", "asset": "AST-CRR-017", "outlet_group": "OG-CRR-02",
-            "source": "collect-archive/v3",
+            "record_id": row[0], "revision": row[1], "current": True,
+            "asset": row[2], "outlet_group": row[3],
+            "scope": row[4], "source": row[5],
         }
         state["current_data_observed"] = True
         save_state(state)
@@ -1077,6 +1358,27 @@ class Handler(BaseHTTPRequestHandler):
             extra={"collector": instruction},
         )
 
+    def recover_collector(self, request: dict[str, object]) -> None:
+        """W12.1: participant submits the recovered collector SHA256 to prove Gitea download.
+
+        Requires quarantine_observed (participant has read the quarantine object).
+        Validates that the submitted collector_sha256 matches the manifest.
+        """
+        state = load_state()
+        if not state.get("quarantine_observed"):
+            self.send_json(403, {"error": "quarantine object has not been located"})
+            return
+        manifest = json.loads((ARTIFACTS / "collector-manifest.json").read_text(encoding="utf-8"))
+        supplied_sha256 = request.get("collector_sha256", "")
+        if not hmac.compare_digest(str(supplied_sha256), manifest["collector_sha256"]):
+            self.send_json(409, {"error": "collector SHA256 does not match the quarantine manifest"})
+            return
+        state["collector_recovered"] = True
+        save_state(state)
+        result = dict(COLLECTOR)
+        result["sha256"] = manifest["collector_sha256"]
+        self.accepted("collector-recovered", result, "corporate-reader-principal")
+
     def reconstruct_collector(self, request: dict[str, object]) -> None:
         state = load_state()
         if not state["exchange_reconstructed"]:
@@ -1110,44 +1412,166 @@ class Handler(BaseHTTPRequestHandler):
         save_state(state)
         self.accepted("collection-artifact-read", COLLECTOR_CONFIG, "corporate-reader-principal")
 
+    def planner_session(self, request: dict[str, object]) -> None:
+        """W06.3: Convert the drawing context attachment into a usable planner Metabase session.
+
+        Requires: W04.3 planner handover token, drawing_context_attached=True (W06.2),
+        and the oauth_transaction + preview_origin binding from the browser attachment.
+        Returns nadia.corvane's real Metabase session ID as the planner_session authority.
+        """
+        supplied = self.headers.get("X-ARWC-Planning-Access", "")
+        if not supplied:
+            self.send_json(403, {"error": "planning access required"})
+            return
+        if not self.planning_authorized(supplied):
+            return
+
+        oauth_transaction = request.get("oauth_transaction")
+        preview_origin = request.get("preview_origin")
+        if not (oauth_transaction and preview_origin):
+            self.send_json(409, {"error": "oauth_transaction and preview_origin are required"})
+            return
+
+        state = load_state()
+        if not state.get("drawing_context_attached"):
+            self.send_json(403, {"error": "drawing context has not been attached"})
+            return
+        if oauth_transaction != "OAUTH-PLN-882":
+            self.send_json(409, {"error": "OAuth transaction binding does not match"})
+            return
+        if preview_origin != state.get("drawing_context_preview_origin"):
+            self.send_json(409, {"error": "preview origin does not match the attached context"})
+            return
+
+        # Create a real Metabase session for nadia.corvane using stored credentials.
+        import urllib.request as _urllib_request
+        try:
+            creds = json.loads(NADIA_METABASE_PATH.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            self.send_json(503, {"error": "planner session credentials unavailable"})
+            return
+
+        ctx = ssl.create_default_context(cafile="/tmp/arwc-ca-bundle.pem")
+        session_body = json.dumps({
+            "username": creds["email"],
+            "password": creds["password"],
+        }).encode("utf-8")
+        session_req = _urllib_request.Request(
+            f"{creds.get('metabase_url', 'https://reports.arwc.test')}/api/session",
+            data=session_body,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with _urllib_request.urlopen(session_req, context=ctx, timeout=15) as resp:
+                session_data = json.loads(resp.read())
+            metabase_session_id = session_data.get("id", "")
+            if not metabase_session_id:
+                raise ValueError("empty session id")
+        except Exception:
+            self.send_json(503, {"error": "planner Metabase session creation failed"})
+            return
+
+        expires = int(time.time()) + 15 * 60
+        # Write PLANNER_EVIDENCE so the planning_data service can validate the Metabase session.
+        # The token_sha256 is the hash of the Metabase session ID, used by planning_data
+        # to validate the X-ARWC-Planner-Session header without storing the session ID.
+        planner_evidence_path = pathlib.Path("/run/arwc-planning-evidence/planner-session.json")
+        planner_evidence = {
+            "record_id": "PLN-SESS-OAUTH-882",
+            "planner": "nadia.corvane",
+            "scope": "planning-records",
+            "token_sha256": hashlib.sha256(metabase_session_id.encode()).hexdigest(),
+            "expires_at_epoch": expires,
+        }
+        try:
+            planner_evidence_path.parent.mkdir(parents=True, exist_ok=True)
+            atomic_json(planner_evidence_path, planner_evidence)
+            os.chmod(planner_evidence_path, 0o644)
+        except OSError:
+            pass
+        result = {
+            "record_id": "PLN-SESS-OAUTH-882",
+            "revision": 1,
+            "planner": "nadia.corvane",
+            "scope": "planning-records",
+            "protected_record": "RENDER-CRR-882",
+            "expires_at_epoch": expires,
+        }
+        self.accepted("planner-session-issued", result, "nadia.corvane", 201,
+                      {"planner_session": metabase_session_id})
+
+    def drawing_context(self, request: dict[str, object]) -> None:
+        """W06.2: Attach a controlled preview origin to the drawing review context.
+
+        Requires the W04.3 planner handover token. Validates the OAuth state from
+        the native Nextcloud OAUTH-PLN-882.json file, then calls Gotenberg to render
+        a preview artifact confirming the attachment.
+        """
+        supplied = self.headers.get("X-ARWC-Planning-Access", "")
+        if not supplied:
+            self.send_json(403, {"error": "planning access required"})
+            return
+        if not self.planning_authorized(supplied):
+            return
+
+        drawing = request.get("drawing")
+        review = request.get("review")
+        oauth_state = request.get("oauth_state")
+        preview_origin = request.get("preview_origin")
+
+        if not all([drawing, review, oauth_state, preview_origin]):
+            self.send_json(409, {"error": "drawing, review, oauth_state, and preview_origin are required"})
+            return
+        if drawing != "DRW-OG2-R8" or review != "REV-CRR-4417":
+            self.send_json(409, {"error": "drawing review binding does not match"})
+            return
+        if preview_origin != "https://preview-cinder.arwc.test":
+            self.send_json(409, {"error": "preview origin is not an available controlled endpoint"})
+            return
+
+        # Validate oauth_state against the native Nextcloud planning OAuth context.
+        oauth_ctx = _fetch_planning_oauth_context()
+        if oauth_ctx is None:
+            self.send_json(503, {"error": "planning OAuth context unavailable"})
+            return
+        if not hmac.compare_digest(str(oauth_state), str(oauth_ctx.get("oauth_state", ""))):
+            self.send_json(409, {"error": "OAuth state does not match the planning context"})
+            return
+
+        state = load_state()
+        # Render a preview confirmation artifact via Gotenberg.
+        render_hash = _render_drawing_context_preview(drawing, review, preview_origin)
+
+        state["drawing_context_attached"] = True
+        state["drawing_context_preview_origin"] = preview_origin
+        state["drawing_context_render_hash"] = render_hash
+        save_state(state)
+
+        result = {
+            "record_id": "RENDER-CRR-882",
+            "revision": 9,
+            "planner": "nadia.corvane",
+            "drawing": drawing,
+            "review": review,
+            "oauth_transaction": "OAUTH-PLN-882",
+            "browser_profile": "planner-review-3",
+            "preview_origin": preview_origin,
+            "render_hash": render_hash,
+        }
+        self.accepted("drawing-context-created", result, "planning-consumer", 201)
+
     def query(self, request: dict[str, object]) -> None:
         operation = request.get("operation")
         if operation == "enroll":
-            state = load_state()
-            supplied = request.get("enrollment_token")
-            if not isinstance(supplied, str) or state["enrollment_consumed"]:
-                self.send_json(409, {"error": "enrollment is not current"})
-                return
-            if not hmac.compare_digest(hashlib.sha256(supplied.encode()).hexdigest(),
-                                       str(state["enrollment_token_sha256"])):
-                self.send_json(409, {"error": "enrollment is not current"})
-                return
-            organizational_unit = request.get("organizational_unit")
-            if not isinstance(organizational_unit, str):
-                self.send_json(409, {"error": "organizational unit is required"})
-                return
-            try:
-                certificate, private_key, serial = issue_certificate(organizational_unit)
-            except (ValueError, subprocess.SubprocessError):
-                self.send_json(409, {"error": "organizational unit is not accepted"})
-                return
-            state["enrollment_consumed"] = True
-            issued = state["issued_certificates"]
-            assert isinstance(issued, list)
-            issued.append({"serial": serial, "organizational_unit": organizational_unit})
-            save_state(state)
-            result = {
-                "record_id": f"ArchiveSubmitter-{serial[2:]}",
-                "revision": 1,
-                "profile": "ArchiveSubmitter",
-                "common_name": "corporate-reader-principal",
-                "organizational_unit": organizational_unit,
-                "extended_key_usage": "clientAuth",
-            }
-            self.accepted(
-                "archive-identity-query/enroll", result,
-                "corporate-reader-principal", extra={"certificate": certificate, "private_key": private_key},
-            )
+            # Certificate issuance is owned by step-ca. The participant must use
+            # the OTT from GET /api/archived-queries/current to call step-ca's
+            # /1.0/sign endpoint directly. This endpoint is kept for compatibility
+            # but no longer issues certificates.
+            self.send_json(410, {
+                "error": "enrollment is handled by step-ca directly",
+                "sign_endpoint": STEP_CA_URL + "/1.0/sign",
+            })
             return
         if operation != "query":
             self.send_json(409, {"error": "unknown archive operation"})
@@ -1156,30 +1580,22 @@ class Handler(BaseHTTPRequestHandler):
         if not organizational_unit:
             self.send_json(403, {"error": "ArchiveSubmitter client identity required"})
             return
-        query = (
-            "MATCH (i:Identity {ou:'" + organizational_unit +
-            "'})-[:CAN_READ]->(r:ArchiveRecord) RETURN r"
-        )
-        if re.search(r"\b(CREATE|DELETE|SET|MERGE|REMOVE|DROP)\b", query, re.IGNORECASE):
+        record, backend_query, error_code = archive_db_query(organizational_unit)
+        if error_code == "write":
             self.send_json(409, {"error": "archive backend is read only"})
             return
-        if organizational_unit == "MaintenanceArchive":
-            self.accepted("archive-identity-query/query", CALLER_RECORD,
-                          "corporate-reader-principal", extra={"backend_query": query})
-            return
-        protected = re.search(
-            r"\bOR\s+r\.id\s*=\s*['\"]AR-CRR-229['\"]", organizational_unit, re.IGNORECASE,
-        )
-        other_record = re.search(r"\b(?:r\.id|record_id)\s*=\s*['\"]([^'\"]+)", organizational_unit,
-                                 re.IGNORECASE)
-        if not protected or (other_record and other_record.group(1) != "AR-CRR-229"):
+        if error_code in ("forbidden", "unavailable", "") and record is None:
             self.send_json(403, {"error": "identity has no matching archive record"})
             return
-        state = load_state()
-        state["protected_record_observed"] = True
-        save_state(state)
-        self.accepted("archive-identity-query/query", PROTECTED_RECORD,
-                      "corporate-reader-principal", extra={"backend_query": query})
+        if error_code.startswith("db_error:"):
+            self.send_json(503, {"error": "archive backend unavailable"})
+            return
+        if record and record["record_id"] == "AR-CRR-229":
+            state = load_state()
+            state["protected_record_observed"] = True
+            save_state(state)
+        self.accepted("archive-identity-query/query", record,
+                      "corporate-reader-principal", extra={"backend_query": backend_query})
 
     def helper(self, request: dict[str, object]) -> None:
         state = load_state()
@@ -1196,20 +1612,66 @@ class Handler(BaseHTTPRequestHandler):
         except (ValueError, subprocess.SubprocessError, TimeoutError):
             self.send_json(409, {"error": "archive is not accepted"})
             return
+        # Raw validation before NFKC normalization: reject ASCII dot-dot and slash.
         if ".." in member or "/" in member:
             self.send_json(409, {"error": "archive member is outside the result directory"})
             return
+        # Genuine extraction: 7-Zip extracts the archive to a per-request
+        # subdirectory of the helper staging area. The member is extracted with
+        # its literal name (including Unicode fullwidth chars).
+        import shutil
+        extract_nonce = secrets.token_hex(8)
+        extract_dir = HELPER_STAGING_DIR / f"extract-{extract_nonce}"
+        HELPER_STAGING_DIR.mkdir(mode=0o700, exist_ok=True)
+        extract_dir.mkdir(mode=0o700)
+        archive_path = None
+        try:
+            with tempfile.NamedTemporaryFile(suffix=".7z", delete=False) as archive_file:
+                archive_path = pathlib.Path(archive_file.name)
+                archive_file.write(data)
+            subprocess.run(
+                ["7zz", "x", str(archive_path), f"-o{extract_dir}", "-ba"],
+                check=True, timeout=10, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            )
+        except (ValueError, subprocess.SubprocessError, TimeoutError):
+            shutil.rmtree(str(extract_dir), ignore_errors=True)
+            if archive_path and archive_path.exists():
+                archive_path.unlink(missing_ok=True)
+            self.send_json(409, {"error": "archive extraction failed"})
+            return
+        finally:
+            if archive_path and archive_path.exists():
+                archive_path.unlink(missing_ok=True)
+        # NFKC normalization: fullwidth dot-dot-slash normalizes to ASCII ../
+        # The normalized path resolves outside the extraction directory into the
+        # helper staging area, where the Gitea handover artifact was staged.
         normalized = unicodedata.normalize("NFKC", member)
-        if normalized != "../copy_handover(HND-PLANNER-06)":
+        normalized_path = pathlib.Path(os.path.normpath(extract_dir / normalized))
+        # Clean up extraction directory now (contents no longer needed).
+        shutil.rmtree(str(extract_dir), ignore_errors=True)
+        # Authorization bound: the traversal must resolve exactly to the staged
+        # Gitea handover artifact path (bounded helper action).
+        if normalized_path != HANDOVER_STAGING_PATH:
             self.send_json(409, {"error": "archive member does not select an available action"})
             return
-        atomic_json(RESULT, HANDOVER)
+        # Read the handover from the traversed path (outside the extraction dir).
+        # normalized_path == HANDOVER_STAGING_PATH after the authorization check,
+        # so this read visibly follows the traversal rather than using a fixed constant.
+        if not normalized_path.exists():
+            self.send_json(503, {"error": "archive handover artifact unavailable"})
+            return
+        try:
+            handover = json.loads(normalized_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            self.send_json(503, {"error": "archive handover artifact unreadable"})
+            return
+        atomic_json(RESULT, handover)
         token = state.get("planner_handover_token")
         if not isinstance(token, str):
             token = secrets.token_urlsafe(32)
             state["planner_handover_token"] = token
         atomic_json(HANDOVER_EVIDENCE, {
-            "record_id": "HND-PLANNER-06",
+            "record_id": handover.get("record_id", "HND-PLANNER-06"),
             "token_sha256": hashlib.sha256(token.encode()).hexdigest(),
         })
         os.chown(HANDOVER_EVIDENCE, -1, grp.getgrnam("arwc-handover").gr_gid)
@@ -1217,9 +1679,134 @@ class Handler(BaseHTTPRequestHandler):
         state["helper_handover_copied"] = True
         save_state(state)
         self.accepted(
-            "archive-helper-executed", HANDOVER, "svc-archive-helper",
+            "archive-helper-executed", handover, "svc-archive-helper",
             extra={"planner_handover": token},
         )
+
+
+def _fetch_planning_oauth_context() -> dict | None:
+    """Fetch OAUTH-PLN-882.json from Nextcloud using the staged planning_access credentials.
+
+    Returns the parsed JSON record, or None on any failure.
+    """
+    if not HANDOVER_STAGING_PATH.exists():
+        return None
+    try:
+        handover = json.loads(HANDOVER_STAGING_PATH.read_text(encoding="utf-8"))
+        pa = handover.get("planning_access", {})
+        username = pa.get("username", "")
+        password = pa.get("password", "")
+        documents = pa.get("documents", "https://documents.arwc.test")
+        oauth_path = pa.get("oauth_context_path", "")
+        if not (username and password and oauth_path):
+            return None
+    except (OSError, json.JSONDecodeError):
+        return None
+
+    import urllib.request as _urllib_request
+    ctx = ssl.create_default_context(cafile="/tmp/arwc-ca-bundle.pem")
+    # Shared files appear at the root of the recipient's DAV namespace (just the filename).
+    oauth_filename = oauth_path.rsplit("/", 1)[-1]
+    encoded_path = "/".join(
+        urllib.parse.quote(part, safe="")
+        for part in f"{username}/{oauth_filename}".split("/")
+    )
+    url = f"https://documents.arwc.test/remote.php/dav/files/{encoded_path}"
+    auth = "Basic " + base64.b64encode(f"{username}:{password}".encode()).decode()
+    req = _urllib_request.Request(url, headers={"Authorization": auth})
+    try:
+        with _urllib_request.urlopen(req, context=ctx, timeout=10) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except Exception:
+        return None
+
+
+CHROME = "/opt/chrome-headless-shell/chrome-headless-shell"
+
+
+def _render_drawing_context_preview(drawing: str, review: str, preview_origin: str) -> str | None:
+    """Run chrome-headless-shell to prove the controlled preview is loaded in the planner's review.
+
+    Chrome loads a local drawing review page that embeds an iframe from preview-cinder.arwc.test.
+    The preview-cinder page sends a postMessage with its origin back to the parent frame.
+    Chrome's DOM output confirms the browser received the postMessage from the controlled endpoint.
+    Returns the hex SHA-256 of chrome's DOM output, or None on failure.
+    """
+    preview_url = f"http://preview-cinder.arwc.test/preview/{drawing}"
+    document = (
+        f"<!doctype html><meta charset='utf-8'>"
+        f"<h1>Planning Drawing Review</h1>"
+        f"<p id='drawing'>Drawing: {drawing}</p>"
+        f"<p id='review'>Review: {review}</p>"
+        f"<p id='planner'>Planner: nadia.corvane</p>"
+        f"<p id='preview-origin'>Preview origin: {preview_origin}</p>"
+        f"<output id='preview-status'>awaiting preview callback</output>"
+        f"<iframe id='preview-frame' src='{preview_url}' width='640' height='480'></iframe>"
+        f"<script>"
+        f"window.addEventListener('message', function(evt) {{"
+        f"  if (evt.data && evt.data.type === 'preview_loaded') {{"
+        f"    document.getElementById('preview-status').textContent ="
+        f"      'preview_callback_received:origin:' + evt.data.origin + ':path:' + (evt.data.path || '');"
+        f"  }}"
+        f"}});"
+        f"</script>"
+    )
+    with tempfile.TemporaryDirectory(prefix="arwc-drawing-review-") as temporary:
+        review_path = pathlib.Path(temporary) / "review.html"
+        review_path.write_text(document, encoding="utf-8")
+        completed = subprocess.run(
+            [CHROME, "--headless", "--no-sandbox", "--disable-gpu",
+             "--disable-background-networking", "--disable-component-update",
+             "--disable-sync", "--metrics-recording-only", "--no-first-run",
+             f"--user-data-dir={temporary}/profile",
+             "--virtual-time-budget=5000", "--dump-dom",
+             review_path.as_uri()],
+            text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            timeout=30, check=False,
+        )
+    if completed.returncode != 0:
+        return None
+    dom_output = completed.stdout
+    # Require the preview-status element to show the received callback text,
+    # not just any occurrence of the domain in the static markup.
+    if "preview_callback_received:origin:preview-cinder.arwc.test" not in dom_output:
+        return None
+    return hashlib.sha256(dom_output.encode()).hexdigest()
+
+
+def _fetch_gitea_handover() -> dict | None:
+    """Fetch HND-PLANNER-06 from the native Gitea repository.
+
+    Uses the read-only token stored in the operator state file. Gitea records
+    the access in its activity log, providing authentic helper-context telemetry.
+    Returns the parsed JSON record, or None if credentials or the file are absent.
+    """
+    if not GITEA_STATE_PATH.exists():
+        return None
+    try:
+        state = json.loads(GITEA_STATE_PATH.read_text(encoding="utf-8"))
+        gitea_url = state.get("gitea_url", "https://engineering.arwc.test")
+        org = state.get("org", "arwc-archive")
+        repo = state.get("repo", "retained-handovers")
+        file_name = state.get("file", "HND-PLANNER-06.json")
+        token = state.get("token", "")
+        if not token:
+            return None
+    except (OSError, json.JSONDecodeError):
+        return None
+
+    import urllib.request as _urllib_request
+    ctx = ssl.create_default_context(cafile="/tmp/arwc-ca-bundle.pem")
+    api_url = f"{gitea_url}/api/v1/repos/{org}/{repo}/contents/{file_name}"
+    req = _urllib_request.Request(api_url, headers={"Authorization": f"token {token}"})
+    try:
+        with _urllib_request.urlopen(req, context=ctx, timeout=10) as resp:
+            resp_data = json.loads(resp.read())
+        content_b64 = resp_data.get("content", "")
+        content_bytes = base64.b64decode(content_b64)
+        return json.loads(content_bytes.decode("utf-8"))
+    except Exception:
+        return None
 
 
 def main() -> None:
@@ -1228,7 +1815,10 @@ def main() -> None:
     context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     context.minimum_version = ssl.TLSVersion.TLSv1_2
     context.load_cert_chain("/tmp/server.crt", "/tmp/server.key")
-    context.load_verify_locations(ARCHIVE_CA)
+    # Use the combined CA bundle so the archive service trusts step-ca-signed
+    # client certificates for mTLS. The bundle was built by the entrypoint from
+    # the golden CA and the native IT step-ca root.
+    context.load_verify_locations("/tmp/arwc-ca-bundle.pem")
     context.verify_mode = ssl.CERT_OPTIONAL
     server.socket = context.wrap_socket(server.socket, server_side=True)
     server.serve_forever()

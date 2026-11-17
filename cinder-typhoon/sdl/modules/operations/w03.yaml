@@ -38,11 +38,13 @@ realization:
 evidence_requirements:
   c1:
     description: |-
-      Recover the actual annex and handover reference. The importer address alone does not satisfy the result.
+      Retrieve the actual order attachment and bind its content hash, annex revision, supplier job and drawing reference to the native order. Another supplier's attachments remain denied.
 
-      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Retrieve the actual order attachment and bind its content hash, annex revision, supplier job and drawing reference to the native order. Another supplier's attachments remain denied.
 
-      Evidence sources are `features.a-corporate.a-business`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence collection is read-only. It cannot create a share, change a document,
+      issue a product session, or fabricate a product history entry. Native product
+      state and submitted observations must refer to the same range instance.
     source_refs:
     - features.a-corporate.a-business
     scope: Per-participant in-world evidence; no other participant state.
@@ -73,18 +75,18 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Complete the documented participant path through the named native products. Verify the product-owned
+      record or mutation, the declared denied neighbor or write boundary, unchanged unrelated records, fresh evidence,
+      and retained-volume persistence after an ordinary restart.'
   c2:
     description: |-
-      Recover the restricted handover content with its correct work-order binding. This is evidence for the read integration, not live process access.
+      Download the prior annex version and current file, retain their native file/version IDs and hashes, then inspect the actual incoming share and account identity. Resolve the referenced engineering acceptance file and show that it is an individual share to Jules, while its parent engineering folder and unrelated department files remain denied.
 
-      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Download the prior annex version and current file, retain their native file/version IDs and hashes, then inspect the actual incoming share and account identity. Resolve the referenced engineering acceptance file and show that it is an individual share to Jules, while its parent engineering folder and unrelated department files remain denied.
 
-      Evidence sources are `features.a-corporate.a-business`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence collection is read-only. It cannot create a share, change a document,
+      issue a product session, or fabricate a product history entry. Native product
+      state and submitted observations must refer to the same range instance.
     source_refs:
     - features.a-corporate.a-business
     scope: Per-participant in-world evidence; no other participant state.
@@ -115,20 +117,21 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Complete the documented participant path through the named native products. Verify the product-owned
+      record or mutation, the declared denied neighbor or write boundary, unchanged unrelated records, fresh evidence,
+      and retained-volume persistence after an ordinary restart.'
   c3:
     description: |-
-      Recover the current read configuration and its scope. This supplies W03.READ; W09's data binding is still needed for OT visibility. The associated handover also identifies the retained contractor bundle used in W08, without granting access to unrelated corporate records.
+      Use the actual OpenAPI relation/field metadata and a filtered live query to reconcile asset AST-CRR-017, planning window, source record, revision, reserve value and observation date. Establish denial for a base allocation relation and a write, with unchanged data. Compare those results to the acceptance note and trusted native product evidence.
 
-      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Use the actual OpenAPI relation/field metadata and a filtered live query to reconcile asset AST-CRR-017, planning window, source record, revision, reserve value and observation date. Establish denial for a base allocation relation and a write, with unchanged data. Compare those results to the acceptance note and trusted native product evidence.
 
-      Evidence sources are `features.a-corporate.a-business`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence collection is read-only. It cannot create a share, change a document,
+      issue a product session, or fabricate a product history entry. Native product
+      state and submitted observations must refer to the same range instance.
     source_refs:
-    - features.a-corporate.a-business
+    - features.a-dmz.a-data-bridge
+    - features.a-corporate.a-data
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
     channel: other
@@ -149,7 +152,8 @@ evidence_requirements:
         names:
         - cinder.w03-3.satisfied
         component_refs:
-        - features.a-corporate.a-business
+        - features.a-dmz.a-data-bridge
+        - features.a-corporate.a-data
       collection: require
       retention: require
       redaction: redact-secrets
@@ -157,11 +161,9 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Complete the documented participant path through the named native products. Verify the product-owned
+      record or mutation, the declared denied neighbor or write boundary, unchanged unrelated records, fresh evidence,
+      and retained-volume persistence after an ordinary restart.'
 propositions:
   c1:
     description: Recover the actual annex and handover reference. The importer address alone does not satisfy the
@@ -198,7 +200,8 @@ propositions:
       is still needed for OT visibility. The associated handover also identifies the retained contractor bundle
       used in W08, without granting access to unrelated corporate records.
     subjects:
-    - features.a-corporate.a-business
+    - features.a-dmz.a-data-bridge
+    - features.a-corporate.a-data
     basis: observed_state
     predicate:
       kind: boolean
@@ -281,7 +284,8 @@ objectives:
     actions:
     - w03.c3
     targets:
-    - features.a-corporate.a-business
+    - features.a-dmz.a-data-bridge
+    - features.a-corporate.a-data
     success:
       mode: all_of
       assertions:
@@ -364,10 +368,8 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Work order WO-CRR-4417 exposes annex ANN-4417-R2 naming process-data handover PDH-CRR-READ-08 and importer revision annex-import/2. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
-
-      The required result is: Recover the actual annex and handover reference. The importer address alone does not satisfy the result.
+    procedure_basis: Recover the work-order annex retained with the supplier order and identify its engineering
+      drawing reference.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -383,29 +385,28 @@ action_contracts:
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-business` and its `business-workplace` application own this part of **An annex left with the order**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Work order WO-CRR-4417 exposes annex ANN-4417-R2 naming process-data handover PDH-CRR-READ-08 and importer revision annex-import/2.
-
-        Native bindings:
-
-        - `a-corporate.a-business/business-workplace/an-annex-left-with-the-order`
-
-        The private service-loader contract is `content.arwc-a-business.w03-1-an-annex-left-with-the-order`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+        The submitted native ERPNext purchase order has a genuine private File
+        attachment containing ANN-4417-R2. A read-only native File DocShare permits
+        Jules to read that exact attachment. The ordinary Nextcloud supplier document
+        register links its actual PO and native private-file URL. The stock portal's
+        public-only attachment section remains unchanged; ERPNext owns the private
+        download authorization.
       support_refs:
       - features.a-corporate.a-business
-      - content.arwc-a-business.w03-1-an-annex-left-with-the-order
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
-
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        Check the ordinary user and one denied neighboring record through supported
+        interfaces. Retained-volume restarts preserve product state. Explicit native IT
+        reset restores the seeded accounts, documents, history and per-record grants;
+        it does not reset qualified OT.
       support_refs:
       - features.a-corporate.a-business
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual annex and handover reference. The importer address alone does not satisfy
-        the result.
+      description: Retrieve the actual order attachment and bind its content hash, annex revision, supplier job
+        and drawing reference to the native order. Another supplier's attachments remain denied.
       target_refs:
       - features.a-corporate.a-business
       evidence_refs:
@@ -413,9 +414,11 @@ action_contracts:
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Retrieve the actual order attachment and bind its content hash, annex revision, supplier job and drawing reference to the native order. Another supplier's attachments remain denied.
 
-        Evidence sources are `features.a-corporate.a-business`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence collection is read-only. It cannot create a share, change a document,
+        issue a product session, or fabricate a product history entry. Native product
+        state and submitted observations must refer to the same range instance.
       target_refs:
       - features.a-corporate.a-business
       evidence_refs:
@@ -431,10 +434,8 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: |-
-      The authored condition is **validate-before-decode path canonicalization**. Annex importer validates an attachments/ prefix before percent decoding; attachments/%2e%2e%2frestricted%2fPDH-CRR-READ-08 resolves the restricted handover under service identity svc-annex. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
-
-      The required result is: Recover the restricted handover content with its correct work-order binding. This is evidence for the read integration, not live process access.
+    procedure_basis: Reconcile the annex revision history with the engineering document that reached the supplier
+      account.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -449,30 +450,27 @@ action_contracts:
       - features.a-corporate.a-business
     - precondition_id: normal-surface
       precondition_class: target
-      description: |-
-        `a-business` and its `business-workplace` application own this part of **A reference outside the order**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Annex importer validates an attachments/ prefix before percent decoding; attachments/%2e%2e%2frestricted%2fPDH-CRR-READ-08 resolves the restricted handover under service identity svc-annex.
-
-        Native bindings:
-
-        - `a-corporate.a-business/business-workplace/a-reference-outside-the-order`
-
-        The private service-loader contract is `content.arwc-a-business.w03-2-a-reference-outside-the-order`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      description: Nextcloud stores two genuine versions of the logical annex and one individual share of the engineering
+        acceptance file. The older annex distribution names Clara; the current supplier distribution and native
+        incoming share identify the different recipient.
       support_refs:
       - features.a-corporate.a-business
-      - content.arwc-a-business.w03-2-a-reference-outside-the-order
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
-
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        Check the ordinary user and one denied neighboring record through supported
+        interfaces. Retained-volume restarts preserve product state. Explicit native IT
+        reset restores the seeded accounts, documents, history and per-record grants;
+        it does not reset qualified OT.
       support_refs:
       - features.a-corporate.a-business
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the restricted handover content with its correct work-order binding. This is evidence
-        for the read integration, not live process access.
+      description: Download the prior annex version and current file, retain their native file/version IDs and hashes,
+        then inspect the actual incoming share and account identity. Resolve the referenced engineering acceptance
+        file and show that it is an individual share to Jules, while its parent engineering folder and unrelated
+        department files remain denied.
       target_refs:
       - features.a-corporate.a-business
       evidence_refs:
@@ -480,9 +478,11 @@ action_contracts:
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Download the prior annex version and current file, retain their native file/version IDs and hashes, then inspect the actual incoming share and account identity. Resolve the referenced engineering acceptance file and show that it is an individual share to Jules, while its parent engineering folder and unrelated department files remain denied.
 
-        Evidence sources are `features.a-corporate.a-business`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence collection is read-only. It cannot create a share, change a document,
+        issue a product session, or fabricate a product history entry. Native product
+        state and submitted observations must refer to the same range instance.
       target_refs:
       - features.a-corporate.a-business
       evidence_refs:
@@ -498,10 +498,8 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Export boundary for PDH-CRR-READ-08 returns integration client INT-CRR-08, endpoint process-read.arwc.test, protocol process-read/v2, scope OG-CRR-02/read, and retained bundle BND-COLLECT-CRR-12. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
-
-      The required result is: Recover the current read configuration and its scope. This supplies W03.READ; W09's data binding is still needed for OT visibility. The associated handover also identifies the retained contractor bundle used in W08, without granting access to unrelated corporate records.
+    procedure_basis: Establish what the approved planning read service actually publishes and what remains outside
+      its boundary.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -513,46 +511,49 @@ action_contracts:
         to every listed surface.
       support_refs:
       - workflows.w03.c3
-      - features.a-corporate.a-business
+      - features.a-dmz.a-data-bridge
+      - features.a-corporate.a-data
     - precondition_id: normal-surface
       precondition_class: target
-      description: |-
-        `a-business` and its `business-workplace` application own this part of **The integration's read contract**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Export boundary for PDH-CRR-READ-08 returns integration client INT-CRR-08, endpoint process-read.arwc.test, protocol process-read/v2, scope OG-CRR-02/read, and retained bundle BND-COLLECT-CRR-12.
-
-        Native bindings:
-
-        - `a-corporate.a-business/business-workplace/the-integration-s-read-contract`
-
-        The private service-loader contract is `content.arwc-a-business.w03-3-the-integration-s-read-contract`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      description: The engineering acceptance note refers to upstream PostgREST. The native OpenAPI document and
+        the PostgreSQL dmz_reader grants control the exposed dmz_api view; no bespoke query service impersonates
+        a database.
       support_refs:
-      - features.a-corporate.a-business
-      - content.arwc-a-business.w03-3-the-integration-s-read-contract
+      - features.a-dmz.a-data-bridge
+      - features.a-corporate.a-data
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        Supplies W03.READ and the read-integration half of W09.4. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
-
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        Check the ordinary user and one denied neighboring record through supported
+        interfaces. Retained-volume restarts preserve product state. Explicit native IT
+        reset restores the seeded accounts, documents, history and per-record grants;
+        it does not reset qualified OT.
       support_refs:
-      - features.a-corporate.a-business
+      - features.a-dmz.a-data-bridge
+      - features.a-corporate.a-data
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the current read configuration and its scope. This supplies W03.READ; W09's data binding
-        is still needed for OT visibility. The associated handover also identifies the retained contractor bundle
-        used in W08, without granting access to unrelated corporate records.
+      description: Use the actual OpenAPI relation/field metadata and a filtered live query to reconcile asset AST-CRR-017,
+        planning window, source record, revision, reserve value and observation date. Establish denial for a base
+        allocation relation and a write, with unchanged data. Compare those results to the acceptance note and trusted
+        native product evidence.
       target_refs:
-      - features.a-corporate.a-business
+      - features.a-dmz.a-data-bridge
+      - features.a-corporate.a-data
       evidence_refs:
       - evidence_requirements.w03.c3
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Use the actual OpenAPI relation/field metadata and a filtered live query to reconcile asset AST-CRR-017, planning window, source record, revision, reserve value and observation date. Establish denial for a base allocation relation and a write, with unchanged data. Compare those results to the acceptance note and trusted native product evidence.
 
-        Evidence sources are `features.a-corporate.a-business`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence collection is read-only. It cannot create a share, change a document,
+        issue a product session, or fabricate a product history entry. Native product
+        state and submitted observations must refer to the same range instance.
       target_refs:
-      - features.a-corporate.a-business
+      - features.a-dmz.a-data-bridge
+      - features.a-corporate.a-data
       evidence_refs:
       - evidence_requirements.w03.c3
     failure_classes:

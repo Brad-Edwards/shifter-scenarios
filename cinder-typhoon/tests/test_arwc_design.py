@@ -91,20 +91,25 @@ class ArwcDesignTests(unittest.TestCase):
         scenario.nodes["a-corporate.a-data"].runtime.database_services[0].version = "latest"
         self.expect("database contract drift", check_world, scenario)
 
-    def test_live_consequence_quantities_are_exact(self):
+    def test_bounded_operation_quantities_are_exact(self):
         scenario = self.scenario.model_copy(deep=True)
         inject = scenario.injects["consequences.reservoir-release"]
-        inject.description = inject.description.replace("USD 1,440", "USD 14,400")
-        self.expect("Live consequence contract drift", check_process_model, scenario)
+        inject.description = inject.description.replace("0.30 m3/s", "0.40 m3/s")
+        self.expect("Bounded operation contract drift", check_process_model, scenario)
 
-    def test_rehearsal_route_does_not_replace_live_route(self):
-        scenario = self.scenario.model_copy(deep=True)
-        reservoir = scenario.nodes["a-control.a-reservoir"].runtime.applications[0]
-        live = next(route for route in reservoir.routes if route.route_id == "open-the-gates")
-        rehearsal = next(route for route in reservoir.routes if route.route_id == "the-schedule-the-service-accepts")
-        rehearsal.path = live.path
-        # Route path uniqueness is part of the exact generated world contract.
-        self.expect("route binding", check_world, scenario)
+    def test_w33_has_no_synthetic_distribution_asset_or_route(self):
+        self.assertNotIn("a-control.a-distribution", self.scenario.nodes)
+        route_ids = {
+            route.route_id
+            for node in self.scenario.nodes.values()
+            if node.runtime is not None
+            for application in node.runtime.applications
+            for route in application.routes
+        }
+        self.assertTrue({
+            "a-forecast-you-can-defend", "the-schedule-the-service-accepts",
+            "a-release-that-stays-in-the-room", "pressure-without-panic",
+        }.isdisjoint(route_ids))
 
     def test_difficult_mechanics_have_reproducible_contracts(self):
         expected = {
@@ -116,11 +121,11 @@ class ArwcDesignTests(unittest.TestCase):
         for content_id, exact_term in expected.items():
             self.assertIn(exact_term, self.scenario.content[content_id].text)
 
-    def test_feedback_uses_the_full_cartesian_case_set(self):
-        self.assertIn(
-            "all 27 demand",
-            self.scenario.injects["consequences.feedback-rehearsal"].description,
-        )
+    def test_w33_consequence_separates_measurement_from_projection(self):
+        description = self.scenario.injects["consequences.peak-operating-projection"].description
+        for term in ("twelve settled", "one-hour", "projected", "separately labelled"):
+            self.assertIn(term, description)
+        self.assertNotIn("consequences.feedback-rehearsal", self.scenario.injects)
         check_process_model(self.scenario)
 
     def test_primary_validator_has_no_private_relationship_decoder(self):

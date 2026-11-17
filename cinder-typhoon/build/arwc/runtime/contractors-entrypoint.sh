@@ -22,5 +22,12 @@ for file in server.crt server.key; do
 done
 install -o arwc-contractors -g arwc-contractors -m 0444 /run/arwc-tls/ca.crt /tmp/ca.crt
 
+# Build CA bundle: corporate CA + native step-ca root (for suppliers.arwc.test).
+cat /run/arwc-tls/ca.crt > /tmp/arwc-ca-bundle.pem
+if [ -r /run/arwc-native/root-ca.crt ]; then
+  cat /run/arwc-native/root-ca.crt >> /tmp/arwc-ca-bundle.pem
+fi
+chmod 0644 /tmp/arwc-ca-bundle.pem
+
 exec setpriv --reuid=arwc-contractors --regid=arwc-contractors --init-groups \
   python3 /opt/contractor-portal/contractor_portal.py

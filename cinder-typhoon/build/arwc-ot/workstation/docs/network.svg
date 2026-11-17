@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="650" viewBox="0 0 1100 650">
+  <rect width="1100" height="650" fill="#f5f7f9"/>
+  <g font-family="Arial,sans-serif" fill="#263645">
+    <text x="35" y="45" font-size="27">Cairn Reach Reservoir — operating OT network</text>
+    <rect x="30" y="75" width="1040" height="285" rx="8" fill="#e9f0f5" stroke="#64798a"/>
+    <text x="50" y="105" font-size="20">Supervisory network: 172.29.63.0/24</text>
+    <g fill="#fff" stroke="#64798a">
+      <rect x="50" y="135" width="220" height="95" rx="5"/>
+      <rect x="300" y="135" width="220" height="95" rx="5"/>
+      <rect x="550" y="135" width="220" height="95" rx="5"/>
+      <rect x="800" y="135" width="245" height="95" rx="5"/>
+    </g>
+    <g font-size="17">
+      <text x="65" y="163">Engineering desktop .10</text><text x="65" y="190">Editor, OPC UA, SQL</text><text x="65" y="216">RDP: 3389</text>
+      <text x="315" y="163">FUXA HMI .21</text><text x="315" y="190">Operator and viewer</text><text x="315" y="216">HTTP: 1881</text>
+      <text x="565" y="163">Mosquitto broker .23</text><text x="565" y="190">Authenticated requests</text><text x="565" y="216">MQTT TLS: 8883</text>
+      <text x="815" y="163">PostgreSQL .22</text><text x="815" y="190">Historian and events</text><text x="815" y="216">SQL: 5432</text>
+      <text x="55" y="268">Telegraf collects OPC UA measurements and decision signals.</text>
+      <text x="55" y="296">Grafana .25:3000 reads PostgreSQL trends. The dispatcher writes fixed Remote request tags.</text>
+      <text x="55" y="324">Clients use the PLC's native signed and encrypted OPC UA endpoint.</text>
+    </g>
+    <path d="M 550 360 V 390" fill="none" stroke="#347fa5" stroke-width="5"/>
+    <rect x="310" y="390" width="480" height="85" rx="6" fill="#fff" stroke="#64798a" stroke-width="2"/>
+    <text x="330" y="420" font-size="20">OpenPLC site controller: supervisory .20</text>
+    <text x="330" y="449" font-size="17">OPC UA 4840 · Engineering HTTPS 8443 · No general routing</text>
+    <path d="M 550 475 V 505" fill="none" stroke="#347fa5" stroke-width="5"/>
+    <rect x="30" y="505" width="1040" height="110" rx="8" fill="#edf3ef" stroke="#64798a"/>
+    <text x="50" y="536" font-size="20">Field network: 172.29.64.0/24</text>
+    <text x="50" y="565" font-size="17">PLC .20 ⇄ Modbus TCP 502 ⇄ Remote I/O .30</text>
+    <text x="50" y="592" font-size="17">Level, valve position/flow, drive selectors, motor enables, and two outlet actuators</text>
+  </g>
+</svg>

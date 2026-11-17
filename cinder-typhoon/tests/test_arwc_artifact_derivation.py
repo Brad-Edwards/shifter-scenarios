@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 import ast
-import copy
 import importlib.util
 import inspect
-import json
 from pathlib import Path
 import sys
 import unittest
@@ -37,33 +35,6 @@ def constants(name: str) -> set[object]:
     }
 
 
-def schedule_window() -> dict[str, object]:
-    return {
-        "schema": "arwc.schedule-window/v1",
-        "checkpoint": "REH-SCHED-33",
-        "interval_seconds": 300,
-        "interval_count": 12,
-        "demand_m3s": [0.45, 0.50, 0.55, 0.60, 0.65, 0.70,
-                       0.70, 0.65, 0.60, 0.55, 0.50, 0.45],
-        "initial_buffer_m3": 180.0,
-        "state_bounds_m3": {"min": 120.0, "max": 240.0},
-        "terminal_bounds_m3": {"min": 160.0, "max": 200.0},
-        "volume_objective_ml": {"min": 0.78, "max": 0.84},
-        "ramp_bound_m3s": 0.1,
-        "release_bounds_m3s": {"min": 0.0, "max": 0.8},
-        "supply_bounds_m3s": {"min": 0.0, "max": 0.5},
-        "policy_format": "ARWC-POL1",
-        "request_schema": {
-            "required": [
-                "checkpoint", "interval_seconds", "demand_m3s",
-                "reservoir_release_m3s", "alternate_supply_m3s",
-            ],
-            "series_length": 12,
-            "number_type": "finite-real",
-        },
-    }
-
-
 class ARWCArtifactDerivationTests(unittest.TestCase):
     def test_removed_answers_are_absent_from_known_solution_methods(self) -> None:
         forbidden = {
@@ -84,17 +55,29 @@ class ARWCArtifactDerivationTests(unittest.TestCase):
             with self.subTest(method=method):
                 self.assertTrue(answers.isdisjoint(constants(method)))
 
-    def test_w33_and_w34_have_no_embedded_winning_schedule(self) -> None:
-        for method in ("test_w33_forecast_scheduling", "test_w34_reporting_checkpoint"):
-            source = ast.unparse(method_node(method))
-            with self.subTest(method=method):
-                self.assertNotIn("reference_release_m3s", source)
-                self.assertNotIn("reference_alternate_m3s", source)
-                lists = [
-                    node for node in ast.walk(method_node(method))
-                    if isinstance(node, (ast.List, ast.Tuple)) and len(node.elts) == 12
-                ]
-                self.assertEqual(lists, [])
+    def test_w34_has_no_embedded_winning_schedule(self) -> None:
+        source = ast.unparse(method_node("test_w34_reporting_checkpoint"))
+        self.assertNotIn("reference_release_m3s", source)
+        self.assertNotIn("reference_alternate_m3s", source)
+        lists = [
+            node for node in ast.walk(method_node("test_w34_reporting_checkpoint"))
+            if isinstance(node, (ast.List, ast.Tuple)) and len(node.elts) == 12
+        ]
+        self.assertEqual(lists, [])
+
+    def test_w33_uses_native_product_assets_not_known_solution_routes(self) -> None:
+        w33 = ROOT / "build" / "arwc-ot" / "challenges" / "W33"
+        for relative in (
+            "participant/operating-window.csv",
+            "participant/schedule-template.json",
+            "participant/scheduling-brief.md",
+            "participant/run-schedule.py",
+            "product_snapshot.sql",
+            "corporate_snapshot.sql",
+            "check_evidence.py",
+        ):
+            self.assertTrue((w33 / relative).is_file(), relative)
+        self.assertNotIn("test_w33_forecast_scheduling", SUITE.read_text())
 
     def test_derivation_failures_stop_without_fallbacks(self) -> None:
         with self.assertRaisesRegex(AssertionError, "W22 reviewer derivation failed"):
@@ -103,46 +86,6 @@ class ARWCArtifactDerivationTests(unittest.TestCase):
             known_solution.w23_analyze_reproducer("malformed", {}, "Cairn Reach")
         with self.assertRaisesRegex(AssertionError, "W24 selector derivation failed"):
             known_solution.w24_selector_from_disassembly("", [])
-
-    def test_three_distinct_schedules_are_derived_from_the_contract(self) -> None:
-        window = schedule_window()
-        schedules = known_solution.w33_derive_schedules(window)
-        self.assertEqual(len(schedules), 3)
-        self.assertEqual(len({json.dumps(value, sort_keys=True) for value in schedules}), 3)
-        for schedule in schedules:
-            result = known_solution.w33_validate_schedule(window, schedule)
-            self.assertTrue(
-                window["volume_objective_ml"]["min"]
-                <= result["reservoir_volume_ml"]
-                <= window["volume_objective_ml"]["max"]
-            )
-
-    def test_schedule_boundary_failures_are_specific(self) -> None:
-        window = schedule_window()
-        schedule = known_solution.w33_derive_schedules(window)[1]
-        cases: list[tuple[str, dict[str, object], str]] = []
-
-        outside_supply = copy.deepcopy(schedule)
-        outside_supply["alternate_supply_m3s"][0] = 0.51
-        cases.append(("supply", outside_supply, "alternate supply is outside"))
-
-        ramp = copy.deepcopy(schedule)
-        ramp["reservoir_release_m3s"][1] = 0.8
-        cases.append(("ramp", ramp, "ramp bound exceeded"))
-
-        state = copy.deepcopy(schedule)
-        state["alternate_supply_m3s"] = [value + 0.02 for value in state["alternate_supply_m3s"]]
-        cases.append(("state", state, "operating state bound exceeded"))
-
-        volume = copy.deepcopy(schedule)
-        volume["reservoir_release_m3s"] = [value - 0.02 for value in volume["reservoir_release_m3s"]]
-        volume["alternate_supply_m3s"] = [value + 0.02 for value in volume["alternate_supply_m3s"]]
-        cases.append(("volume", volume, "volume objective missed"))
-
-        for name, candidate, message in cases:
-            with self.subTest(boundary=name):
-                with self.assertRaisesRegex(AssertionError, message):
-                    known_solution.w33_validate_schedule(window, candidate)
 
     def test_selector_model_is_unique_against_independent_cases(self) -> None:
         disassembly = """

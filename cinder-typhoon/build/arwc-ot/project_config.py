@@ -15,7 +15,7 @@ def operator_credentials(root: pathlib.Path) -> dict:
     operator.chmod(0o700)
     path = operator / "credentials.json"
     credentials = json.loads(path.read_text()) if path.exists() else {}
-    for key in ("plc", "opcua", "postgres", "mqtt", "ua_dispatcher", "ua_reader", "collector", "reader", "pg_dispatcher", "mqtt_dispatcher", "grafana", "fuxa", "fuxa_session"):
+    for key in ("plc", "opcua", "postgres", "mqtt", "ua_dispatcher", "ua_reader", "collector", "reader", "pg_dispatcher", "mqtt_dispatcher", "grafana", "fuxa", "fuxa_session", "fuxa_operator", "fuxa_viewer"):
         credentials.setdefault(key, secrets.token_urlsafe(24))
     write_json(path, credentials)
     path.chmod(0o600)

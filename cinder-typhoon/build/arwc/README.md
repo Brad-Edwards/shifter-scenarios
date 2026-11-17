@@ -1,5 +1,12 @@
 # Alterra Regional Water Company golden-range hand build
 
+This is the historical hand-build ledger. The current platform uses the real
+upstream applications described in [native/README.md](native/README.md) and the
+qualified native OT project. The parent Compose file now contains only the
+bounded FieldLink consumer, fixed TCP relays and read-only operating-history
+integration. The product/process stand-ins below are retired from runtime;
+this older ledger does not describe current product surfaces.
+
 This directory is the implementation ledger for materializing the validated
 ARWC SDL as an isolated participant environment. The SDL and its owned content
 remain the source of truth. Runtime discoveries that change an observable
@@ -22,9 +29,10 @@ integration runs through `a-data-bridge` in the isolated DMZ. Contractor intake,
 field telemetry, and maintenance approval run across `a-contractors`, the
 DMZ-only `a-contractor-bridge`, and `a-approval`. Read-only process observation
 runs across `a-hmi`, `a-historian`, `a-engineering`, and independently owned
-`a-instruments` observations. Bounded live control terminates at the isolated
-`a-reservoir` controller. Scheduler and reporting rehearsals additionally join
-the control-only `a-distribution` service without altering live process state.
+`a-instruments` observations. Bounded control and reporting handover terminate
+at the isolated `a-reservoir` controller. W33 planning and commissioning reuse
+the installed dispatcher, OpenPLC, FUXA, field I/O, and historian instead of a
+separate scheduler service.
 
 ## Boundaries
 
@@ -72,8 +80,8 @@ the control-only `a-distribution` service without altering live process state.
   `a-control-broker` are DMZ-only at `10.77.62.30` and `.40`.
 - `a-hmi`, `a-historian`, `a-engineering`, and `a-diagnostics` occupy their
   declared engineering addresses `10.77.63.20`, `.30`, `.40`, and `.50`;
-  `a-reservoir`, `a-distribution`, and `a-instruments` occupy their declared control addresses
-  `10.77.64.20`, `.30`, and `.40`. The two read-entry bridges alone
+  `a-reservoir` and `a-instruments` occupy their declared control addresses
+  `10.77.64.20` and `.40`. The two read-entry bridges alone
   provide narrow conduits to the engineering network, while `a-instruments`
   alone spans engineering and control for independent observations.
 - `a-contractors` provides the declared narrow field-gateway conduit to the
@@ -277,7 +285,7 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
 - 2026-09-27: W15 adds five passing black-box tests on `a-approval`. Both the
   field-session and planning-read authority branches reach the exact maintenance
   association. The cache key intentionally omits revision and upstream identity;
-  pinned Chrome-for-Testing 128.0.6613.137 executes the nested-frame message
+  pinned Chrome-for-Testing `128.0.6613.137` executes the nested-frame message
   flow, including the declared source-identity omission. The bounded review
   action produces a real Ed25519-signed approval whose signature is independently
   verified. No W15 card binds a narrative asset.
@@ -294,14 +302,20 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   acceptance path recovers all 32 bytes in slots 160-191 through TEST timing,
   validates the internal CRC32C and R8 binding, denies writes and replay, and
   persists its service-owned evidence. No W16 card binds a narrative asset.
-- 2026-09-27: W17, W18, W21, and W25 add thirteen passing black-box tests across
+- 2026-09-27: The original W17, W18, W21, and W25 implementation added thirteen
+  passing black-box tests across
   `a-hmi`, `a-historian`, `a-engineering`, and `a-instruments`. The two earned
   read branches issue hashed, scope-bound sessions through separate bridges.
   Current process state, mode, tag and scale records, revision comparison, and
   the isolated practice model remain separately owned and independently
-  observed. Exact card-bound `me-engineering-note-01-1`, `me-commissioning-01`,
-  and `me-project-handover-01` content is extracted during image builds and
-  verified byte-for-byte; unrelated narrative content is absent.
+  observed. At that revision, exact card-bound `me-engineering-note-01-1`,
+  `me-commissioning-01`, and `me-project-handover-01` content was extracted
+  during image builds and verified byte-for-byte; unrelated narrative content
+  was absent. The native W17 conversion no longer extracts the first two into
+  the synthetic HMI image. Their ordinary workplace records remain in the
+  narrative package. The native W21 conversion no longer extracts the old
+  North-reservoir handover into the synthetic engineering service; the Cairn
+  Reach project handover now ships with the native engineering workstation.
 - 2026-09-27: A destructive clean-volume rebuild passed all 108
   W01-W18/W21/W25/W35 black-box checks. Direct inspection confirmed all thirteen
   hardened containers, exact addresses, internal-only networks, no published
@@ -478,52 +492,31 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   narrative asset. The existing contract fully specifies the native ABI and
   hardening, frame layout, sparse surface, privileged issuer call, fixed socket,
   and equivalent bounded control scope.
-- 2026-09-27: W29 adds four passing black-box checks across `a-data`,
-  `a-data-bridge`, `a-historian`, `a-hmi`, and independently owned
-  `a-instruments`. The tariff route requires earned process-read evidence and
-  returns `TAR-CRR-DP3-R4` with the exact authored
-  `pl-arwc-plan-method-01-method` document. The balance route proves the full
-  process-interpretation chain, joins the PostgreSQL 12.00 ML commitment to a
-  fresh 12.40 ML instrument observation under one correlation, and yields the
-  exact 0.40 ML margin.
-- 2026-09-27: The final planning route requires the completed W25 mode
-  sequence and both prior W29 results. Its independently owned HMI calculation
-  produces `PLAN-CRR-LOSS-1000`: balanced 100-second ramps, a 900-second hold,
-  1,000 full-flow-equivalent seconds, 1.00 ML modeled release, 11.40 ML reserve,
-  0.60 ML shortfall, USD 1,440 liability, and Stage A under `CONT-DRY-A-R3`.
-  It performs no live actuation. Missing evidence, wrong authority, tenant,
-  object, revision, quantity, unavailable instruments, and direct internal
-  access are denied. Same-correlation owner audits and results survive restart.
-- 2026-09-27: Focused W29 acceptance passed after a clean, unseeded W01-W09
-  acquisition chain. Direct inspection confirmed exact dual-homed conduit and
-  owner addresses, read-only roots, dropped capabilities,
-  `no-new-privileges`, no published ports, and no participant route into the
-  engineering network. Destructive state was removed and the authored initial
-  state was verified. The suite now contains 152 black-box checks.
-- No SDL change was needed for W29. Only W29.1 binds a narrative asset, and its
-  exact authored document is extracted during the image build without retaining
-  the source package or unrelated narrative content.
-- 2026-09-27: W30 adds four passing black-box checks across `a-hmi`,
-  independently owned `a-instruments`, and the new control-only `a-reservoir`.
-  The binder requires a current 48-hour control client and exact asset,
-  outlet, project R21, map R8, mode R17, envelope R6, plan, revision, and unit
-  bindings. HMI and reservoir evidence retain the same caller correlation;
-  missing evidence, wrong tenant or authority, stale bindings, and removal of
-  either owner prevent completion.
-- 2026-09-27: The live route executes the bounded balanced-gate timeline and
-  records `ACT-CRR-OG2-30`, while independent instruments integrate exactly
-  1.00 ML and record reserve falling from 12.40 ML to 11.40 ML. The joined
-  result retains the 0.60 ML shortfall, USD 1,440 replacement liability,
-  Stage A continuity notice `CONT-DRY-A-R3`, an intact dam, and no flooding or
-  uncontrolled release. Same-correlation audits, ordinary retry idempotence,
-  persistence, exact addressing, read-only roots, dropped capabilities,
-  no-new-privileges, no published ports, authority-secret redaction, and
-  control-network no-egress all passed. Destructive state was removed and the
-  authored initial state was verified. The suite now contains 156 black-box
-  checks.
-- No SDL change was needed for W30, and neither card binds a narrative asset.
-  The existing contracts fully specify the multi-authority command binding,
-  bounded actuation, independently measured volume, and consequence record.
+- W29 now reconciles the native corporate and OT products. The participant
+  binds `TAR-CRR-DP3-R4` and allocation `ALLOC-2026-DP3-R9` in PostgreSQL to a
+  fresh, good-quality `UsableVolumeML` historian sample, then compares the
+  dated corporate report with the later measurement without claiming that the
+  time-separated records establish a cause. Its image-owned worksheet and
+  method note support the work; they do not replace product evidence.
+- W29 completion is read-only and supplies a verified current planning basis,
+  not an executable control plan. The retired challenge-only planning routes,
+  synthetic instrument observation, and old live test were removed.
+- W30 now uses the installed OT products rather than a challenge-only HTTP
+  binder and reservoir simulator. Its image-owned release plan and operator
+  brief bind one `arwc.remote-request/v1` automatic-flow request to the fixed
+  authenticated MQTT path, numeric expiry, durable dispatcher journal, native
+  OpenPLC decision, two-outlet feedback, and PostgreSQL history.
+- The authorized remote target is 0.30 m3/s total. After measured completion,
+  the participant must use local FUXA priority to restore manual A20/B20 and
+  prove HMI ownership, approximately 0.20 m3/s total flow, healthy I/O, valid
+  permissives, stopped motion, and clear travel faults. Completion is read-only
+  and cannot issue, retry, or restore a command.
+- The retired release-plan and release-execution HTTP routes, synthetic 1.00 ML
+  incident implementation, old live test, stale client references, and old W30
+  participant text were removed. W28's separate release-confirmation utility
+  route remains in place.
+  The current contracts fully specify the dispatcher request, native controller
+  decision, independently measured feedback, audit history, and local handback.
 - 2026-09-27: W31 adds five passing black-box checks on `a-diagnostics` for
   `VAULT-CRR-R5`. The supplied x86-64 DVL1 worker is a real PIE executable
   with NX, full RELRO, and stack protection. Its native parser verifies CRC32C
@@ -557,12 +550,6 @@ sudo docker exec -it --user fieldlink --workdir /var/lib/fieldlink-connector cin
   instrument or reservoir side effects passed. The suite now contains 166
   black-box checks. No SDL change was needed, and none of W32's four cards
   binds a narrative asset.
-- 2026-09-27: W33 adds five focused black-box checks for the instrument-bound
-  forecast, exact twelve-interval schedule, accepted 0.81 ML rehearsal, and
-  all 27 demand/gain/delay policy cases. Historian, HMI, planning, reservoir,
-  distribution, and instrument evidence is correlation-bound and persistent;
-  the live reserve is unchanged. The HMI image reuses only the card-bound
-  `service-meter-guide` authored document.
 - 2026-09-27: W34 adds five focused checks for each of its two alternative
   input paths. Both the W23 estimator and W27 verifier output can refresh
   `PLAN-CONSUMER-R8`, pass the declared consistency rules, change the decision

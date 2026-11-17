@@ -1,0 +1,114 @@
+{
+  "issue": 380,
+  "recorded_at": "2026-11-13T17:31:07.776331+00:00",
+  "scope": "private working-state recovery backup; not a sanitized release bake",
+  "project": "prod-mgau4w",
+  "zone": "us-central1-a",
+  "source_vm": "cinder-arwc-ot-compat-363",
+  "backup": {
+    "kind": "compute.machineImage",
+    "name": "cinder-arwc-ot-backup-20261113-qualified",
+    "id": "6802903796715027990",
+    "self_link": "https://www.googleapis.com/compute/v1/projects/prod-mgau4w/global/machineImages/cinder-arwc-ot-backup-20261113-qualified",
+    "status": "READY",
+    "capture_consistency": "source stopped for complete attached-disk capture",
+    "source_restarted": true,
+    "resource_iam_public_members": [],
+    "contents": "original container layers, volumes, credentials, identities and product state; keep private in the approved project",
+    "source_after_capture": {
+      "status": "RUNNING",
+      "iap_ssh": "available",
+      "running_services": 30,
+      "operating_baseline": "QA 804: healthy normal 20% outlets and 0.200 m\u00b3/s"
+    }
+  },
+  "helper_checks": {
+    "execution": "approved development VM; fake cloud command; no range operation",
+    "passed": 9,
+    "safety_mutations_detected": [
+      "remove-project-boundary",
+      "remove-failure-restart",
+      "attach-default-cloud-identity"
+    ]
+  },
+  "restore": {
+    "vm": "cinder-arwc-ot-restore-380",
+    "status": "focused retained-state and native participant verification passed",
+    "participant_retention_qa": {
+      "coordination_message": 804,
+      "accepted": [
+        "retained PLC program identity and project revision",
+        "safe disarmed startup and healthy field I/O",
+        "retained physical settings and total flow",
+        "retained historian data and resumed acquisition",
+        "participant RDP desktop and fresh HMI control",
+        "saved native engineering project and existing Runtime v4 debug connection",
+        "pre-backup dispatcher journal and terminal request state"
+      ],
+      "program_md5": "ceab3e96d5929f6617acb2020defe659",
+      "project_revision": 364,
+      "positions_percent": [
+        20,
+        20
+      ],
+      "total_flow_m3s": 0.2,
+      "level_m": 6.425,
+      "historian_observation": "data from 2026-11-13 01:47 UTC through resumed collection at 17:13 UTC",
+      "remaining": [],
+      "coordination_messages": [
+        804,
+        807
+      ],
+      "native_engineering": {
+        "project_path": "/home/fieldlink/CairnReach/controller",
+        "participant": "fieldlink",
+        "connection": "native Runtime v4 debug session opened successfully; no new compile or download"
+      },
+      "dispatcher_retention": {
+        "requests": 20,
+        "transitions": 100,
+        "latest_sequence": 20,
+        "latest_status": "uncertain",
+        "latest_updated_at": "2026-11-13T04:11:20Z",
+        "automatic_replay": "none reported; pre-backup terminal state retained"
+      }
+    },
+    "cleanup": {
+      "status": "passed",
+      "temporary_vm_deleted": true,
+      "temporary_boot_disk_deleted": true,
+      "source_vm": "RUNNING",
+      "retained_backup": "READY",
+      "verified_at": "2026-11-13T17:31:07.776331+00:00"
+    },
+    "private_ip": "10.77.59.12",
+    "source_machine_image_id": "6802903796715027990",
+    "readiness_marker": "present",
+    "running_services": 30,
+    "plc_container": "preserved during carrier listener rebinding",
+    "cloud_identity": "none",
+    "external_ip": "none",
+    "vm_id": "8084100327887535898",
+    "boot_disk": "cinder-arwc-ot-restore-380",
+    "boot_disk_auto_delete": true
+  },
+  "prior_operating_checkpoint": {
+    "coordination_message": 795,
+    "mode": "manual",
+    "outlet_positions_percent": [
+      20,
+      20
+    ],
+    "total_flow_m3s": 0.2,
+    "inflow_m3s": 0.2,
+    "io_healthy": true,
+    "travel_faults": false,
+    "engineering_forces": "none"
+  },
+  "limits": [
+    "running memory is not saved; normal safe restart behavior still applies",
+    "copy contains original credentials and identities; it is a recovery check, not a participant range",
+    "release bakes and BigRAE delivery remain deferred"
+  ],
+  "status": "backup and focused restore verification passed; temporary verification resources removed"
+}

@@ -1,5 +1,5 @@
+# Bounded ARWC integrations only. Upstream applications are in native/.
 name: cinder-arwc
-
 services:
   a-connector:
     build:
@@ -9,41 +9,72 @@ services:
     container_name: cinder-arwc-connector
     hostname: a-connector
     domainname: corporate.arwc.test
+    dns:
+    - 10.77.60.10
+    environment:
+      SSL_CERT_FILE: /tmp/arwc-ca-bundle.pem
+      REQUESTS_CA_BUNDLE: /tmp/arwc-ca-bundle.pem
+      CURL_CA_BUNDLE: /tmp/arwc-ca-bundle.pem
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "/usr/local/sbin/arwc-connector-health"]
+      test:
+      - CMD
+      - /usr/local/sbin/arwc-connector-health
       interval: 5s
       timeout: 3s
       retries: 3
       start_period: 15s
     read_only: true
-    cap_drop: [ALL]
-    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
+    cap_drop:
+    - ALL
+    cap_add:
+    - SETUID
+    - SETGID
+    - CHOWN
+    - FOWNER
+    - DAC_OVERRIDE
     security_opt:
-      - no-new-privileges:true
+    - no-new-privileges:true
     sysctls:
       net.ipv4.ip_unprivileged_port_start: 0
     tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
-      - /run:rw,nosuid,nodev,size=16m,mode=0755
+    - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+    - /run:rw,nosuid,nodev,size=16m,mode=0755
     volumes:
-      - connector-fieldlink:/var/lib/fieldlink-connector
-      - connector-customer:/var/lib/arwc-connector
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/integration/keplerops-ca.crt:/run/arwc-peer/keplerops-ca.crt:ro
+    - connector-fieldlink:/var/lib/fieldlink-connector
+    - connector-customer:/var/lib/arwc-connector
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/integration/keplerops-ca.crt:/run/arwc-peer/keplerops-ca.crt:ro
+    - type: bind
+      source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/supplier-onboarding.json
+      target: /run/arwc-native/supplier-onboarding.json
+      read_only: true
+      bind:
+        create_host_path: false
+    - type: bind
+      source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/ca/certs/root_ca.crt
+      target: /run/arwc-native/root-ca.crt
+      read_only: true
+      bind:
+        create_host_path: false
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/archive-workflow/nc-reader.json
+      target: /run/arwc-archive/nc-reader.json
+      read_only: true
+      bind:
+        create_host_path: true
     networks:
       corporate:
         ipv4_address: 10.77.60.20
         aliases:
-          - a-connector
-          - fieldlink.arwc.test
-          - customer-handover.arwc.test
+        - a-connector
+        - fieldlink.arwc.test
+        - customer-handover.arwc.test
       maintenance:
         ipv4_address: 10.77.61.10
-
   fieldlink-edge:
     build:
       context: ../..
@@ -53,119 +84,45 @@ services:
     hostname: fieldlink-edge
     restart: unless-stopped
     read_only: true
-    cap_drop: [ALL]
+    cap_drop:
+    - ALL
     security_opt:
-      - no-new-privileges:true
+    - no-new-privileges:true
     sysctls:
       net.ipv4.ip_unprivileged_port_start: 0
-    depends_on: [a-connector]
+    depends_on:
+    - a-connector
     ports:
-      - "${ARWC_CARRIER_ADDRESS:-10.77.59.2}:443:443"
+    - ${ARWC_CARRIER_ADDRESS:-10.77.59.2}:443:443
     networks:
       corporate:
         ipv4_address: 10.77.60.15
       carrier_transit: {}
-
-  a-business:
-    build:
-      context: ../..
-      dockerfile: build/arwc/images/business.Dockerfile
-    image: cinder-arwc/a-business:hand-build
-    container_name: cinder-arwc-business
-    hostname: a-business
-    domainname: corporate.arwc.test
+  handover-edge:
+    image: cinder-arwc/fieldlink-edge:hand-build
+    container_name: cinder-arwc-handover-edge
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "python3", "/usr/local/libexec/arwc-handover.py", "health"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
+    entrypoint:
+    - socat
+    - TCP4-LISTEN:8443,bind=172.29.63.28,reuseaddr,fork
+    - TCP4:10.77.60.20:8443
     read_only: true
-    cap_drop: [ALL]
-    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
+    cap_drop:
+    - ALL
     security_opt:
-      - no-new-privileges:true
+    - no-new-privileges:true
     sysctls:
-      net.ipv4.ip_unprivileged_port_start: 0
-    depends_on: [a-connector]
-    tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
-      - /run:rw,nosuid,nodev,size=16m,mode=0755
-    volumes:
-      - business-state:/var/lib/arwc-business
-      - business-archive-evidence:/var/lib/arwc-business/archive
-      - business-integration-evidence:/var/lib/arwc-business/integration
-      - business-relation-evidence:/var/lib/arwc-business/relation
-      - connector-fieldlink:/run/arwc-corporate:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
+      net.ipv4.ip_forward: '0'
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
     networks:
       corporate:
-        ipv4_address: 10.77.60.30
-        aliases:
-          - a-business
-          - business-workplace.arwc.test
-
-  a-data:
-    build:
-      context: ../..
-      dockerfile: build/arwc/images/data.Dockerfile
-    image: cinder-arwc/a-data:hand-build
-    container_name: cinder-arwc-data
-    hostname: a-data
-    domainname: corporate.arwc.test
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "python3", "/usr/local/libexec/arwc-handover.py", "health"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
-    read_only: true
-    cap_drop: [ALL]
-    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
-    security_opt:
-      - no-new-privileges:true
-    sysctls:
-      net.ipv4.ip_unprivileged_port_start: 0
-    environment:
-      PGDATA: /var/lib/postgresql/data/pgdata
-    depends_on:
-      a-connector:
-        condition: service_started
-      a-identity:
-        condition: service_healthy
-    tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
-      - /run:rw,nosuid,nodev,size=16m,mode=0755
-      - /var/run/postgresql:rw,nosuid,nodev,size=16m,mode=2775
-    volumes:
-      - data-state:/var/lib/arwc-data
-      - data-postgresql:/var/lib/postgresql/data
-      - data-integration-evidence:/var/lib/arwc-data/integration
-      - data-archive-evidence:/var/lib/arwc-data/archive
-      - business-relation-evidence:/run/arwc-business-relation:ro
-      - identity-planning:/run/arwc-planning-evidence:ro
-      - ot-read-evidence:/run/arwc-ot-read:ro
-      - process-evidence:/run/arwc-process-evidence:ro
-      - connector-fieldlink:/run/arwc-corporate:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
-    networks:
-      corporate:
-        ipv4_address: 10.77.60.40
-        aliases:
-          - a-data
-          - planning-data.arwc.test
-          - process-view.arwc.test
-      dmz:
-        ipv4_address: 10.77.62.10
-
+        ipv4_address: 10.77.60.16
+      handover_supervisory:
+        ipv4_address: 172.29.63.28
   a-archive:
     build:
       context: ../..
@@ -174,89 +131,91 @@ services:
     container_name: cinder-arwc-archive
     hostname: a-archive
     domainname: corporate.arwc.test
+    dns:
+    - 10.77.60.10
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "python3", "/usr/local/libexec/arwc-handover.py", "health"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
     read_only: true
-    cap_drop: [ALL]
-    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
+    cap_drop:
+    - ALL
+    cap_add:
+    - SETUID
+    - SETGID
+    - CHOWN
+    - FOWNER
+    - DAC_OVERRIDE
     security_opt:
-      - no-new-privileges:true
-    sysctls:
-      net.ipv4.ip_unprivileged_port_start: 0
-    depends_on: [a-connector]
+    - no-new-privileges:true
     tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
-      - /run:rw,nosuid,nodev,size=16m,mode=0755
+    - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+    - /run:rw,nosuid,nodev,size=16m,mode=0755
     volumes:
-      - archive-state:/var/lib/arwc-archive
-      - archive-handover:/var/lib/arwc-archive/handover
-      - business-archive-evidence:/run/arwc-business-evidence:ro
-      - identity-archive-evidence:/run/arwc-identity-evidence:ro
-      - data-archive-evidence:/run/arwc-data-evidence:ro
-      - connector-fieldlink:/run/arwc-corporate:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/archive-ca.crt:/run/arwc-tls/archive-ca.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/archive-ca.key:/run/arwc-tls/archive-ca.key:ro
+    - arwc-archive-data:/var/lib/arwc-archive
+    - connector-fieldlink:/run/arwc-corporate:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/archive-ca.crt:/run/arwc-tls/archive-ca.crt:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/archive-ca.key:/run/arwc-tls/archive-ca.key:ro
+    - type: bind
+      source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/ca/certs/root_ca.crt
+      target: /run/arwc-step-ca/root.crt
+      read_only: true
+      bind:
+        create_host_path: false
+    - type: bind
+      source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/ca/certs/intermediate_ca.crt
+      target: /run/arwc-step-ca/intermediate.crt
+      read_only: true
+      bind:
+        create_host_path: false
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/archive-workflow/tokens
+      target: /run/arwc-tokens
+      read_only: true
+      bind:
+        create_host_path: true
+    - ${ARWC_OPERATOR_DIR:-./.operator}/archive-workflow:/run/arwc-archive-workflow:ro
+    - type: bind
+      source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/ca/certs/root_ca.crt
+      target: /run/arwc-native/root-ca.crt
+      read_only: true
+      bind:
+        create_host_path: false
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/archive-workflow/db-reader.json
+      target: /run/arwc-archive-workflow/db-reader.json
+      read_only: true
+      bind:
+        create_host_path: true
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/archive-workflow/gitea-reader.json
+      target: /run/arwc-archive-workflow/gitea-reader.json
+      read_only: true
+      bind:
+        create_host_path: true
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/archive-workflow/nadia-metabase.json
+      target: /run/arwc-planning/nadia-metabase.json
+      read_only: true
+      bind:
+        create_host_path: true
+    - arwc-planning-evidence:/run/arwc-planning-evidence
+    - type: bind
+      source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/retained-tools/files/instruments/IMG-FIT-204-R6.bin
+      target: /run/arwc-instruments/IMG-FIT-204-R6.bin
+      read_only: true
+      bind:
+        create_host_path: false
     networks:
       corporate:
         ipv4_address: 10.77.60.50
         aliases:
-          - a-archive
-          - retained-archive.arwc.test
-
-  a-identity:
-    build:
-      context: ../..
-      dockerfile: build/arwc/images/identity.Dockerfile
-    image: cinder-arwc/a-identity:hand-build
-    container_name: cinder-arwc-identity
-    hostname: a-identity
-    domainname: corporate.arwc.test
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "python3", "/usr/local/libexec/arwc-handover.py", "health"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
-    read_only: true
-    cap_drop: [ALL]
-    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
-    security_opt:
-      - no-new-privileges:true
-    sysctls:
-      net.ipv4.ip_unprivileged_port_start: 0
-    depends_on:
-      a-connector:
-        condition: service_started
-      a-archive:
-        condition: service_healthy
-    tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
-      - /run:rw,nosuid,nodev,size=16m,mode=0755
-    volumes:
-      - identity-state:/var/lib/arwc-identity
-      - identity-planning:/var/lib/arwc-identity/planning
-      - identity-archive-evidence:/var/lib/arwc-identity/archive
-      - archive-handover:/run/arwc-archive-evidence:ro
-      - connector-fieldlink:/run/arwc-corporate:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
-    networks:
-      corporate:
-        ipv4_address: 10.77.60.60
+        - a-archive
+        - retained-archive.arwc.test
+      archive_db:
         aliases:
-          - a-identity
-          - corporate-identity.arwc.test
-
+        - a-archive
   a-data-bridge:
     build:
       context: ../..
@@ -267,329 +226,88 @@ services:
     domainname: dmz.arwc.test
     restart: unless-stopped
     read_only: true
-    cap_drop: [ALL]
-    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
+    cap_drop:
+    - ALL
+    cap_add:
+    - SETUID
+    - SETGID
+    - CHOWN
+    - FOWNER
+    - DAC_OVERRIDE
     security_opt:
-      - no-new-privileges:true
+    - no-new-privileges:true
     sysctls:
+      net.ipv4.ip_forward: '0'
       net.ipv4.ip_unprivileged_port_start: 0
     tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
-      - /run:rw,nosuid,nodev,size=16m,mode=0755
+    - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+    - /run:rw,nosuid,nodev,size=16m,mode=0755
     volumes:
-      - data-bridge-state:/var/lib/arwc-data-bridge
-      - business-integration-evidence:/run/arwc-business-integration:ro
-      - data-integration-evidence:/run/arwc-data-integration:ro
-      - ot-read-evidence:/var/lib/arwc-data-bridge/handover
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
     networks:
       dmz:
         ipv4_address: 10.77.62.20
         aliases:
-          - a-data-bridge
-          - integration-gateway.arwc.test
-      engineering:
-        ipv4_address: 10.77.63.10
-
-  a-contractors:
+        - a-data-bridge
+        - integration-gateway.arwc.test
+      native_api_exchange:
+        ipv4_address: 172.29.69.5
+  a-data:
     build:
       context: ../..
-      dockerfile: build/arwc/images/contractors.Dockerfile
-    image: cinder-arwc/a-contractors:hand-build
-    container_name: cinder-arwc-contractors
-    hostname: a-contractors
-    domainname: maintenance.arwc.test
+      dockerfile: build/arwc/images/data.Dockerfile
+    image: cinder-arwc/a-data:hand-build
+    container_name: cinder-arwc-data
+    hostname: a-data
+    domainname: corporate.arwc.test
+    dns:
+    - 10.77.60.10
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "python3", "/usr/local/libexec/arwc-handover.py", "health"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
-    read_only: true
-    cap_drop: [ALL]
-    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
+    cap_drop:
+    - ALL
+    cap_add:
+    - SETUID
+    - SETGID
+    - CHOWN
+    - FOWNER
+    - DAC_OVERRIDE
+    - NET_BIND_SERVICE
+    - KILL
     security_opt:
-      - no-new-privileges:true
-    sysctls:
-      net.ipv4.ip_unprivileged_port_start: 0
-    depends_on: [a-connector]
+    - no-new-privileges:false
     tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
-      - /run:rw,nosuid,nodev,size=16m,mode=0755
+    - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+    - /run:rw,nosuid,nodev,size=64m,mode=0755
     volumes:
-      - contractors-state:/var/lib/arwc-contractors
-      - contractor-session:/var/lib/arwc-contractors/handover
-      - connector-fieldlink:/run/arwc-corporate:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
+    - arwc-data-data:/var/lib/arwc-data
+    - connector-fieldlink:/run/arwc-corporate:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
+    - arwc-planning-evidence:/run/arwc-planning-evidence
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/archive-workflow/reports-state.json
+      target: /run/arwc-reports-state.json
+      read_only: true
+      bind:
+        create_host_path: true
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/archive-workflow/ot-operating-reader.json
+      target: /run/arwc-ot-reader.json
+      read_only: true
+      bind:
+        create_host_path: true
+    environment:
+    - PGDATA=/run/arwc-pgdata
     networks:
-      maintenance:
-        ipv4_address: 10.77.61.20
+      corporate:
+        ipv4_address: 10.77.60.51
         aliases:
-          - a-contractors
-          - contractor-portal.arwc.test
-          - field-gateway.arwc.test
-          - process-read.arwc.test
-          - control-broker.arwc.test
-      dmz:
-        ipv4_address: 10.77.62.12
-
-  a-contractor-bridge:
-    build:
-      context: ../..
-      dockerfile: build/arwc/images/contractor-bridge.Dockerfile
-    image: cinder-arwc/a-contractor-bridge:hand-build
-    container_name: cinder-arwc-contractor-bridge
-    hostname: a-contractor-bridge
-    domainname: dmz.arwc.test
-    restart: unless-stopped
-    read_only: true
-    cap_drop: [ALL]
-    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
-    security_opt:
-      - no-new-privileges:true
-    sysctls:
-      net.ipv4.ip_unprivileged_port_start: 0
-    depends_on:
-      a-contractors:
-        condition: service_healthy
-    tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
-      - /run:rw,nosuid,nodev,size=16m,mode=0755
-    volumes:
-      - contractor-bridge-state:/var/lib/arwc-contractor-bridge
-      - contractor-session:/run/arwc-field-session:ro
-      - ot-read-evidence:/var/lib/arwc-contractor-bridge/handover
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
-    networks:
-      dmz:
-        ipv4_address: 10.77.62.30
-        aliases:
-          - a-contractor-bridge
-          - field-gateway.arwc.test
-          - process-read.arwc.test
-      engineering: {}
-
-  a-hmi:
-    build:
-      context: ../..
-      dockerfile: build/arwc/images/hmi.Dockerfile
-    image: cinder-arwc/a-hmi:hand-build
-    container_name: cinder-arwc-hmi
-    hostname: a-hmi
-    domainname: a-engineering.arwc.test
-    restart: unless-stopped
-    read_only: true
-    cap_drop: [ALL]
-    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
-    security_opt: [no-new-privileges:true]
-    sysctls: {net.ipv4.ip_unprivileged_port_start: 0}
-    environment:
-      ARWC_PROCESS_ROLE: hmi
-      ARWC_SERVICE_USER: arwc-hmi
-      ARWC_STATE_ROOT: /var/lib/arwc-hmi
-    tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
-      - /run:rw,nosuid,nodev,size=16m,mode=0755
-    volumes:
-      - hmi-state:/var/lib/arwc-hmi
-      - process-evidence:/run/arwc-process-evidence
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
-    networks:
-      engineering:
-        ipv4_address: 10.77.63.20
-        aliases: [a-hmi, supervisory-operations.arwc.test]
-
-  a-historian:
-    build:
-      context: ../..
-      dockerfile: build/arwc/images/historian.Dockerfile
-    image: cinder-arwc/a-historian:hand-build
-    container_name: cinder-arwc-historian
-    hostname: a-historian
-    domainname: a-engineering.arwc.test
-    restart: unless-stopped
-    read_only: true
-    cap_drop: [ALL]
-    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
-    security_opt: [no-new-privileges:true]
-    sysctls: {net.ipv4.ip_unprivileged_port_start: 0}
-    environment:
-      ARWC_PROCESS_ROLE: historian
-      ARWC_SERVICE_USER: arwc-historian
-      ARWC_STATE_ROOT: /var/lib/arwc-historian
-    tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
-      - /run:rw,nosuid,nodev,size=16m,mode=0755
-    volumes:
-      - historian-state:/var/lib/arwc-historian
-      - process-evidence:/run/arwc-process-evidence
-      - ot-read-evidence:/run/arwc-ot-read:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
-    networks:
-      engineering:
-        ipv4_address: 10.77.63.30
-        aliases: [a-historian, process-historian.arwc.test]
-
-  a-engineering:
-    build:
-      context: ../..
-      dockerfile: build/arwc/images/engineering.Dockerfile
-    image: cinder-arwc/a-engineering:hand-build
-    container_name: cinder-arwc-engineering
-    hostname: a-engineering
-    domainname: a-engineering.arwc.test
-    restart: unless-stopped
-    read_only: true
-    cap_drop: [ALL]
-    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
-    sysctls: {net.ipv4.ip_unprivileged_port_start: 0}
-    environment:
-      ARWC_PROCESS_ROLE: engineering
-      ARWC_SERVICE_USER: arwc-engineering
-      ARWC_STATE_ROOT: /var/lib/arwc-engineering
-    tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
-      - /run:rw,nosuid,nodev,size=16m,mode=0755
-    volumes:
-      - engineering-state:/var/lib/arwc-engineering
-      - process-evidence:/run/arwc-process-evidence
-      - control-issuer:/run/arwc
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
-    networks:
-      engineering:
-        ipv4_address: 10.77.63.40
-        aliases: [a-engineering, engineering-workbench.arwc.test]
-
-  a-instruments:
-    build:
-      context: ../..
-      dockerfile: build/arwc/images/instruments.Dockerfile
-    image: cinder-arwc/a-instruments:hand-build
-    container_name: cinder-arwc-instruments
-    hostname: a-instruments
-    domainname: a-control.arwc.test
-    restart: unless-stopped
-    read_only: true
-    cap_drop: [ALL]
-    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
-    security_opt: [no-new-privileges:true]
-    sysctls: {net.ipv4.ip_unprivileged_port_start: 0}
-    environment:
-      ARWC_PROCESS_ROLE: instruments
-      ARWC_SERVICE_USER: arwc-instruments
-      ARWC_STATE_ROOT: /var/lib/arwc-instruments
-    tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
-      - /run:rw,nosuid,nodev,size=16m,mode=0755
-    volumes:
-      - instruments-state:/var/lib/arwc-instruments
-      - process-evidence:/run/arwc-process-evidence
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
-    networks:
-      control:
-        ipv4_address: 10.77.64.40
-        aliases: [a-instruments, independent-instruments.arwc.test]
-      engineering: {}
-
-  a-reservoir:
-    build:
-      context: ../..
-      dockerfile: build/arwc/images/reservoir.Dockerfile
-    image: cinder-arwc/a-reservoir:hand-build
-    container_name: cinder-arwc-reservoir
-    hostname: a-reservoir
-    domainname: a-control.arwc.test
-    restart: unless-stopped
-    read_only: true
-    cap_drop: [ALL]
-    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
-    security_opt: [no-new-privileges:true]
-    sysctls: {net.ipv4.ip_unprivileged_port_start: 0}
-    tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
-      - /run:rw,nosuid,nodev,size=16m,mode=0755
-    volumes:
-      - reservoir-state:/var/lib/arwc-reservoir
-      - process-evidence:/run/arwc-process-evidence:ro
-      - control-authority-evidence:/run/arwc-control-authority:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
-    networks:
-      control:
-        ipv4_address: 10.77.64.20
-        aliases: [a-reservoir, reservoir-controller.arwc.test]
-
-  a-distribution:
-    build:
-      context: ../..
-      dockerfile: build/arwc/images/distribution.Dockerfile
-    image: cinder-arwc/a-distribution:hand-build
-    container_name: cinder-arwc-distribution
-    hostname: a-distribution
-    domainname: a-control.arwc.test
-    restart: unless-stopped
-    read_only: true
-    cap_drop: [ALL]
-    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
-    security_opt: [no-new-privileges:true]
-    sysctls: {net.ipv4.ip_unprivileged_port_start: 0}
-    tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
-      - /run:rw,nosuid,nodev,size=16m,mode=0755
-    volumes:
-      - distribution-state:/var/lib/arwc-distribution
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
-    networks:
-      control:
-        ipv4_address: 10.77.64.30
-        aliases: [a-distribution, distribution-rehearsal.arwc.test]
-
-  a-diagnostics:
-    build:
-      context: ../..
-      dockerfile: build/arwc/images/diagnostics.Dockerfile
-    image: cinder-arwc/a-diagnostics:hand-build
-    container_name: cinder-arwc-diagnostics
-    hostname: a-diagnostics
-    domainname: a-engineering.arwc.test
-    restart: unless-stopped
-    read_only: true
-    cap_drop: [ALL]
-    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
-    security_opt: [no-new-privileges:true]
-    sysctls: {net.ipv4.ip_unprivileged_port_start: 0}
-    tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
-      - /run:rw,nosuid,nodev,size=16m,mode=0755
-    volumes:
-      - diagnostics-state:/var/lib/arwc-diagnostics
-      - engineering-state:/run/arwc-engineering:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
-    networks:
-      engineering:
-        ipv4_address: 10.77.63.50
-        aliases: [a-diagnostics, diagnostic-services.arwc.test]
-
+        - a-data
+        - planning-data.arwc.test
   a-approval:
     build:
       context: ../..
@@ -597,215 +315,152 @@ services:
     image: cinder-arwc/a-approval:hand-build
     container_name: cinder-arwc-approval
     hostname: a-approval
-    domainname: maintenance.arwc.test
+    domainname: corporate.arwc.test
+    dns:
+    - 10.77.60.10
     restart: unless-stopped
     read_only: true
-    cap_drop: [ALL]
-    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
+    cap_drop:
+    - ALL
+    cap_add:
+    - SETUID
+    - SETGID
+    - CHOWN
+    - FOWNER
+    - DAC_OVERRIDE
+    - NET_BIND_SERVICE
     security_opt:
-      - no-new-privileges:true
-    sysctls:
-      net.ipv4.ip_unprivileged_port_start: 0
-    depends_on:
-      a-business:
-        condition: service_healthy
-      a-contractors:
-        condition: service_healthy
+    - no-new-privileges:true
     tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=256m,mode=1777
-      - /run:rw,nosuid,nodev,size=16m,mode=0755
+    - /tmp:rw,noexec,nosuid,nodev,size=512m,mode=1777
+    - /run:rw,nosuid,nodev,size=16m,mode=0755
     volumes:
-      - approval-state:/var/lib/arwc-approval
-      - approval-evidence:/var/lib/arwc-approval/evidence
-      - contractor-session:/run/arwc-field-session:ro
-      - business-integration-evidence:/run/arwc-read-evidence:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    - arwc-approval-data:/var/lib/arwc-approval
+    - connector-fieldlink:/run/arwc-corporate:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/approval-nc.json
+      target: /run/arwc-approval-config/nc-reader.json
+      read_only: true
+      bind:
+        create_host_path: true
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/approval-erp.json
+      target: /run/arwc-approval-config/erp-reader.json
+      read_only: true
+      bind:
+        create_host_path: true
+    - type: bind
+      source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/ca/certs/root_ca.crt
+      target: /run/arwc-native/root-ca.crt
+      read_only: true
+      bind:
+        create_host_path: false
     networks:
-      maintenance:
-        ipv4_address: 10.77.61.30
+      corporate:
+        ipv4_address: 10.77.60.53
         aliases:
-          - a-approval
-          - maintenance-review.arwc.test
-
-  a-renderer:
+        - a-approval
+        - maintenance-review.arwc.test
+  a-contractors:
     build:
       context: ../..
-      dockerfile: build/arwc/images/renderer.Dockerfile
-    image: cinder-arwc/a-renderer:hand-build
-    container_name: cinder-arwc-renderer
-    hostname: a-renderer
-    domainname: maintenance.arwc.test
+      dockerfile: build/arwc/images/contractors.Dockerfile
+    image: cinder-arwc/a-contractors:hand-build
+    container_name: cinder-arwc-contractors
+    hostname: a-contractors
+    domainname: corporate.arwc.test
+    dns:
+    - 10.77.60.10
     restart: unless-stopped
     read_only: true
-    cap_drop: [ALL]
-    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
-    security_opt: [no-new-privileges:true]
-    sysctls: {net.ipv4.ip_unprivileged_port_start: 0}
-    depends_on:
-      a-approval:
-        condition: service_started
-      a-contractors:
-        condition: service_healthy
+    cap_drop:
+    - ALL
+    cap_add:
+    - SETUID
+    - SETGID
+    - CHOWN
+    - FOWNER
+    - DAC_OVERRIDE
+    - NET_BIND_SERVICE
+    security_opt:
+    - no-new-privileges:true
     tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
-      - /run:rw,nosuid,nodev,size=16m,mode=0755
+    - /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777
+    - /run:rw,nosuid,nodev,size=8m,mode=0755
     volumes:
-      - renderer-state:/var/lib/arwc-renderer
-      - renderer-evidence:/var/lib/arwc-renderer/handover
-      - contractor-session:/run/arwc-field-session:ro
-      - approval-evidence:/run/arwc-approval-evidence:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    - arwc-contractors-data:/var/lib/arwc-contractors
+    - connector-fieldlink:/run/arwc-corporate:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
+    - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/contractors-erp.json
+      target: /run/arwc-contractors-config/erp-reader.json
+      read_only: true
+      bind:
+        create_host_path: true
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/contractors-nc.json
+      target: /run/arwc-contractors-config/nc-reader.json
+      read_only: true
+      bind:
+        create_host_path: true
+    - type: bind
+      source: ${ARWC_OPERATOR_DIR:-./.operator}/archive-workflow/ot-operating-reader.json
+      target: /run/arwc-contractors-config/ot-reader.json
+      read_only: true
+      bind:
+        create_host_path: true
+    - type: bind
+      source: ${ARWC_NATIVE_OPERATOR_DIR:-./native/.operator}/ca/certs/root_ca.crt
+      target: /run/arwc-native/root-ca.crt
+      read_only: true
+      bind:
+        create_host_path: false
     networks:
-      maintenance:
-        ipv4_address: 10.77.61.40
-        aliases: [a-renderer, maintenance-renderer.arwc.test]
-
-  a-control-broker:
-    build:
-      context: ../..
-      dockerfile: build/arwc/images/control-broker.Dockerfile
-    image: cinder-arwc/a-control-broker:hand-build
-    container_name: cinder-arwc-control-broker
-    hostname: a-control-broker
-    domainname: dmz.arwc.test
-    restart: unless-stopped
-    read_only: true
-    cap_drop: [ALL]
-    cap_add: [SETUID, SETGID, CHOWN, FOWNER, DAC_OVERRIDE]
-    security_opt: [no-new-privileges:true]
-    sysctls: {net.ipv4.ip_unprivileged_port_start: 0}
-    depends_on: [a-renderer]
-    tmpfs:
-      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
-      - /run:rw,nosuid,nodev,size=16m,mode=0755
-    volumes:
-      - control-broker-state:/var/lib/arwc-control-broker
-      - contractor-session:/run/arwc-field-session:ro
-      - approval-evidence:/run/arwc-approval-evidence:ro
-      - renderer-evidence:/run/arwc-renderer-evidence:ro
-      - control-issuer:/run/arwc
-      - control-authority-evidence:/var/lib/arwc-control-broker/authority
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
-      - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
-    networks:
-      dmz:
-        ipv4_address: 10.77.62.40
-        aliases: [a-control-broker, control-broker.arwc.test]
-
+      corporate:
+        ipv4_address: 10.77.60.52
+        aliases:
+        - a-contractors
+        - contractor-portal.arwc.test
 networks:
-  carrier_transit:
-    name: cinder-arwc-carrier-transit
+  corporate:
+    name: cinder-arwc-corporate
     driver: bridge
     ipam:
       config:
-        - subnet: 10.77.65.0/29
-          gateway: 10.77.65.1
-  corporate:
-    name: cinder-arwc-corporate
-    internal: true
-    ipam:
-      config:
         - subnet: 10.77.60.0/24
-          gateway: 10.77.60.1
+  archive_db:
+    external: true
+    name: cinder-arwc-native_data
   dmz:
+    external: true
     name: cinder-arwc-dmz
-    internal: true
-    ipam:
-      config:
-        - subnet: 10.77.62.0/24
-          gateway: 10.77.62.1
+  handover_supervisory:
+    external: true
+    name: arwc-ot-compat_supervisory
   maintenance:
+    external: true
     name: cinder-arwc-maintenance
-    internal: true
-    ipam:
-      config:
-        - subnet: 10.77.61.0/24
-          gateway: 10.77.61.1
-  engineering:
-    name: cinder-arwc-engineering
-    internal: true
-    ipam:
-      config:
-        - subnet: 10.77.63.0/24
-          gateway: 10.77.63.1
-  control:
-    name: cinder-arwc-control
-    internal: true
-    ipam:
-      config:
-        - subnet: 10.77.64.0/24
-          gateway: 10.77.64.1
-
+  native_api_exchange:
+    external: true
+    name: cinder-arwc-native_api_exchange
 volumes:
+  arwc-approval-data:
+    name: cinder-arwc-approval-data
+  arwc-contractors-data:
+    name: cinder-arwc-contractors-data
   connector-fieldlink:
     name: cinder-arwc-connector-fieldlink
   connector-customer:
     name: cinder-arwc-connector-customer
-  business-state:
-    name: cinder-arwc-business-state
-  business-archive-evidence:
-    name: cinder-arwc-business-archive-evidence
-  business-integration-evidence:
-    name: cinder-arwc-business-integration-evidence
-  business-relation-evidence:
-    name: cinder-arwc-business-relation-evidence
-  archive-state:
-    name: cinder-arwc-archive-state
-  archive-handover:
-    name: cinder-arwc-archive-handover
-  identity-state:
-    name: cinder-arwc-identity-state
-  identity-planning:
-    name: cinder-arwc-identity-planning
-  identity-archive-evidence:
-    name: cinder-arwc-identity-archive-evidence
-  data-state:
-    name: cinder-arwc-data-state
-  data-integration-evidence:
-    name: cinder-arwc-data-integration-evidence
-  data-archive-evidence:
-    name: cinder-arwc-data-archive-evidence
-  data-postgresql:
-    name: cinder-arwc-data-postgresql
-  data-bridge-state:
-    name: cinder-arwc-data-bridge-state
-  contractors-state:
-    name: cinder-arwc-contractors-state
-  contractor-session:
-    name: cinder-arwc-contractor-session
-  contractor-bridge-state:
-    name: cinder-arwc-contractor-bridge-state
-  approval-state:
-    name: cinder-arwc-approval-state
-  approval-evidence:
-    name: cinder-arwc-approval-evidence
-  renderer-state:
-    name: cinder-arwc-renderer-state
-  renderer-evidence:
-    name: cinder-arwc-renderer-evidence
-  control-broker-state:
-    name: cinder-arwc-control-broker-state
-  control-issuer:
-    name: cinder-arwc-control-issuer
-  control-authority-evidence:
-    name: cinder-arwc-control-authority-evidence
-  ot-read-evidence:
-    name: cinder-arwc-ot-read-evidence
-  process-evidence:
-    name: cinder-arwc-process-evidence
-  hmi-state:
-    name: cinder-arwc-hmi-state
-  historian-state:
-    name: cinder-arwc-historian-state
-  engineering-state:
-    name: cinder-arwc-engineering-state
-  instruments-state:
-    name: cinder-arwc-instruments-state
-  reservoir-state:
-    name: cinder-arwc-reservoir-state
-  distribution-state:
-    name: cinder-arwc-distribution-state
-  diagnostics-state:
-    name: cinder-arwc-diagnostics-state
+  arwc-archive-data:
+    name: cinder-arwc-archive-data
+  arwc-planning-evidence:
+    name: cinder-arwc-planning-evidence
+  arwc-data-data:
+    name: cinder-arwc-data-data

@@ -26,24 +26,8 @@ PLANNER_EVIDENCE = ROOT / "planning" / "planner-session.json"
 ARCHIVE_EVIDENCE = ROOT / "archive" / "archive-source.json"
 PLANNER_SESSION_LIFETIME_SECONDS = 15 * 60
 
-STARTER = {
-    "record_id": "START-MIRA-2026",
-    "revision": 1,
-    "employee_name": "Mira Vale",
-    "employee_number": "TMP-4821",
-    "assignment": "PLAN-RELIEF-7",
-    "portal_identity": "mira.vale.temp",
-    "activation_secret": None,
-}
-
-ROSTER = {
-    "record_id": "ACT-SEP26-R3",
-    "revision": 3,
-    "employee_number": "TMP-4821",
-    "activation_code": "731944",
-    "approved_assignment": "PLAN-RELIEF-3",
-}
-
+# STARTER and ROSTER removed: W05.1 and W05.2 are native Nextcloud reads.
+# W05.3 uses real Keycloak first sign-in and delegated admin roles.
 RENDERING = {
     "record_id": "RENDER-CRR-882",
     "revision": 8,
@@ -73,9 +57,6 @@ def atomic_json(path: pathlib.Path, value: object) -> None:
 def initialize() -> None:
     if not STATE.exists():
         atomic_json(STATE, {
-            "starter_observed": False,
-            "roster_observed": False,
-            "limited_session_sha256": None,
             "oauth_state": secrets.token_urlsafe(24),
             "preview_origin": "https://preview.arwc.test",
             "preview_attached": False,
@@ -164,10 +145,11 @@ class Handler(BaseHTTPRequestHandler):
         return True
 
     def planning_authorized(self) -> bool:
+        # Planning access is gated by the W04.3 planner handover token only.
+        # The W05.3 facade limited-session path was removed with the W05.3 facade.
+        # W06 and W07 must be refactored to remove this service entirely.
         supplied = self.headers.get("X-ARWC-Planning-Access", "")
-        state = load_state()
-        if supplied and (digest_matches(supplied, state.get("limited_session_sha256")) or
-                         handover_matches(supplied)):
+        if supplied and handover_matches(supplied):
             return True
         self.send_json(403, {"error": "planning access required"})
         return False
@@ -202,38 +184,7 @@ class Handler(BaseHTTPRequestHandler):
             "schema": "arwc.client-documents/v1",
             "service": "corporate-identity.arwc.test",
             "title": "Corporate identity, provisioning, and session service",
-            "routes": [
-                {
-                    "key": "identity.provisioning-package",
-                    "method": "GET",
-                    "template": "https://corporate-identity.arwc.test/api/provisioning-packages/current"
-                },
-                {
-                    "key": "identity.activation-roster",
-                    "method": "GET",
-                    "template": "https://corporate-identity.arwc.test/api/activations/current"
-                },
-                {
-                    "key": "identity.temporary-credential",
-                    "method": "GET",
-                    "template": "https://corporate-identity.arwc.test/api/temporary-credentials/current"
-                },
-                {
-                    "key": "identity.session-audit",
-                    "method": "GET",
-                    "template": "https://corporate-identity.arwc.test/api/sessions/current/audit"
-                },
-                {
-                    "key": "identity.drawing-context",
-                    "method": "GET",
-                    "template": "https://corporate-identity.arwc.test/api/drawing-contexts/current"
-                },
-                {
-                    "key": "identity.sessions",
-                    "method": "POST",
-                    "template": "https://corporate-identity.arwc.test/api/sessions"
-                }
-            ],
+            "routes": [],
             "related": ["https://planning-data.arwc.test/.well-known/arwc-client"],
         })
         return True
@@ -243,25 +194,7 @@ class Handler(BaseHTTPRequestHandler):
             return
         if not self.corporate_authorized():
             return
-        path = urlsplit(self.path).path
-        state = load_state()
-        if path == "/api/provisioning-packages/current":
-            state["starter_observed"] = True
-            save_state(state)
-            self.accepted("starter-pack-read", STARTER, "fieldlink")
-        elif path == "/api/activations/current":
-            state["roster_observed"] = True
-            save_state(state)
-            self.accepted("activation-roster-read", ROSTER, "fieldlink")
-        elif path == "/api/sessions/current/audit":
-            if not self.planning_authorized():
-                return
-            result = dict(RENDERING)
-            result["oauth_state"] = state["oauth_state"]
-            result["pending_preview_origin"] = state["preview_origin"]
-            self.accepted("login-trail-read", result, "planning-consumer")
-        else:
-            self.send_json(404, {"error": "record not found"})
+        self.send_json(404, {"error": "record not found"})
 
     def do_POST(self) -> None:
         if not self.corporate_authorized():
@@ -270,101 +203,9 @@ class Handler(BaseHTTPRequestHandler):
         request = self.body()
         if request is None:
             return
-        if path == "/api/temporary-credentials/current":
-            self.activate(request)
-        elif path == "/api/drawing-contexts/current":
-            if self.planning_authorized():
-                self.attach_preview(request)
-        elif path == "/api/sessions":
-            if self.planning_authorized():
-                self.bootstrap(request)
-        else:
-            self.send_json(404, {"error": "record not found"})
-
-    def activate(self, request: dict[str, object]) -> None:
-        state = load_state()
-        if not state["starter_observed"] or not state["roster_observed"]:
-            self.send_json(403, {"error": "onboarding records have not been reconciled"})
-            return
-        if request.get("employee_number") != "TMP-4821" or request.get("activation_code") != "731944":
-            self.send_json(409, {"error": "employee activation factors do not match"})
-            return
-        if request.get("requested_assignment") != "PLAN-RELIEF-7":
-            self.send_json(409, {"error": "requested assignment is unavailable"})
-            return
-        token = secrets.token_urlsafe(32)
-        state["limited_session_sha256"] = hashlib.sha256(token.encode()).hexdigest()
-        save_state(state)
-        atomic_json(ARCHIVE_EVIDENCE, {
-            "record_id": "SESS-MIRA-RELIEF-7",
-            "assignment": "PLAN-RELIEF-7",
-            "retained_bundle": "BND-COLLECT-CRR-12",
-        })
-        os.chown(ARCHIVE_EVIDENCE, -1, grp.getgrnam("arwc-archive-source").gr_gid)
-        os.chmod(ARCHIVE_EVIDENCE, 0o640)
-        result = {
-            "record_id": "SESS-MIRA-RELIEF-7",
-            "revision": 1,
-            "employee_number": "TMP-4821",
-            "assignment": "PLAN-RELIEF-7",
-            "roles": ["temporary-planning-review"],
-            "administrative": False,
-        }
-        self.accepted("temporary-session-issued", result, "mira.vale.temp", 201,
-                      {"limited_session": token})
-
-    def attach_preview(self, request: dict[str, object]) -> None:
-        state = load_state()
-        if request.get("oauth_state") != state["oauth_state"]:
-            self.send_json(409, {"error": "OAuth state does not match"})
-            return
-        if request.get("drawing") != "DRW-OG2-R8" or request.get("review") != "REV-CRR-4417":
-            self.send_json(409, {"error": "drawing review binding does not match"})
-            return
-        if request.get("preview_origin") != "https://preview-cinder.arwc.test":
-            self.send_json(409, {"error": "preview origin is not available"})
-            return
-        state["preview_origin"] = request["preview_origin"]
-        state["preview_attached"] = True
-        save_state(state)
-        result = dict(RENDERING)
-        result.update({"revision": 9, "preview_origin": request["preview_origin"]})
-        self.accepted("drawing-context-created", result, "planning-consumer", 201)
-
-    def bootstrap(self, request: dict[str, object]) -> None:
-        state = load_state()
-        if not state["preview_attached"]:
-            self.send_json(403, {"error": "controlled preview has not been attached"})
-            return
-        if (request.get("oauth_transaction") != "OAUTH-PLN-882" or
-                request.get("preview_origin") != state["preview_origin"]):
-            self.send_json(409, {"error": "browser transaction binding does not match"})
-            return
-        token = secrets.token_urlsafe(40)
-        expires = int(time.time()) + PLANNER_SESSION_LIFETIME_SECONDS
-        state["planner_session"] = token
-        state["planner_session_sha256"] = hashlib.sha256(token.encode()).hexdigest()
-        state["planner_session_expires"] = expires
-        save_state(state)
-        atomic_json(PLANNER_EVIDENCE, {
-            "record_id": "PLN-SESS-OAUTH-882",
-            "planner": "nadia.corvane",
-            "scope": "planning-records",
-            "token_sha256": hashlib.sha256(token.encode()).hexdigest(),
-            "expires_at_epoch": expires,
-        })
-        os.chown(PLANNER_EVIDENCE, -1, grp.getgrnam("arwc-planning").gr_gid)
-        os.chmod(PLANNER_EVIDENCE, 0o640)
-        result = {
-            "record_id": "PLN-SESS-OAUTH-882",
-            "revision": 1,
-            "planner": "nadia.corvane",
-            "scope": "planning-records",
-            "protected_record": "RENDER-CRR-882",
-            "expires_at_epoch": expires,
-        }
-        self.accepted("planner-session-issued", result, "nadia.corvane", 201,
-                      {"planner_session": token})
+        self.send_json(404, {"error": "record not found"})
+        # W06.3 (planner session) refactored: POST /api/sessions removed from corporate_identity.
+        # The archive service now owns the sessions endpoint and returns a real Metabase session.
 
 
 def main() -> None:

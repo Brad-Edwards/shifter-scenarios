@@ -28,9 +28,11 @@ STATE = ROOT / "state" / "maintenance-review.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
 SIGNING_KEY = ROOT / "auth" / "approval-signing-key.pem"
 APPROVAL_EVIDENCE = ROOT / "evidence" / "approval.json"
-CONTRACTOR_SESSION = pathlib.Path("/run/arwc-field-session/contractor-session.json")
+CONTRACTOR_SESSION = pathlib.Path("/var/lib/arwc-contractors/handover/contractor-session.json")
 READ_EVIDENCE = pathlib.Path("/run/arwc-read-evidence/business-read.json")
 CHROME = "/opt/chrome-headless-shell/chrome-headless-shell"
+NC_READER_PATH = pathlib.Path("/run/arwc-approval-config/nc-reader.json")
+ERP_READER_PATH = pathlib.Path("/run/arwc-approval-config/erp-reader.json")
 
 ASSOCIATION = {
     "record_id": "CACHE-DRW-OG2-R8",
@@ -42,6 +44,96 @@ ASSOCIATION = {
     "cache_key_path": "/viewer/drawings/DRW-OG2-R8",
     "cache_method": "GET",
 }
+
+
+def _fetch_erp_approval_payload() -> dict | None:
+    """Fetch APR-CRR-4417-R6 from ERPNext at startup.
+
+    Uses admin credentials from ERP_READER_PATH. Returns parsed approval
+    payload dict (from the Task description field) or None on failure.
+    """
+    try:
+        config = json.loads(ERP_READER_PATH.read_text(encoding="utf-8"))
+        erp_url = config.get("url", "")
+        username = config.get("username", "Administrator")
+        password = config.get("password", "")
+        if not (erp_url and password):
+            return None
+    except (OSError, json.JSONDecodeError):
+        return None
+    import http.cookiejar as _cookiejar
+    import urllib.request as _urllib_request
+    import urllib.parse as _urlparse
+    ca_bundle = "/tmp/arwc-ca-bundle.pem" if pathlib.Path("/tmp/arwc-ca-bundle.pem").exists() else "/tmp/ca.crt"
+    ctx = ssl.create_default_context(cafile=ca_bundle)
+    cookies = _cookiejar.CookieJar()
+    opener = _urllib_request.build_opener(
+        _urllib_request.HTTPCookieProcessor(cookies),
+        _urllib_request.HTTPSHandler(context=ctx),
+    )
+    try:
+        login_data = json.dumps({"usr": username, "pwd": password}).encode()
+        opener.open(_urllib_request.Request(
+            f"{erp_url}/api/method/login", data=login_data,
+            headers={"Content-Type": "application/json"}, method="POST",
+        ), timeout=15)
+        subject = "APR-CRR-4417-R6: Maintenance approval WO-CRR-4417"
+        query = _urlparse.urlencode({
+            "filters": json.dumps([["subject", "=", subject]]),
+            "fields": '["name"]',
+            "limit_page_length": 1,
+        })
+        list_resp = opener.open(_urllib_request.Request(
+            f"{erp_url}/api/resource/Task?{query}",
+        ), timeout=15)
+        items = json.loads(list_resp.read()).get("data", [])
+        if not items:
+            return None
+        item_name = items[0]["name"]
+        resp = opener.open(_urllib_request.Request(
+            f"{erp_url}/api/resource/Task/{_urlparse.quote(item_name, safe='')}",
+        ), timeout=15)
+        record = json.loads(resp.read())["data"]
+        payload = json.loads(record.get("description", "{}"))
+        if payload.get("record_id") == "APR-CRR-4417-R6":
+            return payload
+    except Exception:
+        pass
+    return None
+
+
+def _fetch_nc_cache_association() -> dict | None:
+    """Fetch CACHE-DRW-OG2-R8.json from Nextcloud at startup.
+
+    Uses admin credentials from NC_READER_PATH. Returns parsed cache association
+    dict or None on failure. Falls back to ASSOCIATION constant only if fetch fails.
+    """
+    try:
+        config = json.loads(NC_READER_PATH.read_text(encoding="utf-8"))
+        nc_url = config.get("url", "")
+        username = config.get("username", "")
+        password = config.get("password", "")
+        file_path = config.get("association_path", "")
+        if not (nc_url and username and password and file_path):
+            return None
+    except (OSError, json.JSONDecodeError):
+        return None
+    import base64 as _base64
+    import urllib.request as _urllib_request
+    ca_bundle = "/tmp/arwc-ca-bundle.pem" if pathlib.Path("/tmp/arwc-ca-bundle.pem").exists() else "/tmp/ca.crt"
+    ctx = ssl.create_default_context(cafile=ca_bundle)
+    auth = "Basic " + _base64.b64encode(f"{username}:{password}".encode()).decode()
+    try:
+        resp = _urllib_request.urlopen(
+            _urllib_request.Request(f"{nc_url}{file_path}", headers={"Authorization": auth}),
+            context=ctx, timeout=15,
+        )
+        assoc = json.loads(resp.read())
+        if assoc.get("record_id") == "CACHE-DRW-OG2-R8":
+            return assoc
+    except Exception:
+        pass
+    return None
 
 
 def atomic_json(path: pathlib.Path, value: object) -> None:
@@ -65,13 +157,33 @@ def canonical(value: object) -> bytes:
 
 
 def initialize() -> None:
+    # W15.1: source the cache association from real Nextcloud file, not the ASSOCIATION constant.
+    nc_assoc = _fetch_nc_cache_association()
+    # W15.4: source approval payload from ERPNext.
+    erp_approval = _fetch_erp_approval_payload()
     if not STATE.exists():
         atomic_json(STATE, {
+            "association": nc_assoc,
+            "approval_payload": erp_approval,
             "association_observed": False,
             "cached_response": None,
             "review_capability": None,
             "approval_observed": False,
         })
+    else:
+        state = json.loads(STATE.read_text(encoding="utf-8"))
+        changed = False
+        if nc_assoc and state.get("association") != nc_assoc:
+            state["association"] = nc_assoc
+            changed = True
+        if "association" not in state:
+            state["association"] = nc_assoc
+            changed = True
+        if erp_approval and state.get("approval_payload") != erp_approval:
+            state["approval_payload"] = erp_approval
+            changed = True
+        if changed:
+            atomic_json(STATE, state)
     if not SIGNING_KEY.exists():
         key = Ed25519PrivateKey.generate()
         SIGNING_KEY.write_bytes(key.private_bytes(
@@ -84,26 +196,31 @@ def initialize() -> None:
     os.chmod(AUDIT, 0o600)
 
 
+_APPROVAL_PAYLOAD_FALLBACK = {
+    "record_id": "APR-CRR-4417-R6",
+    "revision": 6,
+    "maintenance": "WO-CRR-4417",
+    "inspection": "INSP-CRR-2026-09-18",
+    "asset": "AST-CRR-017",
+    "drawing": "DRW-OG2-R8",
+    "drawing_revision": "R8",
+    "status": "signed",
+    "renderer": "https://maintenance-renderer.arwc.test",
+}
+
+
 def approval_record() -> dict[str, object]:
-    payload = {
-        "record_id": "APR-CRR-4417-R6",
-        "revision": 6,
-        "maintenance": "WO-CRR-4417",
-        "inspection": "INSP-CRR-2026-09-18",
-        "asset": "AST-CRR-017",
-        "drawing": "DRW-OG2-R8",
-        "drawing_revision": "R8",
-        "status": "signed",
-        "renderer": "https://maintenance-renderer.arwc.test",
-    }
+    # W15.4: source the approval payload from real ERPNext, not the canned dict.
+    state = load_json(STATE)
+    erp_payload = (state or {}).get("approval_payload") or _APPROVAL_PAYLOAD_FALLBACK
     key = serialization.load_pem_private_key(SIGNING_KEY.read_bytes(), password=None)
     assert isinstance(key, Ed25519PrivateKey)
-    signature = key.sign(canonical(payload))
+    signature = key.sign(canonical(erp_payload))
     public = key.public_key().public_bytes(
         serialization.Encoding.Raw, serialization.PublicFormat.Raw,
     )
     return {
-        **payload,
+        **erp_payload,
         "signature_algorithm": "Ed25519",
         "signature": base64.b64encode(signature).decode(),
         "signing_public_key": base64.b64encode(public).decode(),
@@ -299,9 +416,14 @@ class Handler(BaseHTTPRequestHandler):
             return
         state = load_json(STATE)
         assert state is not None
+        # W15.1: use Nextcloud-sourced association, not the canned ASSOCIATION constant.
+        assoc = state.get("association")
+        if not assoc:
+            self.send_json(503, {"error": "cache association not available; Nextcloud fetch may have failed at startup"})
+            return
         state["association_observed"] = True
         atomic_json(STATE, state)
-        self.accepted("drawing-cache-read", principal, ASSOCIATION, 200)
+        self.accepted("drawing-cache-read", principal, assoc, 200)
 
     def do_POST(self) -> None:
         principal = self.authorized()

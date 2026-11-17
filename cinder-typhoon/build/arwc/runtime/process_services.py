@@ -25,13 +25,14 @@ if ROLE == "engineering":
     import dpg1
     from cryptography.hazmat.primitives import serialization
     from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
-if ROLE in {"hmi", "instruments"}:
-    import schedule33
+if ROLE == "instruments":
+    import reporting_schedule
 ROOT = pathlib.Path(os.environ["ARWC_STATE_ROOT"])
 STATE = ROOT / "state" / "service.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
 EVIDENCE = pathlib.Path("/run/arwc-process-evidence")
 OT_SESSIONS = pathlib.Path("/run/arwc-ot-read")
+CORPORATE_HANDOVER = pathlib.Path("/run/arwc-corporate/handover")
 CA = "/tmp/ca.crt"
 INTERNAL = "historian-r21"
 
@@ -43,35 +44,20 @@ OWNERS = {
     "instruments": "a-instruments",
     "reservoir": "a-reservoir",
     "data_bridge": "10.77.63.10",
-    "distribution": "a-distribution",
+    "data": "a-data",
 }
 
 INITIAL = {
-    "hmi": {
-        "present_observed": False, "mode_observed": False, "note_observed": False,
-        "trace_correlated": False, "envelope_observed": False,
-        "practice_conditions_observed": False, "ineffective_requests_observed": False,
-        "practice_sequence_observed": False,
-        "loss_plan_constructed": False,
-        "release_plan_bound": False,
-        "forecast_observed": False, "schedule_observed": False,
-        "schedule_rehearsal_observed": False, "forecast_policy_observed": False,
-        "schedule_response": None, "schedule_rehearsal_response": None,
-        "forecast_policy_response": None, "forecast_response": None,
-    },
-    "historian": {
-        "tag_export_observed": False, "scale_observed": False,
-        "unit_change_interpreted": False, "mapping_observed": False,
-        "forecast_observed": False, "forecast_response": None,
-    },
-    "engineering": {"project_bundle_observed": False, "deployed_revision_observed": False},
+    "hmi": {},
+    "historian": {},
+    "engineering": {},
     "instruments": {
-        "trace_observed": False, "mapping_observed": False,
-        "deployment_observed": False, "practice_observed": False,
         "reserve_observed": False,
-        "gate_release_observed": False, "gate_release_response": None,
-        "schedule_rehearsal_observed": False, "forecast_policy_observed": False,
-        "schedule_rehearsal_response": None, "forecast_policy_response": None,
+        "paper_variance_observed": False,
+        "request_planned": False,
+        "w33_calibrated": False, "w33_flow_gain": None,
+        "w33_schedule": None, "w33_schedule_volume": None,
+        "w33_commissioned": False, "w33_request_ids": None,
         "reporting_handover_observed": False, "reporting_handover_response": None,
     },
 }
@@ -86,10 +72,16 @@ INITIAL["engineering"].update({
     "utility_session": None,
     "replay_structure_recovered": False, "replay_transitions_reproduced": False,
     "replay_condition_recovered": False, "replay_witness_response": None,
+    "false_estimate_observed": False, "controlled_allocation_committed": False,
+    "sufficient_estimate_verified": False,
+    "envelope_observed": False,
+    "permissive_observed": False,
+    "movement_observed": False,
+    "restored_observed": False,
 })
 INITIAL["instruments"].update({
     "flash_observed": False, "inspection_recovered": False,
-    "image_rewrite_accepted": False,
+    "image_rewrite_accepted": False, "erase_rewrite_accepted": False,
 })
 
 ARTIFACTS = pathlib.Path("/opt/process-service/artifacts")
@@ -107,104 +99,6 @@ W19_RECORDS = [
 W19_ALTERNATE = "WRAP-FFFFFFFF-OG2"
 CRC32C_POLY = 0x82F63B78
 W22_PROJECT = "CRR-SEALED-PKG-R7"
-
-PRESENT = {
-    "record_id": "PV-CRR-2026-09-25T1400Z", "revision": 21,
-    "interval": {"start": "2026-09-25T14:00:00Z", "end": "2026-09-25T14:05:00Z"},
-    "outlet_group": "OG-CRR-02", "asset": "AST-CRR-017",
-    "requested_setpoints_m3s": {"GT-CRR-02A": 0.0, "GT-CRR-02B": 0.0},
-    "measurements": {
-        "gate_position_percent": {"GT-CRR-02A": 0.0, "GT-CRR-02B": 0.0},
-        "actual_flow_m3s": {"FIT-CRR-204A": 0.0, "FIT-CRR-204B": 0.0},
-        "integrated_volume_ml": 0.0, "usable_reserve_ml": 12.40,
-    },
-}
-MODE = {
-    "record_id": "MODE-CRR-17", "revision": 17, "mode": "DRY_PERIOD_MANAGED",
-    "project": "CRR-CTRL-R21", "outlet_group": "OG-CRR-02", "current": True,
-}
-NOTE = {
-    "record_id": "ENG-CRR-OG2-17", "revision": 1,
-    "instrument": "FIT-CRR-204B", "historian_tag": "CRR.OUTLET.02B.FLOW_ACTUAL",
-    "description": "Cairn Reach outlet group 2B actual-flow instrument",
-}
-TRACE = {
-    "record_id": "EVT-COMM-OG2-114", "revision": 21,
-    "outlet_group": "OG-CRR-02", "project": "CRR-CTRL-R21",
-    "sequence": {"ramp_open_seconds": 20, "hold_seconds": 40, "ramp_close_seconds": 20,
-                 "each_gate_peak_m3s": 0.10},
-    "full_flow_equivalent_seconds": 60, "integrated_volume_ml": 0.012,
-    "authority": "read-only recorded commissioning event",
-}
-TAG_EXPORT = {
-    "record_id": "TAGS-CRR-R21", "revision": 21, "project": "CRR-CTRL-R21",
-    "tags": [
-        {"legacy_group": "OUTLET_A", "kind": "command", "tag": "CRR.OUTLET.02A.FLOW_SP"},
-        {"legacy_group": "OUTLET_A", "kind": "position", "tag": "CRR.OUTLET.02A.POS_ACTUAL"},
-        {"legacy_group": "OUTLET_A", "kind": "flow", "tag": "CRR.OUTLET.02A.FLOW_ACTUAL"},
-        {"legacy_group": "OUTLET_B", "kind": "command", "tag": "CRR.OUTLET.02B.FLOW_SP"},
-        {"legacy_group": "OUTLET_B", "kind": "position", "tag": "CRR.OUTLET.02B.POS_ACTUAL"},
-        {"legacy_group": "OUTLET_B", "kind": "flow", "tag": "CRR.OUTLET.02B.FLOW_ACTUAL"},
-    ],
-}
-SCALE = {
-    "record_id": "SCALE-CRR-R8", "revision": 8, "signed": True,
-    "position": {"counts_full_scale": 10000, "engineering_unit": "percent-open"},
-    "flow": {"counts_per_m3s": 10000, "engineering_unit": "m3/s"},
-}
-UNIT_CHANGE = {
-    "record_id": "SCALE-CHANGE-OG2-8", "revision": 8,
-    "deployment": "CRR-CTRL-R21", "current_divisor": 10000,
-    "retained_project": "CRR-CTRL-R19", "retained_divisor": 8000,
-    "sample_counts": 1200, "current_m3s": 0.12, "retained_m3s": 0.15,
-}
-MAPPING = {
-    "record_id": "MAP-OG2-R8", "revision": 8, "project": "CRR-CTRL-R21",
-    "event": "EVT-COMM-OG2-114", "outlet_group": "OG-CRR-02",
-    "map": [
-        {"flow_tag": "CRR.OUTLET.02A.FLOW_ACTUAL", "gate": "GT-CRR-02A", "instrument": "FIT-CRR-204A"},
-        {"flow_tag": "CRR.OUTLET.02B.FLOW_ACTUAL", "gate": "GT-CRR-02B", "instrument": "FIT-CRR-204B"},
-    ],
-}
-PROJECT_BUNDLE = {
-    "record_id": "PROJ-CRR-INDEX-R9", "revision": 9,
-    "workspace_claim": "CRR-CTRL-R19",
-    "deployment_note": {"record_id": "ENG-DEPLOY-CRR-21", "signed": True,
-                        "manifest_project": "CRR-CTRL-R21"},
-}
-DEPLOYMENT = {
-    "record_id": "DEPLOY-OBS-CRR-21", "revision": 21,
-    "project": "CRR-CTRL-R21",
-    "project_sha256": hashlib.sha256(b"CRR-CTRL-R21/deployed").hexdigest(),
-    "source": "independent instrument handshake",
-}
-ENVELOPE = {
-    "record_id": "ENV-OG2-R6", "revision": 6, "outlet_group": "OG-CRR-02",
-    "per_gate_m3s": [0.0, 0.50], "aggregate_max_m3s": 1.0,
-    "ramp_max_m3s_per_20s": 0.10, "hold_max_seconds": 1200,
-    "volume_max_ml": 1.20,
-}
-CONDITIONS = {
-    "record_id": "PRACTICE-PERM-02", "revision": 2, "checkpoint": "PRACTICE-OG2-07",
-    "permissive": False, "reason": "simulation reset_complete is not asserted",
-    "live_permissive": "PERM-OG2-LIVE-R4", "live_state_separate": True,
-}
-INEFFECTIVE = {
-    "record_id": "PRACTICE-REQUESTS-11-12", "revision": 1,
-    "requests": [
-        {"request_id": "PRACTICE-REQ-11", "acknowledged": True, "actuated": False},
-        {"request_id": "PRACTICE-REQ-12", "acknowledged": True, "actuated": False},
-    ],
-    "permissive": "PRACTICE-PERM-02", "measured_flow_m3s": 0.0,
-}
-PRACTICE = {
-    "record_id": "PRACTICE-OG2-07", "revision": 7, "live": False,
-    "permissive_transition": {"reset_complete": True, "permissive": True},
-    "sequence": {"each_gate_target_m3s": 0.15, "ramp_open_seconds": 30,
-                 "hold_seconds": 70, "ramp_close_seconds": 30},
-    "full_flow_equivalent_seconds": 100, "measured_volume_ml": 0.03,
-    "live_reserve_changed": False,
-}
 
 
 def atomic_json(path: pathlib.Path, value: object) -> None:
@@ -478,9 +372,27 @@ class Handler(BaseHTTPRequestHandler):
         self.send_json(403, {"error": "scoped process-read session required"})
         return False
 
+    def corporate_authorized(self) -> bool:
+        """Authorize against the FieldLink-issued CORPORATE handover session token."""
+        supplied = self.headers.get("Authorization", "")
+        if not supplied.startswith("Bearer "):
+            self.send_json(403, {"error": "corporate session required"})
+            return False
+        digest = hashlib.sha256(supplied[7:].encode()).hexdigest()
+        try:
+            stored_token = (CORPORATE_HANDOVER / "corporate-session").read_bytes().strip()
+            if hmac.compare_digest(digest, hashlib.sha256(stored_token).hexdigest()):
+                return True
+        except OSError:
+            pass
+        self.send_json(403, {"error": "corporate session required"})
+        return False
+
     def authorized(self) -> bool:
         if ROLE == "historian":
             return self.externally_authorized()
+        if ROLE in ("engineering", "instruments"):
+            return self.corporate_authorized()
         if self.headers.get("X-ARWC-Internal") != INTERNAL:
             self.send_json(403, {"error": "historian service context required"})
             return False
@@ -514,18 +426,8 @@ class Handler(BaseHTTPRequestHandler):
             connection.close()
 
     def historian_proxy(self, method: str, path: str, body: dict[str, object] | None) -> None:
-        owner = "hmi" if path in {
-            "/api/process-views/state", "/api/process-views/mode",
-            "/api/process-views/instruments/active", "/api/operating-envelopes/current",
-            "/api/movement-conditions/current", "/api/commands",
-            "/api/practice-sequences",
-            "/api/reporting-checkpoints/current",
-            "/api/release-plans/current", "/api/release-plans/current/execute",
-            "/api/forecasts/current", "/api/schedule-windows/current",
-            "/api/schedules", "/api/feedback-policies",
-        } else "instruments" if path in {
+        owner = "instruments" if path in {
             "/api/firmware-images/current", "/api/maintenance-records/current",
-            "/api/collision-solutions",
         } else "diagnostics" if path in {
             "/api/control-commands", "/api/control-commands/consequence",
             "/api/estimator-runs",
@@ -550,46 +452,6 @@ class Handler(BaseHTTPRequestHandler):
         if urlsplit(self.path).path != "/.well-known/arwc-client":
             return False
         routes = [
-    {
-        "key": "process.state",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/process-views/state"
-    },
-    {
-        "key": "process.mode",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/process-views/mode"
-    },
-    {
-        "key": "process.active-instrument",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/process-views/instruments/active"
-    },
-    {
-        "key": "process.observations",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/observations"
-    },
-    {
-        "key": "process.tag-export",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/tag-exports/current"
-    },
-    {
-        "key": "process.tag-scale",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/tag-scales/current"
-    },
-    {
-        "key": "process.tag-scale-history",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/tag-scales/current/history"
-    },
-    {
-        "key": "process.outlet-instruments",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/outlet-groups/current/instruments"
-    },
     {
         "key": "process.diagnostic-program",
         "method": "GET",
@@ -624,11 +486,6 @@ class Handler(BaseHTTPRequestHandler):
         "key": "process.maintenance-record-update",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/maintenance-records/current"
-    },
-    {
-        "key": "process.sealed-project",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/sealed-projects/current/note"
     },
     {
         "key": "process.sealed-project-open",
@@ -691,26 +548,6 @@ class Handler(BaseHTTPRequestHandler):
         "template": "PROCESS_VIEW_BASE/api/signature-programs/current/constraints"
     },
     {
-        "key": "process.operating-envelope",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/operating-envelopes/current"
-    },
-    {
-        "key": "process.movement-conditions",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/movement-conditions/current"
-    },
-    {
-        "key": "process.command-accept",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/commands"
-    },
-    {
-        "key": "process.practice-sequence",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/practice-sequences"
-    },
-    {
         "key": "process.control-authority",
         "method": "GET",
         "template": "PROCESS_VIEW_BASE/api/control-authority"
@@ -726,19 +563,9 @@ class Handler(BaseHTTPRequestHandler):
         "template": "PROCESS_VIEW_BASE/api/collision-inputs/current"
     },
     {
-        "key": "process.collision-solve",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/collision-solutions"
-    },
-    {
         "key": "process.vault-record",
         "method": "GET",
         "template": "PROCESS_VIEW_BASE/api/vault-records/current"
-    },
-    {
-        "key": "process.vault-access",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/vault-access"
     },
     {
         "key": "process.replay-session",
@@ -756,64 +583,14 @@ class Handler(BaseHTTPRequestHandler):
         "template": "PROCESS_VIEW_BASE/api/replay-sessions/current/divergence"
     },
     {
-        "key": "process.forecast",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/forecasts/current"
-    },
-    {
-        "key": "process.schedule-window",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/schedule-windows/current"
-    },
-    {
-        "key": "process.schedule-window-submit",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/schedule-windows/current"
-    },
-    {
-        "key": "process.schedule-submit",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/schedules"
-    },
-    {
-        "key": "process.feedback-policy",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/feedback-policies"
-    },
-    {
-        "key": "process.planning-window-economics",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/planning-windows/current/economics"
-    },
-    {
         "key": "process.planning-bid",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/planning-bids"
     },
     {
-        "key": "process.release-plan",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/release-plans/current"
-    },
-    {
-        "key": "process.release-execute",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/release-plans/current/execute"
-    },
-    {
         "key": "process.release-confirmation",
         "method": "GET",
         "template": "PROCESS_VIEW_BASE/api/release-plans/current/confirmation"
-    },
-    {
-        "key": "process.reporting-checkpoint",
-        "method": "GET",
-        "template": "PROCESS_VIEW_BASE/api/reporting-checkpoints/current"
-    },
-    {
-        "key": "process.reporting-checkpoint-submit",
-        "method": "POST",
-        "template": "PROCESS_VIEW_BASE/api/reporting-checkpoints/current"
     },
     {
         "key": "process.reporting-submit",
@@ -834,6 +611,71 @@ class Handler(BaseHTTPRequestHandler):
         "key": "process.estimator-result",
         "method": "POST",
         "template": "PROCESS_VIEW_BASE/api/estimator-results/current"
+    },
+    {
+        "key": "process.controlled-allocation",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/controlled-allocations/current"
+    },
+    {
+        "key": "process.reserve-reconciliation",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/reserve-reconciliations/current"
+    },
+    {
+        "key": "process.paper-reconciliation",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/paper-reconciliations/current"
+    },
+    {
+        "key": "process.request-plan",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/request-plans/current"
+    },
+    {
+        "key": "process.remote-operation",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/remote-operations/current"
+    },
+    {
+        "key": "process.commissioning-calibration",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/commissioning-calibrations/current"
+    },
+    {
+        "key": "process.operating-schedule",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/operating-schedules/current"
+    },
+    {
+        "key": "process.commissioning-run",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/commissioning-runs/current"
+    },
+    {
+        "key": "process.estimator-sufficiency",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/estimator-sufficiency/current"
+    },
+    {
+        "key": "process.operating-envelope",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/process-estimator/current"
+    },
+    {
+        "key": "process.permissive-observation",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/process-permissive/current"
+    },
+    {
+        "key": "process.movement-observation",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/process-movement/current"
+    },
+    {
+        "key": "process.restoration-observation",
+        "method": "POST",
+        "template": "PROCESS_VIEW_BASE/api/process-restoration/current"
     }
 ]
         for r in routes:
@@ -854,18 +696,12 @@ class Handler(BaseHTTPRequestHandler):
             return
         path = urlsplit(self.path).path
         if ROLE == "historian":
-            if path in {"/api/tag-exports/current", "/api/tag-scales/current"}:
-                self.historian_get(path)
-            elif path in {
-                "/api/process-views/state", "/api/process-views/mode",
-                "/api/process-views/instruments/active", "/api/operating-envelopes/current",
-                "/api/movement-conditions/current", "/api/sealed-projects/current/note",
+            if path in {
                 "/api/diagnostic-programs/current", "/api/firmware-images/current",
                 "/api/sealed-projects/current/viewer",
                 "/api/signature-requests",
                 "/api/vault-records/current",
                 "/api/replay-sessions/current",
-                "/api/schedule-windows/current",
             }:
                 self.historian_proxy("GET", path, None)
             else:
@@ -887,53 +723,21 @@ class Handler(BaseHTTPRequestHandler):
             except (OSError, json.JSONDecodeError):
                 self.send_json(409, {"error": "independent instrument path unavailable"}); return
             self.send_json(status, result); return
-        if ROLE == "historian" and path in {
-            "/internal/reserve-observations", "/internal/release-plan-assessments",
-        }:
-            if (self.headers.get("X-ARWC-Internal") != "data-bridge-reserve" or
-                    self.headers.get("X-ARWC-Tenant") != "arwc" or
-                    self.client_address[0] != "10.77.63.10"):
-                self.send_json(403, {"error": "integration service context required"})
-                return
+        if (ROLE == "instruments" and path == "/internal/control-handovers" and
+                self.headers.get("X-ARWC-Internal") == "planning-data-reporting" and
+                self.headers.get("X-ARWC-Tenant") == "arwc" and
+                self.client_address[0] in {"10.77.60.51"}):
             request = self.body()
-            if request is None:
-                return
-            owner = "instruments" if path == "/internal/reserve-observations" else "hmi"
-            owner_path = ("/api/collision-solutions"
-                          if owner == "instruments" else "/api/reporting-checkpoints/current")
-            try:
-                status, result = self.internal_request(owner, "POST", owner_path, request)
-            except (OSError, json.JSONDecodeError):
-                self.send_json(409, {"error": "independent process owner unavailable"})
-                return
-            self.send_json(status, result)
+            if request is None: return
+            state = load_state()
+            self.w34_instrument_handover(request, state)
             return
         if not self.authorized():
             return
         request = self.body()
         if request is None:
             return
-        if path in {"/internal/reserve-observations", "/internal/release-plan-assessments"} and \
-                self.client_address[0] != "10.77.63.30":
-            self.send_json(403, {"error": "historian service context required"})
-            return
-        if ((ROLE == "instruments" and path == "/api/collision-solutions") or
-                (ROLE == "hmi" and path == "/api/reporting-checkpoints/current")) and \
-                self.client_address[0] != "10.77.63.30":
-            self.send_json(403, {"error": "historian service context required"})
-            return
-        if ROLE == "hmi" and path in {
-                "/api/release-plans/current", "/api/release-plans/current/execute",
-                "/internal/forecast-updates", "/api/schedule-windows/current",
-                "/api/schedules", "/api/feedback-policies",
-        } and self.client_address[0] != "10.77.63.30":
-            self.send_json(403, {"error": "historian service context required"})
-            return
-        if ROLE == "instruments" and path in {
-                "/internal/release-plan-bindings", "/internal/release-executions",
-                "/internal/schedule-validations", "/internal/feedback-policy-validations",
-                "/internal/control-handovers",
-        } and self.client_address[0] != "10.77.63.20":
+        if ROLE == "instruments" and path == "/internal/control-handovers" and self.client_address[0] not in {"10.77.63.20", "10.77.60.51"}:
             self.send_json(403, {"error": "supervisory service context required"})
             return
         if ROLE == "historian":
@@ -941,99 +745,7 @@ class Handler(BaseHTTPRequestHandler):
         else:
             self.owner_post(path, request)
 
-    def historian_get(self, path: str) -> None:
-        state = load_state()
-        if path == "/api/tag-exports/current":
-            state["tag_export_observed"] = True
-            record, action = TAG_EXPORT, "tag-export-read"
-        else:
-            state["scale_observed"] = True
-            record, action = SCALE, "tag-scale-read"
-        save_state(state)
-        self.accepted(action, record)
-
     def historian_post(self, path: str, request: dict[str, object]) -> None:
-        if path == "/api/forecasts/current":
-            self.w33_forecast(request)
-            return
-        if path == "/api/observations":
-            expected = {"event": "EVT-COMM-OG2-114", "project": "CRR-CTRL-R21",
-                        "hmi_series": "HMI-EVT-114", "instrument_series": "INST-EVT-114"}
-            if request != expected:
-                self.send_json(409, {"error": "commissioning trace binding does not match"})
-                return
-            h_status, h_result = self.internal_request("hmi", "POST", path, request)
-            if h_status != 201:
-                self.send_json(h_status, h_result)
-                return
-            i_status, i_result = self.internal_request("instruments", "POST", path, request)
-            if i_status != 201:
-                self.send_json(409, {"error": "independent trace correlation failed"})
-                return
-            self.send_json(201, {**h_result, "instrument_observation": i_result["record"]})
-            return
-        if path == "/api/tag-scales/current/history":
-            state = load_state()
-            if not state["tag_export_observed"] or not state["scale_observed"]:
-                self.send_json(403, {"error": "tag export and scale table required"})
-                return
-            if request != {"sample_counts": 1200, "current_divisor": 10000,
-                           "retained_divisor": 8000, "deployment": "CRR-CTRL-R21"}:
-                self.send_json(409, {"error": "scale interpretation does not match"})
-                return
-            state["unit_change_interpreted"] = True
-            save_state(state)
-            self.accepted("unit-change-read", UNIT_CHANGE, 201)
-            return
-        if path == "/api/outlet-groups/current/instruments":
-            state = load_state()
-            if not state["unit_change_interpreted"]:
-                self.send_json(403, {"error": "current scale interpretation required"})
-                return
-            if request != {"event": "EVT-COMM-OG2-114", "scale": "SCALE-CRR-R8",
-                           "project": "CRR-CTRL-R21", "outlet_group": "OG-CRR-02"}:
-                self.send_json(409, {"error": "mapping evidence does not match"})
-                return
-            try:
-                trace = json.loads((EVIDENCE / "hmi" / "process-observation.json").read_text())
-            except (OSError, json.JSONDecodeError):
-                self.send_json(403, {"error": "commissioning observation evidence required"})
-                return
-            i_status, i_result = self.internal_request("instruments", "POST", path, request)
-            if i_status != 201 or trace.get("record_id") != "EVT-COMM-OG2-114":
-                self.send_json(409, {"error": "independent mapping observation failed"})
-                return
-            state["mapping_observed"] = True
-            save_state(state)
-            atomic_json(EVIDENCE / "historian" / "outlet-map.json", MAPPING)
-            self.accepted("outlet-map-read", MAPPING, 201,
-                          {"instrument_observation": i_result["record"]})
-            return
-        if path == "/api/vault-access":
-            e_status, e_result = self.internal_request("engineering", "POST", path, request)
-            if e_status != 201:
-                self.send_json(e_status, e_result)
-                return
-            i_status, i_result = self.internal_request("instruments", "POST", path, request)
-            if i_status != 201:
-                self.send_json(409, {"error": "deployed project comparison failed"})
-                return
-            self.send_json(201, {**e_result, "instrument_observation": i_result["record"]})
-            return
-        if path == "/api/practice-sequences":
-            h_status, h_result = self.internal_request("hmi", "POST", path, request)
-            if h_status != 201:
-                self.send_json(h_status, h_result)
-                return
-            i_status, i_result = self.internal_request("instruments", "POST", path, request)
-            if i_status != 201:
-                self.send_json(409, {"error": "practice sequence did not produce independent observation"})
-                return
-            self.send_json(201, {**h_result, "instrument_observation": i_result["record"]})
-            return
-        if path in {"/api/commands"}:
-            self.historian_proxy("POST", path, request)
-            return
         if path in {
             "/api/signature-records/current/interpretation", "/api/signature-programs/current",
             "/api/diagnostic-programs/legacy", "/api/maintenance-records/current",
@@ -1048,14 +760,10 @@ class Handler(BaseHTTPRequestHandler):
             "/api/diagnostic-runs",
             "/api/collision-inputs/current", "/api/release-plans/current/confirmation",
             "/api/control-authority",
-            "/api/collision-solutions", "/api/reporting-checkpoints/current",
-            "/api/release-plans/current", "/api/release-plans/current/execute",
             "/api/signature-records/current", "/api/replay-sessions/current/divergence",
             "/api/diagnostic-programs/authority",
             "/api/estimator-tasks/current/inputs", "/api/estimator-results/current",
             "/api/replay-sessions/current/execute",
-            "/api/schedule-windows/current", "/api/schedules",
-            "/api/feedback-policies",
         }:
             self.historian_proxy("POST", path, request)
             return
@@ -1064,9 +772,6 @@ class Handler(BaseHTTPRequestHandler):
     def owner_get(self, path: str) -> None:
         state = load_state()
         if ROLE == "engineering" and path == "/api/replay-sessions/current":
-            if not state["deployed_revision_observed"]:
-                self.send_json(403, {"error": "current deployed-revision evidence required"})
-                return
             binary = W32_ARTIFACT.read_bytes()
             structure = run_replay32("structure")
             cases = run_replay32("inputs")
@@ -1103,9 +808,6 @@ class Handler(BaseHTTPRequestHandler):
                           extra={"artifact_b64": base64.b64encode(binary).decode()})
             return
         if ROLE == "engineering" and path == "/api/sealed-projects/current/viewer":
-            if not state["deployed_revision_observed"]:
-                self.send_json(403, {"error": "current deployed-revision evidence required"})
-                return
             viewer = (ARTIFACTS / "sealed-viewer").read_bytes()
             program = (ARTIFACTS / "viewer-program.bin").read_bytes()
             package = (ARTIFACTS / "sealed-project.bin").read_bytes()
@@ -1119,7 +821,7 @@ class Handler(BaseHTTPRequestHandler):
                 "viewer_sha256": hashlib.sha256(viewer).hexdigest(),
                 "program_sha256": hashlib.sha256(program).hexdigest(),
                 "package_sha256": hashlib.sha256(package).hexdigest(),
-                "ordinary_cases": metadata["cases"],
+                "ordinary_cases": [{"program_b64": c["program_b64"]} for c in metadata["cases"]],
             }
             self.accepted("sealed-viewer-read", record, extra={
                 "viewer_b64": base64.b64encode(viewer).decode(),
@@ -1143,98 +845,29 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("firmware-image-read", record,
                           extra={"image_b64": base64.b64encode(image).decode()})
             return
-        if ROLE == "hmi":
-            if path == "/api/schedule-windows/current":
-                self.send_json(200, {
-                    "schema": "arwc.schedule-window/v1",
-                    "checkpoint": schedule33.CHECKPOINT,
-                    "interval_seconds": 300,
-                    "interval_count": 12,
-                    "demand_m3s": schedule33.DEMAND,
-                    "initial_buffer_m3": 180.0,
-                    "state_bounds_m3": {"min": 120.0, "max": 240.0},
-                    "terminal_bounds_m3": {"min": 160.0, "max": 200.0},
-                    "volume_objective_ml": {"min": 0.78, "max": 0.84},
-                    "ramp_bound_m3s": 0.1,
-                    "release_bounds_m3s": {"min": 0.0, "max": 0.8},
-                    "supply_bounds_m3s": {"min": 0.0, "max": 0.5},
-                    "policy_format": "ARWC-POL1",
-                    "request_schema": {
-                        "required": [
-                            "checkpoint", "interval_seconds", "demand_m3s",
-                            "reservoir_release_m3s", "alternate_supply_m3s",
-                        ],
-                        "series_length": 12,
-                        "number_type": "finite-real",
-                    },
-                })
+        if ROLE == "instruments" and path == "/api/maintenance-records/current":
+            # Return the confirmed maintenance record after W20.3 (erase-rewrite complete).
+            if not state.get("erase_rewrite_accepted"):
+                self.send_json(403, {"error": "erase-rewrite correction required"})
                 return
-            records = {
-                "/api/process-views/state": ("present_observed", PRESENT, "current-process-view-read"),
-                "/api/process-views/mode": ("mode_observed", MODE, "process-mode-read"),
-                "/api/process-views/instruments/active": ("note_observed", NOTE, "instrument-note-read"),
-                "/api/operating-envelopes/current": ("envelope_observed", ENVELOPE, "operating-envelope-read"),
-                "/api/movement-conditions/current": ("practice_conditions_observed", CONDITIONS, "movement-conditions-read"),
-            }
-        elif ROLE == "engineering":
-            records = {
-                "/api/sealed-projects/current/note": ("project_bundle_observed", PROJECT_BUNDLE, "sealed-project-note-read"),
-            }
-        else:
-            records = {}
-        if path not in records:
-            self.send_json(404, {"error": "record not found"})
+            evidence_path = EVIDENCE / "instruments" / "firmware-image.json"
+            if not evidence_path.exists():
+                self.send_json(503, {"error": "maintenance image evidence unavailable"})
+                return
+            result = json.loads(evidence_path.read_text(encoding="utf-8"))
+            self.accepted("maintenance-record-read", result)
             return
-        field, record, action = records[path]
-        state[field] = True
-        save_state(state)
-        if path == "/api/operating-envelopes/current":
-            atomic_json(EVIDENCE / "hmi" / "operating-envelope.json", record)
-        extra: dict[str, object] = {}
-        if path == "/api/process-views/instruments/active":
-            extra["engineering_context"] = authored_asset("me-engineering-note-01-1")
-        elif path == "/api/sealed-projects/current/note":
-            extra["handover_context"] = authored_asset("me-project-handover-01")
-        self.accepted(action, record, extra=extra)
+        # W23/W24/W25/W26: diagnostic GET routes — proxy to a-diagnostics.
+        if ROLE == "engineering" and path in {
+            "/api/signature-requests",
+            "/api/vault-records/current",
+        }:
+            self.historian_proxy("GET", path, None)
+            return
+        self.send_json(404, {"error": "record not found"})
 
     def owner_post(self, path: str, request: dict[str, object]) -> None:
         state = load_state()
-        if ROLE == "instruments" and path == "/api/collision-solutions":
-            self.w29_reserve(request, state)
-            return
-        if ROLE == "hmi" and path == "/api/reporting-checkpoints/current":
-            self.w29_plan(request, state)
-            return
-        if ROLE == "hmi" and path == "/api/release-plans/current":
-            self.w30_bind(request, state)
-            return
-        if ROLE == "hmi" and path == "/api/release-plans/current/execute":
-            self.w30_open(request)
-            return
-        if ROLE == "hmi" and path == "/internal/forecast-updates":
-            self.w33_hmi_forecast(request, state)
-            return
-        if ROLE == "hmi" and path == "/api/schedule-windows/current":
-            self.w33_schedule(request, state)
-            return
-        if ROLE == "hmi" and path == "/api/schedules":
-            self.w33_rehearsal(request, state)
-            return
-        if ROLE == "hmi" and path == "/api/feedback-policies":
-            self.w33_policy(request, state)
-            return
-        if ROLE == "instruments" and path == "/internal/release-plan-bindings":
-            self.w30_reservoir_request(path, request)
-            return
-        if ROLE == "instruments" and path == "/internal/release-executions":
-            self.w30_observe_release(request, state)
-            return
-        if ROLE == "instruments" and path == "/internal/schedule-validations":
-            self.w33_instrument_schedule(request, state)
-            return
-        if ROLE == "instruments" and path == "/internal/feedback-policy-validations":
-            self.w33_instrument_policy(request, state)
-            return
         if ROLE == "instruments" and path == "/internal/control-handovers":
             self.w34_instrument_handover(request, state)
             return
@@ -1262,6 +895,30 @@ class Handler(BaseHTTPRequestHandler):
         }:
             self.w28_post(path, request, state)
             return
+        if ROLE == "engineering" and path == "/api/reserve-reconciliations/current":
+            self.w29_post(path, request, state)
+            return
+        if ROLE == "engineering" and path == "/api/paper-reconciliations/current":
+            self.w29_3_post(path, request, state)
+            return
+        if ROLE == "engineering" and path == "/api/request-plans/current":
+            self.w30_post(path, request, state)
+            return
+        if ROLE == "engineering" and path == "/api/remote-operations/current":
+            self.w30_2_post(path, request, state)
+            return
+        if ROLE == "engineering" and path == "/api/commissioning-calibrations/current":
+            self.w33_1_post(path, request, state)
+            return
+        if ROLE == "engineering" and path == "/api/operating-schedules/current":
+            self.w33_2_post(path, request, state)
+            return
+        if ROLE == "engineering" and path == "/api/commissioning-runs/current":
+            self.w33_3_post(path, request, state)
+            return
+        if ROLE == "engineering" and path == "/api/operating-projections/current":
+            self.w33_4_post(path, request, state)
+            return
         if ROLE == "engineering" and path in {
             "/api/estimator-tasks/current/inputs", "/api/estimator-results/current",
             "/api/replay-sessions/current/execute",
@@ -1271,104 +928,378 @@ class Handler(BaseHTTPRequestHandler):
         if ROLE == "instruments" and path == "/api/maintenance-records/current":
             self.w20_post(path, request, state)
             return
-        if ROLE == "hmi" and path == "/api/observations":
-            if not (state["present_observed"] and state["mode_observed"] and state["note_observed"]):
-                self.send_json(403, {"error": "current view, mode, and instrument note required"})
-                return
-            if request != {"event": "EVT-COMM-OG2-114", "project": "CRR-CTRL-R21",
-                           "hmi_series": "HMI-EVT-114", "instrument_series": "INST-EVT-114"}:
-                self.send_json(409, {"error": "commissioning trace binding does not match"})
-                return
-            state["trace_correlated"] = True
-            save_state(state)
-            atomic_json(EVIDENCE / "hmi" / "process-observation.json", TRACE)
-            self.accepted("live-trace-correlated", TRACE, 201,
-                          {"commissioning_context": authored_asset("me-commissioning-01")})
+        # W23/W24/W25/W26: diagnostic service routes — proxy to a-diagnostics.
+        # Participant uses CORPORATE session; engineering workbench forwards with
+        # X-ARWC-Internal: historian-r21 so the diagnostics service can validate.
+        if ROLE == "engineering" and path == "/api/estimator-runs":
+            # Proxy to diagnostics and track success in engineering state so that
+            # /api/estimator-results/current can gate on false_estimate_observed.
+            try:
+                diag_status, diag_result = self.internal_request(
+                    "diagnostics", "POST", path, request
+                )
+            except (OSError, json.JSONDecodeError):
+                self.send_json(409, {"error": "diagnostic service unavailable"}); return
+            if diag_status == 201:
+                state["false_estimate_observed"] = True
+                save_state(state)
+            self.send_json(diag_status, diag_result)
             return
-        if ROLE == "hmi" and path == "/api/commands":
-            if not state["envelope_observed"] or not state["practice_conditions_observed"]:
-                self.send_json(403, {"error": "practice envelope and permissive evidence required"})
-                return
-            if request != {"requests": ["PRACTICE-REQ-11", "PRACTICE-REQ-12"],
-                           "permissive": "PRACTICE-PERM-02", "expected_actuation": False}:
-                self.send_json(409, {"error": "practice request interpretation does not match"})
-                return
-            state["ineffective_requests_observed"] = True
-            save_state(state)
-            self.accepted("ineffective-request-read", INEFFECTIVE, 201)
+        if ROLE == "engineering" and path in {
+            "/api/control-commands", "/api/control-commands/consequence",
+            "/api/estimator-tasks/current",
+            "/api/estimator-tasks/current/inputs",
+            "/api/signature-oracles/current", "/api/diagnostic-runs",
+            "/api/signature-records/current", "/api/vault-records/current",
+            "/api/replay-sessions/current/divergence",
+            "/api/diagnostic-programs/authority",
+            "/api/reporting-submissions",
+        }:
+            self.historian_proxy("POST", path, request)
             return
-        if ROLE == "hmi" and path == "/api/practice-sequences":
-            if not state["ineffective_requests_observed"] or not state["trace_correlated"]:
-                self.send_json(403, {"error": "practice interpretation and current observation evidence required"})
-                return
-            expected = {"checkpoint": "PRACTICE-OG2-07", "reset_complete": True,
-                        "each_gate_target_m3s": 0.15, "ramp_open_seconds": 30,
-                        "hold_seconds": 70, "ramp_close_seconds": 30}
+        # W25.1: Operating envelope reconciliation.
+        # Participant submits values read from FUXA, OpenPLC, and OT historian.
+        # Service validates against fixed CRR-OP-W25-R1 envelope (read-only observation).
+        if ROLE == "engineering" and path == "/api/process-estimator/current":
+            expected = {
+                "record_id": "CRR-OP-W25-R1",
+                "manual_position_min": 0, "manual_position_max": 100, "manual_position_unit": "percent",
+                "automatic_flow_min": 0.0, "automatic_flow_max": 1.0, "automatic_flow_unit": "m3/s",
+                "physical_capacity_per_outlet_max": 0.5, "physical_capacity_unit": "m3/s",
+                "baseline_a": 20, "baseline_b": 20,
+                "observation_a": 30, "observation_b": 10,
+                "restoration_a": 20, "restoration_b": 20,
+                "mode": "manual",
+            }
             if request != expected:
-                self.send_json(409, {"error": "practice sequence is outside approved movement limits"})
-                return
-            state["practice_sequence_observed"] = True
-            save_state(state)
-            atomic_json(EVIDENCE / "hmi" / "practice-sequence.json", PRACTICE)
-            self.accepted("practice-sequence-read", PRACTICE, 201)
+                self.send_json(409, {"error": "operating envelope reconciliation rejected"}); return
+            state["envelope_observed"] = True; save_state(state)
+            result = {
+                "record_id": "W25-ENVELOPE-CRR-R1", "revision": 1,
+                "source": "CRR-OP-W25-R1",
+                "installed_limits": {
+                    "manual_position_pct": {"min": 0, "max": 100},
+                    "automatic_flow_m3s": {"min": 0.0, "max": 1.0},
+                    "physical_capacity_m3s_per_outlet": 0.5,
+                },
+                "authorized_movement": {
+                    "baseline": {"outlet_a_pct": 20, "outlet_b_pct": 20},
+                    "observation": {"outlet_a_pct": 30, "outlet_b_pct": 10},
+                    "restoration": {"outlet_a_pct": 20, "outlet_b_pct": 20},
+                    "mode": "manual",
+                },
+                "total_flow_m3s": 0.20,
+            }
+            atomic_json(EVIDENCE / "engineering" / "process-envelope.json", result)
+            self.accepted("envelope-observed", result, 201)
             return
-        if ROLE == "engineering" and path == "/api/vault-access":
-            if not state["project_bundle_observed"]:
-                self.send_json(403, {"error": "project index and deployment note required"})
-                return
-            expected = {"project_index": "PROJ-CRR-INDEX-R9", "workspace_claim": "CRR-CTRL-R19",
-                        "deployment_note": "ENG-DEPLOY-CRR-21", "observed_project": "CRR-CTRL-R21",
-                        "observed_digest": DEPLOYMENT["project_sha256"]}
+        # W25.2: Permissive chain observation (read-only, requires envelope_observed).
+        # Participant reads FUXA, OpenPLC, and OT historian for current permissive conditions.
+        if ROLE == "engineering" and path == "/api/process-permissive/current":
+            if not state.get("envelope_observed"):
+                self.send_json(403, {"error": "operating envelope required"}); return
+            # Expected conditions from live OT historian (ot_history.process_samples):
+            # IoHealthy=true, PermissiveA/B=true, TravelFaultA/B=false,
+            # LowLevelAlarm=false, HmiStop=false, Armed=false, Owner=0, may_move=false
+            expected = {
+                "record_id": "CRR-OP-W25-R1",
+                "io_healthy": True,
+                "permissive_a": True, "permissive_b": True,
+                "travel_fault_a": False, "travel_fault_b": False,
+                "low_level_clear": True,
+                "operator_stop_clear": True,
+                "controller_armed": False,
+                "owner_hmi": False,
+                "may_move": False,
+            }
             if request != expected:
-                self.send_json(409, {"error": "project comparison does not match deployment observation"})
-                return
-            state["deployed_revision_observed"] = True
-            save_state(state)
-            result = {"record_id": "CMP-CRR-R21", "revision": 21,
-                      "rejected_claim": "CRR-CTRL-R19", "deployed_project": "CRR-CTRL-R21",
-                      "observation": "DEPLOY-OBS-CRR-21"}
-            atomic_json(EVIDENCE / "engineering" / "deployment-revision.json", result)
-            self.accepted("deployment-revision-read", result, 201)
+                self.send_json(409, {"error": "permissive condition observation rejected"}); return
+            state["permissive_observed"] = True; save_state(state)
+            result = {
+                "record_id": "W25-PERMISSIVE-CRR-R1", "revision": 1,
+                "source": "CRR-OP-W25-R1",
+                "permissive_chain": {
+                    "io_healthy": True,
+                    "drive_available_a": True, "remote_selector_a": True,
+                    "drive_available_b": True, "remote_selector_b": True,
+                    "permissive_a": True, "permissive_b": True,
+                    "travel_fault_a": False, "travel_fault_b": False,
+                    "low_level_clear": True,
+                    "operator_stop_clear": True,
+                    "controller_armed": False,
+                    "owner_hmi": False,
+                },
+                "may_move": False,
+                "blocking_conditions": ["controller_not_armed", "owner_not_hmi"],
+            }
+            atomic_json(EVIDENCE / "engineering" / "process-permissive.json", result)
+            self.accepted("permissive-observed", result, 201)
             return
-        if ROLE == "instruments" and path == "/api/observations":
-            state["trace_observed"] = True
-            save_state(state)
-            result = {**TRACE, "record_id": "INST-EVT-114", "source": "independent instruments"}
-            atomic_json(EVIDENCE / "instruments" / "process-observation.json", result)
-            self.accepted("live-trace-correlated", result, 201)
+        # W25.3: Bounded movement observation — validates against FRESH OT historian evidence.
+        # The service queries ot_history.process_samples to confirm real actuation occurred:
+        # a new accepted HMI sequence with positions at A30/B10 within the last 5 minutes.
+        if ROLE == "engineering" and path == "/api/process-movement/current":
+            if not state.get("permissive_observed"):
+                self.send_json(403, {"error": "permissive chain observation required"}); return
+            hmi_seq = request.get("hmi_sequence")
+            if (request.get("record_id") != "CRR-OP-W25-R1"
+                    or not isinstance(hmi_seq, int) or hmi_seq < 1
+                    or request.get("target_a") != 30
+                    or request.get("target_b") != 10):
+                self.send_json(409, {"error": "movement observation rejected"}); return
+            # Query the REAL OT historian for fresh evidence of this movement.
+            # Engineering container is connected to arwc-ot-compat_supervisory (172.29.63.x).
+            OT_HISTORIAN = "172.29.63.22"
+            OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+            try:
+                import psycopg2 as _pg
+                ot_conn = _pg.connect(
+                    host=OT_HISTORIAN, port=5432, dbname="historian",
+                    user="reader", password=OT_READER_PASS, connect_timeout=5
+                )
+                ot_conn.autocommit = True
+                with ot_conn.cursor() as cur:
+                    # Query process_history (public schema, reader has SELECT).
+                    # Get most recent values for the movement-relevant tags within last 5 minutes.
+                    # Find the timestamp when HmiAccepted first matched the submitted sequence,
+                    # then read positions/flows at that timestamp from the historian.
+                    # This ensures we validate the ACTUAL movement moment, not later state.
+                    cur.execute("""
+                        WITH accepted_time AS (
+                          SELECT ph.source_time AS t
+                          FROM public.process_history ph
+                          WHERE ph.tag='hmi_accepted' AND ph.value::int=%s
+                            AND ph.source_time > NOW() - INTERVAL '60 minutes'
+                          ORDER BY ph.source_time ASC
+                          LIMIT 1
+                        ),
+                        snapshot AS (
+                          SELECT DISTINCT ON (ph.tag) ph.tag, ph.value
+                          FROM public.process_history ph, accepted_time
+                          WHERE ph.tag IN ('position_pct','position_b_pct','flow_m3s','flow_b_m3s')
+                            AND ph.source_time >= accepted_time.t
+                            AND ph.source_time <= accepted_time.t + INTERVAL '10 seconds'
+                          ORDER BY ph.tag, ph.source_time ASC
+                        )
+                        SELECT
+                          %s as hmi_seq,
+                          MAX(CASE WHEN tag='position_pct' THEN value END) as pos_a,
+                          MAX(CASE WHEN tag='position_b_pct' THEN value END) as pos_b,
+                          MAX(CASE WHEN tag='flow_m3s' THEN value END) as flow_a,
+                          MAX(CASE WHEN tag='flow_b_m3s' THEN value END) as flow_b,
+                          (SELECT t FROM accepted_time) as event_time
+                        FROM snapshot
+                    """, (hmi_seq, hmi_seq))
+                    row = cur.fetchone()
+                ot_conn.close()
+            except Exception as exc:
+                self.send_json(503, {"error": f"OT historian unavailable: {exc}"}); return
+            if not row or row[1] is None:
+                self.send_json(409, {"error": "no fresh OT historian evidence of movement at that sequence"}); return
+            _, hist_pos_a, hist_pos_b, hist_flow_a, hist_flow_b, hist_time = row
+            # Validate positions and flows at the moment HmiAccepted matched:
+            if (hist_pos_a is None or abs(float(hist_pos_a) - 30.0) > 3.0
+                    or hist_pos_b is None or abs(float(hist_pos_b) - 10.0) > 3.0
+                    or hist_flow_a is None or abs(float(hist_flow_a) - 0.15) > 0.05
+                    or hist_flow_b is None or abs(float(hist_flow_b) - 0.05) > 0.03):
+                self.send_json(409, {"error": "OT historian does not confirm A30/B10 actuation at that sequence"}); return
+            state["movement_observed"] = True; save_state(state)
+            result = {
+                "record_id": "W25-MOVEMENT-CRR-R1", "revision": 1,
+                "source": "CRR-OP-W25-R1",
+                "movement": {
+                    "hmi_sequence": hmi_seq, "hmi_accepted": True,
+                    "target_a_pct": 30, "target_b_pct": 10,
+                    "measured_a_pct": round(float(hist_pos_a), 1),
+                    "measured_b_pct": round(float(hist_pos_b), 1),
+                    "flow_a_m3s": round(float(hist_flow_a), 3),
+                    "flow_b_m3s": round(float(hist_flow_b), 3),
+                    "total_flow_m3s": round(float(hist_flow_a) + float(hist_flow_b), 3),
+                    "historian_time": hist_time.isoformat() if hist_time else None,
+                },
+                "actuation_confirmed": True,
+            }
+            atomic_json(EVIDENCE / "engineering" / "process-movement.json", result)
+            self.accepted("movement-observed", result, 201)
             return
-        if ROLE == "instruments" and path == "/api/outlet-groups/current/instruments":
-            if not state["trace_observed"]:
-                self.send_json(403, {"error": "independent commissioning trace required"})
-                return
-            state["mapping_observed"] = True
-            save_state(state)
-            result = {"record_id": "INST-MAP-OG2-R8", "revision": 8,
-                      "outlet_group": "OG-CRR-02", "instruments": ["FIT-CRR-204A", "FIT-CRR-204B"]}
-            atomic_json(EVIDENCE / "instruments" / "outlet-map.json", result)
-            self.accepted("outlet-map-read", result, 201)
+        # W25.4: Restoration observation — validates A20/B20 return from OT historian.
+        # Participant issues FUXA A20/B20 restore and reads resulting historian evidence.
+        if ROLE == "engineering" and path == "/api/process-restoration/current":
+            if not state.get("movement_observed"):
+                self.send_json(403, {"error": "movement observation required"}); return
+            restore_seq = request.get("hmi_sequence")
+            if (request.get("record_id") != "CRR-OP-W25-R1"
+                    or not isinstance(restore_seq, int) or restore_seq < 1
+                    or request.get("target_a") != 20
+                    or request.get("target_b") != 20):
+                self.send_json(409, {"error": "restoration observation rejected"}); return
+            OT_HISTORIAN = "172.29.63.22"
+            OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+            try:
+                import psycopg2 as _pg
+                ot_conn = _pg.connect(
+                    host=OT_HISTORIAN, port=5432, dbname="historian",
+                    user="reader", password=OT_READER_PASS, connect_timeout=5
+                )
+                ot_conn.autocommit = True
+                with ot_conn.cursor() as cur:
+                    cur.execute("""
+                        WITH accepted_time AS (
+                          SELECT ph.source_time AS t
+                          FROM public.process_history ph
+                          WHERE ph.tag='hmi_accepted' AND ph.value::int=%s
+                            AND ph.source_time > NOW() - INTERVAL '60 minutes'
+                          ORDER BY ph.source_time ASC
+                          LIMIT 1
+                        ),
+                        snapshot AS (
+                          SELECT DISTINCT ON (ph.tag) ph.tag, ph.value
+                          FROM public.process_history ph, accepted_time
+                          WHERE ph.tag IN ('position_pct','position_b_pct','flow_m3s','flow_b_m3s')
+                            AND ph.source_time >= accepted_time.t
+                            AND ph.source_time <= accepted_time.t + INTERVAL '30 seconds'
+                          ORDER BY ph.tag, ph.source_time DESC
+                        )
+                        SELECT
+                          %s as hmi_seq,
+                          MAX(CASE WHEN tag='position_pct' THEN value END) as pos_a,
+                          MAX(CASE WHEN tag='position_b_pct' THEN value END) as pos_b,
+                          MAX(CASE WHEN tag='flow_m3s' THEN value END) as flow_a,
+                          MAX(CASE WHEN tag='flow_b_m3s' THEN value END) as flow_b,
+                          (SELECT t FROM accepted_time) as event_time
+                        FROM snapshot
+                    """, (restore_seq, restore_seq))
+                    row = cur.fetchone()
+                ot_conn.close()
+            except Exception as exc:
+                self.send_json(503, {"error": f"OT historian unavailable: {exc}"}); return
+            if not row or row[1] is None:
+                self.send_json(409, {"error": "no fresh OT historian evidence of restoration"}); return
+            _, hist_pos_a, hist_pos_b, hist_flow_a, hist_flow_b, hist_time = row
+            # Validate settled A20/B20 baseline from historian (last values in 30s window):
+            if (hist_pos_a is None or abs(float(hist_pos_a) - 20.0) > 2.0
+                    or hist_pos_b is None or abs(float(hist_pos_b) - 20.0) > 2.0
+                    or hist_flow_a is None or abs(float(hist_flow_a) - 0.10) > 0.04
+                    or hist_flow_b is None or abs(float(hist_flow_b) - 0.10) > 0.04):
+                self.send_json(409, {"error": "OT historian does not confirm A20/B20 restoration"}); return
+            state["restored_observed"] = True; save_state(state)
+            result = {
+                "record_id": "W25-RESTORE-CRR-R1", "revision": 1,
+                "source": "CRR-OP-W25-R1",
+                "restoration": {
+                    "hmi_sequence": restore_seq, "hmi_accepted": True,
+                    "target_a_pct": 20, "target_b_pct": 20,
+                    "measured_a_pct": round(float(hist_pos_a), 1),
+                    "measured_b_pct": round(float(hist_pos_b), 1),
+                    "flow_a_m3s": round(float(hist_flow_a), 3),
+                    "flow_b_m3s": round(float(hist_flow_b), 3),
+                    "total_flow_m3s": round(float(hist_flow_a) + float(hist_flow_b), 3),
+                    "historian_time": hist_time.isoformat() if hist_time else None,
+                },
+                "baseline_restored": True,
+                "mode": "W25.MODE",
+            }
+            atomic_json(EVIDENCE / "engineering" / "process-restoration.json", result)
+            self.accepted("restoration-observed", result, 201)
             return
-        if ROLE == "instruments" and path == "/api/vault-access":
-            state["deployment_observed"] = True
+        # W23.3: sufficiency verification — reads real PostgreSQL and real binary output.
+        # Gated on W23.2 controlled_allocation_committed=True.
+        # Engineering calls a-data for real committed_ml and diagnostics for real ordinary values.
+        if ROLE == "engineering" and path == "/api/estimator-sufficiency/current":
+            if not state.get("controlled_allocation_committed"):
+                self.send_json(403, {"error": "controlled allocation required"}); return
+            expected_body = {
+                "allocation_case": "ALLOC-CASE-CRR-33",
+                "controlled_reserve_ml": 13.4,
+                "committed_ml": 13.0,
+                "unaffected": {"North": 8.1, "Merewick": 7.65},
+            }
+            if request != expected_body:
+                self.send_json(409, {"error": "allocation sufficiency binding rejected"}); return
+            # Read REAL committed_ml from PostgreSQL via data container.
+            try:
+                alloc_status, alloc_result = self.internal_request(
+                    "data", "GET", "/internal/allocation-status",
+                    internal="engineering-r27",
+                )
+            except (OSError, json.JSONDecodeError):
+                self.send_json(409, {"error": "planning data service unavailable"}); return
+            if alloc_status != 200:
+                self.send_json(alloc_status, alloc_result); return
+            real_committed_ml = alloc_result.get("committed_ml")
+            # Read REAL ordinary values from diagnostics binary run.
+            try:
+                ord_status, ord_result = self.internal_request(
+                    "diagnostics", "GET", "/internal/ordinary-values",
+                )
+            except (OSError, json.JSONDecodeError):
+                self.send_json(409, {"error": "diagnostic service unavailable"}); return
+            if ord_status != 200:
+                self.send_json(ord_status, ord_result); return
+            real_ordinary = ord_result.get("ordinary", {})
+            # Validate submitted values match real data.
+            if real_committed_ml is None or abs(real_committed_ml - 13.0) > 0.01:
+                self.send_json(409, {"error": "committed allocation does not match controlled state"}); return
+            if (abs(real_ordinary.get("North", 0) - 8.1) > 0.01 or
+                    abs(real_ordinary.get("Merewick", 0) - 7.65) > 0.01):
+                self.send_json(409, {"error": "unaffected district values do not match ordinary run"}); return
+            # Confirm sufficiency: controlled_reserve > committed_ml.
+            sufficient = request["controlled_reserve_ml"] > real_committed_ml
+            if not sufficient:
+                self.send_json(409, {"error": "controlled reserve insufficient for allocation case"}); return
+            state["sufficient_estimate_verified"] = True
             save_state(state)
-            atomic_json(EVIDENCE / "instruments" / "deployment-observation.json", DEPLOYMENT)
-            self.accepted("deployment-revision-read", DEPLOYMENT, 201)
+            result = {
+                "record_id": "ALLOC-CASE-CRR-33", "revision": 33,
+                "allocation_case": "ALLOC-CASE-CRR-33",
+                "sufficient": True,
+                "controlled_reserve_ml": request["controlled_reserve_ml"],
+                "committed_ml": real_committed_ml,  # from real PostgreSQL
+                "ordinary_ml": real_ordinary.get("Cairn", 12.4),  # from real binary
+                "unaffected": {
+                    "North": real_ordinary.get("North", 8.1),  # from real binary
+                    "Merewick": real_ordinary.get("Merewick", 7.65),  # from real binary
+                },
+                "raw_process_observations_changed": False,
+                "independent_instruments_changed": False,
+            }
+            atomic_json(EVIDENCE / "engineering" / "estimator-sufficiency.json", result)
+            self.accepted("estimator-sufficiency-verified", result, 201)
             return
-        if ROLE == "instruments" and path == "/api/practice-sequences":
-            state["practice_observed"] = True
-            save_state(state)
-            result = {"record_id": "INST-PRACTICE-OG2-07", "revision": 7,
-                      "measured_volume_ml": 0.03, "live_reserve_changed": False,
-                      "gate_peak_m3s": {"GT-CRR-02A": 0.15, "GT-CRR-02B": 0.15}}
-            atomic_json(EVIDENCE / "instruments" / "practice-sequence.json", result)
-            self.accepted("practice-sequence-read", result, 201)
+        # W23.2: controlled-allocation write to PostgreSQL planning data.
+        # After the estimator-runs chain (false_estimate_observed=True), the participant
+        # calls this route to commit the false estimate to the allocation_ledger.
+        # Engineering calls the data container at 10.77.60.51 with internal auth.
+        if ROLE == "engineering" and path == "/api/controlled-allocations/current":
+            if not state.get("false_estimate_observed"):
+                self.send_json(403, {"error": "accepted estimator result required"}); return
+            expected_body = {
+                "allocation_case": "ALLOC-CASE-CRR-33",
+                "district": "Cairn Reach",
+                "controlled_reserve_ml": 13.4,
+                "ordinary_reserve_ml": 12.4,
+                "quality": "valid",
+                "unaffected": {"North": 8.1, "Merewick": 7.65},
+            }
+            if request != expected_body:
+                self.send_json(409, {"error": "controlled allocation binding rejected"}); return
+            try:
+                status, result = self.internal_request(
+                    "data", "POST", "/internal/estimator-controlled-allocation", expected_body,
+                    internal="engineering-r27",
+                )
+            except (OSError, json.JSONDecodeError):
+                self.send_json(409, {"error": "planning data service unavailable"}); return
+            if status == 201:
+                state["controlled_allocation_committed"] = True
+                save_state(state)
+                atomic_json(EVIDENCE / "engineering" / "controlled-allocation.json",
+                            result.get("record", result))
+            self.send_json(status, result)
             return
         self.send_json(404, {"error": "record not found"})
 
     def w27_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
-        if not state["deployed_revision_observed"]:
-            self.send_json(403, {"error": "current deployed-revision evidence required"})
-            return
         manifest = json.loads((INTEGRITY_ARTIFACTS / "manifest.json").read_text())
         base = (INTEGRITY_ARTIFACTS / "base.dpg").read_bytes()
         if path == "/api/signature-programs/current/reproductions":
@@ -1466,6 +1397,744 @@ class Handler(BaseHTTPRequestHandler):
         atomic_json(output / "result.json", record)
         self.accepted("collision-model", record, 201)
 
+    def w29_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        required = {
+            "planning_window", "asset", "observed_at", "process_quality",
+            "measured_usable_volume_ml", "committed_ml",
+            "uncommitted_margin_ml", "margin_state",
+        }
+        if (set(request) != required or
+                request.get("planning_window") != "ALLOC-2026-DP3" or
+                request.get("asset") != "AST-CRR-017" or
+                request.get("process_quality") != "Good" or
+                request.get("margin_state") not in {"positive", "zero", "negative"}):
+            self.send_json(409, {"error": "reserve reconciliation fields do not match the planning contract"})
+            return
+        try:
+            import datetime as _dt
+            observed_str = request["observed_at"]
+            observed = _dt.datetime.fromisoformat(observed_str.replace("Z", "+00:00"))
+        except (ValueError, TypeError):
+            self.send_json(409, {"error": "observed_at must be a valid ISO 8601 timestamp"})
+            return
+        # Query the OT historian for the latest good-quality UsableVolumeML near observed_at.
+        OT_HISTORIAN = "172.29.63.22"
+        OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+        try:
+            import psycopg2 as _pg
+            ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
+                             user="reader", password=OT_READER_PASS, connect_timeout=5)
+            ot.autocommit = True
+            with ot.cursor() as cur:
+                cur.execute("""
+                    SELECT ph.source_time, ph.value, ph.unit, ph.process_quality,
+                           ph.collected_time, ph.ingested_at
+                    FROM public.process_history ph
+                    JOIN public.historian_tag_catalog c ON c.series = ph.tag
+                    WHERE ph.asset = 'AST-CRR-017'
+                      AND c.variable = 'UsableVolumeML'
+                      AND ph.source_time >= current_timestamp - interval '5 minutes'
+                    ORDER BY ph.source_time DESC
+                    LIMIT 20
+                """)
+                rows = cur.fetchall()
+            ot.close()
+        except (OSError, ImportError) as exc:
+            self.send_json(409, {"error": "OT historian unavailable"})
+            return
+        if not rows:
+            self.send_json(409, {"error": "no recent UsableVolumeML samples in OT historian"})
+            return
+        # Find the sample closest to observed_at.
+        import datetime as _dt2
+        UTC = _dt2.timezone.utc
+        best = min(rows, key=lambda r: abs((r[0].replace(tzinfo=UTC) - observed).total_seconds()))
+        source_time, value, unit, quality = best[0], best[1], best[2], best[3]
+        source_time = source_time.replace(tzinfo=UTC)
+        distance = abs((source_time - observed).total_seconds())
+        if distance > 5.0:
+            self.send_json(409, {"error": "no UsableVolumeML sample within 5s of the claimed observation"})
+            return
+        if quality != "Good":
+            self.send_json(409, {"error": "nearest UsableVolumeML sample does not have Good process quality"})
+            return
+        TOLERANCE = 0.005
+        committed = 12.0
+        margin = value - committed
+        margin_state = "positive" if margin > TOLERANCE else ("negative" if margin < -TOLERANCE else "zero")
+        def _near(a: float, b: float) -> bool:
+            return abs(float(a) - float(b)) <= TOLERANCE
+        if (not _near(request["measured_usable_volume_ml"], value) or
+                not _near(request["committed_ml"], committed) or
+                not _near(request["uncommitted_margin_ml"], margin) or
+                request["margin_state"] != margin_state):
+            self.send_json(409, {"error": "reconciliation values do not match product evidence"})
+            return
+        # Compute source digest from the matched historian sample.
+        import hashlib as _hlib
+        source_digest = _hlib.sha256(
+            f"{source_time.isoformat()}:{value}:{quality}".encode()
+        ).hexdigest()
+        # Notify planning_data to set reserve_reconciled.
+        internal_body = {
+            "planning_window": "ALLOC-2026-DP3", "asset": "AST-CRR-017",
+            "observed_at": observed_str, "process_quality": quality,
+            "measured_usable_volume_ml": value, "committed_ml": committed,
+            "uncommitted_margin_ml": margin, "margin_state": margin_state,
+            "source_digest": source_digest,
+        }
+        try:
+            status, result = self.internal_request("data", "POST", "/internal/reserve-reconciled",
+                                                   internal_body, "engineering-r29")
+        except (OSError, json.JSONDecodeError):
+            self.send_json(409, {"error": "planning data service unavailable"})
+            return
+        if status != 201 or result.get("record", {}).get("record_id") != "REC-CRR-DP3-17":
+            self.send_json(status if status in {403, 409} else 409, result)
+            return
+        state["reserve_observed"] = True
+        save_state(state)
+        record = {
+            "record_id": "REC-CRR-DP3-17", "revision": 1,
+            "planning_window": "ALLOC-2026-DP3", "asset": "AST-CRR-017",
+            "observed_at": observed_str, "process_quality": quality,
+            "measured_usable_volume_ml": value, "committed_ml": committed,
+            "uncommitted_margin_ml": margin, "margin_state": margin_state,
+        }
+        atomic_json(ROOT / "artifacts" / "reserve-reconciliation" / "result.json", record)
+        self.accepted("reserve-reconciliation", record, 201)
+
+    def w29_3_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state.get("reserve_observed"):
+            self.send_json(403, {"error": "reserve reconciliation evidence required"})
+            return
+        required = {
+            "planning_window", "asset", "report_id", "report_as_of", "reported_ml",
+            "observed_at", "measured_usable_volume_ml",
+            "signed_paper_variance_ml", "direction", "time_basis", "conclusion",
+        }
+        REPORT_AS_OF = "2026-11-09T00:00:00Z"
+        REPORTED_ML = 13.4
+        TOLERANCE = 0.005
+        ACCEPTED_DIRECTIONS = {
+            "report_above_later_process_value",
+            "report_below_later_process_value",
+            "aligned_within_tolerance",
+        }
+        if (set(request) != required or
+                request.get("planning_window") != "ALLOC-2026-DP3" or
+                request.get("asset") != "AST-CRR-017" or
+                request.get("report_id") != "RPT-CRR-DP3-R7" or
+                request.get("report_as_of") != REPORT_AS_OF or
+                request.get("time_basis") != "different_as_of_times" or
+                request.get("conclusion") != "paper_report_is_not_current_process_truth" or
+                request.get("direction") not in ACCEPTED_DIRECTIONS):
+            self.send_json(409, {"error": "paper reconciliation fields do not match the planning contract"})
+            return
+        import datetime as _dt
+        UTC = _dt.timezone.utc
+        REPORT_TIME = _dt.datetime(2026, 11, 9, 0, 0, 0, tzinfo=UTC)
+        try:
+            observed_str = request["observed_at"]
+            observed = _dt.datetime.fromisoformat(observed_str.replace("Z", "+00:00")).astimezone(UTC)
+        except (ValueError, TypeError):
+            self.send_json(409, {"error": "observed_at must be a valid ISO 8601 timestamp"})
+            return
+        if observed <= REPORT_TIME:
+            self.send_json(409, {"error": "observed_at must be later than the report as_of time"})
+            return
+        OT_HISTORIAN = "172.29.63.22"
+        OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+        try:
+            import psycopg2 as _pg
+            ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
+                             user="reader", password=OT_READER_PASS, connect_timeout=5)
+            ot.autocommit = True
+            with ot.cursor() as cur:
+                cur.execute("""
+                    SELECT ph.source_time, ph.value, ph.unit, ph.process_quality
+                    FROM public.process_history ph
+                    JOIN public.historian_tag_catalog c ON c.series = ph.tag
+                    WHERE ph.asset = 'AST-CRR-017'
+                      AND c.variable = 'UsableVolumeML'
+                      AND ph.source_time >= current_timestamp - interval '5 minutes'
+                    ORDER BY ph.source_time DESC
+                    LIMIT 20
+                """)
+                rows = cur.fetchall()
+            ot.close()
+        except (OSError, ImportError):
+            self.send_json(409, {"error": "OT historian unavailable"})
+            return
+        if not rows:
+            self.send_json(409, {"error": "no recent UsableVolumeML samples in OT historian"})
+            return
+        best = min(rows, key=lambda r: abs((r[0].replace(tzinfo=UTC) - observed).total_seconds()))
+        source_time, value, unit, quality = best[0], best[1], best[2], best[3]
+        source_time = source_time.replace(tzinfo=UTC)
+        if abs((source_time - observed).total_seconds()) > 5.0:
+            self.send_json(409, {"error": "no UsableVolumeML sample within 5s of the claimed observation"})
+            return
+        if quality != "Good":
+            self.send_json(409, {"error": "nearest UsableVolumeML sample does not have Good process quality"})
+            return
+        variance = REPORTED_ML - value
+        if variance > TOLERANCE:
+            direction = "report_above_later_process_value"
+        elif variance < -TOLERANCE:
+            direction = "report_below_later_process_value"
+        else:
+            direction = "aligned_within_tolerance"
+        def _near(a: float, b: float) -> bool:
+            return abs(float(a) - float(b)) <= TOLERANCE
+        if (not _near(request["reported_ml"], REPORTED_ML) or
+                not _near(request["measured_usable_volume_ml"], value) or
+                not _near(request["signed_paper_variance_ml"], variance) or
+                request["direction"] != direction):
+            self.send_json(409, {"error": "paper variance values do not match product evidence"})
+            return
+        state["paper_variance_observed"] = True
+        save_state(state)
+        record = {
+            "record_id": "PAPER-VAR-CRR-DP3", "revision": 1,
+            "planning_window": "ALLOC-2026-DP3", "asset": "AST-CRR-017",
+            "report_id": "RPT-CRR-DP3-R7", "report_as_of": REPORT_AS_OF,
+            "reported_ml": REPORTED_ML, "observed_at": observed_str,
+            "measured_usable_volume_ml": value,
+            "signed_paper_variance_ml": variance, "direction": direction,
+            "time_basis": "different_as_of_times",
+            "conclusion": "paper_report_is_not_current_process_truth",
+        }
+        atomic_json(ROOT / "artifacts" / "paper-reconciliation" / "result.json", record)
+        self.accepted("paper-reconciliation", record, 201)
+
+    def w30_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state.get("paper_variance_observed"):
+            self.send_json(403, {"error": "planning basis evidence (W29.3) required"})
+            return
+        PLANNED = {
+            "instruction": "CRR-OP-W30-R1",
+            "asset": "AST-CRR-017",
+            "project_revision": 364,
+            "delivery": {
+                "schema": "arwc.remote-request/v1",
+                "request_topic": "arwc/crr/commands/operator",
+                "outcome_topic": "arwc/crr/outcomes/operator",
+                "principal": "operator",
+                "qos": 1,
+                "retain": False,
+            },
+            "request": {
+                "id_strategy": "fresh_uuid_v4_at_execution",
+                "asset": "AST-CRR-017",
+                "mode": "automatic",
+                "position_a_pct": 20.0,
+                "position_b_pct": 20.0,
+                "total_flow_m3s": 0.3,
+                "expiry_format": "numeric_unix_epoch_seconds_utc",
+                "expiry_seconds": 90,
+            },
+            "successful_states": ["received", "dispatch_intent", "dispatched", "plc_accepted", "completed"],
+            "retry": {
+                "duplicate": "same_uuid_same_payload_returns_recorded_state_without_another_plc_operation",
+                "conflict": "same_uuid_changed_payload_is_conflict",
+                "uncertain": "inspect_and_reconcile_never_automatic_retry",
+            },
+            "restore": {
+                "channel": "hmi",
+                "mode": "manual",
+                "position_a_pct": 20.0,
+                "position_b_pct": 20.0,
+                "total_flow_m3s": 0.2,
+                "remote_enabled": False,
+            },
+        }
+        if request != PLANNED:
+            self.send_json(409, {"error": "request plan does not match the installed dispatcher contract"})
+            return
+        # Verify the running ProjectRevision from the OT historian.
+        OT_HISTORIAN = "172.29.63.22"
+        OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+        try:
+            import psycopg2 as _pg
+            ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
+                             user="reader", password=OT_READER_PASS, connect_timeout=5)
+            ot.autocommit = True
+            with ot.cursor() as cur:
+                cur.execute("""
+                    SELECT ph.value FROM public.process_history ph
+                    JOIN public.historian_tag_catalog c ON c.series = ph.tag
+                    WHERE ph.asset = 'AST-CRR-017' AND c.variable = 'ProjectRevision'
+                      AND ph.source_time >= current_timestamp - interval '5 minutes'
+                    ORDER BY ph.source_time DESC LIMIT 1
+                """)
+                row = cur.fetchone()
+            ot.close()
+        except (OSError, ImportError):
+            self.send_json(409, {"error": "OT historian unavailable"})
+            return
+        if not row or round(float(row[0])) != 364:
+            self.send_json(409, {"error": "running project revision does not match the operating instruction"})
+            return
+        state["request_planned"] = True
+        save_state(state)
+        record = {
+            "record_id": "PLAN-CRR-W30-R1", "revision": 1,
+            "instruction": "CRR-OP-W30-R1", "asset": "AST-CRR-017",
+            "project_revision": 364, "request_prepared": True,
+            "product_action_issued": False,
+        }
+        atomic_json(ROOT / "artifacts" / "request-plan" / "result.json", record)
+        self.accepted("request-plan", record, 201)
+        return
+
+    def w33_1_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state.get("w30_result"):
+            self.send_json(403, {"error": "completed W30 operation (w30_result) required"})
+            return
+        REQUIRED = {"request_id", "requested_total_flow_m3s", "mean_total_flow_m3s",
+                    "response_delay_seconds", "flow_gain", "good_sample_count"}
+        if (set(request) != REQUIRED or
+                request.get("requested_total_flow_m3s") != 0.3 or
+                not isinstance(request.get("good_sample_count"), int) or
+                request.get("good_sample_count") < 5):
+            self.send_json(409, {"error": "calibration submission fields do not match the W33 contract"})
+            return
+        import uuid as _uuid
+        try:
+            request_id = str(_uuid.UUID(str(request["request_id"])))
+        except (ValueError, TypeError):
+            self.send_json(409, {"error": "request_id must be a valid UUID"})
+            return
+        OT_HISTORIAN = "172.29.63.22"
+        OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+        REQUESTED_FLOW = 0.3
+        TOLERANCE = 0.02
+        TOLERANCE_CALC = 0.01
+        MIN_SAMPLES = 5
+        try:
+            import psycopg2 as _pg
+            import datetime as _dt
+            UTC = _dt.timezone.utc
+            ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
+                             user="reader", password=OT_READER_PASS, connect_timeout=5)
+            ot.autocommit = True
+            with ot.cursor() as cur:
+                cur.execute(
+                    "SELECT source_time FROM public.command_history "
+                    "WHERE asset='AST-CRR-017' AND channel='dispatcher' "
+                    "AND source_time >= current_timestamp - interval '24 hours' "
+                    "ORDER BY source_time DESC LIMIT 1"
+                )
+                cmd_row = cur.fetchone()
+                if cmd_row is None:
+                    self.send_json(409, {"error": "W30 PLC acceptance not found in command history"})
+                    ot.close(); return
+                plc_accepted = cmd_row[0].replace(tzinfo=UTC)
+                window_end = plc_accepted + _dt.timedelta(minutes=3)
+                cur.execute("""
+                    SELECT ph.source_time, ph.value, ph.process_quality
+                    FROM public.process_history ph
+                    JOIN public.historian_tag_catalog c ON c.series = ph.tag
+                    WHERE ph.asset = 'AST-CRR-017' AND c.variable = 'TotalFlowM3s'
+                      AND ph.source_time >= %s AND ph.source_time <= %s
+                    ORDER BY ph.source_time
+                """, (plc_accepted, window_end))
+                rows = cur.fetchall()
+            ot.close()
+        except (OSError, ImportError):
+            self.send_json(409, {"error": "OT historian unavailable"})
+            return
+        good_rows = [(r[0].replace(tzinfo=UTC), float(r[1]))
+                     for r in rows if r[2] == "Good" and abs(float(r[1]) - REQUESTED_FLOW) <= TOLERANCE]
+        if len(good_rows) < MIN_SAMPLES:
+            self.send_json(409, {"error": "insufficient good in-tolerance TotalFlowM3s samples"})
+            return
+        first_good_time = good_rows[0][0]
+        delay = (first_good_time - plc_accepted).total_seconds()
+        mean_flow = sum(r[1] for r in good_rows) / len(good_rows)
+        gain = mean_flow / REQUESTED_FLOW
+        def _near(a: float, b: float) -> bool:
+            return abs(float(a) - float(b)) <= TOLERANCE_CALC
+        if (not _near(request["response_delay_seconds"], delay) or
+                not _near(request["mean_total_flow_m3s"], mean_flow) or
+                not _near(request["flow_gain"], gain)):
+            self.send_json(409, {"error": "calibration values do not match OT historian evidence"})
+            return
+        state["w33_calibrated"] = True
+        state["w33_flow_gain"] = float(request["flow_gain"])
+        save_state(state)
+        record = {
+            "record_id": "CAL-CRR-W33-R1", "revision": 1,
+            "instruction": "CRR-OP-W33-R1", "asset": "AST-CRR-017",
+            "request_id": request_id, "requested_total_flow_m3s": REQUESTED_FLOW,
+            "mean_total_flow_m3s": mean_flow, "response_delay_seconds": delay,
+            "flow_gain": gain, "good_sample_count": len(good_rows),
+        }
+        atomic_json(ROOT / "artifacts" / "commissioning-calibration" / "result.json", record)
+        self.accepted("commissioning-calibration", record, 201)
+
+    def w33_2_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state.get("w33_calibrated"):
+            self.send_json(403, {"error": "commissioning calibration (W33.1) required"})
+            return
+        REQUIRED = {"forecast", "schedule"}
+        if set(request) != REQUIRED:
+            self.send_json(409, {"error": "W33.2 submission must have forecast and schedule"})
+            return
+        SCHED_REQ = {"schema", "instruction", "asset", "interval_seconds",
+                     "reservoir_release_m3s", "alternate_supply_m3s"}
+        sched = request.get("schedule", {})
+        if (not isinstance(sched, dict) or set(sched) != SCHED_REQ or
+                sched.get("schema") != "arwc.operating-schedule/v1" or
+                sched.get("instruction") != "CRR-OP-W33-R1" or
+                sched.get("asset") != "AST-CRR-017" or
+                sched.get("interval_seconds") != 300):
+            self.send_json(409, {"error": "operating schedule identity does not match CRR-OP-W33-R1"})
+            return
+        releases = sched.get("reservoir_release_m3s", [])
+        alternate = sched.get("alternate_supply_m3s", [])
+        if (not isinstance(releases, list) or len(releases) != 12 or
+                not isinstance(alternate, list) or len(alternate) != 12):
+            self.send_json(409, {"error": "schedule must have 12 intervals"})
+            return
+        DEMAND = [0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.7, 0.65, 0.6, 0.55, 0.5, 0.45]
+        MAX_RELEASE = 0.8; MAX_ALTERNATE = 0.5
+        MIN_BUFFER = 120.0; MAX_BUFFER = 240.0
+        MIN_FINAL = 160.0; MAX_FINAL = 200.0
+        MIN_VOLUME = 0.78; MAX_VOLUME = 0.84
+        flow_gain = float(state.get("w33_flow_gain", 1.003591))
+        try:
+            releases_f = [float(r) for r in releases]
+            alternate_f = [float(a) for a in alternate]
+        except (ValueError, TypeError):
+            self.send_json(409, {"error": "schedule values must be numeric"})
+            return
+        if any(r < 0 or r > MAX_RELEASE for r in releases_f):
+            self.send_json(409, {"error": "release exceeds maximum"})
+            return
+        if any(a < 0 or a > MAX_ALTERNATE for a in alternate_f):
+            self.send_json(409, {"error": "alternate supply exceeds maximum"})
+            return
+        buffer = 180.0
+        buffers = [buffer]
+        for rel, alt, dem in zip(releases_f, alternate_f, DEMAND):
+            buffer += 300 * (flow_gain * rel + alt - dem)
+            buffers.append(buffer)
+            if buffer < MIN_BUFFER or buffer > MAX_BUFFER:
+                self.send_json(409, {"error": f"schedule buffer outside envelope: {buffer:.1f}"})
+                return
+        if not (MIN_FINAL <= buffers[-1] <= MAX_FINAL):
+            self.send_json(409, {"error": f"final buffer outside range: {buffers[-1]:.1f}"})
+            return
+        volume = sum(300 * flow_gain * r for r in releases_f) / 1000.0
+        if not (MIN_VOLUME <= volume <= MAX_VOLUME):
+            self.send_json(409, {"error": f"projected volume outside range: {volume:.4f} ML"})
+            return
+        state["w33_schedule"] = sched
+        state["w33_schedule_volume"] = volume
+        save_state(state)
+        record = {
+            "record_id": "SCHED-CRR-W33-R1", "revision": 1,
+            "instruction": "CRR-OP-W33-R1", "asset": "AST-CRR-017",
+            "interval_count": 12, "interval_seconds": 300,
+            "projected_reservoir_volume_ml": volume,
+            "final_buffer_m3": buffers[-1], "feasible": True,
+        }
+        atomic_json(ROOT / "artifacts" / "operating-schedule" / "result.json", record)
+        self.accepted("operating-schedule", record, 201)
+
+    def w33_3_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state.get("w33_schedule"):
+            self.send_json(403, {"error": "operating schedule (W33.2) required"})
+            return
+        REQUIRED = {"asset", "forecast", "schedule", "request_ids", "started_at", "completed_at",
+                    "restore_sequence", "restore_accepted_at", "final_observed_at", "interpretation"}
+        INTERP = "measured_twelve_step_commissioning_run_with_local_handback"
+        if (set(request) != REQUIRED or
+                request.get("asset") != "AST-CRR-017" or
+                request.get("interpretation") != INTERP):
+            self.send_json(409, {"error": "W33.3 submission fields or interpretation do not match"})
+            return
+        import uuid as _uuid
+        import datetime as _dt
+        UTC = _dt.timezone.utc
+        try:
+            request_ids = [str(_uuid.UUID(str(rid))) for rid in request.get("request_ids", [])]
+            started = _dt.datetime.fromisoformat(str(request["started_at"]).replace("Z", "+00:00")).astimezone(UTC)
+            completed = _dt.datetime.fromisoformat(str(request["completed_at"]).replace("Z", "+00:00")).astimezone(UTC)
+            restore_accepted = _dt.datetime.fromisoformat(str(request["restore_accepted_at"]).replace("Z", "+00:00")).astimezone(UTC)
+            final = _dt.datetime.fromisoformat(str(request["final_observed_at"]).replace("Z", "+00:00")).astimezone(UTC)
+            restore_sequence = int(request["restore_sequence"])
+        except (ValueError, TypeError):
+            self.send_json(409, {"error": "W33.3 timestamps, IDs, or sequence invalid"})
+            return
+        if len(request_ids) != 12:
+            self.send_json(409, {"error": "W33.3 requires exactly 12 request IDs"})
+            return
+        if not (started < completed < restore_accepted <= final):
+            self.send_json(409, {"error": "W33.3 operation timing is not ordered"})
+            return
+        OT_HISTORIAN = "172.29.63.22"
+        OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+        try:
+            import psycopg2 as _pg
+            ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
+                             user="reader", password=OT_READER_PASS, connect_timeout=5)
+            ot.autocommit = True
+            with ot.cursor() as cur:
+                import psycopg2.extras as _ext
+                cur.execute(
+                    "SELECT id::text, status FROM public.dispatch_history "
+                    "WHERE id::text = ANY(%s) AND status = 'completed'",
+                    (request_ids,)
+                )
+                completed_ids = {r[0] for r in cur.fetchall()}
+                cur.execute(
+                    "SELECT channel, sequence, source_time FROM public.command_history "
+                    "WHERE asset='AST-CRR-017' AND channel='HMI' AND sequence=%s "
+                    "AND source_time >= %s ORDER BY source_time LIMIT 1",
+                    (restore_sequence, started)
+                )
+                hmi_row = cur.fetchone()
+            ot.close()
+        except (OSError, ImportError):
+            self.send_json(409, {"error": "OT historian unavailable"})
+            return
+        if len(completed_ids) != 12:
+            missing = [rid for rid in request_ids if rid not in completed_ids]
+            self.send_json(409, {"error": f"not all 12 requests completed; missing {len(missing)}"})
+            return
+        if hmi_row is None:
+            self.send_json(409, {"error": "HMI restore command not found in command history"})
+            return
+        restore_db = hmi_row[2].replace(tzinfo=UTC)
+        if abs((restore_db - restore_accepted).total_seconds()) > 3.0:
+            self.send_json(409, {"error": "restore_accepted_at does not match command history"})
+            return
+        state["w33_commissioned"] = True
+        state["w33_request_ids"] = request_ids
+        save_state(state)
+        record = {
+            "record_id": "COMM-CRR-W33-R1", "revision": 1,
+            "instruction": "CRR-OP-W33-R1", "asset": "AST-CRR-017",
+            "completed_steps": 12, "baseline_restored": True,
+            "restore_sequence": restore_sequence,
+            "started_at": request["started_at"], "completed_at": request["completed_at"],
+        }
+        atomic_json(ROOT / "artifacts" / "commissioning-run" / "result.json", record)
+        self.accepted("commissioning-run", record, 201)
+
+    def w33_4_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state.get("w33_commissioned"):
+            self.send_json(403, {"error": "commissioning run (W33.3) required"})
+            return
+        REQUIRED = {"commissioning", "observed_mean_total_flow_m3s", "projected_reservoir_volume_ml",
+                    "starting_usable_volume_ml", "remaining_usable_volume_ml", "committed_volume_ml",
+                    "projected_shortfall_ml", "tariff_rate_per_ml", "projected_liability_usd", "interpretation"}
+        INTERP = "measured_commissioning_evidence_with_projected_one_hour_effect"
+        if set(request) != REQUIRED or request.get("interpretation") != INTERP:
+            self.send_json(409, {"error": "W33.4 submission fields or interpretation do not match"})
+            return
+        observed = request.get("observed_mean_total_flow_m3s", [])
+        if not isinstance(observed, list) or len(observed) != 12:
+            self.send_json(409, {"error": "W33.4 requires twelve observed step means"})
+            return
+        request_ids = state.get("w33_request_ids", [])
+        if len(request_ids) != 12:
+            self.send_json(403, {"error": "W33.3 request IDs not found in state"})
+            return
+        OT_HISTORIAN = "172.29.63.22"
+        OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+        SETTLED_WINDOW = 4
+        TOLERANCE_CALC = 0.005
+        COMMITTED = 12.0; RATE = 2400.0
+        INTERVAL = 300
+        try:
+            import psycopg2 as _pg
+            import datetime as _dt
+            UTC = _dt.timezone.utc
+            ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
+                             user="reader", password=OT_READER_PASS, connect_timeout=5)
+            ot.autocommit = True
+            with ot.cursor() as cur:
+                cur.execute(
+                    "SELECT id::text, time FROM public.dispatch_history "
+                    "WHERE id::text = ANY(%s) AND status = 'completed' ORDER BY time",
+                    (request_ids,)
+                )
+                completed_times = {r[0]: r[1].replace(tzinfo=UTC) for r in cur.fetchall()}
+                means = []
+                for rid in request_ids:
+                    comp = completed_times.get(rid)
+                    if not comp:
+                        self.send_json(409, {"error": f"request {rid[:8]} not completed in historian"}); ot.close(); return
+                    start = comp - _dt.timedelta(seconds=SETTLED_WINDOW)
+                    cur.execute(
+                        "SELECT ph.value FROM public.process_history ph "
+                        "JOIN public.historian_tag_catalog c ON c.series = ph.tag "
+                        "WHERE ph.asset='AST-CRR-017' AND c.variable='TotalFlowM3s' "
+                        "AND ph.source_time >= %s AND ph.source_time <= %s "
+                        "AND ph.process_quality='Good' ORDER BY ph.source_time",
+                        (start, comp)
+                    )
+                    vals = [float(r[0]) for r in cur.fetchall()]
+                    means.append(sum(vals) / len(vals) if vals else 0.0)
+                first_time = min(completed_times.values()) - _dt.timedelta(seconds=10)
+                cur.execute(
+                    "SELECT ph.value FROM public.process_history ph "
+                    "JOIN public.historian_tag_catalog c ON c.series = ph.tag "
+                    "WHERE ph.asset='AST-CRR-017' AND c.variable='UsableVolumeML' "
+                    "AND ph.source_time <= %s ORDER BY ph.source_time DESC LIMIT 1",
+                    (first_time,)
+                )
+                uv_row = cur.fetchone()
+            ot.close()
+        except (OSError, ImportError):
+            self.send_json(409, {"error": "OT historian unavailable"})
+            return
+        starting_volume = float(uv_row[0]) if uv_row else 10.85
+        def _near(a: float, b: float) -> bool:
+            return abs(float(a) - float(b)) <= TOLERANCE_CALC
+        for i, (claimed, actual) in enumerate(zip(observed, means)):
+            if not _near(claimed, actual):
+                self.send_json(409, {"error": f"step {i+1} mean flow {claimed:.6f} vs {actual:.6f}"}); return
+        projected_volume = sum(INTERVAL * m for m in means) / 1000.0
+        remaining = starting_volume - projected_volume
+        shortfall = max(0.0, COMMITTED - remaining)
+        liability = shortfall * RATE
+        for field, expected in (
+            ("projected_reservoir_volume_ml", projected_volume),
+            ("starting_usable_volume_ml", starting_volume),
+            ("remaining_usable_volume_ml", remaining),
+            ("committed_volume_ml", COMMITTED),
+            ("projected_shortfall_ml", shortfall),
+            ("tariff_rate_per_ml", RATE),
+            ("projected_liability_usd", liability),
+        ):
+            if not _near(request[field], expected):
+                self.send_json(409, {"error": f"{field}: submitted {request[field]:.4f} vs {expected:.4f}"}); return
+        state["w33_complete"] = True
+        save_state(state)
+        record = {
+            "record_id": "PROJ-CRR-W33-R1", "revision": 1,
+            "instruction": "CRR-OP-W33-R1", "asset": "AST-CRR-017",
+            "measured_steps": 12, "projected_reservoir_volume_ml": projected_volume,
+            "projected_shortfall_ml": shortfall, "projected_liability_usd": liability,
+            "baseline_restored": True,
+        }
+        atomic_json(ROOT / "artifacts" / "operating-projection" / "result.json", record)
+        self.accepted("operating-projection", record, 201)
+
+    def w30_2_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
+        if not state.get("request_planned"):
+            self.send_json(403, {"error": "request plan evidence (W30.1) required"})
+            return
+        REQUIRED = {
+            "asset", "request_id", "remote_sequence", "received_at", "completed_at",
+            "restore_sequence", "restore_accepted_at", "final_observed_at",
+            "interval_start", "interval_end", "interpretation",
+        }
+        INTERPRETATION = "durable_receipt_plc_acceptance_measured_completion_local_handback"
+        if (set(request) != REQUIRED or
+                request.get("asset") != "AST-CRR-017" or
+                request.get("interpretation") != INTERPRETATION):
+            self.send_json(409, {"error": "W30.2 submission fields or interpretation do not match"})
+            return
+        import uuid as _uuid
+        import datetime as _dt
+        UTC = _dt.timezone.utc
+        try:
+            request_id = str(_uuid.UUID(str(request["request_id"])))
+            remote_sequence = int(request["remote_sequence"])
+            restore_sequence = int(request["restore_sequence"])
+            received = _dt.datetime.fromisoformat(str(request["received_at"]).replace("Z", "+00:00")).astimezone(UTC)
+            completed = _dt.datetime.fromisoformat(str(request["completed_at"]).replace("Z", "+00:00")).astimezone(UTC)
+            restore_accepted = _dt.datetime.fromisoformat(str(request["restore_accepted_at"]).replace("Z", "+00:00")).astimezone(UTC)
+            final = _dt.datetime.fromisoformat(str(request["final_observed_at"]).replace("Z", "+00:00")).astimezone(UTC)
+            start = _dt.datetime.fromisoformat(str(request["interval_start"]).replace("Z", "+00:00")).astimezone(UTC)
+            end = _dt.datetime.fromisoformat(str(request["interval_end"]).replace("Z", "+00:00")).astimezone(UTC)
+        except (ValueError, TypeError):
+            self.send_json(409, {"error": "W30.2 timestamps or IDs are invalid"})
+            return
+        if remote_sequence == restore_sequence:
+            self.send_json(409, {"error": "remote and restore sequences must be distinct"})
+            return
+        if not (start <= received < completed < restore_accepted <= final <= end):
+            self.send_json(409, {"error": "W30.2 operation interval ordering is invalid"})
+            return
+        OT_HISTORIAN = "172.29.63.22"
+        OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+        EXPECTED_STATES = ["received", "dispatch_intent", "dispatched", "plc_accepted", "completed"]
+        TOLERANCE_FLOW = 0.0075
+        EXPECTED_FLOW = 0.15
+        try:
+            import psycopg2 as _pg
+            ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
+                             user="reader", password=OT_READER_PASS, connect_timeout=5)
+            ot.autocommit = True
+            with ot.cursor() as cur:
+                cur.execute(
+                    "SELECT status,sequence,time,detail FROM public.dispatch_history "
+                    "WHERE id=%s ORDER BY time", (request_id,)
+                )
+                dispatch_rows = cur.fetchall()
+                cur.execute(
+                    "SELECT channel,decision,sequence,source_time FROM public.command_history "
+                    "WHERE asset='AST-CRR-017' AND source_time >= %s AND source_time <= %s",
+                    (start, end)
+                )
+                command_rows = cur.fetchall()
+            ot.close()
+        except (OSError, ImportError):
+            self.send_json(409, {"error": "OT historian unavailable"})
+            return
+        if not dispatch_rows:
+            self.send_json(409, {"error": "request not found in dispatcher journal"})
+            return
+        statuses = [r[0] for r in dispatch_rows]
+        if statuses != EXPECTED_STATES:
+            self.send_json(409, {"error": f"dispatcher states do not match expected sequence: {statuses}"})
+            return
+        if any(r[1] != remote_sequence for r in dispatch_rows):
+            self.send_json(409, {"error": "dispatcher sequences do not agree"})
+            return
+        import datetime as _dt2
+        UTC2 = _dt2.timezone.utc
+        received_db = dispatch_rows[0][2].replace(tzinfo=UTC2)
+        completed_db = dispatch_rows[-1][2].replace(tzinfo=UTC2)
+        if abs((received_db - received).total_seconds()) > 2.0 or abs((completed_db - completed).total_seconds()) > 2.0:
+            self.send_json(409, {"error": "claimed timestamps do not match dispatcher journal"})
+            return
+        detail = dispatch_rows[-1][3]
+        if isinstance(detail, str):
+            import json as _json2; detail = _json2.loads(detail)
+        flow_a = float(detail.get("flow_a_m3s", 0))
+        flow_b = float(detail.get("flow_b_m3s", 0))
+        if abs(flow_a - EXPECTED_FLOW) > TOLERANCE_FLOW or abs(flow_b - EXPECTED_FLOW) > TOLERANCE_FLOW:
+            self.send_json(409, {"error": f"remote flows outside tolerance: a={flow_a:.4f} b={flow_b:.4f}"})
+            return
+        dispatcher_cmd = next((r for r in command_rows if r[0] == "dispatcher" and r[2] == remote_sequence), None)
+        hmi_cmd = next((r for r in command_rows if r[0] == "HMI" and r[2] == restore_sequence), None)
+        if dispatcher_cmd is None or hmi_cmd is None:
+            self.send_json(409, {"error": "command history missing dispatcher or HMI acceptance"})
+            return
+        restore_db = hmi_cmd[3].replace(tzinfo=UTC2)
+        if abs((restore_db - restore_accepted).total_seconds()) > 2.0:
+            self.send_json(409, {"error": "claimed restore_accepted_at does not match command history"})
+            return
+        state["w30_result"] = True
+        save_state(state)
+        record = {
+            "record_id": "RESULT-CRR-W30-R1", "revision": 1,
+            "instruction": "CRR-OP-W30-R1", "asset": "AST-CRR-017",
+            "request_id": request_id, "remote_sequence": remote_sequence,
+            "restore_sequence": restore_sequence, "baseline_restored": True,
+            "flow_a_m3s": flow_a, "flow_b_m3s": flow_b,
+        }
+        atomic_json(ROOT / "artifacts" / "remote-operation" / "result.json", record)
+        self.accepted("remote-operation", record, 201)
+
     def w32_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state["replay_structure_recovered"]:
             self.send_json(403, {"error": "retained replay structure required"})
@@ -1522,260 +2191,13 @@ class Handler(BaseHTTPRequestHandler):
         state["replay_witness_response"] = response; save_state(state)
         self.send_json(201, response)
 
-    def w33_forecast(self, request: dict[str, object]) -> None:
-        expected = {
-            "case": "FCST-CRR-33", "checkpoint": "REH-SCHED-33",
-            "sample_period_seconds": 20, "publication_delay_seconds": 40,
-            "scale_gain": 1.0, "map": "MAP-OG2-R8",
-            "instrument_reserve_ml": 12.4, "forecast_reserve_ml": 12.4,
-        }
-        if request != expected:
-            self.send_json(409, {"error": "forecast and instrument bindings do not agree"})
-            return
-        state = load_state(); existing = state.get("forecast_response")
-        if isinstance(existing, dict): self.send_json(201, existing); return
-        correlation = str(uuid.uuid4())
-        try:
-            status, result = self.internal_request("hmi", "POST", "/internal/forecast-updates", {
-                "correlation": correlation, "request": request,
-            })
-        except (OSError, json.JSONDecodeError):
-            self.send_json(409, {"error": "supervisory forecast observation unavailable"})
-            return
-        record = result.get("record")
-        if (status != 201 or result.get("audit_id") != correlation or
-                not isinstance(record, dict) or record.get("record_id") != "FCST-CRR-33"):
-            self.send_json(status if status in {403, 409} else 409, result)
-            return
-        state["forecast_observed"] = True
-        historian_audit = append_audit("forecast-record-created", record, correlation)
-        response = {**result, "historian_audit_id": historian_audit}
-        state["forecast_response"] = response; save_state(state); self.send_json(201, response)
-
-    def w33_hmi_forecast(self, request: dict[str, object], state: dict[str, object]) -> None:
-        correlation = request.get("correlation"); binding = request.get("request")
-        expected = {
-            "case": "FCST-CRR-33", "checkpoint": "REH-SCHED-33",
-            "sample_period_seconds": 20, "publication_delay_seconds": 40,
-            "scale_gain": 1.0, "map": "MAP-OG2-R8",
-            "instrument_reserve_ml": 12.4, "forecast_reserve_ml": 12.4,
-        }
-        if set(request) != {"correlation", "request"} or not valid_uuid(correlation) or binding != expected:
-            self.send_json(409, {"error": "forecast observation request is not bound"})
-            return
-        existing = state.get("forecast_response")
-        if isinstance(existing, dict):
-            if existing.get("audit_id") == correlation: self.send_json(201, existing)
-            else: self.send_json(409, {"error": "forecast already recorded under another correlation"})
-            return
-        record = {
-            "record_id": "FCST-CRR-33", "revision": 1,
-            "request_correlation": correlation, "checkpoint": "REH-SCHED-33",
-            "instrument": "FIT-CRR-204B", "historian_tag": "CRR.OUTLET.02B.FLOW_ACTUAL",
-            "map": "MAP-OG2-R8", "sample_period_seconds": 20,
-            "publication_delay_seconds": 40, "scale_gain": 1.0,
-            "instrument_reserve_ml": 12.4, "forecast_reserve_ml": 12.4,
-            "absolute_error_ml": 0.0, "tolerance_ml": 0.01, "within_tolerance": True,
-        }
-        state["forecast_observed"] = True; save_state(state)
-        atomic_json(EVIDENCE / "hmi" / "forecast-observation.json", record)
-        response = {"audit_id": append_audit("forecast-record-created", record, str(correlation)),
-                    "record": record, "meter_context": authored_asset("service-meter-guide")}
-        state["forecast_response"] = response; save_state(state); self.send_json(201, response)
-
-    def w33_schedule(self, request: dict[str, object], state: dict[str, object]) -> None:
-        forecast = None
-        try:
-            forecast = json.loads((EVIDENCE / "hmi" / "forecast-observation.json").read_text())
-            envelope = json.loads((EVIDENCE / "hmi" / "operating-envelope.json").read_text())
-        except (OSError, json.JSONDecodeError):
-            envelope = None
-        if (forecast is None or forecast.get("record_id") != "FCST-CRR-33" or
-                not isinstance(envelope, dict) or envelope.get("record_id") != "ENV-OG2-R6"):
-            self.send_json(403, {"error": "forecast and current operating envelope required"})
-            return
-        if set(request) != {"checkpoint", "interval_seconds", "demand_m3s",
-                            "reservoir_release_m3s", "alternate_supply_m3s"} or \
-                request.get("checkpoint") != schedule33.CHECKPOINT or request.get("interval_seconds") != 300:
-            self.send_json(409, {"error": "rehearsal schedule is not bound"})
-            return
-        evaluated = schedule33.evaluate_schedule(request.get("reservoir_release_m3s"),
-                                                 request.get("alternate_supply_m3s"),
-                                                 request.get("demand_m3s"))
-        if evaluated is None or request.get("demand_m3s") != schedule33.DEMAND:
-            self.send_json(409, {"error": "rehearsal schedule is outside approved movement limits"})
-            return
-        existing = state.get("schedule_response")
-        if isinstance(existing, dict):
-            if existing.get("record", {}).get("schedule_sha256") == evaluated["schedule_sha256"]:
-                self.send_json(201, existing)
-            else: self.send_json(409, {"error": "another schedule already owns this checkpoint"})
-            return
-        correlation = str(uuid.uuid4())
-        wrapped = {"correlation": correlation, "request": request, "evaluation": evaluated}
-        try:
-            status, data_result = self.internal_request("data_bridge", "POST", "/internal/schedule-validations",
-                                                        wrapped, "hmi-scheduling")
-        except (OSError, json.JSONDecodeError):
-            self.send_json(409, {"error": "planning schedule service unavailable"}); return
-        if (status != 201 or data_result.get("audit_id") != correlation or
-                data_result.get("record", {}).get("schedule_sha256") != evaluated["schedule_sha256"]):
-            self.send_json(status if status in {403, 409} else 409, data_result); return
-        record = {"record_id": "SCHED-CRR-33", "revision": 1,
-                  "request_correlation": correlation, **evaluated,
-                  "forecast": "FCST-CRR-33", "envelope": "ENV-OG2-R6",
-                  "demand_m3s": request["demand_m3s"],
-                  "reservoir_release_m3s": request["reservoir_release_m3s"],
-                  "alternate_supply_m3s": request["alternate_supply_m3s"]}
-        response = {"audit_id": correlation, "hmi_audit_id": append_audit(
-            "schedule-window-read", record, correlation), "planning_audit_id": data_result["audit_id"],
-            "record": record}
-        state["schedule_observed"] = True; state["schedule_response"] = response; save_state(state)
-        atomic_json(EVIDENCE / "hmi" / "schedule-evaluation.json", record)
-        self.send_json(201, response)
-
-    def w33_rehearsal(self, request: dict[str, object], state: dict[str, object]) -> None:
-        schedule = None
-        try:
-            schedule = json.loads((EVIDENCE / "hmi" / "schedule-evaluation.json").read_text())
-        except (OSError, json.JSONDecodeError):
-            pass
-        expected = {
-            "control_client": request.get("control_client"), "checkpoint": "REH-SCHED-33",
-            "schedule_sha256": None if schedule is None else schedule.get("schedule_sha256"),
-            "forecast": "FCST-CRR-33", "map": "MAP-OG2-R8", "mode": "MODE-CRR-17",
-            "envelope": "ENV-OG2-R6", "consequence_plan": "PLAN-CRR-LOSS-1000",
-            "tariff": "TAR-CRR-DP3-R4", "committed_allocation_ml": 12.0,
-        }
-        if (schedule is None or not self.w30_process_context() or not isinstance(request.get("control_client"), str)):
-            self.send_json(403, {"error": "current schedule, process context, and consequence plan required"}); return
-        if request != expected:
-            self.send_json(409, {"error": "rehearsal bindings do not agree"}); return
-        existing = state.get("schedule_rehearsal_response")
-        if isinstance(existing, dict): self.send_json(201, existing); return
-        correlation = str(uuid.uuid4())
-        wrapped = {"correlation": correlation, "request": request, "schedule": schedule}
-        try:
-            status, result = self.internal_request("instruments", "POST", "/internal/schedule-validations", wrapped)
-        except (OSError, json.JSONDecodeError):
-            self.send_json(409, {"error": "independent rehearsal path unavailable"}); return
-        record = result.get("record")
-        if (status != 201 or result.get("audit_id") != correlation or not isinstance(record, dict) or
-                record.get("record_id") != "REH-RESULT-CRR-33"):
-            self.send_json(status if status in {403, 409} else 409, result); return
-        response = {**result, "hmi_audit_id": append_audit(
-            "schedule-evaluation-created", record, correlation)}
-        state["schedule_rehearsal_observed"] = True; state["schedule_rehearsal_response"] = response; save_state(state)
-        atomic_json(EVIDENCE / "hmi" / "schedule-rehearsal.json", record)
-        self.send_json(201, response)
-
-    def w33_policy(self, request: dict[str, object], state: dict[str, object]) -> None:
-        expected = {"control_client": request.get("control_client"),
-                    "schedule_result": "REH-RESULT-CRR-33", "policy": request.get("policy")}
-        if not state.get("schedule_rehearsal_observed") or not isinstance(request.get("control_client"), str):
-            self.send_json(403, {"error": "accepted rehearsal result required"}); return
-        evaluated = schedule33.evaluate_policy(request.get("policy"))
-        if request != expected or evaluated is None:
-            self.send_json(409, {"error": "forecast-response policy rejected"}); return
-        existing = state.get("forecast_policy_response")
-        if isinstance(existing, dict):
-            if existing.get("record", {}).get("policy_sha256") == evaluated["policy_sha256"]:
-                self.send_json(201, existing)
-            else: self.send_json(409, {"error": "another policy already owns this checkpoint"})
-            return
-        correlation = str(uuid.uuid4())
-        wrapped = {"correlation": correlation, "request": request, "evaluation": evaluated}
-        try:
-            status, result = self.internal_request("instruments", "POST", "/internal/feedback-policy-validations", wrapped)
-        except (OSError, json.JSONDecodeError):
-            self.send_json(409, {"error": "independent policy path unavailable"}); return
-        record = result.get("record")
-        if (status != 201 or result.get("audit_id") != correlation or not isinstance(record, dict) or
-                record.get("record_id") != "POL-RESULT-CRR-33"):
-            self.send_json(status if status in {403, 409} else 409, result); return
-        response = {**result, "hmi_audit_id": append_audit("forecast-policy-created", record, correlation)}
-        state["forecast_policy_observed"] = True; state["forecast_policy_response"] = response; save_state(state)
-        atomic_json(EVIDENCE / "hmi" / "forecast-policy.json", record)
-        self.send_json(201, response)
-
-    def w33_control_call(self, owner: str, path: str,
-                         request: dict[str, object]) -> tuple[int, dict[str, object]]:
-        return self.internal_request(owner, "POST", path, request, "instruments-scheduling")
-
-    def w33_instrument_schedule(self, request: dict[str, object], state: dict[str, object]) -> None:
-        correlation = request.get("correlation"); binding = request.get("request"); schedule = request.get("schedule")
-        if (set(request) != {"correlation", "request", "schedule"} or not valid_uuid(correlation) or
-                not isinstance(binding, dict) or not isinstance(schedule, dict) or
-                schedule.get("record_id") != "SCHED-CRR-33" or
-                binding.get("schedule_sha256") != schedule.get("schedule_sha256")):
-            self.send_json(409, {"error": "independent rehearsal request is not bound"}); return
-        existing = state.get("schedule_rehearsal_response")
-        if isinstance(existing, dict):
-            if existing.get("audit_id") == correlation: self.send_json(201, existing)
-            else: self.send_json(409, {"error": "rehearsal already recorded under another correlation"})
-            return
-        for owner in ("reservoir", "distribution"):
-            try: status, result = self.w33_control_call(owner, "/internal/schedule-validations", request)
-            except (OSError, json.JSONDecodeError):
-                self.send_json(409, {"error": f"{owner} observation unavailable"}); return
-            if status != 201 or result.get("audit_id") != correlation:
-                self.send_json(status if status in {403, 409} else 409, result); return
-            if owner == "reservoir": reservoir = result
-            else: distribution = result
-        record = {
-            "record_id": "REH-RESULT-CRR-33", "revision": 1, "request_correlation": correlation,
-            "checkpoint": "REH-SCHED-33", "schedule": "SCHED-CRR-33",
-            "reservoir_volume_ml": 0.81, "buffer_final_m3": 180.0,
-            "reserve_before_ml": 12.4, "reserve_after_ml": 11.59,
-            "committed_allocation_ml": 12.0, "shortfall_ml": 0.41,
-            "tariff": "TAR-CRR-DP3-R4", "replacement_liability_usd": 984,
-            "live_state_changed": False,
-        }
-        response = {"audit_id": str(correlation), "instrument_audit_id": append_audit(
-            "schedule-evaluation-created", record, str(correlation)),
-            "reservoir_audit_id": reservoir["audit_id"], "distribution_audit_id": distribution["audit_id"],
-            "record": record, "reservoir_observation": reservoir["record"],
-            "distribution_observation": distribution["record"]}
-        state["schedule_rehearsal_observed"] = True; state["schedule_rehearsal_response"] = response; save_state(state)
-        atomic_json(EVIDENCE / "instruments" / "schedule-rehearsal.json", record)
-        self.send_json(201, response)
-
-    def w33_instrument_policy(self, request: dict[str, object], state: dict[str, object]) -> None:
-        correlation = request.get("correlation"); binding = request.get("request"); evaluated = request.get("evaluation")
-        if (not state.get("schedule_rehearsal_observed") or set(request) != {"correlation", "request", "evaluation"} or
-                not valid_uuid(correlation) or not isinstance(binding, dict) or not isinstance(evaluated, dict) or
-                evaluated != schedule33.evaluate_policy(binding.get("policy"))):
-            self.send_json(409, {"error": "independent policy request is not bound"}); return
-        existing = state.get("forecast_policy_response")
-        if isinstance(existing, dict):
-            if existing.get("audit_id") == correlation: self.send_json(201, existing)
-            else: self.send_json(409, {"error": "policy already recorded under another correlation"})
-            return
-        for owner in ("reservoir", "distribution"):
-            try: status, result = self.w33_control_call(owner, "/internal/feedback-policy-validations", request)
-            except (OSError, json.JSONDecodeError):
-                self.send_json(409, {"error": f"{owner} policy evaluation unavailable"}); return
-            if status != 201 or result.get("audit_id") != correlation:
-                self.send_json(status if status in {403, 409} else 409, result); return
-            if owner == "reservoir": reservoir = result
-            else: distribution = result
-        record = {"record_id": "POL-RESULT-CRR-33", "revision": 1,
-                  "request_correlation": correlation, "schedule_result": "REH-RESULT-CRR-33", **evaluated,
-                  "live_state_changed": False}
-        response = {"audit_id": str(correlation), "instrument_audit_id": append_audit(
-            "forecast-policy-created", record, str(correlation)),
-            "reservoir_audit_id": reservoir["audit_id"], "distribution_audit_id": distribution["audit_id"],
-            "record": record}
-        state["forecast_policy_observed"] = True; state["forecast_policy_response"] = response; save_state(state)
-        self.send_json(201, response)
-
     def w34_instrument_handover(self, request: dict[str, object], state: dict[str, object]) -> None:
         correlation = request.get("correlation"); binding = request.get("request"); evaluated = request.get("evaluation")
         if (set(request) != {"correlation", "request", "evaluation"} or not valid_uuid(correlation) or
                 not isinstance(binding, dict) or not isinstance(evaluated, dict)):
             self.send_json(409, {"error": "reporting handover request is not bound"}); return
         schedule = binding.get("schedule")
-        calculated = None if not isinstance(schedule, dict) else schedule33.evaluate_schedule(
+        calculated = None if not isinstance(schedule, dict) else reporting_schedule.evaluate_schedule(
             schedule.get("reservoir_release_m3s"), schedule.get("alternate_supply_m3s"),
             schedule.get("demand_m3s"))
         if (calculated is None or calculated != evaluated or binding.get("checkpoint") != "REH-REPORT-34" or
@@ -1788,302 +2210,46 @@ class Handler(BaseHTTPRequestHandler):
             if existing.get("audit_id") == correlation: self.send_json(201, existing)
             else: self.send_json(409, {"error": "reporting handover already recorded under another correlation"})
             return
+        # Read the actual reserve level from the OT historian (FIT-CRR-204A/B feed UsableVolumeML).
+        OT_HISTORIAN = "172.29.63.22"
+        OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
         try:
-            status, reservoir = self.internal_request("reservoir", "POST", "/internal/control-handovers",
-                                                      request, "instruments-reporting")
-        except (OSError, json.JSONDecodeError):
-            self.send_json(409, {"error": "reservoir rehearsal unavailable"}); return
-        if status != 201 or reservoir.get("audit_id") != correlation:
-            self.send_json(status if status in {403, 409} else 409, reservoir); return
+            import psycopg2 as _pg
+            ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
+                             user="reader", password=OT_READER_PASS, connect_timeout=5)
+            ot.autocommit = True
+            with ot.cursor() as cur:
+                cur.execute("""
+                    SELECT ph.value
+                    FROM public.process_history ph
+                    JOIN public.historian_tag_catalog c ON c.series = ph.tag
+                    WHERE ph.asset = 'AST-CRR-017'
+                      AND c.variable = 'UsableVolumeML'
+                      AND ph.process_quality = 'Good'
+                    ORDER BY ph.source_time DESC
+                    LIMIT 1
+                """)
+                row = cur.fetchone()
+            ot.close()
+        except (OSError, ImportError, Exception):
+            self.send_json(409, {"error": "OT historian unavailable for instrument reserve reading"}); return
+        if row is None:
+            self.send_json(409, {"error": "no UsableVolumeML reading in OT historian"}); return
+        reserve_before_ml = round(float(row[0]), 6)
+        reserve_after_ml = round(reserve_before_ml - calculated["reservoir_volume_ml"], 6)
         record = {"record_id": "INST-REPORT-CRR-34", "revision": 1,
                   "request_correlation": correlation, "checkpoint": "REH-REPORT-34",
                   "instruments": ["FIT-CRR-204A", "FIT-CRR-204B"],
                   "measured_release_ml": calculated["reservoir_volume_ml"],
-                  "reserve_before_ml": 12.4, "reserve_after_ml": 11.59,
+                  "reserve_before_ml": reserve_before_ml, "reserve_after_ml": reserve_after_ml,
                   "raw_process_observations_changed": False, "live_instrument_history_changed": False}
+        reservoir_observation = {"reserve_before_ml": reserve_before_ml, "reserve_after_ml": reserve_after_ml}
         response = {"audit_id": str(correlation), "instrument_audit_id": append_audit(
             "reporting-handover-created", record, str(correlation)),
-            "reservoir_audit_id": reservoir["audit_id"], "record": record,
-            "reservoir_observation": reservoir["record"]}
+            "reservoir_audit_id": str(correlation), "record": record,
+            "reservoir_observation": reservoir_observation}
         state["reporting_handover_observed"] = True; state["reporting_handover_response"] = response; save_state(state)
         atomic_json(EVIDENCE / "instruments" / "reporting-handover.json", record)
-        self.send_json(201, response)
-
-    def w29_reserve(self, request: dict[str, object], state: dict[str, object]) -> None:
-        correlation = request.get("correlation")
-        try:
-            correlation_valid = str(uuid.UUID(str(correlation))) == str(correlation)
-        except (ValueError, TypeError):
-            correlation_valid = False
-        if (set(request) != {"correlation", "record_id", "planning_window"} or
-                not correlation_valid or request.get("record_id") != "OBS-RESERVE-CRR-R29" or
-                request.get("planning_window") != "ALLOC-2026-DP3"):
-            self.send_json(409, {"error": "reserve observation binding does not match"})
-            return
-        record = {
-            "record_id": "OBS-RESERVE-CRR-R29", "revision": 29,
-            "request_correlation": correlation, "planning_window": "ALLOC-2026-DP3",
-            "process_record": "PV-CRR-2026-09-25T1400Z",
-            "asset": "AST-CRR-017", "outlet_group": "OG-CRR-02",
-            "usable_reserve_ml": 12.4, "unit": "ML",
-            "instruments": ["FIT-CRR-204A", "FIT-CRR-204B"],
-            "source": "independent instruments", "current": True,
-        }
-        state["reserve_observed"] = True
-        save_state(state)
-        atomic_json(EVIDENCE / "instruments" / "reserve-observation.json", record)
-        self.accepted("reserve-balance-created", record, 201,
-                      correlation=str(correlation))
-
-    def w29_plan(self, request: dict[str, object], state: dict[str, object]) -> None:
-        if not state["mode_observed"] or not state["practice_sequence_observed"]:
-            self.send_json(403, {"error": "validated current operating mode evidence required"})
-            return
-        correlation = request.get("correlation")
-        plan_request = request.get("request")
-        tariff = request.get("tariff")
-        balance = request.get("balance")
-        try:
-            correlation_valid = str(uuid.UUID(str(correlation))) == str(correlation)
-        except (ValueError, TypeError):
-            correlation_valid = False
-        expected_request = {
-            "plan_id": "PLAN-CRR-LOSS-1000", "tariff": "TAR-CRR-DP3-R4",
-            "balance": "BAL-CRR-DP3-R29", "mode": "MODE-CRR-17",
-            "outlet_group": "OG-CRR-02", "ramp_open_seconds": 100,
-            "each_gate_target_m3s": 0.5, "hold_seconds": 900,
-            "ramp_close_seconds": 100,
-        }
-        expected_tariff = {
-            "record_id": "TAR-CRR-DP3-R4", "revision": 4,
-            "planning_window": "ALLOC-2026-DP3", "currency": "USD",
-            "rate_per_ml": 2400, "unit": "USD/ML", "status": "current",
-        }
-        if (set(request) != {"correlation", "request", "tariff", "balance"} or
-                not correlation_valid or plan_request != expected_request or
-                tariff != expected_tariff or not isinstance(balance, dict) or
-                balance.get("record_id") != "BAL-CRR-DP3-R29" or
-                balance.get("planning_window") != "ALLOC-2026-DP3" or
-                balance.get("usable_reserve_ml") != 12.4 or
-                balance.get("committed_ml") != 12.0 or
-                balance.get("uncommitted_margin_ml") != 0.4 or
-                balance.get("unit") != "ML" or balance.get("before_release") is not True):
-            self.send_json(409, {"error": "tariff, reserve, mode, or plan binding does not match"})
-            return
-        full_flow_seconds = 100 // 2 + 900 + 100 // 2
-        released_ml = round((0.5 + 0.5) * full_flow_seconds / 1000, 2)
-        reserve_after = round(float(balance["usable_reserve_ml"]) - released_ml, 2)
-        shortfall = round(max(0.0, float(balance["committed_ml"]) - reserve_after), 2)
-        liability = int(round(shortfall * int(tariff["rate_per_ml"])))
-        if (full_flow_seconds, released_ml, reserve_after, shortfall, liability) != \
-                (1000, 1.0, 11.4, 0.6, 1440):
-            self.send_json(409, {"error": "release consequence calculation is inconsistent"})
-            return
-        record = {
-            "record_id": "PLAN-CRR-LOSS-1000", "revision": 1,
-            "request_correlation": correlation, "outlet_group": "OG-CRR-02",
-            "mode": "MODE-CRR-17", "mode_name": "DRY_PERIOD_MANAGED",
-            "tariff": "TAR-CRR-DP3-R4", "balance": "BAL-CRR-DP3-R29",
-            "sequence": {
-                "balanced_gates": ["GT-CRR-02A", "GT-CRR-02B"],
-                "ramp_open_seconds": 100, "each_gate_target_m3s": 0.5,
-                "hold_seconds": 900, "ramp_close_seconds": 100,
-                "full_flow_equivalent_seconds": full_flow_seconds,
-                "elapsed_seconds": 1100,
-            },
-            "released_volume_ml": released_ml, "reserve_before_ml": 12.4,
-            "reserve_after_ml": reserve_after, "committed_ml": 12.0,
-            "shortfall_ml": shortfall, "replacement_liability_usd": liability,
-            "continuity_rule": "CONT-DRY-A-R3", "restriction_stage": "A",
-            "live_action_performed": False,
-        }
-        state["loss_plan_constructed"] = True
-        save_state(state)
-        atomic_json(EVIDENCE / "hmi" / "loss-plan.json", record)
-        self.accepted("loss-plan-created", record, 201, correlation=str(correlation))
-
-    def w30_process_context(self) -> bool:
-        expected = {
-            EVIDENCE / "historian" / "outlet-map.json": ("MAP-OG2-R8", 8),
-            EVIDENCE / "engineering" / "deployment-revision.json": ("CMP-CRR-R21", 21),
-            EVIDENCE / "hmi" / "operating-envelope.json": ("ENV-OG2-R6", 6),
-            EVIDENCE / "hmi" / "practice-sequence.json": ("PRACTICE-OG2-07", 7),
-            EVIDENCE / "hmi" / "loss-plan.json": ("PLAN-CRR-LOSS-1000", 1),
-        }
-        for path, (record_id, revision) in expected.items():
-            try:
-                record = json.loads(path.read_text(encoding="utf-8"))
-            except (OSError, json.JSONDecodeError):
-                return False
-            if record.get("record_id") != record_id or record.get("revision") != revision:
-                return False
-        return True
-
-    def w30_bind(self, request: dict[str, object], state: dict[str, object]) -> None:
-        if not self.w30_process_context():
-            self.send_json(403, {"error": "current process interpretation and consequence plan required"})
-            return
-        binding = request.get("request")
-        correlation = request.get("correlation")
-        try:
-            correlation_valid = str(uuid.UUID(str(correlation))) == str(correlation)
-        except (ValueError, TypeError):
-            correlation_valid = False
-        if (set(request) != {"correlation", "request"} or not correlation_valid or
-                not isinstance(binding, dict)):
-            self.send_json(409, {"error": "command-plan request is not bound"})
-            return
-        expected = {
-            "control_client": binding.get("control_client"),
-            "asset": "AST-CRR-017", "outlet_group": "OG-CRR-02",
-            "project": "CRR-CTRL-R21", "project_revision": 21,
-            "map": "MAP-OG2-R8", "map_revision": 8,
-            "mode": "MODE-CRR-17", "mode_revision": 17,
-            "envelope": "ENV-OG2-R6", "envelope_revision": 6,
-            "plan": "PLAN-CRR-LOSS-1000",
-            "units": {"flow": "m3/s", "volume": "ML", "time": "s"},
-        }
-        if not isinstance(binding.get("control_client"), str) or binding != expected:
-            self.send_json(409, {"error": "current command-plan bindings do not agree"})
-            return
-        try:
-            status, result = self.internal_request("instruments", "POST", "/internal/release-plan-bindings", request)
-        except (OSError, json.JSONDecodeError):
-            self.send_json(409, {"error": "independent command path unavailable"})
-            return
-        record = result.get("record")
-        if (status != 201 or not isinstance(record, dict) or
-                record.get("record_id") != "CMD-PLAN-CRR-30-R1" or
-                record.get("request_correlation") != correlation or
-                result.get("audit_id") != correlation):
-            self.send_json(status if status in {403, 409} else 409, result)
-            return
-        state["release_plan_bound"] = True
-        save_state(state)
-        atomic_json(EVIDENCE / "hmi" / "release-plan.json", record)
-        self.accepted("release-plan-bound", record, 201,
-                      {"reservoir_audit_id": result["audit_id"]}, str(correlation))
-
-    def w30_open(self, request: dict[str, object]) -> None:
-        if not load_state()["release_plan_bound"]:
-            self.send_json(403, {"error": "bound command plan required"})
-            return
-        try:
-            status, result = self.internal_request("instruments", "POST", "/internal/release-executions", request)
-        except (OSError, json.JSONDecodeError):
-            self.send_json(409, {"error": "independent release path unavailable"})
-            return
-        self.send_json(status, result)
-
-    def w30_reservoir_call(self, path: str,
-                           request: dict[str, object]) -> tuple[int, dict[str, object]]:
-        payload = json.dumps(request, separators=(",", ":")).encode()
-        headers = {
-            "X-ARWC-Internal": "instruments-release", "X-ARWC-Tenant": "arwc",
-            "Content-Type": "application/json", "Content-Length": str(len(payload)),
-        }
-        context = ssl.create_default_context(cafile=CA)
-        connection = http.client.HTTPSConnection(OWNERS["reservoir"], 443,
-                                                   context=context, timeout=5)
-        try:
-            connection.request("POST", path, body=payload, headers=headers)
-            response = connection.getresponse()
-            return response.status, json.loads(response.read())
-        finally:
-            connection.close()
-
-    def w30_reservoir_request(self, path: str, request: dict[str, object]) -> None:
-        try:
-            status, result = self.w30_reservoir_call(path, request)
-        except (OSError, json.JSONDecodeError):
-            self.send_json(409, {"error": "reservoir controller unavailable"})
-            return
-        self.send_json(status, result)
-
-    def w30_observe_release(self, request: dict[str, object],
-                            state: dict[str, object]) -> None:
-        try:
-            status, reservoir = self.w30_reservoir_call("/internal/release-executions", request)
-        except (OSError, json.JSONDecodeError):
-            self.send_json(409, {"error": "reservoir controller unavailable"})
-            return
-        if status != 201:
-            self.send_json(status, reservoir)
-            return
-        action = reservoir.get("record")
-        correlation = request.get("correlation")
-        if (not isinstance(action, dict) or
-                action.get("record_id") != "ACT-CRR-OG2-30" or
-                action.get("request_correlation") != correlation or
-                reservoir.get("audit_id") != correlation or
-                action.get("reserve_before_ml") != 12.4 or
-                action.get("reserve_after_ml") != 11.4 or
-                action.get("integrated_command_volume_ml") != 1.0 or
-                action.get("final_gate_positions_percent") != {
-                    "GT-CRR-02A": 0.0, "GT-CRR-02B": 0.0,
-                } or action.get("safety_systems_bypassed") is not False):
-            self.send_json(409, {"error": "reservoir command evidence did not agree"})
-            return
-        timeline = action.get("timeline")
-        if not isinstance(timeline, list) or len(timeline) != 56:
-            self.send_json(409, {"error": "independent command timeline unavailable"})
-            return
-        try:
-            measured = round(sum(
-                ((float(timeline[index - 1]["GT-CRR-02A_m3s"]) +
-                  float(timeline[index]["GT-CRR-02A_m3s"])) +
-                 (float(timeline[index - 1]["GT-CRR-02B_m3s"]) +
-                  float(timeline[index]["GT-CRR-02B_m3s"]))) * 0.5 *
-                (int(timeline[index]["elapsed_seconds"]) -
-                 int(timeline[index - 1]["elapsed_seconds"])) / 1000
-                for index in range(1, len(timeline))
-            ), 2)
-        except (KeyError, TypeError, ValueError):
-            measured = -1.0
-        if measured != 1.0:
-            self.send_json(409, {"error": "independent release measurement did not agree"})
-            return
-        existing = state.get("gate_release_response")
-        if isinstance(existing, dict):
-            if existing.get("audit_id") != correlation:
-                self.send_json(409, {"error": "release already recorded under another correlation"})
-                return
-            self.send_json(201, existing)
-            return
-        observation = {
-            "record_id": "OBS-RELEASE-CRR-30", "revision": 1,
-            "request_correlation": correlation, "actuation": "ACT-CRR-OG2-30",
-            "asset": "AST-CRR-017", "outlet_group": "OG-CRR-02",
-            "instruments": ["FIT-CRR-204A", "FIT-CRR-204B"],
-            "measured_release_ml": measured, "reserve_before_ml": 12.4,
-            "reserve_after_ml": 11.4,
-            "final_gate_positions_percent": {"GT-CRR-02A": 0.0, "GT-CRR-02B": 0.0},
-            "source": "independent instruments", "interval_seconds": 1100,
-        }
-        result = {
-            "record_id": "GATE-RESULT-CRR-30", "revision": 1,
-            "request_correlation": correlation, "actuation": "ACT-CRR-OG2-30",
-            "observation": "OBS-RELEASE-CRR-30", "plan": "PLAN-CRR-LOSS-1000",
-            "asset": "AST-CRR-017", "outlet_group": "OG-CRR-02",
-            "released_volume_ml": 1.0, "reserve_before_ml": 12.4,
-            "reserve_after_ml": 11.4, "committed_ml": 12.0,
-            "shortfall_ml": 0.6, "tariff": "TAR-CRR-DP3-R4",
-            "replacement_liability_usd": 1440,
-            "continuity_notice": "CONT-DRY-A-R3", "restriction_stage": "A",
-            "maintenance": "WO-CRR-4417", "dam_integrity": "intact",
-            "flooding": False, "uncontrolled_release": False,
-            "essential_service_loss": False,
-        }
-        instrument_audit = append_audit("gate-release-executed", result, str(correlation))
-        response = {
-            "audit_id": str(correlation), "reservoir_audit_id": reservoir["audit_id"],
-            "instrument_audit_id": instrument_audit, "record": result,
-            "actuation": action, "instrument_observation": observation,
-        }
-        state["gate_release_observed"] = True
-        state["gate_release_response"] = response
-        save_state(state)
-        atomic_json(EVIDENCE / "instruments" / "gate-release.json", observation)
         self.send_json(201, response)
 
     def w28_status(self, state: dict[str, object], relationship: dict[str, object]) -> dict[str, object]:
@@ -2138,10 +2304,7 @@ class Handler(BaseHTTPRequestHandler):
     def w28_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         relationship = json.loads((UTILITY_ARTIFACTS / "relationship.json").read_text())
         if path == "/api/collision-inputs/current":
-            if not state["deployed_revision_observed"]:
-                self.send_json(403, {"error": "current deployed-revision evidence required"})
-                return
-            if request != {"operation": "materials", "revision": "CMP-CRR-R21"}:
+            if request != {"operation": "materials", "project_revision": 364}:
                 self.send_json(409, {"error": "utility analysis request does not match the engineering revision"})
                 return
             status = self.w28_status(state, relationship)
@@ -2317,11 +2480,14 @@ class Handler(BaseHTTPRequestHandler):
             state["sealed_project_opened"] = True
             save_state(state)
             atomic_json(EVIDENCE / "engineering" / "sealed-decision.json", opened)
-            self.accepted("sealed-decision-read", opened, 201, {
+            # Strip W22.4 answers (captured_session, comparison) from the W22.3 response.
+            # The concealed reviewer identity must be recovered from Nextcloud version/share
+            # history (W22.4), not handed back in this response.
+            public_decision = {k: v for k, v in opened.items()
+                               if k not in ("captured_session", "comparison")}
+            self.accepted("sealed-decision-read", public_decision, 201, {
                 "review_helper_b64": base64.b64encode(helper).decode(),
                 "review_helper_sha256": hashlib.sha256(helper).hexdigest(),
-                "archive_context": {"session": opened["captured_session"],
-                                    "comparison": opened["comparison"]},
             })
             return
         if not state["sealed_project_opened"]:
@@ -2438,28 +2604,105 @@ class Handler(BaseHTTPRequestHandler):
         except (ValueError, base64.binascii.Error):
             self.send_json(409, {"error": "instrument image encoding is invalid"})
             return
-        simulated = bytearray(original)
-        expected_shape = [(128, 56), (184, 4), (191, 1)]
-        if len(operations) != len(expected_shape):
-            self.send_json(409, {"error": "programming order does not match"})
-            return
-        for operation, (expected_offset, expected_length) in zip(operations, expected_shape):
-            if not isinstance(operation, dict) or operation.get("kind") != "program" or operation.get("offset") != expected_offset:
+        # Detect W20.3 (erase case) vs W20.2 (append-only case) by first operation kind.
+        first_op = operations[0] if operations else {}
+        is_erase_case = isinstance(first_op, dict) and first_op.get("kind") == "erase"
+        if not is_erase_case:
+            # W20.2: simple 1-to-0 append into an already-erased slot.
+            if not state.get("inspection_recovered"):
+                self.send_json(403, {"error": "valid last-inspection record required"})
+                return
+            simulated = bytearray(original)
+            expected_shape = [(128, 56), (184, 4), (191, 1)]
+            if len(operations) != len(expected_shape):
                 self.send_json(409, {"error": "programming order does not match"})
+                return
+            for operation, (expected_offset, expected_length) in zip(operations, expected_shape):
+                if not isinstance(operation, dict) or operation.get("kind") != "program" or operation.get("offset") != expected_offset:
+                    self.send_json(409, {"error": "programming order does not match"})
+                    return
+                try:
+                    data = base64.b64decode(str(operation.get("data_b64", "")), validate=True)
+                except (ValueError, base64.binascii.Error):
+                    self.send_json(409, {"error": "programming data is invalid"})
+                    return
+                if len(data) != expected_length:
+                    self.send_json(409, {"error": "programming extent does not match"})
+                    return
+                old = simulated[expected_offset:expected_offset + len(data)]
+                if any((before & after) != after for before, after in zip(old, data)):
+                    self.send_json(409, {"error": "programming attempted a zero-to-one transition"})
+                    return
+                simulated[expected_offset:expected_offset + len(data)] = data
+            if candidate != bytes(simulated):
+                self.send_json(409, {"error": "submitted image does not match programming transcript"})
+                return
+            try:
+                records = parse_flash(candidate)
+            except ValueError:
+                self.send_json(409, {"error": "instrument image dimensions changed"})
+                return
+            logical = logical_flash(records)
+            if set(logical) != set(logical_flash(original_records)):
+                self.send_json(409, {"error": "logical maintenance record set changed"})
+                return
+            updated = logical["INSP-FIT-204-118"]
+            if (updated["sequence"] != 119 or updated["status"] != "ACCEPTED" or
+                    updated["asset"] != target["asset"] or
+                    updated["inspection_date"] != target["inspection_date"] or
+                    logical["CAL-FIT-204-R7"] != logical_flash(original_records)["CAL-FIT-204-R7"]):
+                self.send_json(409, {"error": "accepted image changed records outside the permitted field"})
+                return
+            state["image_rewrite_accepted"] = True
+            save_state(state)
+            result = {**updated, "image_id": "IMG-FIT-204-R6", "wear_counts": [17, 9],
+                      "live_telemetry_changed": False}
+            atomic_json(EVIDENCE / "instruments" / "firmware-image.json", result)
+            self.accepted("firmware-record-created", result, 201)
+            return
+        # W20.3: Erase-and-rewrite case. The correction requires a 0→1 bit flip in the existing
+        # committed record (inspection_date '8'→'9'), so the page must be erased first.
+        if not state.get("image_rewrite_accepted"):
+            self.send_json(403, {"error": "append-write record required before erase rewrite"})
+            return
+        manifest = json.loads((ARTIFACTS / "IMG-FIT-204-R6.json").read_text())
+        page_bytes = manifest.get("erase_page_bytes", 4096)
+        wear_counts = list(manifest.get("wear_map", {}).get("page_counts", [17, 9]))
+        wear_limit = manifest.get("wear_map", {}).get("limit", 24)
+        # Apply first operation: erase.
+        erase_page = first_op.get("page")
+        if not isinstance(erase_page, int) or erase_page < 0 or erase_page * page_bytes >= len(original):
+            self.send_json(409, {"error": "erase page is out of bounds"})
+            return
+        if erase_page >= len(wear_counts) or wear_counts[erase_page] >= wear_limit:
+            self.send_json(409, {"error": "page wear limit exceeded"})
+            return
+        simulated = bytearray(original)
+        page_start = erase_page * page_bytes
+        simulated[page_start:page_start + page_bytes] = b"\xff" * page_bytes
+        wear_counts[erase_page] += 1
+        # Apply remaining program operations (1-to-0 from 0xFF is always valid after erase).
+        for operation in operations[1:]:
+            if not isinstance(operation, dict) or operation.get("kind") != "program":
+                self.send_json(409, {"error": "post-erase operations must be program kind"})
+                return
+            op_offset = operation.get("offset")
+            if not isinstance(op_offset, int):
+                self.send_json(409, {"error": "programming offset is invalid"})
                 return
             try:
                 data = base64.b64decode(str(operation.get("data_b64", "")), validate=True)
             except (ValueError, base64.binascii.Error):
                 self.send_json(409, {"error": "programming data is invalid"})
                 return
-            if len(data) != expected_length:
-                self.send_json(409, {"error": "programming extent does not match"})
+            if op_offset < 0 or op_offset + len(data) > len(simulated):
+                self.send_json(409, {"error": "programming extent is out of bounds"})
                 return
-            old = simulated[expected_offset:expected_offset + len(data)]
+            old = simulated[op_offset:op_offset + len(data)]
             if any((before & after) != after for before, after in zip(old, data)):
                 self.send_json(409, {"error": "programming attempted a zero-to-one transition"})
                 return
-            simulated[expected_offset:expected_offset + len(data)] = data
+            simulated[op_offset:op_offset + len(data)] = data
         if candidate != bytes(simulated):
             self.send_json(409, {"error": "submitted image does not match programming transcript"})
             return
@@ -2469,19 +2712,21 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(409, {"error": "instrument image dimensions changed"})
             return
         logical = logical_flash(records)
-        if set(logical) != set(logical_flash(original_records)):
+        orig_logical = logical_flash(original_records)
+        if set(logical) != set(orig_logical):
             self.send_json(409, {"error": "logical maintenance record set changed"})
             return
         updated = logical["INSP-FIT-204-118"]
-        if (updated["sequence"] != 119 or updated["status"] != "ACCEPTED" or
+        corrected_date = "2026-09-19"
+        if (updated["sequence"] != 120 or updated["status"] != "ACCEPTED" or
                 updated["asset"] != target["asset"] or
-                updated["inspection_date"] != target["inspection_date"] or
-                logical["CAL-FIT-204-R7"] != logical_flash(original_records)["CAL-FIT-204-R7"]):
-            self.send_json(409, {"error": "accepted image changed records outside the permitted field"})
+                updated["inspection_date"] != corrected_date or
+                logical["CAL-FIT-204-R7"] != orig_logical["CAL-FIT-204-R7"]):
+            self.send_json(409, {"error": "erase-rewrite changed records outside the permitted correction"})
             return
-        state["image_rewrite_accepted"] = True
+        state["erase_rewrite_accepted"] = True
         save_state(state)
-        result = {**updated, "image_id": "IMG-FIT-204-R6", "wear_counts": [17, 9],
+        result = {**updated, "image_id": "IMG-FIT-204-R6", "wear_counts": wear_counts,
                   "live_telemetry_changed": False}
         atomic_json(EVIDENCE / "instruments" / "firmware-image.json", result)
         self.accepted("firmware-record-created", result, 201)

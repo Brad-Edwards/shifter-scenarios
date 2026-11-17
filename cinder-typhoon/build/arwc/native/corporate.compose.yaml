@@ -1,0 +1,224 @@
+x-runtime: &runtime
+  restart: unless-stopped
+  security_opt: [no-new-privileges:true]
+  sysctls: {net.ipv4.ip_forward: "0"}
+  logging: {driver: json-file, options: {max-size: 10m, max-file: "3"}}
+  networks: [data]
+services:
+  seed-corporate-documents:
+    image: ${ERPNEXT_IMAGE:?Load images.env}
+    profiles: [seed]
+    entrypoint: [python, /seed/seed-corporate-documents.py]
+    env_file: [.operator/documents-seed.env]
+    networks: [data]
+    volumes:
+      - ./seed-corporate-documents.py:/seed/seed-corporate-documents.py:ro
+      - ./seed-documents.py:/seed/seed-documents.py:ro
+      - ../../../assets/narrative/documents:/seed/documents:ro
+      - ../../../assets/narrative/generated/packages/arwc-documents.json:/seed/arwc-documents.json:ro
+    sysctls: {net.ipv4.ip_forward: "0"}
+    security_opt: [no-new-privileges:true]
+  seed-identity:
+    image: ${ERPNEXT_IMAGE:?Load images.env}
+    profiles: [seed]
+    entrypoint: [python, /seed/seed-identity.py]
+    env_file: [.operator/identity-seed.env, .operator/documents-seed.env]
+    networks: [data]
+    extra_hosts: [identity.arwc.test:172.29.66.254]
+    volumes:
+      - ./seed-identity.py:/seed/seed-identity.py:ro
+      - ./seed-documents.py:/seed/seed-documents.py:ro
+      - ./records/starting-arrangements-mira.md.in:/seed/starting-arrangements-mira.md.in:ro
+      - ../../../assets/narrative/documents/workforce/a-personnel-register.csv:/seed/a-personnel-register.csv:ro
+      - ./.operator/ca/certs/root_ca.crt:/run/arwc-ca/root.crt:ro
+    sysctls: {net.ipv4.ip_forward: "0"}
+    security_opt: [no-new-privileges:true]
+  seed-engineering:
+    image: ${ERPNEXT_IMAGE:?Load images.env}
+    profiles: [seed]
+    entrypoint: [python, /seed/seed-engineering.py]
+    env_file: [.operator/engineering-seed.env]
+    networks: [data]
+    volumes:
+      - ./seed-engineering.py:/seed/seed-engineering.py:ro
+      - ../../arwc-ot/site:/seed/controller:ro
+      - ./.operator/retained-tools/files:/seed/retained-tools:ro
+    sysctls: {net.ipv4.ip_forward: "0"}
+    security_opt: [no-new-privileges:true]
+  seed-reports:
+    image: ${ERPNEXT_IMAGE:?Load images.env}
+    profiles: [seed]
+    entrypoint: [python, /seed/seed-reports.py]
+    env_file: [.operator/reports-seed.env]
+    networks: [data]
+    volumes: [./seed-reports.py:/seed/seed-reports.py:ro]
+    sysctls: {net.ipv4.ip_forward: "0"}
+    security_opt: [no-new-privileges:true]
+  seed-archive:
+    image: ${ERPNEXT_IMAGE:?Load images.env}
+    profiles: [seed]
+    entrypoint: [python, /seed/seed-archive.py]
+    env_file: [.operator/documents-seed.env, .operator/engineering-seed.env]
+    environment:
+      ARWC_OPERATOR_DIR: /operator
+    networks: [data]
+    secrets: [corporate_db_password]
+    volumes:
+      - ./seed-archive.py:/seed/seed-archive.py:ro
+      - ./.operator:/operator
+    sysctls: {net.ipv4.ip_forward: "0"}
+    security_opt: [no-new-privileges:true]
+  seed-documents:
+    image: ${ERPNEXT_IMAGE:?Load images.env}
+    profiles: [seed]
+    entrypoint: [python, /seed/seed-documents.py]
+    env_file: [.operator/documents-seed.env]
+    networks: [data]
+    volumes:
+      - ./seed-documents.py:/seed/seed-documents.py:ro
+      - ../../../assets/narrative/documents:/seed/documents:ro
+    sysctls: {net.ipv4.ip_forward: "0"}
+    security_opt: [no-new-privileges:true]
+  seed-erp:
+    image: ${ERPNEXT_IMAGE:?Load images.env}
+    profiles: [seed]
+    entrypoint: [python, /seed/seed-erp.py]
+    env_file: [.operator/erp-seed.env]
+    networks: [data]
+    volumes:
+      - ./seed-erp.py:/seed/seed-erp.py:ro
+      - ../../../assets/narrative/documents/maintenance-engineering-records.zip:/seed/maintenance-engineering-records.zip:ro
+    sysctls: {net.ipv4.ip_forward: "0"}
+    security_opt: [no-new-privileges:true]
+  corporate-db:
+    <<: *runtime
+    image: ${POSTGRES_IMAGE:?Load images.env}
+    environment:
+      POSTGRES_USER: corporate
+      POSTGRES_DB: planning
+      POSTGRES_PASSWORD_FILE: /run/secrets/corporate_db_password
+    secrets: [corporate_db_password, metabase_db_password, planning_reader_password]
+    volumes:
+      - corporate-data:/var/lib/postgresql
+      - ./init-corporate.sh:/docker-entrypoint-initdb.d/10-corporate.sh:ro
+      - ./planning.sql:/docker-entrypoint-initdb.d/20-planning.sql:ro
+      - ./dmz-views.sql:/docker-entrypoint-initdb.d/30-dmz.sql:ro
+    healthcheck:
+      test: [CMD, pg_isready, -h, 127.0.0.1, -U, corporate, -d, planning]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+  metabase:
+    <<: *runtime
+    image: ${METABASE_IMAGE:?Load images.env}
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_HOST: corporate-db
+      MB_DB_PORT: "5432"
+      MB_DB_DBNAME: metabase
+      MB_DB_USER: metabase
+      MB_SITE_URL: https://reports.arwc.test
+      MB_ANON_TRACKING_ENABLED: "false"
+      MB_CHECK_FOR_UPDATES: "false"
+      JAVA_OPTS: -Xms128m -Xmx768m
+    env_file: [.operator/metabase.env]
+    depends_on:
+      corporate-db: {condition: service_healthy}
+    healthcheck:
+      test: [CMD-SHELL, "curl -fsS http://127.0.0.1:3000/api/health | grep -q ok"]
+      interval: 15s
+      timeout: 5s
+      retries: 24
+      start_period: 120s
+  documents-db:
+    <<: *runtime
+    image: ${MARIADB_IMAGE:?Load images.env}
+    environment:
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/documents_db_root_password
+      MARIADB_DATABASE: nextcloud
+      MARIADB_USER: nextcloud
+      MARIADB_PASSWORD_FILE: /run/secrets/documents_db_password
+    secrets: [documents_db_root_password, documents_db_password]
+    volumes: [documents-db:/var/lib/mysql]
+    healthcheck:
+      test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+  nextcloud:
+    <<: *runtime
+    image: ${NEXTCLOUD_IMAGE:?Load images.env}
+    environment:
+      MYSQL_HOST: documents-db
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_PASSWORD_FILE: /run/secrets/documents_db_password
+      NEXTCLOUD_ADMIN_USER: records-admin
+      NEXTCLOUD_ADMIN_PASSWORD_FILE: /run/secrets/documents_admin_password
+      NEXTCLOUD_TRUSTED_DOMAINS: documents.arwc.test
+      TRUSTED_PROXIES: 172.29.66.254
+      OVERWRITEPROTOCOL: https
+      OVERWRITECLIURL: https://documents.arwc.test
+    secrets: [documents_db_password, documents_admin_password]
+    volumes:
+      - documents:/var/www/html
+      - ./nextcloud.config.php:/run/arwc-nextcloud.config.php:ro
+      - ./nextcloud-config.sh:/docker-entrypoint-hooks.d/before-starting/10-arwc-config.sh:ro
+    depends_on:
+      documents-db: {condition: service_healthy}
+    healthcheck:
+      test: [CMD-SHELL, "curl -fsS http://127.0.0.1/status.php | grep -q '\"installed\":true'"]
+      interval: 15s
+      timeout: 5s
+      retries: 24
+      start_period: 120s
+  nextcloud-cron:
+    <<: *runtime
+    image: ${NEXTCLOUD_IMAGE:?Load images.env}
+    entrypoint: [/cron.sh]
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID]
+    tmpfs: [/tmp, /var/run]
+    volumes:
+      - documents:/var/www/html
+    depends_on:
+      nextcloud: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, grep, -aq, crond, /proc/1/cmdline]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+  gitea:
+    <<: *runtime
+    image: ${GITEA_IMAGE:?Load images.env}
+    environment:
+      GITEA__server__ROOT_URL: https://engineering.arwc.test/
+      GITEA__server__DOMAIN: engineering.arwc.test
+      GITEA__server__DISABLE_SSH: "true"
+      GITEA__database__DB_TYPE: sqlite3
+      GITEA__security__INSTALL_LOCK: "true"
+      GITEA__service__DISABLE_REGISTRATION: "true"
+      GITEA__service__REQUIRE_SIGNIN_VIEW: "true"
+      GITEA__repository__DISABLE_HTTP_GIT: "false"
+      GITEA__mailer__ENABLED: "false"
+      GITEA__actions__ENABLED: "false"
+    volumes: [engineering-git:/data]
+    healthcheck:
+      test: [CMD-SHELL, "wget -qO- http://127.0.0.1:3000/api/healthz >/dev/null"]
+      interval: 10s
+      timeout: 3s
+      retries: 18
+volumes:
+  corporate-data:
+  documents-db:
+  documents:
+  engineering-git:
+secrets:
+  corporate_db_password: {file: .operator/corporate_db_password}
+  metabase_db_password: {file: .operator/metabase_db_password}
+  planning_reader_password: {file: .operator/planning_reader_password}
+  documents_db_root_password: {file: .operator/documents_db_root_password}
+  documents_db_password: {file: .operator/documents_db_password}
+  documents_admin_password: {file: .operator/documents_admin_password}

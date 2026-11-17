@@ -44,7 +44,7 @@ one VM per logical service.
 | --- | --- | --- | --- |
 | `training-host` | Training Compose host | Training workstation | `e2-standard-2`, 40 GB |
 | `keplerops-host` | KeplerOps Compose host | KeplerOps workstation | `e2-standard-4`, 80 GB |
-| `arwc-host` | ARWC Compose host | None | `e2-standard-4`, 80 GB |
+| `arwc-host` | ARWC Compose host | Confined FieldLink SSH session | `e2-standard-4`, 80 GB |
 
 The BigRAE RAES Image Registry maps each authored `source.name` and
 `source.version` to one exact `projects/prod-mgau4w/global/images/<name>`
@@ -116,7 +116,8 @@ The implementation and targeted tests enforce these invariants:
    becomes ready.
 5. Training and KeplerOps satisfy BigRAE's existing
    `preconfigured-machine-host` and `participant-readiness/v1` contracts.
-6. ARWC has no direct participant access.
+6. ARWC participant SSH terminates in the confined FieldLink connector
+   workstation. It does not provide an ARWC host shell or Docker authority.
 7. The adapter uses BigRAE's host-side password verifiers for the two participant
    containers and receives carrier private addresses through BigRAE's typed
    guest-value references. It neither mints nor reads plaintext credentials.
@@ -128,6 +129,12 @@ The implementation and targeted tests enforce these invariants:
     readiness or image publication.
 11. A released image name is never deleted and reused. Rollback selects the
     prior complete release set.
+12. BigRAE supplies one generation-bound OpenVPN profile for the range. Its
+    policy permits only the three declared participant endpoints and their
+    declared RDP or SSH ports. It does not expose management access,
+    undeclared ports, or other range nodes. The adapter does not create a
+    tunnel or substitute another VPN implementation. Multi-target OpenVPN
+    support is tracked by `OpenRAE/bigrae#2931`.
 
 ## Runtime adapter boundary
 
@@ -159,8 +166,9 @@ demands, mapping identity, exact provider references, participant profiles,
 adapter scope, release binding, secret-path hygiene, and mutations of every
 identity join.
 
-Live verification uses new BigRAE-created ranges. It covers participant access,
-fresh per-range identity, KeplerOps-to-ARWC pairing, the K27 transition, one
-complete 240-card participant run, concurrent readiness and isolation, cleanup,
-and rollback. Fleet tests use bounded readiness and isolation probes instead of
-repeating the complete challenge run on every range.
+Live verification uses new BigRAE-created ranges. It covers OpenVPN profile
+delivery and the three declared participant endpoints, fresh per-range identity,
+KeplerOps-to-ARWC pairing, the K27 transition, one complete 240-card participant
+run, concurrent readiness and isolation, cleanup, and rollback. Fleet tests use
+bounded readiness and isolation probes instead of repeating the complete
+challenge run on every range.

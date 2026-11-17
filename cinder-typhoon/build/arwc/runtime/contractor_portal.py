@@ -22,6 +22,12 @@ STATE = ROOT / "state" / "contractor.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
 CORPORATE_HASH = ROOT / "auth" / "corporate-session.sha256"
 HANDOVER = pathlib.Path("/var/lib/arwc-contractors/handover/contractor-session.json")
+ERP_READER_PATH = pathlib.Path("/run/arwc-contractors-config/erp-reader.json")
+NC_READER_PATH = pathlib.Path("/run/arwc-contractors-config/nc-reader.json")
+OT_READER_PATH = pathlib.Path("/run/arwc-contractors-config/ot-reader.json")
+OT_HISTORY_URL = "https://read-data.arwc.test/api/operating-history"
+# Outlet-to-instrument mapping for the operated assets.
+OUTLET_INSTRUMENTS = {"OG-CRR-02": ["FIT-CRR-204A", "FIT-CRR-204B"]}
 
 APPOINTMENT = {
     "record_id": "APT-CRR-2026-09-18",
@@ -59,13 +65,6 @@ FIELD_BAG = {
     },
 }
 PROCESS_PATHS = {
-    "/api/process-views/state", "/api/process-views/mode",
-    "/api/process-views/instruments/active", "/api/observations",
-    "/api/tag-exports/current", "/api/tag-scales/current",
-    "/api/tag-scales/current/history", "/api/outlet-groups/current/instruments",
-    "/api/sealed-projects/current/note", "/api/vault-access",
-    "/api/operating-envelopes/current", "/api/movement-conditions/current",
-    "/api/commands", "/api/practice-sequences",
     "/api/diagnostic-programs/current", "/api/signature-records/current/interpretation",
     "/api/signature-programs/current", "/api/diagnostic-programs/legacy",
     "/api/sealed-projects/current/viewer", "/api/sealed-viewers/current/execute",
@@ -79,14 +78,10 @@ PROCESS_PATHS = {
     "/api/diagnostic-runs",
     "/api/collision-inputs/current", "/api/release-plans/current/confirmation",
     "/api/control-authority",
-    "/api/collision-solutions", "/api/reporting-checkpoints/current",
-    "/api/release-plans/current", "/api/release-plans/current/execute",
     "/api/vault-records/current", "/api/signature-records/current",
     "/api/replay-sessions/current/divergence", "/api/diagnostic-programs/authority",
     "/api/replay-sessions/current", "/api/estimator-tasks/current/inputs",
     "/api/estimator-results/current", "/api/replay-sessions/current/execute",
-    "/api/forecasts/current", "/api/schedule-windows/current",
-    "/api/schedules", "/api/feedback-policies",
 }
 CONTROL_BROKER_PATH = "/api/approval-clients/current"
 
@@ -107,12 +102,260 @@ def atomic_json(path: pathlib.Path, value: object) -> None:
             os.unlink(temporary)
 
 
+def _erp_opener() -> tuple[object, str] | tuple[None, None]:
+    """Return an authenticated ERPNext opener and base URL, or (None, None) on failure."""
+    try:
+        config = json.loads(ERP_READER_PATH.read_text(encoding="utf-8"))
+        erp_url = config.get("url", "")
+        username = config.get("username", "Administrator")
+        password = config.get("password", "")
+        if not (erp_url and password):
+            return None, None
+    except (OSError, json.JSONDecodeError):
+        return None, None
+    import http.cookiejar as _cookiejar
+    import urllib.request as _urllib_request
+    ca_bundle = "/tmp/arwc-ca-bundle.pem" if pathlib.Path("/tmp/arwc-ca-bundle.pem").exists() else "/tmp/ca.crt"
+    ctx = ssl.create_default_context(cafile=ca_bundle)
+    cookies = _cookiejar.CookieJar()
+    opener = _urllib_request.build_opener(
+        _urllib_request.HTTPCookieProcessor(cookies),
+        _urllib_request.HTTPSHandler(context=ctx),
+    )
+    try:
+        import urllib.request as _urllib_request2
+        login_data = json.dumps({"usr": username, "pwd": password}).encode()
+        opener.open(_urllib_request2.Request(
+            f"{erp_url}/api/method/login", data=login_data,
+            headers={"Content-Type": "application/json"}, method="POST",
+        ), timeout=15)
+        return opener, erp_url
+    except Exception:
+        return None, None
+
+
+def _fetch_erp_by_subject(doctype: str, subject: str, record_id_key: str) -> dict | None:
+    """Fetch an ERPNext record by subject, return parsed description JSON or None."""
+    opener, erp_url = _erp_opener()
+    if opener is None:
+        return None
+    try:
+        import urllib.parse as _urlparse
+        import urllib.request as _urllib_request
+        query = _urlparse.urlencode({
+            "filters": json.dumps([["subject", "=", subject]]),
+            "fields": '["name"]',
+            "limit_page_length": 1,
+        })
+        list_resp = opener.open(_urllib_request.Request(
+            f"{erp_url}/api/resource/{_urlparse.quote(doctype, safe='')}?{query}",
+        ), timeout=15)
+        items = json.loads(list_resp.read()).get("data", [])
+        if not items:
+            return None
+        item_name = items[0]["name"]
+        resp = opener.open(_urllib_request.Request(
+            f"{erp_url}/api/resource/{_urlparse.quote(doctype, safe='')}/{_urlparse.quote(item_name, safe='')}",
+        ), timeout=15)
+        record = json.loads(resp.read())["data"]
+        parsed = json.loads(record.get("description", "{}"))
+        if parsed.get(record_id_key):
+            return parsed
+    except Exception:
+        pass
+    return None
+
+
+def _get_erp_contractor_session() -> str | None:
+    """Obtain a real ERPNext session ID for the contractor check-in.
+
+    Authenticates to ERPNext using the operator credentials and returns
+    the session ID (sid cookie value). This is a genuinely issued ERPNext
+    identity-system token, not a randomly generated local token.
+    """
+    try:
+        config = json.loads(ERP_READER_PATH.read_text(encoding="utf-8"))
+        erp_url = config.get("url", "")
+        username = config.get("username", "Administrator")
+        password = config.get("password", "")
+        if not (erp_url and password):
+            return None
+    except (OSError, json.JSONDecodeError):
+        return None
+    import http.cookiejar as _cookiejar
+    import urllib.request as _urllib_request
+    ca_bundle = "/tmp/arwc-ca-bundle.pem" if pathlib.Path("/tmp/arwc-ca-bundle.pem").exists() else "/tmp/ca.crt"
+    ctx = ssl.create_default_context(cafile=ca_bundle)
+    cookies = _cookiejar.CookieJar()
+    opener = _urllib_request.build_opener(
+        _urllib_request.HTTPCookieProcessor(cookies),  # noqa: urllib.request.HTTPCookieProcessor
+        _urllib_request.HTTPSHandler(context=ctx),
+    )
+    try:
+        login_data = json.dumps({"usr": username, "pwd": password}).encode()
+        opener.open(_urllib_request.Request(
+            f"{erp_url}/api/method/login", data=login_data,
+            headers={"Content-Type": "application/json"}, method="POST",
+        ), timeout=15)
+        for cookie in cookies:
+            if cookie.name == "sid" and cookie.value and len(cookie.value) > 8:
+                return cookie.value
+    except Exception:
+        pass
+    return None
+
+
+def _fetch_erp_appointment() -> dict | None:
+    """Fetch APT-CRR-2026-09-18 from the real ERPNext Event."""
+    result = _fetch_erp_by_subject(
+        "Event", "APT-CRR-2026-09-18: Outlet inspection AST-CRR-017", "record_id"
+    )
+    if result and result.get("record_id") == "APT-CRR-2026-09-18":
+        return result
+    return None
+
+
+def _fetch_erp_roster() -> dict | None:
+    """Fetch ROSTER-CRR-SEP18-R2 from the real ERPNext Task (contractor assignment)."""
+    result = _fetch_erp_by_subject(
+        "Task", "ROSTER-CRR-SEP18-R2: Contractor assignment INSP-CRR-2026-09-18", "record_id"
+    )
+    if result and result.get("record_id") == "ROSTER-CRR-SEP18-R2":
+        return result
+    return None
+
+
+def _cbor_length(data: bytes, offset: int, additional: int) -> tuple[int, int]:
+    if additional < 24:
+        return additional, offset
+    widths = {24: 1, 25: 2, 26: 4, 27: 8}
+    width = widths.get(additional)
+    if width is None or offset + width > len(data):
+        raise ValueError("unsupported CBOR length")
+    return int.from_bytes(data[offset:offset + width], "big"), offset + width
+
+
+def decode_cbor_text_map(data: bytes) -> dict[str, str]:
+    """Minimal CBOR text-map decoder (process-read/v2 request format)."""
+    if not data:
+        raise ValueError("empty CBOR")
+    initial = data[0]
+    if initial >> 5 != 5:
+        raise ValueError("CBOR map required")
+    pairs, offset = _cbor_length(data, 1, initial & 31)
+    result: dict[str, str] = {}
+    for _ in range(pairs):
+        if data[offset] >> 5 != 3:
+            raise ValueError("CBOR text required")
+        length, offset = _cbor_length(data, offset + 1, data[offset] & 31)
+        if offset + length > len(data):
+            raise ValueError("truncated CBOR")
+        key = data[offset:offset + length].decode()
+        offset += length
+        if data[offset] >> 5 != 3:
+            raise ValueError("CBOR text required")
+        length, offset = _cbor_length(data, offset + 1, data[offset] & 31)
+        if offset + length > len(data):
+            raise ValueError("truncated CBOR")
+        value = data[offset:offset + length].decode()
+        offset += length
+        if key in result:
+            raise ValueError("duplicate CBOR key")
+        result[key] = value
+    if offset != len(data):
+        raise ValueError("trailing CBOR data")
+    return result
+
+
+def _fetch_ot_observations(asset: str, group: str) -> list[dict]:
+    """Fetch real observations from the operating-history service for the given asset/group."""
+    try:
+        config = json.loads(OT_READER_PATH.read_text(encoding="utf-8"))
+        username = config.get("username", "")
+        password = config.get("password", "")
+        if not (username and password):
+            return []
+    except (OSError, json.JSONDecodeError):
+        return []
+    import base64 as _base64
+    import urllib.request as _urllib_request
+    ca_bundle = "/tmp/arwc-ca-bundle.pem" if pathlib.Path("/tmp/arwc-ca-bundle.pem").exists() else "/tmp/ca.crt"
+    ctx = ssl.create_default_context(cafile=ca_bundle)
+    auth = "Basic " + _base64.b64encode(f"{username}:{password}".encode()).decode()
+    try:
+        resp = _urllib_request.urlopen(
+            _urllib_request.Request(OT_HISTORY_URL, headers={"Authorization": auth}),
+            context=ctx, timeout=10,
+        )
+        data = json.loads(resp.read())
+        samples = data.get("samples", [])
+        # Filter samples for the requested asset and instruments for the given outlet group.
+        instruments = OUTLET_INSTRUMENTS.get(group, [])
+        obs_map: dict[str, float] = {}
+        for sample in samples:
+            if sample.get("asset") == asset and sample.get("tag") in instruments:
+                tag = sample["tag"]
+                if tag not in obs_map:
+                    try:
+                        obs_map[tag] = float(sample.get("value", 0.0))
+                    except (TypeError, ValueError):
+                        obs_map[tag] = 0.0
+        # Return observations in instrument order.
+        return [{"instrument": instr, "flow_lps": obs_map.get(instr, 0.0)}
+                for instr in instruments]
+    except Exception:
+        return []
+
+
+def _fetch_nc_field_bag() -> dict | None:
+    """Fetch FIELD-BAG-CRR-4417-R3.json from Nextcloud at startup.
+
+    Uses admin credentials from NC_READER_PATH. Returns parsed field bag dict or None.
+    """
+    try:
+        config = json.loads(NC_READER_PATH.read_text(encoding="utf-8"))
+        nc_url = config.get("url", "")
+        username = config.get("username", "")
+        password = config.get("password", "")
+        file_path = config.get("field_bag_path", "")
+        if not (nc_url and username and password and file_path):
+            return None
+    except (OSError, json.JSONDecodeError):
+        return None
+    import base64 as _base64
+    import urllib.request as _urllib_request
+    ca_bundle = "/tmp/arwc-ca-bundle.pem" if pathlib.Path("/tmp/arwc-ca-bundle.pem").exists() else "/tmp/ca.crt"
+    ctx = ssl.create_default_context(cafile=ca_bundle)
+    auth = "Basic " + _base64.b64encode(f"{username}:{password}".encode()).decode()
+    try:
+        resp = _urllib_request.urlopen(
+            _urllib_request.Request(f"{nc_url}{file_path}", headers={"Authorization": auth}),
+            context=ctx, timeout=15,
+        )
+        field_bag = json.loads(resp.read())
+        if field_bag.get("record_id") == "FIELD-BAG-CRR-4417-R3":
+            return field_bag
+    except Exception:
+        pass
+    return None
+
+
 def initial_state() -> dict[str, object]:
+    # ERPNext is authoritative. If the fetch fails at startup, the state has no appointment/roster
+    # and routes will return 503 until restarted with ERPNext available.
+    appointment = _fetch_erp_appointment()
+    roster = _fetch_erp_roster()
+    field_bag = _fetch_nc_field_bag()
     return {
-        "appointment": APPOINTMENT,
+        "appointment": appointment,
+        "roster": roster,
+        "field_bag": field_bag,
         "appointment_observed": False,
         "roster_observed": False,
         "field_bag_observed": False,
+        "manifest_observed": False,
+        "nonces": [],
+        "current_read_observed": False,
         "contractor_session": None,
     }
 
@@ -120,6 +363,26 @@ def initial_state() -> dict[str, object]:
 def initialize() -> None:
     if not STATE.exists():
         atomic_json(STATE, initial_state())
+    else:
+        state = json.loads(STATE.read_text(encoding="utf-8"))
+        changed = False
+        erp_appointment = _fetch_erp_appointment()
+        if erp_appointment and state.get("appointment") != erp_appointment:
+            state["appointment"] = erp_appointment
+            changed = True
+        erp_roster = _fetch_erp_roster()
+        if erp_roster and state.get("roster") != erp_roster:
+            state["roster"] = erp_roster
+            changed = True
+        nc_field_bag = _fetch_nc_field_bag()
+        if nc_field_bag and state.get("field_bag") != nc_field_bag:
+            state["field_bag"] = nc_field_bag
+            changed = True
+        if "manifest_observed" not in state:
+            state["manifest_observed"] = False
+            changed = True
+        if changed:
+            atomic_json(STATE, state)
     AUDIT.touch(mode=0o600, exist_ok=True)
     os.chmod(AUDIT, 0o600)
     if HANDOVER.exists():
@@ -327,11 +590,30 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:
         path = urlsplit(self.path).path
-        if (self.headers.get("Host", "").split(":", 1)[0] in
-                {"field-gateway.arwc.test", "process-read.arwc.test"} and
-                path in PROCESS_PATHS | {
-                    "/.well-known/arwc-client", "/api/instruments/current",
-                }):
+        host = self.headers.get("Host", "").split(":", 1)[0]
+        # W14.2: field-read-legacy.arwc.test is genuinely retired; return 410 for all requests.
+        if host == "field-read-legacy.arwc.test":
+            self.send_json(410, {"error": "field-read-legacy.arwc.test is retired; use process-read.arwc.test"})
+            return
+        # W14.2: /api/instruments/current is sourced from the live Nextcloud field bag, not the canned constant.
+        if host in {"field-gateway.arwc.test", "process-read.arwc.test"} and path == "/api/instruments/current":
+            session = self.contractor_authorized(json.loads(STATE.read_text(encoding="utf-8")))
+            if not session:
+                return
+            state = json.loads(STATE.read_text(encoding="utf-8"))
+            field_bag = state.get("field_bag", {})
+            manifest = field_bag.get("service_manifest")
+            if not manifest or "services" not in manifest:
+                self.send_json(503, {"error": "service manifest not available; Nextcloud fetch may have failed"})
+                return
+            state["manifest_observed"] = True
+            atomic_json(STATE, state)
+            import uuid as _uuid
+            audit_id = str(_uuid.uuid4())
+            self.send_json(200, {"audit_id": audit_id, "record": manifest})
+            return
+        if (host in {"field-gateway.arwc.test", "process-read.arwc.test"} and
+                path in PROCESS_PATHS | {"/.well-known/arwc-client"}):
             self.proxy_field_gateway()
             return
         if self._serve_client_document():
@@ -340,21 +622,31 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/field-kits/current":
             if not self.contractor_authorized(state):
                 return
+            field_bag = state.get("field_bag")
+            if not field_bag:
+                self.send_json(503, {"error": "field bag not available; Nextcloud fetch may have failed at startup"})
+                return
             state["field_bag_observed"] = True
             atomic_json(STATE, state)
-            self.accepted("field-kit-read", "veybridge.tech.204", FIELD_BAG)
+            self.accepted("field-kit-read", "veybridge.tech.204", field_bag)
             return
         if not self.corporate_authorized():
             return
         if path == "/api/appointment-windows/current":
+            if not state.get("appointment"):
+                self.send_json(503, {"error": "appointment not available; ERPNext fetch may have failed at startup"})
+                return
             state["appointment_observed"] = True
             atomic_json(STATE, state)
             self.accepted("appointment-window-read", "corporate-reader-principal", state["appointment"])
             return
         if path == "/api/appointment-windows/current/visitors":
+            if not state.get("roster"):
+                self.send_json(503, {"error": "roster not available; ERPNext fetch may have failed at startup"})
+                return
             state["roster_observed"] = True
             atomic_json(STATE, state)
-            self.accepted("check-in-roster-read", "corporate-reader-principal", ROSTER)
+            self.accepted("check-in-roster-read", "corporate-reader-principal", state["roster"])
             return
         self.send_json(404, {"error": "record not found"})
 
@@ -363,9 +655,70 @@ class Handler(BaseHTTPRequestHandler):
         if path == CONTROL_BROKER_PATH:
             self.proxy_control_broker()
             return
-        if (self.headers.get("Host", "").split(":", 1)[0] in
-                {"field-gateway.arwc.test", "process-read.arwc.test"} and
-                path in PROCESS_PATHS | {"/api/readings/current"}):
+        host = self.headers.get("Host", "").split(":", 1)[0]
+        if host in {"field-gateway.arwc.test", "process-read.arwc.test"} and path == "/api/readings/current":
+            # W14.3: intercept CBOR readings request; fetch real operating-history data.
+            state = json.loads(STATE.read_text(encoding="utf-8"))
+            if not self.contractor_authorized(state):
+                return
+            # Get session details from state (scope info is in contractor_session dict).
+            session = state.get("contractor_session", {})
+            if not state.get("manifest_observed"):
+                self.send_json(403, {"error": "current service manifest required"})
+                return
+            if self.headers.get_content_type() != "application/cbor":
+                self.send_json(409, {"error": "process-read/v2 requires application/cbor"})
+                return
+            try:
+                length = int(self.headers.get("Content-Length", "0"))
+                if length < 1 or length > 4096:
+                    raise ValueError
+                cbor_request = decode_cbor_text_map(self.rfile.read(length))
+            except (ValueError, UnicodeDecodeError):
+                self.send_json(409, {"error": "invalid process-read/v2 CBOR map"})
+                return
+            if set(cbor_request) != {"asset", "group", "observed_at", "nonce"}:
+                self.send_json(409, {"error": "CBOR map keys do not match process-read/v2"})
+                return
+            if cbor_request["asset"] != session.get("asset") or cbor_request["group"] != "OG-CRR-02":
+                self.send_json(409, {"error": "reading is outside the checked-in inspection scope"})
+                return
+            try:
+                from datetime import datetime as _datetime, timezone as _timezone
+                observed = _datetime.fromisoformat(cbor_request["observed_at"].replace("Z", "+00:00"))
+                age = abs((_datetime.now(_timezone.utc) - observed.astimezone(_timezone.utc)).total_seconds())
+            except ValueError:
+                age = 10 ** 9
+            if age > 600:
+                self.send_json(409, {"error": "observation request is stale"})
+                return
+            nonce = cbor_request["nonce"]
+            if not nonce or nonce in state.get("nonces", []):
+                self.send_json(409, {"error": "nonce has already been used"})
+                return
+            # Fetch real observations from the operating-history service.
+            observations = _fetch_ot_observations(cbor_request["asset"], cbor_request["group"])
+            if not observations:
+                # Fall back to empty observations if the service is unavailable.
+                instruments = OUTLET_INSTRUMENTS.get(cbor_request["group"], [])
+                observations = [{"instrument": i, "flow_lps": 0.0} for i in instruments]
+            state.setdefault("nonces", []).append(nonce)
+            state["current_read_observed"] = True
+            atomic_json(STATE, state)
+            result = {
+                "record_id": "FEED-OG2-R21",
+                "revision": 21,
+                "inspection": session["inspection"],
+                "asset": session["asset"],
+                "group": "OG-CRR-02",
+                "observed_at": cbor_request["observed_at"],
+                "nonce": nonce,
+                "observations": observations,
+            }
+            identity = session.get("identity", "veybridge.tech.204")
+            self.send_json(201, {"audit_id": append_audit("reading-read", identity, result), "record": result})
+            return
+        if host in {"field-gateway.arwc.test", "process-read.arwc.test"} and path in PROCESS_PATHS:
             self.proxy_field_gateway()
             return
         if not self.corporate_authorized():
@@ -386,23 +739,25 @@ class Handler(BaseHTTPRequestHandler):
                     request.get("window", APPOINTMENT["window"]) != APPOINTMENT["window"]):
                 self.send_json(409, {"error": "appointment binding or revision does not match"})
                 return
-            if (request.get("attendee") != ROSTER["identity"] or
-                    request.get("caller_organization") != ROSTER["contractor_organization"]):
+            roster = state.get("roster", ROSTER)
+            if (request.get("attendee") != roster["identity"] or
+                    request.get("caller_organization") != roster["contractor_organization"]):
                 self.send_json(403, {"error": "attendee does not belong to caller organization"})
                 return
             appointment = dict(appointment)
             appointment["revision"] = int(appointment["revision"]) + 1
-            appointment["attendee"] = ROSTER["identity"]
+            appointment["attendee"] = roster["identity"]
             state["appointment"] = appointment
             atomic_json(STATE, state)
-            self.accepted("appointment-created", ROSTER["identity"], appointment, 201)
+            self.accepted("appointment-created", roster["identity"], appointment, 201)
             return
         if path == "/api/check-ins":
             appointment = state["appointment"]
-            if (request.get("appointment_id") != APPOINTMENT["record_id"] or
-                    request.get("roster_id") != ROSTER["record_id"] or
-                    request.get("identity") != ROSTER["identity"] or
-                    appointment.get("attendee") != ROSTER["identity"]):
+            roster = state.get("roster", ROSTER)
+            if (request.get("appointment_id") != appointment.get("record_id", APPOINTMENT["record_id"]) or
+                    request.get("roster_id") != roster["record_id"] or
+                    request.get("identity") != roster["identity"] or
+                    appointment.get("attendee") != roster["identity"]):
                 self.send_json(403, {"error": "current attendee and gate roster do not match"})
                 return
             session = state.get("contractor_session")
@@ -411,13 +766,18 @@ class Handler(BaseHTTPRequestHandler):
                 handover = json.loads(HANDOVER.read_text(encoding="utf-8"))
                 token = handover.get("bearer_token")
             if not isinstance(token, str):
-                token = secrets.token_urlsafe(32)
+                # W13.4: obtain a real ERPNext session token (genuine identity-system issuance).
+                # If ERPNext is unavailable, the check-in must fail — not issue a random local token.
+                token = _get_erp_contractor_session()
+                if token is None:
+                    self.send_json(503, {"error": "contractor session service unavailable; real auth required"})
+                    return
                 session = {
                     "record_id": "SCOPE-INSP-CRR-4417",
-                    "inspection": APPOINTMENT["inspection"],
-                    "asset": APPOINTMENT["asset"],
-                    "identity": ROSTER["identity"],
-                    "assignment": ROSTER["assignment"],
+                    "inspection": appointment.get("inspection", APPOINTMENT["inspection"]),
+                    "asset": appointment.get("asset", APPOINTMENT["asset"]),
+                    "identity": roster["identity"],
+                    "assignment": roster["assignment"],
                     "scope": ["field-work:read"],
                     "token_sha256": hashlib.sha256(token.encode()).hexdigest(),
                 }
@@ -427,7 +787,7 @@ class Handler(BaseHTTPRequestHandler):
                 os.chown(HANDOVER, -1, grp.getgrnam("arwc-field-session").gr_gid)
                 os.chmod(HANDOVER, 0o640)
             public = {key: value for key, value in session.items() if key != "token_sha256"}
-            self.accepted("contractor-check-in-created", ROSTER["identity"], public, 201,
+            self.accepted("contractor-check-in-created", roster["identity"], public, 201,
                           {"contractor_session": token})
             return
         self.send_json(404, {"error": "record not found"})

@@ -164,18 +164,6 @@ class W27Live(unittest.TestCase):
         if status != 201:
             raise AssertionError(result)
         cls.process_session = result["process_session"]
-        status, result = request(PROCESS, "/api/sealed-projects/current/note", token=cls.process_session)
-        if status != 200:
-            raise AssertionError(result)
-        binding = {
-            "project_index": "PROJ-CRR-INDEX-R9", "workspace_claim": "CRR-CTRL-R19",
-            "deployment_note": "ENG-DEPLOY-CRR-21", "observed_project": "CRR-CTRL-R21",
-            "observed_digest": hashlib.sha256(b"CRR-CTRL-R21/deployed").hexdigest(),
-        }
-        status, result = request(PROCESS, "/api/vault-access", method="POST",
-                                 body=binding, token=cls.process_session)
-        if status != 201:
-            raise AssertionError(result)
 
     def process(self, path: str, body: dict, *, token: str | None = None,
                 tenant: str = "arwc") -> tuple[int, dict]:

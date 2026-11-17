@@ -65,17 +65,6 @@ print(json.load(urllib.request.urlopen(req,context=ctx))["process_session"])
                        input_data=(token + "\n").encode())
     if completed.returncode:
         raise AssertionError(completed.stderr.decode())
-    request("/api/sealed-projects/current/note")
-    digest = hashlib.sha256(b"CRR-CTRL-R21/deployed").hexdigest()
-    status, result = request("/api/vault-access", method="POST", body={
-        "project_index": "PROJ-CRR-INDEX-R9", "workspace_claim": "CRR-CTRL-R19",
-        "deployment_note": "ENG-DEPLOY-CRR-21", "observed_project": "CRR-CTRL-R21",
-        "observed_digest": digest,
-    })
-    if status != 201:
-        raise AssertionError(result)
-
-
 def run_vm(program: bytes) -> tuple[list[int], bytes, int]:
     registers = [0, 0, 0, 0]
     memory = bytearray(256)

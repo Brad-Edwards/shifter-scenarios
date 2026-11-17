@@ -45,14 +45,15 @@ realization:
 evidence_requirements:
   c1:
     description: |-
-      Produce the correctly bound forecast within the stated tolerance. Normal commissioning records are sufficient; W16 is never required.
+      Record the first good in-tolerance response after native PLC acceptance, at least five settled samples, the response delay, and measured-flow/requested-flow gain.
 
-      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Completion reads a range-supplied snapshot of the native dispatcher journal, PLC decisions, process history, and corporate planning records applicable to the card. The participant cannot supply product evidence. The evaluator cannot issue a broker request, write a controller tag, move an outlet, retry an uncertain request, take local priority, or create product evidence.
 
-      Evidence sources are `features.a-engineering.a-hmi`, `features.a-engineering.a-historian`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence sources are `features.a-engineering.a-engineering`, `features.a-engineering.a-historian`, `features.a-engineering.a-hmi`. A wrong asset, instruction, calibration request, source time, process quality, gain, schedule constraint, request identity, transition order, PLC sequence, measured result, handback, corporate record, unit, or measured-versus-projected interpretation is rejected.
     source_refs:
-    - features.a-engineering.a-hmi
+    - features.a-engineering.a-engineering
     - features.a-engineering.a-historian
+    - features.a-engineering.a-hmi
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
     channel: other
@@ -73,8 +74,9 @@ evidence_requirements:
         names:
         - cinder.w33-1.satisfied
         component_refs:
-        - features.a-engineering.a-hmi
+        - features.a-engineering.a-engineering
         - features.a-engineering.a-historian
+        - features.a-engineering.a-hmi
       collection: require
       retention: require
       redaction: redact-secrets
@@ -82,20 +84,25 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Begin from the qualified manual A20/B20 baseline and an authentic completed W30 record. Verify
+      calibration against native dispatcher and historian time, then accept multiple feasible schedules rather than
+      one fixed answer. For commissioning, require twelve fresh sequential requests, the exact successful dispatcher
+      path, matching native PLC acceptances, settled good-quality feedback, and a later local handback. Recompute
+      every projection from product history and the current corporate rows. Reject infeasible schedules, missing
+      or reordered stages, duplicate identities, rejection, uncertainty, bad quality, participant-supplied product
+      evidence, invented measurements, stale planning records, confused measured/projected claims, or failure to
+      restore. Reset must return the same qualified baseline without replaying a dispatcher request or changing
+      product identities and trust material.'
   c2:
     description: |-
-      Produce a feasible practice trajectory meeting both the reserve-loss objective and every published state constraint. Simply holding the outlet at its maximum cannot satisfy the task.
+      Produce a feasible twelve-interval operating schedule meeting every published buffer, ramp, supply, and calibrated-volume constraint. A fixed maximum or copied reference trajectory is insufficient.
 
-      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Completion reads a range-supplied snapshot of the native dispatcher journal, PLC decisions, process history, and corporate planning records applicable to the card. The participant cannot supply product evidence. The evaluator cannot issue a broker request, write a controller tag, move an outlet, retry an uncertain request, take local priority, or create product evidence.
 
-      Evidence sources are `features.a-engineering.a-hmi`, `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence sources are `features.a-engineering.a-engineering`, `features.a-engineering.a-historian`, `features.a-corporate.a-data`. A wrong asset, instruction, calibration request, source time, process quality, gain, schedule constraint, request identity, transition order, PLC sequence, measured result, handback, corporate record, unit, or measured-versus-projected interpretation is rejected.
     source_refs:
-    - features.a-engineering.a-hmi
+    - features.a-engineering.a-engineering
+    - features.a-engineering.a-historian
     - features.a-corporate.a-data
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -117,7 +124,8 @@ evidence_requirements:
         names:
         - cinder.w33-2.satisfied
         component_refs:
-        - features.a-engineering.a-hmi
+        - features.a-engineering.a-engineering
+        - features.a-engineering.a-historian
         - features.a-corporate.a-data
       collection: require
       retention: require
@@ -126,21 +134,27 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Begin from the qualified manual A20/B20 baseline and an authentic completed W30 record. Verify
+      calibration against native dispatcher and historian time, then accept multiple feasible schedules rather than
+      one fixed answer. For commissioning, require twelve fresh sequential requests, the exact successful dispatcher
+      path, matching native PLC acceptances, settled good-quality feedback, and a later local handback. Recompute
+      every projection from product history and the current corporate rows. Reject infeasible schedules, missing
+      or reordered stages, duplicate identities, rejection, uncertainty, bad quality, participant-supplied product
+      evidence, invented measurements, stale planning records, confused measured/projected claims, or failure to
+      restore. Reset must return the same qualified baseline without replaying a dispatcher request or changing
+      product identities and trust material.'
   c3:
     description: |-
-      Demonstrate accepted scoped actions, actual bounded reserve loss, and the resulting economic effect. Bind the advanced schedule to the current evidence and recompute its consequence using the earned model; a valid plan for another schedule or checkpoint is insufficient.
+      Demonstrate twelve ordered durable dispatcher receipts, native PLC acceptances, and measured completions for the reviewed schedule, followed by a later local HMI acceptance and measured manual A20/B20 baseline.
 
-      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Completion reads a range-supplied snapshot of the native dispatcher journal, PLC decisions, process history, and corporate planning records applicable to the card. The participant cannot supply product evidence. The evaluator cannot issue a broker request, write a controller tag, move an outlet, retry an uncertain request, take local priority, or create product evidence.
 
-      Evidence sources are `features.a-control.a-reservoir`, `features.a-control.a-distribution`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence sources are `features.a-engineering.a-engineering`, `features.a-engineering.a-hmi`, `features.a-engineering.a-historian`, `features.a-control.a-reservoir`, `features.a-control.a-instruments`. A wrong asset, instruction, calibration request, source time, process quality, gain, schedule constraint, request identity, transition order, PLC sequence, measured result, handback, corporate record, unit, or measured-versus-projected interpretation is rejected.
     source_refs:
+    - features.a-engineering.a-engineering
+    - features.a-engineering.a-hmi
+    - features.a-engineering.a-historian
     - features.a-control.a-reservoir
-    - features.a-control.a-distribution
     - features.a-control.a-instruments
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -162,8 +176,10 @@ evidence_requirements:
         names:
         - cinder.w33-3.satisfied
         component_refs:
+        - features.a-engineering.a-engineering
+        - features.a-engineering.a-hmi
+        - features.a-engineering.a-historian
         - features.a-control.a-reservoir
-        - features.a-control.a-distribution
         - features.a-control.a-instruments
       collection: require
       retention: require
@@ -172,22 +188,27 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Begin from the qualified manual A20/B20 baseline and an authentic completed W30 record. Verify
+      calibration against native dispatcher and historian time, then accept multiple feasible schedules rather than
+      one fixed answer. For commissioning, require twelve fresh sequential requests, the exact successful dispatcher
+      path, matching native PLC acceptances, settled good-quality feedback, and a later local handback. Recompute
+      every projection from product history and the current corporate rows. Reject infeasible schedules, missing
+      or reordered stages, duplicate identities, rejection, uncertainty, bad quality, participant-supplied product
+      evidence, invented measurements, stale planning records, confused measured/projected claims, or failure to
+      restore. Reset must return the same qualified baseline without replaying a dispatcher request or changing
+      product identities and trust material.'
   c4:
     description: |-
-      Demonstrate the policy through the scheduler in independent private rehearsal cases within the published bounds, using available observations. A standalone offline policy or one replayed winning schedule is insufficient; scenario time advances on demand.
+      Produce twelve history-derived settled flow means and the resulting projected one-hour volume, remaining usable volume, allocation shortfall, and tariff liability while preserving the measured-versus-projected distinction.
 
-      Required technical proof: Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Completion reads a range-supplied snapshot of the native dispatcher journal, PLC decisions, process history, and corporate planning records applicable to the card. The participant cannot supply product evidence. The evaluator cannot issue a broker request, write a controller tag, move an outlet, retry an uncertain request, take local priority, or create product evidence.
 
-      Evidence sources are `features.a-control.a-reservoir`, `features.a-control.a-distribution`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence sources are `features.a-engineering.a-historian`, `features.a-engineering.a-hmi`, `features.a-corporate.a-data`, `features.a-control.a-reservoir`. A wrong asset, instruction, calibration request, source time, process quality, gain, schedule constraint, request identity, transition order, PLC sequence, measured result, handback, corporate record, unit, or measured-versus-projected interpretation is rejected.
     source_refs:
+    - features.a-engineering.a-historian
+    - features.a-engineering.a-hmi
+    - features.a-corporate.a-data
     - features.a-control.a-reservoir
-    - features.a-control.a-distribution
-    - features.a-control.a-instruments
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
     channel: other
@@ -208,9 +229,10 @@ evidence_requirements:
         names:
         - cinder.w33-4.satisfied
         component_refs:
+        - features.a-engineering.a-historian
+        - features.a-engineering.a-hmi
+        - features.a-corporate.a-data
         - features.a-control.a-reservoir
-        - features.a-control.a-distribution
-        - features.a-control.a-instruments
       collection: require
       retention: require
       redaction: redact-secrets
@@ -218,18 +240,23 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Begin from the qualified manual A20/B20 baseline and an authentic completed W30 record. Verify
+      calibration against native dispatcher and historian time, then accept multiple feasible schedules rather than
+      one fixed answer. For commissioning, require twelve fresh sequential requests, the exact successful dispatcher
+      path, matching native PLC acceptances, settled good-quality feedback, and a later local handback. Recompute
+      every projection from product history and the current corporate rows. Reject infeasible schedules, missing
+      or reordered stages, duplicate identities, rejection, uncertainty, bad quality, participant-supplied product
+      evidence, invented measurements, stale planning records, confused measured/projected claims, or failure to
+      restore. Reset must return the same qualified baseline without replaying a dispatcher request or changing
+      product identities and trust material.'
 propositions:
   c1:
-    description: Produce the correctly bound forecast within the stated tolerance. Normal commissioning records
-      are sufficient; W16 is never required.
+    description: Record the first good in-tolerance response after native PLC acceptance, at least five settled
+      samples, the response delay, and measured-flow/requested-flow gain.
     subjects:
-    - features.a-engineering.a-hmi
+    - features.a-engineering.a-engineering
     - features.a-engineering.a-historian
+    - features.a-engineering.a-hmi
     basis: observed_state
     predicate:
       kind: boolean
@@ -241,10 +268,11 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Produce a feasible practice trajectory meeting both the reserve-loss objective and every published
-      state constraint. Simply holding the outlet at its maximum cannot satisfy the task.
+    description: Produce a feasible twelve-interval operating schedule meeting every published buffer, ramp, supply,
+      and calibrated-volume constraint. A fixed maximum or copied reference trajectory is insufficient.
     subjects:
-    - features.a-engineering.a-hmi
+    - features.a-engineering.a-engineering
+    - features.a-engineering.a-historian
     - features.a-corporate.a-data
     basis: observed_state
     predicate:
@@ -257,12 +285,13 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Demonstrate accepted scoped actions, actual bounded reserve loss, and the resulting economic effect.
-      Bind the advanced schedule to the current evidence and recompute its consequence using the earned model; a
-      valid plan for another schedule or checkpoint is insufficient.
+    description: Demonstrate twelve ordered durable dispatcher receipts, native PLC acceptances, and measured completions
+      for the reviewed schedule, followed by a later local HMI acceptance and measured manual A20/B20 baseline.
     subjects:
+    - features.a-engineering.a-engineering
+    - features.a-engineering.a-hmi
+    - features.a-engineering.a-historian
     - features.a-control.a-reservoir
-    - features.a-control.a-distribution
     - features.a-control.a-instruments
     basis: observed_state
     predicate:
@@ -275,13 +304,14 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: Demonstrate the policy through the scheduler in independent private rehearsal cases within the
-      published bounds, using available observations. A standalone offline policy or one replayed winning schedule
-      is insufficient; scenario time advances on demand.
+    description: Produce twelve history-derived settled flow means and the resulting projected one-hour volume,
+      remaining usable volume, allocation shortfall, and tariff liability while preserving the measured-versus-projected
+      distinction.
     subjects:
+    - features.a-engineering.a-historian
+    - features.a-engineering.a-hmi
+    - features.a-corporate.a-data
     - features.a-control.a-reservoir
-    - features.a-control.a-distribution
-    - features.a-control.a-instruments
     basis: observed_state
     predicate:
       kind: boolean
@@ -328,16 +358,15 @@ assertions:
 objectives:
   c1:
     name: 'This action: A forecast that matches the instrument'
-    description: |-
-      Reconcile calibration and observation delay with the supplied trace so the planning model reproduces the relevant forecast.
-
-      Grounds the advanced process branch in observable engineering evidence.
+    description: Calibrate outlet response delay and flow gain from a completed native operation and good-quality
+      process history.
     assigned_participant: participant.operator
     actions:
     - w33.c1
     targets:
-    - features.a-engineering.a-hmi
+    - features.a-engineering.a-engineering
     - features.a-engineering.a-historian
+    - features.a-engineering.a-hmi
     success:
       mode: all_of
       assertions:
@@ -346,16 +375,15 @@ objectives:
       workflows:
       - w33.c1
   c2:
-    name: 'This action: The expensive hour'
-    description: |-
-      Construct a time-varying release schedule that meets the practice objective while respecting the declared operating constraints.
-
-      Makes timing and economic context substantive parts of the task.
+    name: 'This action: The peak hour'
+    description: Construct a twelve-interval release and alternate-supply schedule using the measured gain, planned
+      demand, and declared operating limits.
     assigned_participant: participant.operator
     actions:
     - w33.c2
     targets:
-    - features.a-engineering.a-hmi
+    - features.a-engineering.a-engineering
+    - features.a-engineering.a-historian
     - features.a-corporate.a-data
     success:
       mode: all_of
@@ -365,17 +393,17 @@ objectives:
       workflows:
       - w33.c2
   c3:
-    name: 'This action: The schedule the service accepts'
-    description: |-
-      Carry the planned release across the scheduler's authorization boundary and demonstrate its bounded economic effect in the live rehearsal.
-
-      Adds a real application/control problem after offline planning.
+    name: 'This action: Commission the schedule'
+    description: Commission all twelve reviewed release values through the authenticated dispatcher, prove each
+      native result, and hand the site back locally.
     assigned_participant: participant.operator
     actions:
     - w33.c3
     targets:
+    - features.a-engineering.a-engineering
+    - features.a-engineering.a-hmi
+    - features.a-engineering.a-historian
     - features.a-control.a-reservoir
-    - features.a-control.a-distribution
     - features.a-control.a-instruments
     success:
       mode: all_of
@@ -385,18 +413,17 @@ objectives:
       workflows:
       - w33.c3
   c4:
-    name: 'This action: When the forecast moves'
-    description: |-
-      Run a feedback policy through your earned scheduler capability so the bounded objective is met across the disclosed demand and calibration conditions.
-
-      Extends a one-case result into a robust process-control achievement.
+    name: 'This action: Prove the operating projection'
+    description: Reconstruct every commissioning step from product history and turn the measured results into an
+      explicitly labelled one-hour operating projection.
     assigned_participant: participant.operator
     actions:
     - w33.c4
     targets:
+    - features.a-engineering.a-historian
+    - features.a-engineering.a-hmi
+    - features.a-corporate.a-data
     - features.a-control.a-reservoir
-    - features.a-control.a-distribution
-    - features.a-control.a-instruments
     success:
       mode: all_of
       assertions:
@@ -508,9 +535,9 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      The authored condition is **delay and calibration forecast reconciliation**. Forecast case FCST-CRR-33 joins 20-second instrument samples, fixed 40-second publication delay, scale gain 1.00, and current map MAP-OG2-R8; tolerance is 0.01 ML. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+      This is a bounded operations-planning and commissioning task, not a privilege flaw. The participant must use the installed products to calibrate response delay and flow gain from one completed W30 request, its native PLC acceptance, and at least five settled good-quality flow samples. A synthetic forecast, private rehearsal, locally invented response, or copied request receipt does not establish the result.
 
-      The required result is: Produce the correctly bound forecast within the stated tolerance. Normal commissioning records are sufficient; W16 is never required. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `REH-SCHED-33`.
+      The required result is: Record the first good in-tolerance response after native PLC acceptance, at least five settled samples, the response delay, and measured-flow/requested-flow gain.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -522,51 +549,56 @@ action_contracts:
         to every listed surface.
       support_refs:
       - workflows.w33.c1
-      - features.a-engineering.a-hmi
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
+      - features.a-engineering.a-hmi
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-hmi` and its `supervisory-operations` application own this part of **A forecast that matches the instrument**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Forecast case FCST-CRR-33 joins 20-second instrument samples, fixed 40-second publication delay, scale gain 1.00, and current map MAP-OG2-R8; tolerance is 0.01 ML. Ordinary workplace context reuses `arwc-documents:service-meter-guide`; the work item-specific service state is separate.
+        The installed Cairn Reach OT products own this part of **A forecast that matches the instrument**. The exact initial state is: Operating instruction CRR-OP-W33-R1 requires calibration from one completed W30 dispatcher request, its native PLC acceptance, and at least five good settled TotalFlowM3s samples; response delay begins at PLC acceptance and gain is measured flow divided by requested flow.
 
         Native bindings:
 
-        - `a-engineering.a-hmi/supervisory-operations/a-forecast-that-matches-the-instrument`
-        - `a-engineering.a-historian/process-historian/a-forecast-that-matches-the-instrument`
+        - `a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W33/scheduling-brief.md`
+        - `a-engineering.a-historian/PostgreSQL:public.dispatch_history-and-process_history`
+        - `a-engineering.a-hmi/FUXA:completed-W30-operating-record`
 
-        The private service-loader contract is `content.arwc-a-hmi.w33-1-a-forecast-that-matches-the-instrument`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+        The image-owned W33 operating window, schedule template, commissioning brief, and bounded client define the work but do not establish any measurement or acceptance. The existing Mosquitto dispatcher, OpenPLC controller, FUXA HMI, remote I/O, PostgreSQL historian, and corporate planning rows remain authoritative; no scheduler or rehearsal service duplicates them.
       support_refs:
-      - features.a-engineering.a-hmi
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
-      - content.arwc-a-hmi.w33-1-a-forecast-that-matches-the-instrument
+      - features.a-engineering.a-hmi
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+        The result remains local evidence unless a downstream workflow explicitly names it. The card is read-only and creates no dispatcher or controller state. It refers to the completed W30 operation and current planning rows without copying or revising their product records. Infrastructure recovery and submission adjudication are external to the SDL.
 
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        The behavior is limited to AST-CRR-017 and CRR-OP-W33-R1. It grants no arbitrary MQTT topic, OPC UA write, engineering force, program upload, interlock bypass, automatic retry after uncertainty, alternate control endpoint, or new scheduler authority.
       support_refs:
-      - features.a-engineering.a-hmi
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
+      - features.a-engineering.a-hmi
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce the correctly bound forecast within the stated tolerance. Normal commissioning records
-        are sufficient; W16 is never required.
+      description: Record the first good in-tolerance response after native PLC acceptance, at least five settled
+        samples, the response delay, and measured-flow/requested-flow gain.
       target_refs:
-      - features.a-engineering.a-hmi
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
+      - features.a-engineering.a-hmi
       evidence_refs:
       - evidence_requirements.w33.c1
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Completion reads a range-supplied snapshot of the native dispatcher journal, PLC decisions, process history, and corporate planning records applicable to the card. The participant cannot supply product evidence. The evaluator cannot issue a broker request, write a controller tag, move an outlet, retry an uncertain request, take local priority, or create product evidence.
 
-        Evidence sources are `features.a-engineering.a-hmi`, `features.a-engineering.a-historian`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence sources are `features.a-engineering.a-engineering`, `features.a-engineering.a-historian`, `features.a-engineering.a-hmi`. A wrong asset, instruction, calibration request, source time, process quality, gain, schedule constraint, request identity, transition order, PLC sequence, measured result, handback, corporate record, unit, or measured-versus-projected interpretation is rejected.
       target_refs:
-      - features.a-engineering.a-hmi
+      - features.a-engineering.a-engineering
       - features.a-engineering.a-historian
+      - features.a-engineering.a-hmi
       evidence_refs:
       - evidence_requirements.w33.c1
     failure_classes:
@@ -581,9 +613,9 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      The authored condition is **bounded discrete-time schedule synthesis**. Checkpoint REH-SCHED-33 has twelve 300-second intervals, disclosed demand vector, 180 m3 initial buffer, 120-240 m3 bounds, 160-200 m3 final bound, 0.10 m3/s ramps, and 0.78-0.84 ML reservoir-volume objective. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+      This is a bounded operations-planning and commissioning task, not a privilege flaw. The participant must use the installed products to construct a twelve-interval schedule that satisfies the disclosed demand, calibrated gain, buffer, ramp, alternate-supply, and projected-volume constraints. A synthetic forecast, private rehearsal, locally invented response, or copied request receipt does not establish the result.
 
-      The required result is: Produce a feasible practice trajectory meeting both the reserve-loss objective and every published state constraint. Simply holding the outlet at its maximum cannot satisfy the task. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `REH-SCHED-33`.
+      The required result is: Produce a feasible twelve-interval operating schedule meeting every published buffer, ramp, supply, and calibrated-volume constraint. A fixed maximum or copied reference trajectory is insufficient.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -595,50 +627,56 @@ action_contracts:
         to every listed surface.
       support_refs:
       - workflows.w33.c2
-      - features.a-engineering.a-hmi
+      - features.a-engineering.a-engineering
+      - features.a-engineering.a-historian
       - features.a-corporate.a-data
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-hmi` and its `supervisory-operations` application own this part of **The expensive hour**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Checkpoint REH-SCHED-33 has twelve 300-second intervals, disclosed demand vector, 180 m3 initial buffer, 120-240 m3 bounds, 160-200 m3 final bound, 0.10 m3/s ramps, and 0.78-0.84 ML reservoir-volume objective.
+        The installed Cairn Reach OT products own this part of **The peak hour**. The exact initial state is: The image-owned operating window has twelve 300-second intervals, a disclosed demand vector, 180 m3 initial buffer, 120-240 m3 running bounds, 160-200 m3 final bound, 0.10 m3/s ramps, and a calibrated 0.78-0.84 ML reservoir-volume objective.
 
         Native bindings:
 
-        - `a-engineering.a-hmi/supervisory-operations/the-expensive-hour`
-        - `a-corporate.a-data/planning-data/the-expensive-hour`
+        - `a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W33/operating-window.csv`
+        - `a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W33/schedule-template.json`
+        - `a-engineering.a-historian/PostgreSQL:calibrated-W30-process-history`
+        - `a-corporate.a-data/PostgreSQL:public.settlement_tariff-and-allocation_ledger`
 
-        The private service-loader contract is `content.arwc-a-hmi.w33-2-the-expensive-hour`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+        The image-owned W33 operating window, schedule template, commissioning brief, and bounded client define the work but do not establish any measurement or acceptance. The existing Mosquitto dispatcher, OpenPLC controller, FUXA HMI, remote I/O, PostgreSQL historian, and corporate planning rows remain authoritative; no scheduler or rehearsal service duplicates them.
       support_refs:
-      - features.a-engineering.a-hmi
+      - features.a-engineering.a-engineering
+      - features.a-engineering.a-historian
       - features.a-corporate.a-data
-      - content.arwc-a-hmi.w33-2-the-expensive-hour
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+        The result remains local evidence unless a downstream workflow explicitly names it. The card is read-only and creates no dispatcher or controller state. It refers to the completed W30 operation and current planning rows without copying or revising their product records. Infrastructure recovery and submission adjudication are external to the SDL.
 
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        The behavior is limited to AST-CRR-017 and CRR-OP-W33-R1. It grants no arbitrary MQTT topic, OPC UA write, engineering force, program upload, interlock bypass, automatic retry after uncertainty, alternate control endpoint, or new scheduler authority.
       support_refs:
-      - features.a-engineering.a-hmi
+      - features.a-engineering.a-engineering
+      - features.a-engineering.a-historian
       - features.a-corporate.a-data
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce a feasible practice trajectory meeting both the reserve-loss objective and every published
-        state constraint. Simply holding the outlet at its maximum cannot satisfy the task.
+      description: Produce a feasible twelve-interval operating schedule meeting every published buffer, ramp, supply,
+        and calibrated-volume constraint. A fixed maximum or copied reference trajectory is insufficient.
       target_refs:
-      - features.a-engineering.a-hmi
+      - features.a-engineering.a-engineering
+      - features.a-engineering.a-historian
       - features.a-corporate.a-data
       evidence_refs:
       - evidence_requirements.w33.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Completion reads a range-supplied snapshot of the native dispatcher journal, PLC decisions, process history, and corporate planning records applicable to the card. The participant cannot supply product evidence. The evaluator cannot issue a broker request, write a controller tag, move an outlet, retry an uncertain request, take local priority, or create product evidence.
 
-        Evidence sources are `features.a-engineering.a-hmi`, `features.a-corporate.a-data`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence sources are `features.a-engineering.a-engineering`, `features.a-engineering.a-historian`, `features.a-corporate.a-data`. A wrong asset, instruction, calibration request, source time, process quality, gain, schedule constraint, request identity, transition order, PLC sequence, measured result, handback, corporate record, unit, or measured-versus-projected interpretation is rejected.
       target_refs:
-      - features.a-engineering.a-hmi
+      - features.a-engineering.a-engineering
+      - features.a-engineering.a-historian
       - features.a-corporate.a-data
       evidence_refs:
       - evidence_requirements.w33.c2
@@ -654,9 +692,9 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      The authored condition is **authorization-bound private rehearsal**. Private scheduler accepts only a current-evidence-bound schedule and scoped CONTROL client; reference trajectory releases 0.81 ML, preserves 180 m3 buffer, leaves a 0.41 ML commitment shortfall, and computes USD 984 liability within the isolated checkpoint. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+      This is a bounded operations-planning and commissioning task, not a privilege flaw. The participant must use the installed products to commission all twelve reviewed release values sequentially through the authenticated dispatcher, prove every native result, then restore manual A20/B20 through local FUXA priority. A synthetic forecast, private rehearsal, locally invented response, or copied request receipt does not establish the result.
 
-      The required result is: Demonstrate accepted scoped actions, actual bounded reserve loss, and the resulting economic effect. Bind the advanced schedule to the current evidence and recompute its consequence using the earned model; a valid plan for another schedule or checkpoint is insufficient. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `REH-SCHED-33`.
+      The required result is: Demonstrate twelve ordered durable dispatcher receipts, native PLC acceptances, and measured completions for the reviewed schedule, followed by a later local HMI acceptance and measured manual A20/B20 baseline.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -668,57 +706,69 @@ action_contracts:
         to every listed surface.
       support_refs:
       - workflows.w33.c3
+      - features.a-engineering.a-engineering
+      - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
       - features.a-control.a-reservoir
-      - features.a-control.a-distribution
       - features.a-control.a-instruments
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-reservoir` and its `reservoir-controller` application own this part of **The schedule the service accepts**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Private scheduler accepts only a current-evidence-bound schedule and scoped CONTROL client; reference trajectory releases 0.81 ML, preserves 180 m3 buffer, leaves a 0.41 ML commitment shortfall, and computes USD 984 liability within the isolated checkpoint.
+        The installed Cairn Reach OT products own this part of **Commission the schedule**. The exact initial state is: The reviewed schedule is commissioned through twelve sequential authenticated dispatcher requests with fresh identities; every step requires durable receipt, native OpenPLC acceptance, measured completion, and a later local FUXA handback to manual A20/B20.
 
         Native bindings:
 
-        - `a-control.a-reservoir/reservoir-controller/the-schedule-the-service-accepts`
-        - `a-control.a-distribution/distribution-rehearsal/the-schedule-the-service-accepts`
-        - `a-control.a-instruments/independent-instruments/the-schedule-the-service-accepts`
+        - `a-engineering.a-engineering/filesystem:/home/fieldlink/CairnReach/Briefs/W33/run-schedule.py`
+        - `a-engineering.a-hmi/Mosquitto:arwc/crr/commands/operator-and-outcomes/operator`
+        - `a-engineering.a-historian/PostgreSQL:public.dispatch_history-and-command_history`
+        - `a-control.a-reservoir/OpenPLC:RemoteAccepted-Owner-AutoMode`
+        - `a-control.a-instruments/Modbus-TCP:two-outlet-position-and-flow-feedback`
+        - `a-engineering.a-hmi/FUXA:crr-controls-local-restore`
 
-        The private service-loader contract is `content.arwc-a-reservoir.w33-3-the-schedule-the-service-accepts`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+        The image-owned W33 operating window, schedule template, commissioning brief, and bounded client define the work but do not establish any measurement or acceptance. The existing Mosquitto dispatcher, OpenPLC controller, FUXA HMI, remote I/O, PostgreSQL historian, and corporate planning rows remain authoritative; no scheduler or rehearsal service duplicates them.
       support_refs:
+      - features.a-engineering.a-engineering
+      - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
       - features.a-control.a-reservoir
-      - features.a-control.a-distribution
       - features.a-control.a-instruments
-      - content.arwc-a-reservoir.w33-3-the-schedule-the-service-accepts
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+        The result remains local evidence unless a downstream workflow explicitly names it. The dispatcher, OpenPLC command history, and historian retain the twelve commissioning steps as ordinary product records. Completion requires a later accepted local HMI request and measured return to manual A20/B20, approximately 0.10 m3/s per outlet and 0.20 m3/s total, healthy I/O, valid permissives, no motion, and clear travel faults. The one-hour effect remains a projection. Infrastructure recovery and submission adjudication are external to the SDL.
 
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        The behavior is limited to AST-CRR-017 and CRR-OP-W33-R1. It grants no arbitrary MQTT topic, OPC UA write, engineering force, program upload, interlock bypass, automatic retry after uncertainty, alternate control endpoint, or new scheduler authority.
       support_refs:
+      - features.a-engineering.a-engineering
+      - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
       - features.a-control.a-reservoir
-      - features.a-control.a-distribution
       - features.a-control.a-instruments
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate accepted scoped actions, actual bounded reserve loss, and the resulting economic
-        effect. Bind the advanced schedule to the current evidence and recompute its consequence using the earned
-        model; a valid plan for another schedule or checkpoint is insufficient.
+      description: Demonstrate twelve ordered durable dispatcher receipts, native PLC acceptances, and measured
+        completions for the reviewed schedule, followed by a later local HMI acceptance and measured manual A20/B20
+        baseline.
       target_refs:
+      - features.a-engineering.a-engineering
+      - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
       - features.a-control.a-reservoir
-      - features.a-control.a-distribution
       - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w33.c3
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Completion reads a range-supplied snapshot of the native dispatcher journal, PLC decisions, process history, and corporate planning records applicable to the card. The participant cannot supply product evidence. The evaluator cannot issue a broker request, write a controller tag, move an outlet, retry an uncertain request, take local priority, or create product evidence.
 
-        Evidence sources are `features.a-control.a-reservoir`, `features.a-control.a-distribution`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence sources are `features.a-engineering.a-engineering`, `features.a-engineering.a-hmi`, `features.a-engineering.a-historian`, `features.a-control.a-reservoir`, `features.a-control.a-instruments`. A wrong asset, instruction, calibration request, source time, process quality, gain, schedule constraint, request identity, transition order, PLC sequence, measured result, handback, corporate record, unit, or measured-versus-projected interpretation is rejected.
       target_refs:
+      - features.a-engineering.a-engineering
+      - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
       - features.a-control.a-reservoir
-      - features.a-control.a-distribution
       - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w33.c3
@@ -734,9 +784,9 @@ action_contracts:
     lifecycle_state: draft
     behavioral_granularity: aggregate
     procedure_basis: |-
-      The authored condition is **observation-driven feedback policy evaluation**. Policy evaluator accepts one ARWC-POL1 document containing twelve base release values and bounded buffer and demand gains, then runs all 27 Cartesian combinations of demand offset -0.05, 0.00, +0.05 m3/s, outlet gain 0.98, 1.00, 1.02, and observation delay 20, 40, 60 seconds; each action must derive from the buffer and demand observations available at that step, and per-case schedules are rejected. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
+      This is a bounded operations-planning and commissioning task, not a privilege flaw. The participant must use the installed products to reconstruct the twelve measured step means from retained product history and calculate the one-hour volume, remaining usable volume, allocation shortfall, and tariff liability without presenting projection as measurement. A synthetic forecast, private rehearsal, locally invented response, or copied request receipt does not establish the result.
 
-      The required result is: Demonstrate the policy through the scheduler in independent private rehearsal cases within the published bounds, using available observations. A standalone offline policy or one replayed winning schedule is insufficient; scenario time advances on demand. Process quantities and state separation are governed by `arwc-process-model.md`, specifically `REH-SCHED-33`.
+      The required result is: Produce twelve history-derived settled flow means and the resulting projected one-hour volume, remaining usable volume, allocation shortfall, and tariff liability while preserving the measured-versus-projected distinction.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -748,58 +798,63 @@ action_contracts:
         to every listed surface.
       support_refs:
       - workflows.w33.c4
+      - features.a-engineering.a-historian
+      - features.a-engineering.a-hmi
+      - features.a-corporate.a-data
       - features.a-control.a-reservoir
-      - features.a-control.a-distribution
-      - features.a-control.a-instruments
     - precondition_id: normal-surface
       precondition_class: target
       description: |-
-        `a-reservoir` and its `reservoir-controller` application own this part of **When the forecast moves**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Policy evaluator accepts one ARWC-POL1 document containing twelve base release values and bounded buffer and demand gains, then runs all 27 Cartesian combinations of demand offset -0.05, 0.00, +0.05 m3/s, outlet gain 0.98, 1.00, 1.02, and observation delay 20, 40, 60 seconds; each action must derive from the buffer and demand observations available at that step, and per-case schedules are rejected.
+        The installed Cairn Reach OT products own this part of **Prove the operating projection**. The exact initial state is: The final operating record reconstructs twelve settled flow means from product history, projects their one-hour reservoir volume, remaining usable volume, allocation shortfall, and tariff liability, and labels the short commissioning trial separately from the projection.
 
         Native bindings:
 
-        - `a-control.a-reservoir/reservoir-controller/when-the-forecast-moves`
-        - `a-control.a-distribution/distribution-rehearsal/when-the-forecast-moves`
-        - `a-control.a-instruments/independent-instruments/when-the-forecast-moves`
+        - `a-engineering.a-historian/PostgreSQL:public.process_history-and-dispatch_history`
+        - `a-engineering.a-hmi/FUXA:crr-controls-local-handback`
+        - `a-corporate.a-data/PostgreSQL:public.settlement_tariff-and-allocation_ledger`
+        - `a-control.a-reservoir/OpenPLC:measured-commissioning-response`
 
-        The private service-loader contract is `content.arwc-a-reservoir.w33-4-when-the-forecast-moves`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+        The image-owned W33 operating window, schedule template, commissioning brief, and bounded client define the work but do not establish any measurement or acceptance. The existing Mosquitto dispatcher, OpenPLC controller, FUXA HMI, remote I/O, PostgreSQL historian, and corporate planning rows remain authoritative; no scheduler or rehearsal service duplicates them.
       support_refs:
+      - features.a-engineering.a-historian
+      - features.a-engineering.a-hmi
+      - features.a-corporate.a-data
       - features.a-control.a-reservoir
-      - features.a-control.a-distribution
-      - features.a-control.a-instruments
-      - content.arwc-a-reservoir.w33-4-when-the-forecast-moves
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
+        Supplies a measured commissioning record and explicit one-hour operating projection; it grants no reusable control authority. The dispatcher, OpenPLC command history, and historian retain the twelve commissioning steps as ordinary product records. Completion requires a later accepted local HMI request and measured return to manual A20/B20, approximately 0.10 m3/s per outlet and 0.20 m3/s total, healthy I/O, valid permissives, no motion, and clear travel faults. The one-hour effect remains a projection. Infrastructure recovery and submission adjudication are external to the SDL.
 
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        The behavior is limited to AST-CRR-017 and CRR-OP-W33-R1. It grants no arbitrary MQTT topic, OPC UA write, engineering force, program upload, interlock bypass, automatic retry after uncertainty, alternate control endpoint, or new scheduler authority.
       support_refs:
+      - features.a-engineering.a-historian
+      - features.a-engineering.a-hmi
+      - features.a-corporate.a-data
       - features.a-control.a-reservoir
-      - features.a-control.a-distribution
-      - features.a-control.a-instruments
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the policy through the scheduler in independent private rehearsal cases within the
-        published bounds, using available observations. A standalone offline policy or one replayed winning schedule
-        is insufficient; scenario time advances on demand.
+      description: Produce twelve history-derived settled flow means and the resulting projected one-hour volume,
+        remaining usable volume, allocation shortfall, and tariff liability while preserving the measured-versus-projected
+        distinction.
       target_refs:
+      - features.a-engineering.a-historian
+      - features.a-engineering.a-hmi
+      - features.a-corporate.a-data
       - features.a-control.a-reservoir
-      - features.a-control.a-distribution
-      - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w33.c4
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        Evidence joins the independently owned service observations listed below; all are required for the same tenant instance, request correlation, identifiers, revision, and interval. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Completion reads a range-supplied snapshot of the native dispatcher journal, PLC decisions, process history, and corporate planning records applicable to the card. The participant cannot supply product evidence. The evaluator cannot issue a broker request, write a controller tag, move an outlet, retry an uncertain request, take local priority, or create product evidence.
 
-        Evidence sources are `features.a-control.a-reservoir`, `features.a-control.a-distribution`, `features.a-control.a-instruments`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence sources are `features.a-engineering.a-historian`, `features.a-engineering.a-hmi`, `features.a-corporate.a-data`, `features.a-control.a-reservoir`. A wrong asset, instruction, calibration request, source time, process quality, gain, schedule constraint, request identity, transition order, PLC sequence, measured result, handback, corporate record, unit, or measured-versus-projected interpretation is rejected.
       target_refs:
+      - features.a-engineering.a-historian
+      - features.a-engineering.a-hmi
+      - features.a-corporate.a-data
       - features.a-control.a-reservoir
-      - features.a-control.a-distribution
-      - features.a-control.a-instruments
       evidence_refs:
       - evidence_requirements.w33.c4
     failure_classes:

@@ -8,15 +8,15 @@ module:
   exports:
     injects:
     - reservoir-release
-    - costly-release-rehearsal
-    - feedback-rehearsal
+    - peak-schedule-commissioning
+    - peak-operating-projection
     - false-planning-decision
     - covered-release-rehearsal
     - procurement-loss
     events:
     - reservoir-release
-    - costly-release-rehearsal
-    - feedback-rehearsal
+    - peak-schedule-commissioning
+    - peak-operating-projection
     - false-planning-decision
     - covered-release-rehearsal
     - procurement-loss
@@ -24,35 +24,15 @@ realization:
   default: open
 injects:
   reservoir-release:
-    name: Cairn Reach reserve incident
-    description: Cairn Reach outlet group OG-CRR-02 records a balanced 1.00 ML release under plan PLAN-CRR-LOSS-1000.
-      Independent instruments record usable reserve falling from 12.40 ML to 11.40 ML. The 0.60 ML commitment shortfall
-      creates USD 1,440 replacement liability under TAR-CRR-DP3-R4 and invokes Stage A restrictions under CONT-DRY-A-R3.
-      The dam remains intact; there is no flooding, uncontrolled release, or loss of essential service. The notice
-      is idempotent and cannot issue another command or alter the recorded volume.
-    environment:
-    - nodes.a-control.a-reservoir
-    - nodes.a-control.a-instruments
-    - nodes.a-corporate.a-data
-  costly-release-rehearsal:
-    name: Costed release rehearsal
-    description: Private checkpoint REH-SCHED-33 records the accepted twelve-interval schedule, 0.81 ML bounded
-      reservoir volume, 180 m3 final distribution buffer, 0.41 ML commitment shortfall, and USD 984 liability. The
-      checkpoint is isolated from the live reservoir and from every prior record.
+    name: Cairn Reach bounded operation
+    description: 'Cairn Reach outlet group OG-CRR-02 retains one completed CRR-OP-W30-R1 operating record: authenticated
+      dispatcher request, native OpenPLC acceptance, settled automatic total flow near 0.30 m3/s, and a later local
+      FUXA handback to manual A20/B20 with total flow near 0.20 m3/s. The record presents the already observed operation
+      and cannot issue, repeat, or enlarge a command.'
     environment:
     - nodes.a-engineering.a-hmi
+    - nodes.a-engineering.a-historian
     - nodes.a-control.a-reservoir
-    - nodes.a-control.a-distribution
-    - nodes.a-control.a-instruments
-  feedback-rehearsal:
-    name: Feedback rehearsal
-    description: Private checkpoint REH-SCHED-33 retains the accepted observation-driven policy and all 27 demand,
-      gain, and delay trajectories. Each trajectory remains inside the published state, ramp, final-buffer, and
-      volume bounds. No rehearsal value overwrites live process history.
-    environment:
-    - nodes.a-engineering.a-hmi
-    - nodes.a-control.a-reservoir
-    - nodes.a-control.a-distribution
     - nodes.a-control.a-instruments
   false-planning-decision:
     name: False reserve-planning decision
@@ -80,9 +60,29 @@ injects:
       Its acknowledgement creates no process command or water movement.
     environment:
     - nodes.a-corporate.a-business
+  peak-schedule-commissioning:
+    name: Peak schedule commissioning
+    description: Cairn Reach retains the twelve CRR-OP-W33-R1 commissioning requests, their ordered authenticated
+      dispatcher transitions, native OpenPLC acceptances, measured outlet response, and later local FUXA handback
+      to manual A20/B20. The record cannot issue or repeat a request.
+    environment:
+    - nodes.a-engineering.a-hmi
+    - nodes.a-engineering.a-historian
+    - nodes.a-control.a-reservoir
+    - nodes.a-control.a-instruments
+  peak-operating-projection:
+    name: Peak operating projection
+    description: Cairn Reach retains twelve settled commissioning flow means and the explicitly projected one-hour
+      reservoir volume, remaining usable volume, allocation shortfall, and tariff liability. Measured trial evidence
+      and projected operating effects remain separately labelled.
+    environment:
+    - nodes.a-corporate.a-data
+    - nodes.a-engineering.a-hmi
+    - nodes.a-engineering.a-historian
+    - nodes.a-control.a-reservoir
 events:
   reservoir-release:
-    name: Cairn Reach reserve incident
+    name: Cairn Reach bounded operation
     description: The listed independently observed assertions are all required. Presentation retains the existing
       service result and cannot create, repeat, or enlarge the action that produced it.
     assertions:
@@ -90,33 +90,9 @@ events:
     - capabilities.process-interpretation-ready
     - capabilities.control-ready
     - capabilities.mode-ready
-    - capabilities.consequence-plan-ready
+    - capabilities.w29-plan-ready
     injects:
     - reservoir-release
-  costly-release-rehearsal:
-    name: Costed release rehearsal
-    description: The listed independently observed assertions are all required. Presentation retains the existing
-      service result and cannot create, repeat, or enlarge the action that produced it.
-    assertions:
-    - w33.c3-ready
-    - capabilities.process-interpretation-ready
-    - capabilities.control-ready
-    - capabilities.mode-ready
-    - capabilities.consequence-plan-ready
-    injects:
-    - costly-release-rehearsal
-  feedback-rehearsal:
-    name: Feedback rehearsal
-    description: The listed independently observed assertions are all required. Presentation retains the existing
-      service result and cannot create, repeat, or enlarge the action that produced it.
-    assertions:
-    - w33.c4-ready
-    - capabilities.process-interpretation-ready
-    - capabilities.control-ready
-    - capabilities.mode-ready
-    - capabilities.consequence-plan-ready
-    injects:
-    - feedback-rehearsal
   false-planning-decision:
     name: False reserve-planning decision
     description: The listed independently observed assertions are all required. Presentation retains the existing
@@ -145,3 +121,22 @@ events:
     - w35.c3-ready
     injects:
     - procurement-loss
+  peak-schedule-commissioning:
+    name: Peak schedule commissioning
+    description: The listed independently observed assertions are all required. Presentation retains the existing
+      service result and cannot create, repeat, or enlarge the action that produced it.
+    assertions:
+    - w33.c3-ready
+    - w30.c2-ready
+    - capabilities.mode-ready
+    injects:
+    - peak-schedule-commissioning
+  peak-operating-projection:
+    name: Peak operating projection
+    description: The listed independently observed assertions are all required. Presentation retains the existing
+      service result and cannot create, repeat, or enlarge the action that produced it.
+    assertions:
+    - w33.c4-ready
+    - capabilities.w29-plan-ready
+    injects:
+    - peak-operating-projection

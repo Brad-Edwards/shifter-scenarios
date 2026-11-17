@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Cairn Reach HMI
+Comment=Native FUXA site operation
+Exec=firefox-esr --new-window http://fuxa:1881
+Icon=applications-internet
+Terminal=false
+Categories=Development;Education;

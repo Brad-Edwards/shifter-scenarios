@@ -38,7 +38,7 @@ EXPECTED_INTEGRATIONS = {
     "connector-workplace", "workplace-planning", "workplace-identity", "workplace-archive",
     "planning-archive", "planning-integration", "contractor-field-gateway", "approval-renderer",
     "renderer-control-issuer", "integration-historian", "contractor-historian", "control-broker-hmi",
-    "hmi-reservoir", "hmi-distribution", "reservoir-instruments", "instruments-historian",
+    "hmi-reservoir", "reservoir-instruments", "instruments-historian",
     "historian-hmi", "engineering-historian", "engineering-diagnostics",
     "engineering-control-issuer", "diagnostics-estimate-publication",
 }
@@ -273,92 +273,79 @@ def check_process_model(scenario) -> None:
     require(round(commissioning_volume, 3) == 0.012,
             "Commissioning-trace arithmetic is inconsistent")
 
-    demand = [0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.70, 0.65, 0.60, 0.55, 0.50, 0.45]
-    release = [0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.35, 0.30, 0.25, 0.20, 0.15, 0.10]
-    alternate = [d - r for d, r in zip(demand, release)]
-    buffer = 180.0
-    states = [buffer]
-    for d, r, supply in zip(demand, release, alternate):
-        buffer += 300 * (r + supply - d)
-        states.append(buffer)
-    rehearsal_volume = sum(300 * value for value in release) / 1000
-    require(all(120 <= state <= 240 for state in states) and 160 <= states[-1] <= 200,
-            "W33 reference buffer violates bounds")
-    require(all(abs(release[n] - release[n - 1]) <= 0.10 + 1e-9 for n in range(1, len(release))),
-            "W33 reference release violates ramp")
-    require(all(0 <= value <= 0.50 for value in alternate) and round(rehearsal_volume, 2) == 0.81,
-            "W33 reference schedule is inconsistent")
-    require(round((committed - (actual - rehearsal_volume)) * 2400) == 984,
-            "W33 rehearsal liability is inconsistent")
-    require(round(actual - rehearsal_volume, 2) == 11.59, "W34 independent reserve is inconsistent")
+    w33_root = PACK / "build/arwc-ot/challenges/W33"
+    w33 = json.loads((w33_root / "contract.json").read_text())
+    schedule = w33["schedule"]
+    require(w33["schema"] == "arwc.native-ot-challenge/w33-v1"
+            and w33["asset"] == "AST-CRR-017"
+            and w33["instruction"] == "CRR-OP-W33-R1",
+            "W33 native product identity drift")
+    require(schedule == {
+                "schema": "arwc.operating-schedule/v1",
+                "interval_seconds": 300,
+                "interval_count": 12,
+                "planned_demand_m3s": [0.45, 0.50, 0.55, 0.60, 0.65, 0.70,
+                                       0.70, 0.65, 0.60, 0.55, 0.50, 0.45],
+                "initial_buffer_m3": 180.0,
+                "minimum_buffer_m3": 120.0,
+                "maximum_buffer_m3": 240.0,
+                "minimum_final_buffer_m3": 160.0,
+                "maximum_final_buffer_m3": 200.0,
+                "maximum_release_m3s": 0.8,
+                "maximum_alternate_m3s": 0.5,
+                "maximum_step_m3s": 0.1,
+                "minimum_projected_volume_ml": 0.78,
+                "maximum_projected_volume_ml": 0.84,
+            }, "W33 published operating-window contract drift")
+    required_w33_assets = {
+        "participant/operating-window.csv", "participant/schedule-template.json",
+        "participant/scheduling-brief.md", "participant/run-schedule.py",
+        "product_snapshot.sql", "corporate_snapshot.sql", "check_evidence.py",
+    }
+    require(all((w33_root / asset).is_file() for asset in required_w33_assets),
+            "W33 participant or evaluator asset is missing")
+    require(not any((PACK / path).exists() for path in (
+                "build/arwc/runtime/schedule33.py",
+                "build/arwc/runtime/distribution_controller.py",
+                "build/arwc/images/distribution.Dockerfile",
+                "build/arwc/tests/test_w33_live.py",
+            )), "A retired W33 rehearsal asset remains")
 
-    # ARWC-POL1 is one observation-driven policy evaluated against the full
-    # Cartesian product.  This calculation freezes the evaluator semantics and
-    # prevents a hand builder from inventing 27 precomputed schedules.
-    trajectory_count = 0
-    for offset in (-0.05, 0.00, 0.05):
-        for gain in (0.98, 1.00, 1.02):
-            for delay in (20, 40, 60):
-                buffer = 180.0
-                states = [buffer]
-                alternate_actions = []
-                previous = None
-                for index, (base_demand, reservoir_action) in enumerate(zip(demand, release)):
-                    case_demand = base_demand + offset
-                    if index == 0:
-                        delayed_buffer = 180.0
-                    else:
-                        previous_release, previous_alternate, previous_demand = previous
-                        delayed_buffer = buffer - delay * (
-                            gain * previous_release + previous_alternate - previous_demand
-                        )
-                    alternate_action = min(0.50, max(
-                        0.00,
-                        case_demand - reservoir_action + (180.0 - delayed_buffer) / 300,
-                    ))
-                    buffer += 300 * (gain * reservoir_action + alternate_action - case_demand)
-                    states.append(buffer)
-                    alternate_actions.append(alternate_action)
-                    previous = reservoir_action, alternate_action, case_demand
-                actual_volume = sum(300 * gain * value for value in release) / 1000
-                require(all(120 <= state <= 240 for state in states)
-                        and 160 <= states[-1] <= 200,
-                        "ARWC-POL1 trajectory violates buffer bounds")
-                require(all(0 <= value <= 0.50 for value in alternate_actions),
-                        "ARWC-POL1 trajectory violates alternate-supply bounds")
-                require(all(abs(alternate_actions[n] - alternate_actions[n - 1]) <= 0.10 + 1e-9
-                            for n in range(1, len(alternate_actions))),
-                        "ARWC-POL1 trajectory violates alternate-supply ramp")
-                require(0.78 <= actual_volume <= 0.84,
-                        "ARWC-POL1 trajectory violates reservoir-volume bounds")
-                trajectory_count += 1
-    require(trajectory_count == 27, "ARWC-POL1 case inventory is incomplete")
+    # W34 still has its own fixed reporting-checkpoint basis. It is not a W33
+    # winning schedule and it cannot stand in for W33 product evidence.
+    reporting_release = [0.10, 0.15, 0.20, 0.25, 0.30, 0.35,
+                         0.35, 0.30, 0.25, 0.20, 0.15, 0.10]
+    reporting_volume = sum(300 * value for value in reporting_release) / 1000
+    require(round(reporting_volume, 2) == 0.81
+            and round(actual - reporting_volume, 2) == 11.59,
+            "W34 reporting-checkpoint basis is inconsistent")
 
     process_text = (DESIGN / "arwc-process-model.md").read_text()
     for term in (
-        "PLAN-CRR-LOSS-1000", "1.00 ML", "11.40 ML", "USD 1,440", "PRACTICE-OG2-07",
-        "0.03 ML", "0.012 ML", "REH-SCHED-33", "0.81 ML", "27 Cartesian combinations",
-        "USD 984", "REH-REPORT-34", "11.59 ML",
+        "CRR-OP-W30-R1", "0.30 m3/s", "arwc.remote-request/v1", "CRR-OP-W25-R1",
+        "A20/B20", "0.20 m3/s", "CRR-OP-W33-R1", "0.81 ML",
+        "measured commissioning", "one-hour projection", "REH-REPORT-34", "11.59 ML",
     ):
         require(term in process_text, f"Process-model term missing: {term}")
     w30 = scenario.injects["consequences.reservoir-release"].description
-    require(all(term in w30 for term in ("1.00 ML", "11.40 ML", "USD 1,440", "Stage A")),
-            "Live consequence contract drift")
-    w33_fixed = scenario.injects["consequences.costly-release-rehearsal"].description
-    require(all(term in w33_fixed for term in ("REH-SCHED-33", "0.81 ML", "180 m3", "USD 984")),
-            "Fixed-schedule rehearsal consequence drift")
-    w33_feedback = scenario.injects["consequences.feedback-rehearsal"].description
-    require(all(term in w33_feedback for term in ("REH-SCHED-33", "all 27", "No rehearsal value")),
-            "Feedback rehearsal consequence drift")
+    require(all(term in w30 for term in ("CRR-OP-W30-R1", "0.30 m3/s", "A20/B20", "0.20 m3/s")),
+            "Bounded operation contract drift")
+    w33_commissioning = scenario.injects["consequences.peak-schedule-commissioning"].description
+    require(all(term in w33_commissioning for term in ("CRR-OP-W33-R1", "dispatcher", "OpenPLC", "A20/B20")),
+            "Peak schedule commissioning consequence drift")
+    w33_projection = scenario.injects["consequences.peak-operating-projection"].description
+    require(all(term in w33_projection for term in ("twelve settled", "one-hour", "projected", "separately labelled")),
+            "Peak operating projection consequence drift")
     w34 = scenario.injects["consequences.covered-release-rehearsal"].description
     require(all(term in w34 for term in ("REH-REPORT-34", "13.40 ML", "0.81 ML", "11.59 ML")),
             "Reporting rehearsal consequence drift")
     require(scenario.injects["consequences.reservoir-release"].environment == [
-                "nodes.a-control.a-reservoir", "nodes.a-control.a-instruments", "nodes.a-corporate.a-data"],
-            "Live consequence ownership drift")
-    require("nodes.a-control.a-distribution" in
-            scenario.injects["consequences.feedback-rehearsal"].environment,
-            "Feedback rehearsal lost distribution-buffer ownership")
+                "nodes.a-engineering.a-hmi", "nodes.a-engineering.a-historian",
+                "nodes.a-control.a-reservoir", "nodes.a-control.a-instruments"],
+            "Bounded operation ownership drift")
+    require("nodes.a-engineering.a-historian" in
+            scenario.injects["consequences.peak-operating-projection"].environment,
+            "Peak operating projection lost historian ownership")
 
 
 def check_arwc(scenario=None) -> int:

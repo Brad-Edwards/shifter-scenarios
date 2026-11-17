@@ -5,7 +5,8 @@ RUN python3 /tmp/generate_process_artifacts.py flash /tmp/IMG-FIT-204-R6.bin
 FROM python:3.12.11-slim-bookworm
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y ca-certificates util-linux \
+    && apt-get install --no-install-recommends -y ca-certificates util-linux libpq5 \
+    && pip install --no-cache-dir psycopg2-binary \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system --gid 2320 arwc-process-evidence \
     && groupadd --system arwc-instruments \
@@ -16,7 +17,7 @@ RUN apt-get update \
 COPY --chown=arwc-instruments:arwc-instruments --chmod=0640 \
   build/arwc/runtime/process_services.py /opt/process-service/process_services.py
 COPY --chown=arwc-instruments:arwc-instruments --chmod=0640 \
-  build/arwc/runtime/schedule33.py /opt/process-service/schedule33.py
+  build/arwc/runtime/reporting_schedule.py /opt/process-service/reporting_schedule.py
 COPY --from=artifacts --chown=arwc-instruments:arwc-instruments --chmod=0640 \
   /tmp/IMG-FIT-204-R6.bin /tmp/IMG-FIT-204-R6.json /opt/process-service/artifacts/
 COPY --chmod=0750 build/arwc/runtime/process-service-entrypoint.sh /usr/local/sbin/arwc-process-entrypoint

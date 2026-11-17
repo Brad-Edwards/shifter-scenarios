@@ -1,0 +1,18 @@
+# Combine with the base and site files; include historian/compose.yaml when installed.
+services:
+  site-dispatcher:
+    image: arwc-ot-compat-io
+    command: [python, /slice/dispatch/worker.py]
+    hostname: dispatcher
+    restart: unless-stopped
+    user: "65532:65532"
+    read_only: true
+    cap_drop: [ALL]
+    tmpfs: [/tmp]
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: "3"}
+    environment: {PGHOST: postgres, PGDATABASE: historian, PYTHONDONTWRITEBYTECODE: "1"}
+    env_file: [.operator/dispatcher.env]
+    volumes: [".:/slice:ro", "./.operator/dispatcher-pki:/run/pki:ro"]
+    networks: [supervisory]

@@ -1,7 +1,7 @@
 FROM python:3.12.11-slim-bookworm
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y ca-certificates util-linux \
+    && apt-get install --no-install-recommends -y ca-certificates util-linux postgresql-client \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system --gid 2293 arwc-integration \
     && groupadd --system --gid 2321 arwc-ot-read \
@@ -10,7 +10,7 @@ RUN apt-get update \
     && install -d -o arwc-data-bridge -g arwc-data-bridge -m 0750 /opt/integration-gateway
 
 COPY --chown=arwc-data-bridge:arwc-data-bridge --chmod=0640 \
-  build/arwc/runtime/integration_gateway.py /opt/integration-gateway/integration_gateway.py
+  build/arwc/runtime/integration_gateway.py build/arwc/runtime/operating_history.py /opt/integration-gateway/
 COPY --chmod=0750 build/arwc/runtime/data-bridge-entrypoint.sh /usr/local/sbin/arwc-data-bridge-entrypoint
 
 EXPOSE 443

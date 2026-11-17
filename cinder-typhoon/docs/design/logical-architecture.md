@@ -113,7 +113,7 @@ These IDs join the drawings. They identify boundaries rather than new systems.
 | READ-C | `a-connector` → `a-contractor-bridge` | Contractor field-service interface | W13.SESSION permits the gateway work; W14.3 earns the downstream read scope. |
 | ISSUE-M | Earned `a-renderer` worker → `a-control-broker` maintenance issuer | Approval-bound client acquisition | W26.3 supplies the execution position; W26.4 establishes CONTROL. Issuance needs no existing CONTROL. |
 | ISSUE-U | Earned `a-engineering` utility → `a-control-broker` engineering issuer | Privilege-sensitive client acquisition | W28.2 supplies the execution position; W28.3 establishes CONTROL. Issuance needs no existing CONTROL. |
-| CMD | `a-connector` → `a-control-broker` → `a-hmi` live dispatcher → `a-reservoir`, `a-distribution` | Scoped supervisory command service | The W26.4 or W28.3 client is usable from the existing corporate position. Only the dispatcher commands actuators. |
+| CMD | `a-connector` → `a-control-broker` → `a-hmi` live dispatcher → native `a-reservoir` site controller | Scoped supervisory command service | The W26.4 or W28.3 client is usable from the existing corporate position. Only the dispatcher commands the two outlet actuators. |
 | ESTIMATE | Accepted `a-diagnostics` output → `a-data-bridge` publication role → `a-data` planning consumer | Bounded estimate feed | W23.3 or W27.3 controls the accepted estimate; W34 must demonstrate the distinct consumer effect. No raw-measurement or command authority follows. |
 
 READ-I and READ-C are independent routes to the same required OT visibility.

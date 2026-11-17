@@ -38,11 +38,13 @@ realization:
 evidence_requirements:
   c1:
     description: |-
-      Recover the bundle as one disclosure, including its inspection binding. Individual identifiers inside it are not separate work item.
+      Recover the native order identity, Veybridge supplier relationship and AST-CRR-017 asset reference from the permitted order. Match those facts to the trusted product snapshot.
 
-      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Recover the native order identity, Veybridge supplier relationship and AST-CRR-017 asset reference from the permitted order. Match those facts to the trusted product snapshot.
 
-      Evidence sources are `features.a-corporate.a-business`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence collection is read-only. It cannot create a share, change a document,
+      issue a product session, or fabricate a product history entry. Native product
+      state and submitted observations must refer to the same range instance.
     source_refs:
     - features.a-corporate.a-business
     scope: Per-participant in-world evidence; no other participant state.
@@ -73,18 +75,18 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Complete the documented participant path through the named native products. Verify the product-owned
+      record or mutation, the declared denied neighbor or write boundary, unchanged unrelated records, fresh evidence,
+      and retained-volume persistence after an ordinary restart.'
   c2:
     description: |-
-      Produce the correct cross-record association with its source records. Matching display names alone is insufficient.
+      Join the actual Project/work-order reference, native purchase order and supplier job from the annex with the accepted drawing/asset register. Supply the native document identities and source revisions for each independent record.
 
-      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Join the actual Project/work-order reference, native purchase order and supplier job from the annex with the accepted drawing/asset register. Supply the native document identities and source revisions for each independent record.
 
-      Evidence sources are `features.a-corporate.a-business`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence collection is read-only. It cannot create a share, change a document,
+      issue a product session, or fabricate a product history entry. Native product
+      state and submitted observations must refer to the same range instance.
     source_refs:
     - features.a-corporate.a-business
     scope: Per-participant in-world evidence; no other participant state.
@@ -115,18 +117,18 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Complete the documented participant path through the named native products. Verify the product-owned
+      record or mutation, the declared denied neighbor or write boundary, unchanged unrelated records, fresh evidence,
+      and retained-volume persistence after an ordinary restart.'
   c3:
     description: |-
-      Recover the protected maintenance record through the association boundary. The identifier mapping alone does not establish the result.
+      Recover the live restricted inspection record, its Project/asset/revision and the native read share. Establish that a neighboring district record remains denied and that the exposed inspection record cannot be edited by this supplier.
 
-      Required technical proof: The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+      Required technical proof: Recover the live restricted inspection record, its Project/asset/revision and the native read share. Establish that a neighboring district record remains denied and that the exposed inspection record cannot be edited by this supplier.
 
-      Evidence sources are `features.a-corporate.a-business`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+      Evidence collection is read-only. It cannot create a share, change a document,
+      issue a product session, or fabricate a product history entry. Native product
+      state and submitted observations must refer to the same range instance.
     source_refs:
     - features.a-corporate.a-business
     scope: Per-participant in-world evidence; no other participant state.
@@ -157,11 +159,9 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - 'Author checks: Build and test the normal baseline first. Exercise the exact authored path and verify the
-      named result plus its immutable audit. Test wrong authority, wrong object or district, stale revision, replay,
-      another tenant instance, and every declared constraint or unaffected record. Repeat the accepted action according
-      to its idempotence rule and confirm ordinary retries preserve the result. For a joined result, verify each
-      destination observed the same correlation and that removal of any independently owned source prevents completion.'
+    - 'Author checks: Complete the documented participant path through the named native products. Verify the product-owned
+      record or mutation, the declared denied neighbor or write boundary, unchanged unrelated records, fresh evidence,
+      and retained-volume persistence after an ordinary restart.'
 propositions:
   c1:
     description: Recover the bundle as one disclosure, including its inspection binding. Individual identifiers
@@ -363,10 +363,7 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Bundle BND-CRR-OUTLET-17 contains asset AST-CRR-017, outlet group OG-CRR-02, contractor assignment CTR-VEY-204, and inspection INSP-CRR-2026-09-18. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
-
-      The required result is: Recover the bundle as one disclosure, including its inspection binding. Individual identifiers inside it are not separate work item.
+    procedure_basis: Identify the asset and contractor associated with the outlet inspection order.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -381,30 +378,24 @@ action_contracts:
       - features.a-corporate.a-business
     - precondition_id: normal-surface
       precondition_class: target
-      description: |-
-        `a-business` and its `business-workplace` application own this part of **The asset and the contractor**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Bundle BND-CRR-OUTLET-17 contains asset AST-CRR-017, outlet group OG-CRR-02, contractor assignment CTR-VEY-204, and inspection INSP-CRR-2026-09-18.
-
-        Native bindings:
-
-        - `a-corporate.a-business/business-workplace/the-asset-and-the-contractor`
-
-        The private service-loader contract is `content.arwc-a-business.w02-1-the-asset-and-the-contractor`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      description: The native ERPNext supplier order has a real Supplier relationship and an item description carrying
+        its maintenance asset reference. Other supplier orders remain ordinary surrounding records.
       support_refs:
       - features.a-corporate.a-business
-      - content.arwc-a-business.w02-1-the-asset-and-the-contractor
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
-
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        Check the ordinary user and one denied neighboring record through supported
+        interfaces. Retained-volume restarts preserve product state. Explicit native IT
+        reset restores the seeded accounts, documents, history and per-record grants;
+        it does not reset qualified OT.
       support_refs:
       - features.a-corporate.a-business
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the bundle as one disclosure, including its inspection binding. Individual identifiers
-        inside it are not separate work item.
+      description: Recover the native order identity, Veybridge supplier relationship and AST-CRR-017 asset reference
+        from the permitted order. Match those facts to the trusted product snapshot.
       target_refs:
       - features.a-corporate.a-business
       evidence_refs:
@@ -412,9 +403,11 @@ action_contracts:
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Recover the native order identity, Veybridge supplier relationship and AST-CRR-017 asset reference from the permitted order. Match those facts to the trusted product snapshot.
 
-        Evidence sources are `features.a-corporate.a-business`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence collection is read-only. It cannot create a share, change a document,
+        issue a product session, or fabricate a product history entry. Native product
+        state and submitted observations must refer to the same range instance.
       target_refs:
       - features.a-corporate.a-business
       evidence_refs:
@@ -430,10 +423,8 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: |-
-      This card is an exact discovery, interpretation, or reconciliation task rather than an additional privilege flaw. Association table uses work order WO-CRR-4417, contractor job VYB-204-77, asset AST-CRR-017, and inspection INSP-CRR-2026-09-18 with distinct display names. The result must come from the declared source and bindings, not from a duplicate clue or pre-completed record.
-
-      The required result is: Produce the correct cross-record association with its source records. Matching display names alone is insufficient.
+    procedure_basis: Reconcile the internal work order, supplier job and engineering drawing that refer to the same
+      outlet inspection.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -448,30 +439,25 @@ action_contracts:
       - features.a-corporate.a-business
     - precondition_id: normal-surface
       precondition_class: target
-      description: |-
-        `a-business` and its `business-workplace` application own this part of **Three names for one job**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Association table uses work order WO-CRR-4417, contractor job VYB-204-77, asset AST-CRR-017, and inspection INSP-CRR-2026-09-18 with distinct display names.
-
-        Native bindings:
-
-        - `a-corporate.a-business/business-workplace/three-names-for-one-job`
-
-        The private service-loader contract is `content.arwc-a-business.w02-2-three-names-for-one-job`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      description: ERPNext owns the Project and purchase order. Nextcloud owns the annex and engineering register.
+        Their display labels differ; no custom association resolver joins the records for the caller.
       support_refs:
       - features.a-corporate.a-business
-      - content.arwc-a-business.w02-2-three-names-for-one-job
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
-
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        Check the ordinary user and one denied neighboring record through supported
+        interfaces. Retained-volume restarts preserve product state. Explicit native IT
+        reset restores the seeded accounts, documents, history and per-record grants;
+        it does not reset qualified OT.
       support_refs:
       - features.a-corporate.a-business
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Produce the correct cross-record association with its source records. Matching display names
-        alone is insufficient.
+      description: Join the actual Project/work-order reference, native purchase order and supplier job from the
+        annex with the accepted drawing/asset register. Supply the native document identities and source revisions
+        for each independent record.
       target_refs:
       - features.a-corporate.a-business
       evidence_refs:
@@ -479,9 +465,11 @@ action_contracts:
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Join the actual Project/work-order reference, native purchase order and supplier job from the annex with the accepted drawing/asset register. Supply the native document identities and source revisions for each independent record.
 
-        Evidence sources are `features.a-corporate.a-business`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence collection is read-only. It cannot create a share, change a document,
+        issue a product session, or fabricate a product history entry. Native product
+        state and submitted observations must refer to the same range instance.
       target_refs:
       - features.a-corporate.a-business
       evidence_refs:
@@ -497,10 +485,8 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: |-
-      The authored condition is **association-bound object authorization omission**. Maintenance lookup checks the caller's assignment against the supplied association row rather than the resolved record; association ASC-CRR-4417-ALT resolves protected record MR-CRR-4417-R6. The hand build must preserve every named version, encoding, bound, validation order, identity, and unaffected field; substituting a generic vulnerable service would change the task.
-
-      The required result is: Recover the protected maintenance record through the association boundary. The identifier mapping alone does not establish the result.
+    procedure_basis: Find the engineering inspection record exposed through the supplier job association and establish
+      the extent of that access.
     realization_profile: backend-declared
     fidelity_claim: The exact initial state, versions, formats, validation order, authorization decisions, process
       quantities, denial cases, persistent state, and independently owned evidence are required. Implementation
@@ -515,30 +501,26 @@ action_contracts:
       - features.a-corporate.a-business
     - precondition_id: normal-surface
       precondition_class: target
-      description: |-
-        `a-business` and its `business-workplace` application own this part of **The record behind the wrong association**. Normal behavior applies the declared identity, tenant, object, revision, and process bindings and returns or changes only the caller-scoped object. The exact initial state is: Maintenance lookup checks the caller's assignment against the supplied association row rather than the resolved record; association ASC-CRR-4417-ALT resolves protected record MR-CRR-4417-R6.
-
-        Native bindings:
-
-        - `a-corporate.a-business/business-workplace/the-record-behind-the-wrong-association`
-
-        The private service-loader contract is `content.arwc-a-business.w02-3-the-record-behind-the-wrong-association`. It freezes accepted and denied requests, state transition, persistence, and evidence; it does not seed a successful result.
+      description: A real ERPNext read DocShare mistakenly includes the restricted Cairn Reach engineering Task
+        in Jules's accessible records. A separate River engineering Task has no supplier share; the shared inspection
+        Task grants no write permission.
       support_refs:
       - features.a-corporate.a-business
-      - content.arwc-a-business.w02-3-the-record-behind-the-wrong-association
     - precondition_id: scope-and-persistence
       precondition_class: realization
       description: |-
-        The result remains local evidence unless a downstream workflow explicitly names it. Tenant-scoped mutations, sessions that have not expired, generated artifacts, and audits persist across ordinary retries and later sessions. Initial immutable records remain unchanged unless the named route explicitly permits a field-level revision. Infrastructure recovery and submission adjudication are external to the SDL.
-
-        The behavior is limited to the named fictional objects and bounded service operation. It provides no general shell, arbitrary network target, unrelated district access, real process interface, or authority not expressly declared by the card.
+        Check the ordinary user and one denied neighboring record through supported
+        interfaces. Retained-volume restarts preserve product state. Explicit native IT
+        reset restores the seeded accounts, documents, history and per-record grants;
+        it does not reset qualified OT.
       support_refs:
       - features.a-corporate.a-business
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the protected maintenance record through the association boundary. The identifier mapping
-        alone does not establish the result.
+      description: Recover the live restricted inspection record, its Project/asset/revision and the native read
+        share. Establish that a neighboring district record remains denied and that the exposed inspection record
+        cannot be edited by this supplier.
       target_refs:
       - features.a-corporate.a-business
       evidence_refs:
@@ -546,9 +528,11 @@ action_contracts:
     - effect_id: verified-evidence
       effect_class: evidence_effect
       description: |-
-        The owning service writes an immutable audit for the accepted request and result. Caller-supplied output, a local copy, or knowledge of an identifier is not sufficient. Completion is evaluated from fresh service-owned evidence after the action. It cannot issue the identity, create the mutation, move a simulated actuator, or fabricate a downstream acceptance needed to prove itself.
+        Recover the live restricted inspection record, its Project/asset/revision and the native read share. Establish that a neighboring district record remains denied and that the exposed inspection record cannot be edited by this supplier.
 
-        Evidence sources are `features.a-corporate.a-business`. A wrong identifier, stale revision, replayed one-time value, different checkpoint, or cross-tenant artifact is rejected.
+        Evidence collection is read-only. It cannot create a share, change a document,
+        issue a product session, or fabricate a product history entry. Native product
+        state and submitted observations must refer to the same range instance.
       target_refs:
       - features.a-corporate.a-business
       evidence_refs:

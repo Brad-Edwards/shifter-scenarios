@@ -1,0 +1,82 @@
+{
+  "schema": "arwc.operating-site-integration/v1",
+  "compose_project": "arwc-ot-compat",
+  "components": [
+    "site",
+    "hmi",
+    "historian",
+    "dispatch",
+    "workstation"
+  ],
+  "exchange": {
+    "network": "172.29.62.0/29",
+    "internal": true,
+    "members": {
+      "postgres": "172.29.62.2",
+      "a-data-bridge": "172.29.62.3"
+    },
+    "postgres_port": 5432,
+    "sql_role": "dmz_reader",
+    "view": "public.dmz_process_history",
+    "series": [
+      "level_m",
+      "usable_volume_ml",
+      "total_flow_m3s"
+    ],
+    "tls": "verify-full",
+    "ip_forward": false
+  },
+  "corporate_api": {
+    "service": "a-data-bridge",
+    "path": "/api/operating-history",
+    "method": "GET",
+    "authentication": "HTTPS Basic authentication; dedicated read-only operating-reader identity",
+    "lookback_seconds": 300,
+    "max_rows": 900,
+    "arbitrary_sql": false,
+    "controller_operations": false,
+    "port": 443
+  },
+  "provenance": [
+    "asset",
+    "source_time",
+    "collected_time",
+    "ingested_at",
+    "tag",
+    "value",
+    "unit",
+    "process_quality",
+    "origin"
+  ],
+  "participant_access": {
+    "desktop_container": "cinder-arwc-ot-engineering",
+    "username": "fieldlink",
+    "rdp_port": 3389,
+    "delivery": "BigRAE native preconfigured-machine-host participant password and RDP/VPN contracts",
+    "legacy_connector_ssh": "preserved"
+  },
+  "boundaries": {
+    "legacy_completion_dependency": false,
+    "legacy_challenge_migration": false,
+    "new_adapter_access_service": false,
+    "controller_route_from_corporate": false,
+    "new_scenario_incidents": false
+  },
+  "capacity": {
+    "initial_machine_type": "e2-standard-4",
+    "initial_disk_gib": 80,
+    "measure_with_existing_it": true,
+    "record": [
+      "cpu",
+      "ram",
+      "disk_growth",
+      "desktop_compiler_load",
+      "scan_timing"
+    ],
+    "container_logging": {
+      "driver": "json-file",
+      "max_size": "10m",
+      "max_file": "3"
+    }
+  }
+}

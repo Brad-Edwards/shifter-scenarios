@@ -37,13 +37,9 @@ REQUIRED_ROUTES = {
     "process.diagnostic-program-legacy": ("POST", "https://process-view.arwc.test/api/diagnostic-programs/legacy"),
     "process.estimator-result": ("POST", "https://process-view.arwc.test/api/estimator-results/current"),
     "process.estimator-inputs": ("POST", "https://process-view.arwc.test/api/estimator-tasks/current/inputs"),
-    "process.forecast": ("POST", "https://process-view.arwc.test/api/forecasts/current"),
     "process.maintenance-record": ("POST", "https://process-view.arwc.test/api/maintenance-records/current"),
     "process.maintenance-record-update": ("POST", "https://process-view.arwc.test/api/maintenance-records/current"),
     "process.replay-divergence": ("POST", "https://process-view.arwc.test/api/replay-sessions/current/divergence"),
-    "process.schedule-window": ("GET", "https://process-view.arwc.test/api/schedule-windows/current"),
-    "process.schedule-window-submit": ("POST", "https://process-view.arwc.test/api/schedule-windows/current"),
-    "process.sealed-project": ("GET", "https://process-view.arwc.test/api/sealed-projects/current/note"),
     "process.sealed-project-open": ("POST", "https://process-view.arwc.test/api/sealed-projects/current"),
     "process.signature-record": ("POST", "https://process-view.arwc.test/api/signature-records/current"),
     "process.signature-record-interpretation": ("POST", "https://process-view.arwc.test/api/signature-records/current/interpretation"),
@@ -148,17 +144,9 @@ class ClientReferenceGraphLive(unittest.TestCase):
                 "template": "https://process-view.arwc.test/api/signature-programs/current/reproductions",
             },
         )
-        self.assertEqual(
-            routes["process.reporting-checkpoint-submit"],
-            {
-                "key": "process.reporting-checkpoint-submit",
-                "method": "POST",
-                "template": "https://process-view.arwc.test/api/reporting-checkpoints/current",
-            },
-        )
         templates = {route["template"] for route in routes.values()}
         self.assertNotIn("https://process-view.arwc.test/api/integrity-verifier", templates)
-        self.assertNotIn("https://planning-data.arwc.test/api/reporting-checkpoints/current", templates)
+        self.assertNotIn("https://process-view.arwc.test/api/reporting-checkpoints/current", templates)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,33 @@
+# Combine with ../compose.yaml and ../site/compose.yaml on the development VM.
+x-history-logging: &history-logging
+  driver: json-file
+  options: {max-size: 10m, max-file: "3"}
+services:
+  telegraf:
+    logging: *history-logging
+  history-maintenance:
+    logging: *history-logging
+    image: arwc-ot-compat-io
+    command: [python, /slice/historian/maintain.py]
+    restart: unless-stopped
+    user: "65532:65532"
+    read_only: true
+    cap_drop: [ALL]
+    tmpfs: [/tmp]
+    environment: {PGHOST: postgres, PGDATABASE: historian, PYTHONDONTWRITEBYTECODE: "1"}
+    env_file: [.operator/history-maint.env]
+    volumes: [".:/slice:ro"]
+    networks: [supervisory]
+  alarm-export:
+    logging: *history-logging
+    image: arwc-ot-compat-io
+    command: [python, /slice/historian/export_alarms.py]
+    restart: unless-stopped
+    user: "65532:65532"
+    read_only: true
+    cap_drop: [ALL]
+    tmpfs: [/tmp]
+    environment: {PGHOST: postgres, PGDATABASE: historian, PYTHONDONTWRITEBYTECODE: "1"}
+    env_file: [.operator/history-export.env]
+    volumes: [".:/slice:ro"]
+    networks: [supervisory]
