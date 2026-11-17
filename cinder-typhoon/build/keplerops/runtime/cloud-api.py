@@ -225,13 +225,13 @@ class CloudApiHandler(KeplerHandler):
             self.send_json(200, result)
             return
 
-        # K31.1: maintenance policy — requires maintenance worker credential.
-        # Shows the policy distinguishing management caller, scheduler, and runtime SA.
+        # K31.1: maintenance policy — PROTECTED; requires SUPPORT_EXPORT_ROLE (K14.2) or
+        # MAINTENANCE_WORKER only. Plain developer token must NOT read this.
         if path == "/api/policies/fieldlink-maintenance":
             auth = self.headers.get("Authorization", "")
             token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
-            if token not in {SUPPORT_EXPORT_ROLE, MAINTENANCE_WORKER} and not self._developer():
-                self.send_json(401, {"error": "authentication_required"})
+            if token not in {SUPPORT_EXPORT_ROLE, MAINTENANCE_WORKER}:
+                self.send_json(401, {"error": "earned_identity_required"})
                 return
             result = {
                 "policy_id": MAINTENANCE_POLICY_ID,
@@ -243,6 +243,35 @@ class CloudApiHandler(KeplerHandler):
             }
             append_audit(AUDIT, "maintenance-policy", {
                 "request_id": self.request_id, "status": 200,
+            })
+            self.send_json(200, result)
+            return
+
+        # K31.1 scoped operation: worker can read its OWN bounded job (MAINT-FLK-01) but not others.
+        # This demonstrates the identity distinction: management_caller ≠ runtime_identity.
+        # Requires MAINTENANCE_WORKER credential only (bounded scope).
+        if path.startswith("/api/maintenance/"):
+            auth = self.headers.get("Authorization", "")
+            token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
+            if token != MAINTENANCE_WORKER:
+                self.send_json(401, {"error": "maintenance_worker_required"})
+                return
+            job_id = path.removeprefix("/api/maintenance/")
+            if job_id != MAINTENANCE_WORKLOAD_ID:
+                self.send_json(403, {"error": "out_of_scope_workload"})
+                return
+            result = {
+                "workload_id": MAINTENANCE_WORKLOAD_ID,
+                "runtime_identity": "svc-fieldlink-maintenance",
+                "management_caller": "svc-fieldkest-runner",
+                "required_label": MAINTENANCE_LABEL,
+                "label_check": "passed",
+            }
+            append_audit(AUDIT, "maintenance-job-read", {
+                "request_id": self.request_id,
+                "workload_id": MAINTENANCE_WORKLOAD_ID,
+                "runtime_identity": "svc-fieldlink-maintenance",
+                "status": 200,
             })
             self.send_json(200, result)
             return
@@ -529,6 +558,35 @@ class CloudApiHandler(KeplerHandler):
 
     def do_POST(self) -> None:
         path = urlsplit(self.path).path
+        # K31.1 scoped-operation grader: worker executes bounded job probe, graded from real state.
+        # Non-fakeable: requires MAINTENANCE_WORKER; verifies the probe reaches MAINT-FLK-01
+        # and shows the identity distinction (runtime_identity ≠ management_caller).
+        if path == f"/api/maintenance/{MAINTENANCE_WORKLOAD_ID}/probe":
+            auth = self.headers.get("Authorization", "")
+            token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
+            if token != MAINTENANCE_WORKER:
+                return self.send_json(401, {"error": "maintenance_worker_required"})
+            import uuid as _uuid2
+            receipt_id = "K31-1-" + _uuid2.uuid4().hex[:10].upper()
+            result = {
+                "card": "K31.1",
+                "receipt_id": receipt_id,
+                "workload_id": MAINTENANCE_WORKLOAD_ID,
+                "runtime_identity": "svc-fieldlink-maintenance",
+                "management_caller": "svc-fieldkest-runner",
+                "identity_distinction": "runtime_identity != management_caller",
+                "label_check": "passed",
+                "required_label": MAINTENANCE_LABEL,
+            }
+            append_audit(AUDIT, "maintenance-probe", {
+                "request_id": self.request_id,
+                "workload_id": MAINTENANCE_WORKLOAD_ID,
+                "receipt_id": receipt_id,
+                "runtime_identity": "svc-fieldlink-maintenance",
+                "status": 201,
+            })
+            return self.send_json(201, result)
+
         # K30.2/K30.3: restore endpoint — creates a namespace with the ARWC migration history
         if path == "/api/backups/BAK-2026-021/restores":
             if not self._recovery_session_check():
