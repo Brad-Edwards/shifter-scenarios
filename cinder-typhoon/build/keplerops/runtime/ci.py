@@ -154,6 +154,8 @@ class CIHandler(KeplerHandler):
             self._job_submit()
         elif path == "/api/rehearsals/connector":
             self._connector_rehearsal()
+        elif path == "/api/rehearsals/k29-3-verify":
+            self._k29_3_verify()
         else:
             self.send_json(404, {"error": "not_found"})
 
@@ -478,6 +480,72 @@ class CIHandler(KeplerHandler):
             (RESULTS / f"{rehearsal_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
         append_audit(AUDIT, "rehearsals", {"request_id": self.request_id, "principal": USERNAME, "rehearsal_id": rehearsal_id, "consumer": consumer, "package": result["package"], "version": version, "package_sha256": result["package_sha256"], "output_sha256": sha256_bytes(canonical_bytes(output)), "state": "success", "status": 202})
         self.send_json(202, result)
+
+    def _k29_3_verify(self) -> None:
+        """K29.3 grader: verify signed compatible consumed release.
+
+        Takes {release_id, arwc_rehearsal_id, reference_rehearsal_id}.
+        Checks:
+        - ARWC rehearsal (arwc-release-v3): output.assessment == "calibration-review"
+        - Reference rehearsal (rillhaven-reference-v2): output.assessment == "reference-compatible"
+        - Both rehearsals reference the same version
+        """
+        try:
+            body = self.read_json(131_072)
+            release_id = body.get("release_id", "")
+            arwc_id = body.get("arwc_rehearsal_id", "")
+            ref_id = body.get("reference_rehearsal_id", "")
+            if not (release_id and arwc_id and ref_id):
+                raise ValueError("release_id_arwc_id_reference_id_required")
+        except (ValueError, OverflowError, UnicodeDecodeError, json.JSONDecodeError):
+            self.send_json(422, {"error": "invalid_k29_3_submission"})
+            return
+        # Load rehearsal results
+        arwc_path = RESULTS / f"{arwc_id}.json"
+        ref_path = RESULTS / f"{ref_id}.json"
+        if not arwc_path.is_file() or not ref_path.is_file():
+            self.send_json(404, {"error": "rehearsal_not_found"})
+            return
+        arwc = json.loads(arwc_path.read_text())
+        ref = json.loads(ref_path.read_text())
+        # Verify ARWC rehearsal
+        if arwc.get("consumer") != "arwc-release-v3":
+            self.send_json(422, {"error": "arwc_consumer_mismatch"})
+            return
+        if arwc.get("state") != "success" or arwc.get("output", {}).get("assessment") != "calibration-review":
+            self.send_json(422, {"error": "arwc_assessment_mismatch"})
+            return
+        # Verify reference rehearsal
+        if ref.get("consumer") != "rillhaven-reference-v2":
+            self.send_json(422, {"error": "reference_consumer_mismatch"})
+            return
+        if ref.get("state") != "success" or ref.get("output", {}).get("assessment") != "reference-compatible":
+            self.send_json(422, {"error": "reference_assessment_mismatch"})
+            return
+        # Verify both use the same version
+        if arwc.get("version") != ref.get("version"):
+            self.send_json(422, {"error": "version_mismatch_between_rehearsals"})
+            return
+        version = arwc["version"]
+        receipt_id = "K29-3-" + uuid.uuid4().hex[:10].upper()
+        result = {
+            "schema": "fieldkest.k29-3-receipt/v1",
+            "receipt_id": receipt_id,
+            "card": "K29.3",
+            "release_id": release_id,
+            "version": version,
+            "arwc_rehearsal_id": arwc_id,
+            "reference_rehearsal_id": ref_id,
+            "arwc_assessment": "calibration-review",
+            "reference_assessment": "reference-compatible",
+        }
+        (RESULTS / f"{receipt_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+        append_audit(AUDIT, "k29-3-verify", {
+            "request_id": self.request_id, "principal": USERNAME,
+            "receipt_id": receipt_id, "release_id": release_id,
+            "version": version, "status": 201,
+        })
+        self.send_json(201, result)
 
 
 def main() -> None:
