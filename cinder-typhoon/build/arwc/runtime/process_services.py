@@ -2210,20 +2210,44 @@ class Handler(BaseHTTPRequestHandler):
             if existing.get("audit_id") == correlation: self.send_json(201, existing)
             else: self.send_json(409, {"error": "reporting handover already recorded under another correlation"})
             return
-        reservoir = {
-            "audit_id": correlation,
-            "record": {"reserve_before_ml": 12.4, "reserve_after_ml": 11.59},
-        }
+        # Read the actual reserve level from the OT historian (FIT-CRR-204A/B feed UsableVolumeML).
+        OT_HISTORIAN = "172.29.63.22"
+        OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+        try:
+            import psycopg2 as _pg
+            ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
+                             user="reader", password=OT_READER_PASS, connect_timeout=5)
+            ot.autocommit = True
+            with ot.cursor() as cur:
+                cur.execute("""
+                    SELECT ph.value
+                    FROM public.process_history ph
+                    JOIN public.historian_tag_catalog c ON c.series = ph.tag
+                    WHERE ph.asset = 'AST-CRR-017'
+                      AND c.variable = 'UsableVolumeML'
+                      AND ph.process_quality = 'Good'
+                    ORDER BY ph.source_time DESC
+                    LIMIT 1
+                """)
+                row = cur.fetchone()
+            ot.close()
+        except (OSError, ImportError, Exception):
+            self.send_json(409, {"error": "OT historian unavailable for instrument reserve reading"}); return
+        if row is None:
+            self.send_json(409, {"error": "no UsableVolumeML reading in OT historian"}); return
+        reserve_before_ml = round(float(row[0]), 6)
+        reserve_after_ml = round(reserve_before_ml - calculated["reservoir_volume_ml"], 6)
         record = {"record_id": "INST-REPORT-CRR-34", "revision": 1,
                   "request_correlation": correlation, "checkpoint": "REH-REPORT-34",
                   "instruments": ["FIT-CRR-204A", "FIT-CRR-204B"],
                   "measured_release_ml": calculated["reservoir_volume_ml"],
-                  "reserve_before_ml": 12.4, "reserve_after_ml": 11.59,
+                  "reserve_before_ml": reserve_before_ml, "reserve_after_ml": reserve_after_ml,
                   "raw_process_observations_changed": False, "live_instrument_history_changed": False}
+        reservoir_observation = {"reserve_before_ml": reserve_before_ml, "reserve_after_ml": reserve_after_ml}
         response = {"audit_id": str(correlation), "instrument_audit_id": append_audit(
             "reporting-handover-created", record, str(correlation)),
-            "reservoir_audit_id": reservoir["audit_id"], "record": record,
-            "reservoir_observation": reservoir["record"]}
+            "reservoir_audit_id": str(correlation), "record": record,
+            "reservoir_observation": reservoir_observation}
         state["reporting_handover_observed"] = True; state["reporting_handover_response"] = response; save_state(state)
         atomic_json(EVIDENCE / "instruments" / "reporting-handover.json", record)
         self.send_json(201, response)

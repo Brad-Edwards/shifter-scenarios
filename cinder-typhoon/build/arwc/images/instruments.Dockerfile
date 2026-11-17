@@ -5,7 +5,8 @@ RUN python3 /tmp/generate_process_artifacts.py flash /tmp/IMG-FIT-204-R6.bin
 FROM python:3.12.11-slim-bookworm
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y ca-certificates util-linux \
+    && apt-get install --no-install-recommends -y ca-certificates util-linux libpq5 \
+    && pip install --no-cache-dir psycopg2-binary \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system --gid 2320 arwc-process-evidence \
     && groupadd --system arwc-instruments \

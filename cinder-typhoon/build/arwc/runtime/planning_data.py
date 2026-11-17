@@ -379,7 +379,7 @@ class Handler(BaseHTTPRequestHandler):
         context = ssl.create_default_context(cafile="/run/arwc-tls/ca.crt")
         context.check_hostname = False
         try:
-            response = urllib.request.urlopen(outbound, context=context, timeout=5)
+            response = urllib.request.urlopen(outbound, context=context, timeout=20)
         except urllib.error.HTTPError as error:
             response = error
         except OSError:
@@ -946,17 +946,26 @@ class Handler(BaseHTTPRequestHandler):
             "correlation": correlation, "request": request, "evaluation": evaluated,
         })
         instrument = observed.get("record")
+        inst_release = instrument.get("measured_release_ml") if isinstance(instrument, dict) else None
+        inst_reserve_before = instrument.get("reserve_before_ml") if isinstance(instrument, dict) else None
+        inst_reserve_after = instrument.get("reserve_after_ml") if isinstance(instrument, dict) else None
         if (status != 201 or observed.get("audit_id") != correlation or not isinstance(instrument, dict) or
                 instrument.get("record_id") != "INST-REPORT-CRR-34" or
-                instrument.get("measured_release_ml") != 0.81 or instrument.get("reserve_after_ml") != 11.59):
+                inst_release != 0.81 or
+                not isinstance(inst_reserve_before, (int, float)) or
+                not isinstance(inst_reserve_after, (int, float)) or
+                inst_reserve_after >= 13.4):
             self.send_json(status if status in {403, 409} else 409, observed); return
+        truth_difference = round(13.4 - float(inst_reserve_after), 6)
         record = {"record_id": "REPORT-CRR-34", "revision": 1, "request_correlation": correlation,
                   "checkpoint": "REH-REPORT-34", "interval": "ALLOC-2026-DP3",
                   "view": "VIEW-CRR-34", "decision_record": "DECISION-CRR-34",
                   "ordinary_decision": "ALLOC-HOLD-R3", "decision": "ALLOC-EXPAND-R2",
                   "planning_handover_reserve_ml": 13.4, "report_consistency": "accepted",
-                  "independent_release_ml": 0.81, "independent_reserve_before_ml": 12.4,
-                  "independent_reserve_after_ml": 11.59, "reported_truth_difference_ml": 1.81,
+                  "independent_release_ml": float(inst_release),
+                  "independent_reserve_before_ml": float(inst_reserve_before),
+                  "independent_reserve_after_ml": float(inst_reserve_after),
+                  "reported_truth_difference_ml": truth_difference,
                   "schedule_sha256": evaluated["schedule_sha256"],
                   "live_process_state_changed": False, "prior_evidence_changed": False}
         response = {"audit_id": append_audit("reporting-handover-created", record, correlation),
