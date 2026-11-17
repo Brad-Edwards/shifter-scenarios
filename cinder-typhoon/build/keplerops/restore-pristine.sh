@@ -19,6 +19,7 @@ docker compose down --volumes --remove-orphans
 rm -f -- "$operator/native-platform/assistant-company-seeded" \
   "$operator/native-platform/assistant-k21-seeded" \
   "$operator/native-platform/assistant-k21-config.json" \
+  "$operator/native-ci/k06-ci-seeded" \
   "$operator/native-platform/objects-company-seeded" \
   "$operator/native-platform/objects-company-seeded-v2" \
   "$operator/native-platform/exports/company-history.dump" \
@@ -48,6 +49,7 @@ bash native-platform/import-model.sh
 bash native-platform/cache-embedder.sh
 python3 native-platform/seed-assistant.py --operator-dir "$operator"
 python3 native-platform/seed-k21-assistant.py --operator-dir "$operator"
+python3 native-ci/seed-k06-ci.py --operator-dir "$operator"
 bash native-platform/seed-objects.sh
 docker compose up --no-deps --force-recreate k-dev-seed
 docker compose up -d --no-deps k-dev

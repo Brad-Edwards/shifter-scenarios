@@ -227,6 +227,7 @@ services:
       - source-tools.keplerops.test:10.77.51.20
       - packages.keplerops.test:10.77.51.30
       - ci.keplerops.test:10.77.51.40
+      - review.keplerops.test:10.77.51.41
       - preview.keplerops.test:10.77.51.50
       - support.keplerops.test:10.77.50.11
       - tickets.keplerops.test:10.77.50.11
@@ -326,6 +327,8 @@ services:
       - runner-socket:/run/fieldkest-runner
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
       - ci-rowan-workspace:/var/lib/fieldkest-ci/workspaces/rowan
+      - ci-runs:/var/lib/fieldkest-ci/runs
+      - ci-artifacts:/var/lib/fieldkest-ci/artifacts
     extra_hosts:
       - "cloud-api.keplerops.test:10.77.50.11"
       - "source.keplerops.test:10.77.51.20"
@@ -1062,6 +1065,8 @@ volumes:
   ci-audit: {name: cinder-keplerops-ci-audit}
   ci-results: {name: cinder-keplerops-ci-results}
   ci-rowan-workspace: {name: cinder-keplerops-ci-rowan-workspace}
+  ci-runs: {name: cinder-keplerops-ci-runs}
+  ci-artifacts: {name: cinder-keplerops-ci-artifacts}
   registry-audit: {name: cinder-keplerops-registry-audit}
   registry-results: {name: cinder-keplerops-registry-results}
   registry-published: {name: cinder-keplerops-registry-published}
