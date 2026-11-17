@@ -44,7 +44,7 @@ Managed by `docker compose` under `/opt/arwc-ot-compat`. Containers: FUXA, OpenP
 
 ---
 
-## Reset reproducibility — W01 through W16
+## Reset reproducibility—W01 through W16
 
 ### What a native IT reset (`manage.sh reset cinder-arwc-native`) reproduces
 
@@ -59,15 +59,15 @@ All cards that depend only on the native IT stack are reproduced by the seed scr
 | W05 | Keycloak identity (`seed-identity`), Nextcloud starter docs | Yes |
 | W06 | Nextcloud OAuth record (`seed-archive`), Metabase session | Yes |
 | W07 | Metabase questions (`seed-reports`), `district_allocation_adjustment` in corporate-db (`planning.sql`), `arwc_reconcile_copy` function | Yes |
-| W08–W10 | (not yet implemented) | — |
+| W08–W10 | (not yet implemented) |—|
 | W11 | planning_data cleanup (no seed needed, code only) | Yes |
 | W12 | ERPNext `current_collection` table (`planning.sql`), Gitea `retained-collectors` repo (`seed-archive`) | Yes |
 | W13–W15 | ERPNext Events and Tasks (`seed-portal.py`), Nextcloud files (`seed-portal.py`), contractor/approval service configs (`manage.sh` and compose volumes) | Yes |
-| W16 | `retained_archive.py` with `_populate_sample_slots()` (loads `IMG-FIT-204-R6.bin`) | Partial — see gap below |
+| W16 | `retained_archive.py` with `_populate_sample_slots()` (loads `IMG-FIT-204-R6.bin`) | Partial—see gap below |
 
 ### Known gaps
 
-**Gap 1 — `IMG-FIT-204-R6.bin` not in machine image or seed scripts.**
+**Gap 1—`IMG-FIT-204-R6.bin` not in machine image or seed scripts.**
 
 This file is required for the W16 sequencer (`_populate_sample_slots()` in `retained_archive.py`). It lives at:
 
@@ -87,7 +87,7 @@ The file's birth date on the VM (2026-11-15) is after the machine image was capt
 
 **Fix required**: Add `IMG-FIT-204-R6.bin` to the machine image, or add a step in `seed-archive` that places this file in the operator instruments directory. The supervisor must decide which.
 
-**Gap 2 — `cinder-arwc` application stack not started by reset.**
+**Gap 2—`cinder-arwc` application stack not started by reset.**
 
 The `a-archive`, `a-contractors`, and `a-approval` containers are not managed by `manage.sh reset`. After a native IT reset or VM rebuild, those containers must be started manually with their full `docker run` arguments (including volumes, networks, and the IMG mount). Without them, W12–W16 have no service.
 
