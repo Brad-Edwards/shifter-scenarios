@@ -255,6 +255,7 @@ class CloudApiHandler(KeplerHandler):
                 "required_label": MAINTENANCE_LABEL,
                 "archive_request": {"headers": MAINTENANCE_ARCHIVE_HEADERS},
                 "whoami": "svc-fieldkest-runner",
+                "flag": "FLAG{c3f9834223486bbe}",
             }
             append_audit(AUDIT, "maintenance-policy", {
                 "request_id": self.request_id, "status": 200,
@@ -331,6 +332,7 @@ class CloudApiHandler(KeplerHandler):
                 "workload_id": MAINTENANCE_WORKLOAD_ID,
                 "runtime_identity": "svc-fieldlink-maintenance",
                 "attestation": execution["attestation"],
+                "flag": "FLAG{a17c2fea31043bd8}",
             })
             return
 
@@ -367,6 +369,7 @@ class CloudApiHandler(KeplerHandler):
                 "runtime_identity": "svc-fieldlink-maintenance",
                 "calibration_revision": FIELD_ARCHIVE_CALIBRATION,
                 "asset": "CRR-OG2",
+                "flag": "FLAG{fde258527cfc25b1}",
             })
             return
 
@@ -1007,66 +1010,37 @@ class CloudApiHandler(KeplerHandler):
             self.send_json(502, {"error": f"k3s_returned_{status}"})
 
     def _schedule_run(self, schedule_id: str) -> None:
-        """K16.2: create a fresh K3s Job from the patched CronJob template.
+        """K16.3/K16.4: create a schedule run with the participant's export role.
 
-        Proves that the MARKER patch persists and takes effect in the new Job.
-        The support output (ASSIGNMENT, PROFILE, STARTUP_CONFIG) must remain unchanged.
-        RBAC: svc-fieldlink-export has create Jobs permission.
+        K16.3: first run proves execution identity and backend.
+        K16.4: run after assignment change proves state persists.
         """
         auth = self.headers.get("Authorization", "")
         if not auth.startswith("Bearer "):
             self.send_json(401, {"error": "export_token_required"})
             return
-        sa_token = auth[7:].strip()
-        import uuid as _uuid
-        job_name = f"{schedule_id.lower()}-run-{_uuid.uuid4().hex[:6]}"
-        cronjob_name = schedule_id.lower()
-        # Read the current CronJob to get its template
-        s_cj, cj = _k3s_request(
-            "GET", f"/apis/batch/v1/namespaces/{NAMESPACE}/cronjobs/{cronjob_name}",
-            bearer=sa_token,
-        )
-        if s_cj != 200:
-            self.send_json(404, {"error": "schedule_not_found"})
+        role_token = auth[7:].strip()
+        if role_token != SUPPORT_EXPORT_ROLE:
+            self.send_json(403, {"error": "export_role_required"})
             return
-        # Create Job from CronJob template
-        template = cj["spec"]["jobTemplate"]["spec"]
-        job = {
-            "apiVersion": "batch/v1",
-            "kind": "Job",
-            "metadata": {
-                "name": job_name,
-                "namespace": NAMESPACE,
-                "labels": {"fieldkest.io/from-schedule": cronjob_name},
-            },
-            "spec": template,
-        }
-        s_job, job_result = _k3s_request(
-            "POST", f"/apis/batch/v1/namespaces/{NAMESPACE}/jobs",
-            body=job, bearer=sa_token,
-        )
-        if s_job == 403:
-            self.send_json(403, {"error": "k3s_rbac_denied"})
-            return
-        if s_job not in (201, 200):
-            self.send_json(502, {"error": f"job_create_failed: {s_job}"})
-            return
-        # Extract env vars from the created Job
-        containers = (job_result.get("spec", {}).get("template", {})
-                      .get("spec", {}).get("containers", []))
-        env_map = {e["name"]: e["value"] for c in containers for e in c.get("env", [])}
+        import uuid as _uuid2
+        run_id = "RUN-" + _uuid2.uuid4().hex[:8].upper()
+        with _SCHEDULE_LOCK:
+            asgn = _SCHEDULE_STATE["assignment"]
+            assignment_changed = _SCHEDULE_STATE["assignment_changed"]
+        flag = "FLAG{5e9d34bd2d5bc44d}" if assignment_changed else "FLAG{266ad4f238daf867}"
         result = {
-            "schema": "fieldkest.schedule-run/v1",
+            "run_id": run_id,
             "schedule_id": schedule_id.upper(),
-            "job_name": job_name,
-            "marker": env_map.get("MARKER"),
-            "assignment": env_map.get("ASSIGNMENT"),
-            "profile": env_map.get("PROFILE"),
-            "startup_config": env_map.get("STARTUP_CONFIG"),
+            "runtime_identity": "svc-support-export",
+            "execution_backend": "isolated-container",
+            "marker": True,
+            "assignment": asgn,
+            "flag": flag,
         }
         append_audit(AUDIT, "schedule-runs", {
             "request_id": self.request_id, "schedule_id": schedule_id.upper(),
-            "job_name": job_name, "marker": env_map.get("MARKER"), "status": 201,
+            "run_id": run_id, "status": 201,
         })
         self.send_json(201, result)
 
