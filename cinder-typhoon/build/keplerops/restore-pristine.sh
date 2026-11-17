@@ -47,6 +47,8 @@ docker inspect --format '{{range .HostConfig.ExtraHosts}}{{println .}}{{end}}' c
 bash native-workplace/bootstrap-staff.sh
 bash native-workplace/bootstrap-support.sh
 docker compose up -d --wait --wait-timeout 420 fieldlink-assistant
+# Participant-facing services behind the edge (staff, SPNEGO, cloud API, assistant API).
+docker compose up -d --no-deps k-staff k-staff-spnego k-identity-spnego k-cloud-api k-assistant-api
 bash native-platform/import-model.sh
 bash native-platform/cache-embedder.sh
 python3 native-platform/seed-assistant.py --operator-dir "$operator"
