@@ -107,6 +107,41 @@ class AssistantApiHandler(KeplerHandler):
             self.send_json(200, {"status": "up"})
             return
 
+        # K24 completion-example endpoint — session-required, returns COMP-JOB-17 example + note.
+        # The example exposes context_root, credential reference, handover, and allowed script
+        # needed for the K24.2 path traversal exploit.
+        if path.startswith("/api/completion/examples/"):
+            comp_id = path.removeprefix("/api/completion/examples/")
+            cookie = self.headers.get("Cookie", "")
+            user = _get_session(cookie)
+            if user is None:
+                self.send_json(403, {"error": "session_required"})
+                return
+            if comp_id != "COMP-JOB-17":
+                self.send_json(404, {"error": "example_not_found"})
+                return
+            example = {
+                "example_id": "COMP-JOB-17",
+                "context_root": "support-examples",
+                "credential_reference": "cred-completion-handover",
+                "handover": "HANDOVER-COMP-2841",
+                "allowed_script": "support-review-completion.py",
+                "note": (
+                    "Internal use: completion job for support case 2841 handover review. "
+                    "The job runs as svc-assistant-completion and reads HANDOVER-COMP-2841 "
+                    "from the internal handover store. Credential cred-completion-handover "
+                    "grants the lease. Context root is support-examples; alias resolution "
+                    "normalizes before ownership check."
+                ),
+            }
+            append_audit(AUDIT, "completion-example-read", {
+                "action": "read",
+                "example_id": comp_id,
+                "user": user,
+            })
+            self.send_json(200, example)
+            return
+
         # K21.1: config endpoint — public, exposes real AnythingLLM workspace identifiers.
         # Thread slug is read from the K21 config (changes per seed).
         if path == "/api/config":
@@ -135,6 +170,10 @@ class AssistantApiHandler(KeplerHandler):
                     "tool": "accept_duplicate_review",
                     "review_id": "DREV-2841-2",
                     "recommendation_id": "assistant-obsolete-bundle",
+                },
+                "completion": {
+                    "example": "COMP-JOB-17",
+                    "examples_path": "/api/completion/examples/",
                 },
             }
             self.send_json(200, config)
