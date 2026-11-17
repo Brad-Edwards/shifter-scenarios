@@ -268,6 +268,7 @@ services:
       - source-repositories:/var/lib/gitea/repositories
       # Cold-start fix without an image rebuild: longer Gitea readiness window.
       - ./runtime/source-entrypoint.sh:/usr/local/bin/fieldkest-source-entrypoint:ro
+    entrypoint: ["/bin/sh", "/usr/local/bin/fieldkest-source-entrypoint"]
     healthcheck:
       start_period: 300s
     networks:
