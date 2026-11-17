@@ -39,6 +39,15 @@ MAINTENANCE_COMMAND = ["maintenance-summary", "--archive", "FIELD-CRR-2026-09"]
 MAINTENANCE_LABEL = {"workload.class": "maintenance"}
 MAINTENANCE_WORKLOAD_ID = "MAINT-FLK-01"
 MAINTENANCE_POLICY_ID = "fieldlink-maintenance"
+MAINTENANCE_ARCHIVE_HEADERS = {
+    "workload_class": "X-Workload-Class",
+    "scheduler_attestation": "X-Scheduler-Attestation",
+}
+
+# K31.2: in-memory workload execution state (attestation store)
+_WORKLOAD_EXECUTIONS: dict[str, dict] = {}
+_WORKLOAD_LOCK = _threading.Lock()
+FIELD_ARCHIVE_CALIBRATION = "CRR-OG2-CAL-2026-09-18"
 NAMESPACE = CONFIG.get("namespace", "fieldlink")
 WORKLOAD_SA = CONFIG.get("workload_sa", "svc-fieldlink-workload")
 
@@ -240,6 +249,8 @@ class CloudApiHandler(KeplerHandler):
                 "runtime_identity": "svc-fieldlink-maintenance",
                 "command": MAINTENANCE_COMMAND,
                 "required_label": MAINTENANCE_LABEL,
+                "archive_request": {"headers": MAINTENANCE_ARCHIVE_HEADERS},
+                "whoami": "svc-fieldkest-runner",
             }
             append_audit(AUDIT, "maintenance-policy", {
                 "request_id": self.request_id, "status": 200,
@@ -297,6 +308,62 @@ class CloudApiHandler(KeplerHandler):
                 "status": 200,
             })
             self.send_json(200, result)
+            return
+
+        # K31.2: whoami — returns runtime identity and scheduler attestation after PATCH execution.
+        # Requires MAINTENANCE_WORKER. The attestation is generated after a PATCH execution.
+        if path == f"/api/workloads/{MAINTENANCE_WORKLOAD_ID}/whoami":
+            auth = self.headers.get("Authorization", "")
+            token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
+            if token != MAINTENANCE_WORKER:
+                self.send_json(401, {"error": "maintenance_worker_required"})
+                return
+            with _WORKLOAD_LOCK:
+                execution = _WORKLOAD_EXECUTIONS.get(MAINTENANCE_WORKLOAD_ID)
+            if execution is None:
+                self.send_json(404, {"error": "no_execution_found"})
+                return
+            self.send_json(200, {
+                "workload_id": MAINTENANCE_WORKLOAD_ID,
+                "runtime_identity": "svc-fieldlink-maintenance",
+                "attestation": execution["attestation"],
+            })
+            return
+
+        # K31.3: field-archive — returns the protected FIELD-CRR-2026-09 archive.
+        # Requires MAINTENANCE_RUNTIME credential + workload-class header + scheduler attestation.
+        if path == f"/api/field-archive/FIELD-CRR-2026-09":
+            auth = self.headers.get("Authorization", "")
+            token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
+            if token != MAINTENANCE_RUNTIME:
+                self.send_json(401, {"error": "maintenance_runtime_required"})
+                return
+            workload_class = self.headers.get("X-Workload-Class", "")
+            attestation = self.headers.get("X-Scheduler-Attestation", "")
+            if workload_class != MAINTENANCE_LABEL.get("workload.class"):
+                self.send_json(403, {"error": "workload_class_mismatch"})
+                return
+            # Verify the attestation was issued by a real PATCH execution
+            with _WORKLOAD_LOCK:
+                known = any(
+                    e.get("attestation") == attestation
+                    for e in _WORKLOAD_EXECUTIONS.values()
+                )
+            if not known:
+                self.send_json(403, {"error": "attestation_invalid"})
+                return
+            append_audit(AUDIT, "field-archive", {
+                "request_id": self.request_id,
+                "archive_id": "FIELD-CRR-2026-09",
+                "runtime_identity": "svc-fieldlink-maintenance",
+                "status": 200,
+            })
+            self.send_json(200, {
+                "archive_id": "FIELD-CRR-2026-09",
+                "runtime_identity": "svc-fieldlink-maintenance",
+                "calibration_revision": FIELD_ARCHIVE_CALIBRATION,
+                "asset": "CRR-OG2",
+            })
             return
 
         # K30.2: backup catalog — requires recovery session, source_database denied
@@ -460,6 +527,40 @@ class CloudApiHandler(KeplerHandler):
         if path.endswith("/destination") and "/api/exports/" in path:
             export_id = path.removeprefix("/api/exports/").removesuffix("/destination")
             self._patch_destination(export_id)
+            return
+        # K31.2: PATCH workload — permitted operation for the maintenance worker
+        if path == f"/api/workloads/{MAINTENANCE_WORKLOAD_ID}":
+            auth = self.headers.get("Authorization", "")
+            token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
+            if token != MAINTENANCE_WORKER:
+                self.send_json(401, {"error": "maintenance_worker_required"})
+                return
+            try:
+                body = self.read_json(4096)
+            except Exception:
+                self.send_json(400, {"error": "bad_request"})
+                return
+            if body.get("command") != MAINTENANCE_COMMAND or body.get("labels") != MAINTENANCE_LABEL:
+                self.send_json(422, {"error": "command_or_label_mismatch"})
+                return
+            import uuid as _uuid3
+            attestation = "ATTEST-" + _uuid3.uuid4().hex[:16].upper()
+            with _WORKLOAD_LOCK:
+                _WORKLOAD_EXECUTIONS[MAINTENANCE_WORKLOAD_ID] = {
+                    "attestation": attestation,
+                    "runtime_identity": "svc-fieldlink-maintenance",
+                }
+            append_audit(AUDIT, "workload-patch", {
+                "request_id": self.request_id,
+                "workload_id": MAINTENANCE_WORKLOAD_ID,
+                "runtime_identity": "svc-fieldlink-maintenance",
+                "status": 200,
+            })
+            self.send_json(200, {
+                "workload_id": MAINTENANCE_WORKLOAD_ID,
+                "last_execution": {"execution_backend": "isolated-container"},
+                "runtime_identity": "svc-fieldlink-maintenance",
+            })
             return
         self.send_json(404, {"error": "not_found"})
 
