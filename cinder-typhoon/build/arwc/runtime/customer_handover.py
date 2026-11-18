@@ -157,8 +157,6 @@ class Handler(BaseHTTPRequestHandler):
                     {"key": "corporate.continuity-plan", "method": "GET",
                      "template": "https://customer-handover.arwc.test:8443/api/continuity-plans/current"},
                 ], "related": [
-                    "https://suppliers.arwc.test/purchase-orders",
-                    "https://documents.arwc.test/",
                     "https://retained-archive.arwc.test/.well-known/arwc-client",
                 ],
             })
