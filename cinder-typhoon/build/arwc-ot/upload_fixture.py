@@ -17,6 +17,23 @@ RESTAPI_DB = pathlib.Path("/var/run/runtime/restapi.db")
 _VENV_PYTHON = pathlib.Path("/workdir/venvs/runtime/bin/python3")
 
 
+_PLC_CONTAINER = "arwc-ot-compat-plc-1"
+_UPSERT_SCRIPT = r"""
+import sqlite3, sys
+sys.path.insert(0, '/workdir/venvs/runtime/lib/python3.11/site-packages')
+from werkzeug.security import generate_password_hash
+pw_hash = generate_password_hash(sys.argv[1], method='pbkdf2:sha256:600000')
+db = sqlite3.connect('/var/run/runtime/restapi.db')
+row = db.execute("SELECT id FROM users WHERE username='engineer'").fetchone()
+if row:
+    db.execute("UPDATE users SET password_hash=? WHERE username='engineer'", (pw_hash,))
+else:
+    db.execute("INSERT INTO users (username, password_hash, role) VALUES ('engineer',?,'admin')", (pw_hash,))
+db.commit(); db.close()
+print('synced')
+"""
+
+
 def _sync_engineer_password(password: str) -> None:
     """Upsert the engineer user in restapi.db with the current credentials.
 
@@ -30,33 +47,39 @@ def _sync_engineer_password(password: str) -> None:
     Restarts the PLC container afterward so Flask reloads the user from the DB
     rather than serving the stale in-memory object.
     """
-    if not RESTAPI_DB.exists():
-        return
-    import sys as _sys
-    _site = str(_VENV_PYTHON.parent.parent / "lib" / "python3.11" / "site-packages")
-    if _site not in _sys.path:
-        _sys.path.insert(0, _site)
-    from werkzeug.security import generate_password_hash
-    # Match restapi.py: derivation_method = "pbkdf2:sha256:600000"
-    pw_hash = generate_password_hash(password, method="pbkdf2:sha256:600000")
-    with sqlite3.connect(RESTAPI_DB) as conn:
-        existing = conn.execute(
-            "SELECT id FROM users WHERE username='engineer'"
-        ).fetchone()
-        if existing:
-            conn.execute(
-                "UPDATE users SET password_hash=? WHERE username='engineer'",
-                (pw_hash,),
-            )
-        else:
-            conn.execute(
-                "INSERT INTO users (username, password_hash, role) VALUES ('engineer', ?, 'admin')",
-                (pw_hash,),
-            )
+    if RESTAPI_DB.exists():
+        # Running inside the container where the volume is mounted directly.
+        import sys as _sys
+        _site = str(_VENV_PYTHON.parent.parent / "lib" / "python3.11" / "site-packages")
+        if _site not in _sys.path:
+            _sys.path.insert(0, _site)
+        from werkzeug.security import generate_password_hash
+        pw_hash = generate_password_hash(password, method="pbkdf2:sha256:600000")
+        with sqlite3.connect(RESTAPI_DB) as conn:
+            existing = conn.execute(
+                "SELECT id FROM users WHERE username='engineer'"
+            ).fetchone()
+            if existing:
+                conn.execute(
+                    "UPDATE users SET password_hash=? WHERE username='engineer'",
+                    (pw_hash,),
+                )
+            else:
+                conn.execute(
+                    "INSERT INTO users (username, password_hash, role) VALUES ('engineer', ?, 'admin')",
+                    (pw_hash,),
+                )
+    else:
+        # Running on the host VM; exec into the container where the volume is mounted.
+        subprocess.run(
+            ["docker", "exec", _PLC_CONTAINER,
+             "/workdir/venvs/runtime/bin/python3", "-c", _UPSERT_SCRIPT, password],
+            check=True, stdout=subprocess.DEVNULL,
+        )
     # Restart the PLC container so Flask reloads the user from the updated DB.
     # The wait loop below waits for the web interface to become available again.
     subprocess.run(
-        ["docker", "restart", "arwc-ot-compat-plc-1"],
+        ["docker", "restart", _PLC_CONTAINER],
         check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
     )
 
