@@ -84,6 +84,15 @@ PYEOF
     bash corporate-access.sh prepare
     # Extract retained engineering tools (including IMG-FIT-204-R6.bin for W16) from Docker images.
     bash capture-retained-tools.sh
+    # The native services attach to the application-owned corporate and dmz
+    # networks as external. Create them if absent (a fresh image host, or a
+    # repeat reset that removed them) so native up does not fail on a missing
+    # external network. The application stack adopts them later. Subnets match
+    # the corporate and dmz definitions in ../compose.yaml.
+    docker network inspect cinder-arwc-corporate >/dev/null 2>&1 \
+      || docker network create --internal --subnet 10.77.60.0/24 --gateway 10.77.60.1 cinder-arwc-corporate
+    docker network inspect cinder-arwc-dmz >/dev/null 2>&1 \
+      || docker network create --internal --subnet 10.77.62.0/24 --gateway 10.77.62.1 cinder-arwc-dmz
     "${compose[@]}" up --no-build --pull never --wait --wait-timeout 420
     "${compose[@]}" exec -T --user www-data nextcloud php occ background:cron
     bash desktop-access.sh
@@ -445,6 +454,10 @@ PYEOF
     # Start the cinder-arwc application stack (archive, contractors, approval, data, data-bridge).
     # Run after all seed steps: requires ERPNext, Nextcloud, Metabase, Gitea, and corporate-db to be seeded.
     # The main compose.yaml defines the cinder-arwc-corporate network; seed-applications creates it.
+    # fieldlink-edge publishes 443 on the host carrier address. Default to this
+    # host's carrier-network IP (10.77.59.x) so image hosts bind correctly, not
+    # only dev/golden at 10.77.59.2. An explicit ARWC_CARRIER_ADDRESS still wins.
+    export ARWC_CARRIER_ADDRESS="${ARWC_CARRIER_ADDRESS:-$(ip -o -4 addr show | grep -oE '10\.77\.59\.[0-9]+' | head -1)}"
     app_compose=(docker compose --project-name cinder-arwc --env-file images.env -f ../compose.yaml)
     "${app_compose[@]}" up --no-build --pull never -d
     # compose.yaml defines every application service, including a-engineering,
@@ -459,7 +472,17 @@ PYEOF
     }
     # Stop and remove the application stack (cinder-arwc project) before resetting the native stack.
     docker compose --project-name cinder-arwc --env-file images.env -f ../compose.yaml down --volumes 2>/dev/null || true
-    "${compose[@]}" down --volumes
+    # The native down can return non-zero from a benign "network still in use"
+    # race while still removing every native container. Treat it as fatal only
+    # when native containers survive; otherwise a benign non-zero must not abort
+    # the reset before the up and seed phases.
+    "${compose[@]}" down --volumes || {
+      if [ -n "$(docker ps -aq --filter 'label=com.docker.compose.project=cinder-arwc-native')" ]; then
+        echo 'native teardown incomplete; aborting reset' >&2
+        exit 1
+      fi
+      echo 'native down returned non-zero but all native containers are gone; continuing' >&2
+    }
     bash "$0" up
     bash "$0" seed
     bash "$0" seed-dmz
