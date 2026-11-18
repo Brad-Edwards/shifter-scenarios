@@ -132,8 +132,9 @@ if __name__ == "__main__":
         str(EDITOR / "AppRun"), "--cli", "upload", str(project),
         "--target", "OpenPLC Runtime v4", "--host", "172.29.63.20", "--create-user", "--yes",
     ], env=environment, check=True)
-    # Save the compiled binary to the persistent plc-state volume so the
-    # entrypoint can restore it after a container recreate without a fresh upload.
+    # Save the compiled binary and OPC UA certificate pair to the persistent
+    # plc-state volume so the entrypoint can restore them after a container
+    # recreate without a fresh upload or Telegraf reconfiguration.
     _save_bin = [
         "docker", "exec", _PLC_CONTAINER, "bash", "-c",
         "ls /workdir/build/libplc_*.so 2>/dev/null | head -1 | xargs -I{} cp {} /var/run/runtime/libplc-backup.so",
@@ -141,6 +142,18 @@ if __name__ == "__main__":
     result = subprocess.run(_save_bin, stderr=subprocess.PIPE)
     if result.returncode != 0 and b"permission denied" in result.stderr.lower():
         subprocess.run(["sudo"] + _save_bin, check=False)
+    # Save the OPC UA server cert and key so the entrypoint can restore them.
+    # Preserving the original cert pair prevents Telegraf from getting a
+    # decryption error after a recreate (auto_self_signed would generate a new
+    # pair that Telegraf's cached cert no longer matches).
+    for _src, _dst in (
+        ("/workdir/core/src/drivers/plugins/python/opcua/certs/server_cert.pem", "/var/run/runtime/opcua-server-cert.bak"),
+        ("/workdir/core/src/drivers/plugins/python/opcua/certs/server_key.pem", "/var/run/runtime/opcua-server-key.bak"),
+    ):
+        _save_cert = ["docker", "exec", _PLC_CONTAINER, "bash", "-c", f"cp {_src} {_dst} 2>/dev/null || true"]
+        r = subprocess.run(_save_cert, stderr=subprocess.PIPE)
+        if r.returncode != 0 and b"permission denied" in r.stderr.lower():
+            subprocess.run(["sudo"] + _save_cert, check=False)
 
     # Update opcua.json with range credentials and save to the volume so the
     # entrypoint can restore both the binary and the config after a recreate.
