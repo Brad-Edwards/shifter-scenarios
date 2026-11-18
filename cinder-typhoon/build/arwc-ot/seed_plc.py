@@ -212,6 +212,12 @@ def main() -> None:
     _exec(["docker", "exec", _PLC_CONTAINER, "bash", "-c",
            "ls /workdir/build/libplc_*.so 2>/dev/null | head -1 | xargs -I{} cp {} /var/run/runtime/libplc-backup.so"])
     print("Compiled binary saved to volume")
+    # Save Modbus master config — without this file after a recreate, Heartbeat
+    # never updates, IoHealthy goes false within 3 s, and the whole plant dies.
+    _exec(["docker", "exec", _PLC_CONTAINER, "bash", "-c",
+           "cp /workdir/core/src/drivers/plugins/python/modbus_master/modbus_master.json"
+           " /var/run/runtime/modbus_master.json.bak 2>/dev/null || true"])
+    print("modbus_master.json saved to volume")
 
     # Save cert pair.
     for src, dst in (
