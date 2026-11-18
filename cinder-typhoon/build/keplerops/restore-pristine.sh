@@ -46,6 +46,9 @@ docker compose up -d --no-deps --wait --wait-timeout 420 \
 docker inspect --format '{{range .HostConfig.ExtraHosts}}{{println .}}{{end}}' cinder-keplerops-connector | grep -Fxq 'fieldlink.arwc.test:10.77.59.11'
 bash native-workplace/bootstrap-staff.sh
 bash native-workplace/bootstrap-support.sh
+# K18.2: seed the OIDC-FIELDKEST-SUPPORT Keycloak client and store its registration
+# access token as staff_preview_service so the staff note-preview SSRF can call the DCR.
+python3 native-workplace/seed-k18-keycloak-client.py --operator-dir "$operator"
 docker compose up -d --wait --wait-timeout 420 fieldlink-assistant
 # Participant-facing services behind the edge (staff, SPNEGO, cloud API, assistant API).
 docker compose up -d --no-deps k-staff k-staff-spnego k-identity-spnego k-cloud-api k-assistant-api

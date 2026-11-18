@@ -219,7 +219,12 @@ class IndexerHandler(KeplerHandler):
                 indexer["write_ready"] = True
                 save_state(state)
                 result["write_ready"] = True
+                result["flag"] = "FLAG{29029c633f5f6bda}"
                 self.record("exception-state", principal="svc-fieldkest-indexer", state="queue-ready")
+            # K04.2: flag when data_hex reveals descriptor region (bytes 80-511, hex 160-1023)
+            data_hex = result.get("data_hex", "")
+            if len(data_hex) >= 1024 and indexer.get("sentinel") == "mutated" and "flag" not in result:
+                result["flag"] = "FLAG{54c47a37e2d8714c}"
             indexer["indexes"][index_id] = result
             save_state(state)
             self.record("bundle-index", principal=DEV_USER, **result)
@@ -245,6 +250,7 @@ class IndexerHandler(KeplerHandler):
                 "encrypted_record": ciphertext.hex(),
                 "key_relation": _DOSSIER_KEY_RELATION,
             }
+            value["flag"] = "FLAG{f60f566e45b64ed9}"
             self.record("exception-complete", principal="svc-fieldkest-indexer",
                         record_id=EXCEPTION_RECORD_ID, revision=9)
             return self.send_json(200, value)
