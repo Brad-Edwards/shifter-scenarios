@@ -222,8 +222,6 @@ class CIHandler(KeplerHandler):
             self._connector_rehearsal()
         elif path == "/api/rehearsals/k02-1-verify":
             self._k02_1_verify()
-        elif path == "/api/rehearsals/k02-2-verify":
-            self._k02_2_verify()
         elif path == "/api/rehearsals/k29-3-verify":
             self._k29_3_verify()
         elif path == "/api/rehearsals/k29-4-verify":
@@ -608,62 +606,6 @@ class CIHandler(KeplerHandler):
             "receipt_id": receipt_id, "run_id": _RUN_ID,
             "fixture_sha256": _FIXTURE_SHA256, "status": 201,
         })
-        self.send_json(201, result)
-
-    def _k02_2_verify(self) -> None:
-        """K02.2 grader: bind REVNOTE artifact digest to source revision and provider contract.
-
-        Takes {run_id, note_sha256, source_revision}.
-        Verifies:
-        - run_id == BLD-1842
-        - note_sha256 matches REVNOTE-1842.json (proves artifact was actually read)
-        - source_revision matches c37effd7cc... (HEAD at time of build, confirms build correlation)
-        """
-        _NOTE_SHA256 = "7e8ecf3ef4d1f666a247fe7bc2a09b98404cf5353f78d8ed20205a2e7fc9ccee"
-        _SOURCE_REVISION = "c37effd7cc86ae4d44f18e95f899b7557d65e0a9"
-        _RUN_ID = "BLD-1842"
-        try:
-            body = self.read_json(131_072)
-            run_id = body.get("run_id", "")
-            note_sha256 = body.get("note_sha256", "")
-            source_revision = body.get("source_revision", "")
-            if not (run_id and note_sha256 and source_revision):
-                raise ValueError("run_id_note_sha256_source_revision_required")
-        except (ValueError, OverflowError, UnicodeDecodeError, json.JSONDecodeError):
-            self.send_json(422, {"error": "invalid_k02_2_submission"})
-            return
-        if run_id != _RUN_ID:
-            self.send_json(422, {"error": "run_id_binding_denied"})
-            return
-        if note_sha256.lower() != _NOTE_SHA256:
-            self.send_json(422, {"error": "note_digest_mismatch"})
-            return
-        if not source_revision.startswith(_SOURCE_REVISION[:16]):
-            self.send_json(422, {"error": "source_revision_binding_denied"})
-            return
-        receipt_path = RESULTS / "k02-2-complete.json"
-        if receipt_path.is_file():
-            self.send_json(200, json.loads(receipt_path.read_text()))
-            return
-        receipt_id = "K02-2-" + uuid.uuid4().hex[:10].upper()
-        result = {
-            "schema": "fieldkest.k02-2-receipt/v1",
-            "receipt_id": receipt_id,
-            "card": "K02.2",
-            "run_id": _RUN_ID,
-            "note_id": "REVNOTE-1842",
-            "note_sha256": _NOTE_SHA256,
-            "source_revision": _SOURCE_REVISION,
-            "provider_job": "fieldlink-report-review",
-            "provider_parameter": "provider.zip",
-        }
-        receipt_path.write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
-        append_audit(AUDIT, "k02-2-verify", {
-            "request_id": self.request_id, "principal": USERNAME,
-            "receipt_id": receipt_id, "run_id": _RUN_ID,
-            "note_sha256": _NOTE_SHA256, "status": 201,
-        })
-        result["flag"] = "FLAG{ad920ac857c12cd3}"  # K02.2
         self.send_json(201, result)
 
     def _k29_3_verify(self) -> None:
