@@ -1,6 +1,8 @@
 'use strict';
-const limits = require('./limits.json');
-const version = require('./package.json').version;
+// Self-contained for the ARWC connector sandbox, which runs this single source
+// with no require(). The values match limits.json and the package version.
+const limits = {maximum_callback_latency_ms: 250, minimum_sample_count: 10};
+const version = '7.4.3-cinder.rset1';
 
 // 7.4.3-cinder.rset1 is the pending Cinder release. It adds a diagnostic-summary
 // path (calibration review) while keeping the retained connector behavior for the

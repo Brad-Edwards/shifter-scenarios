@@ -153,7 +153,10 @@ def unpack_package(payload: bytes, version: str) -> tuple[dict[str, object], str
             tar_bytes = zipped.read(1_100_000)
         with tarfile.open(fileobj=io.BytesIO(tar_bytes), mode="r:") as archive:
             members = {item.name: item for item in archive.getmembers() if item.isfile()}
-            if set(members) != {"package/package.json", "package/index.js"}:
+            # A published npm tarball always carries package.json and README.md and
+            # may carry extra declared files (for example limits.json). Require the
+            # manifest and entry point and read only those; ignore the rest.
+            if "package/package.json" not in members or "package/index.js" not in members:
                 raise ValueError
             metadata_file = archive.extractfile(members["package/package.json"])
             source_file = archive.extractfile(members["package/index.js"])
