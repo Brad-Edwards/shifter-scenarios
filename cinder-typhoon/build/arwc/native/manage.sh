@@ -504,14 +504,26 @@ PYEOF
     }
     # Stop and remove the application stack (cinder-arwc project) before resetting the native stack.
     docker compose --project-name cinder-arwc --env-file images.env -f ../compose.yaml down --volumes 2>/dev/null || true
-    # connector-fieldlink is read-only-mounted by several application services,
-    # so a partial down can leave it behind with a stale corporate-session token.
-    # A stale token blocks a fresh handover (earn_corporate is a no-op when the
+    # connector-fieldlink is read-only-mounted by several application services
+    # AND by cinder-arwc-ot-engineering (OT slice, project arwc-ot-compat), so a
+    # partial down can leave it behind with a stale corporate-session token. A
+    # stale token blocks a fresh handover (earn_corporate is a no-op when the
     # token exists) and, if only some handover hashes survive, trips the
-    # anti-replay guard on the services that kept the old token. Remove the
-    # connector handover volumes explicitly so a fresh delivery re-issues one
-    # consistent handover that every service accepts.
+    # anti-replay guard on the services that kept the old token. docker volume rm
+    # fails while any container references the volume, even a stopped one, so the
+    # OT engineering container must be REMOVED (not just stopped) before the rm,
+    # then recreated from the slice compose. Without this the connector-fieldlink
+    # rm silently fails and the baked image ships an inconsistent handover.
+    reset_slice=/opt/arwc-ot-compat/slice
+    if [[ -d $reset_slice ]]; then
+      docker rm -f cinder-arwc-ot-engineering 2>/dev/null || true
+    fi
     docker volume rm cinder-arwc-connector-fieldlink cinder-arwc-connector-customer 2>/dev/null || true
+    if [[ -d $reset_slice ]]; then
+      docker compose -f "${reset_slice}/compose.yaml" -f "${reset_slice}/site/compose.yaml" \
+        -f "${reset_slice}/historian/compose.yaml" -f "${reset_slice}/dispatch/compose.yaml" \
+        -f "${reset_slice}/workstation/compose.yaml" up -d --no-build --pull never engineering 2>/dev/null || true
+    fi
     # The native down can return non-zero from a benign "network still in use"
     # race while still removing every native container. Treat it as fatal only
     # when native containers survive; otherwise a benign non-zero must not abort
