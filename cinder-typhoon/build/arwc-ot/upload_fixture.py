@@ -19,10 +19,20 @@ _VENV_PYTHON = pathlib.Path("/workdir/venvs/runtime/bin/python3")
 
 _PLC_CONTAINER = "arwc-ot-compat-plc-1"
 _UPSERT_SCRIPT = r"""
-import sqlite3, sys
+import os, sqlite3, sys
 sys.path.insert(0, '/workdir/venvs/runtime/lib/python3.11/site-packages')
 from werkzeug.security import generate_password_hash
-pw_hash = generate_password_hash(sys.argv[1], method='pbkdf2:sha256:600000')
+# Read PEPPER from the runtime .env file (same source as Flask config).
+env = {}
+try:
+    for line in open('/var/run/runtime/.env').read().splitlines():
+        if '=' in line and not line.startswith('#'):
+            k, _, v = line.partition('=')
+            env[k.strip()] = v.strip()
+except OSError:
+    pass
+pepper = env.get('PEPPER', '')
+pw_hash = generate_password_hash(sys.argv[1] + pepper, method='pbkdf2:sha256:600000')
 db = sqlite3.connect('/var/run/runtime/restapi.db')
 row = db.execute("SELECT id FROM users WHERE username='engineer'").fetchone()
 if row:
@@ -54,7 +64,18 @@ def _sync_engineer_password(password: str) -> None:
         if _site not in _sys.path:
             _sys.path.insert(0, _site)
         from werkzeug.security import generate_password_hash
-        pw_hash = generate_password_hash(password, method="pbkdf2:sha256:600000")
+        # Read PEPPER from the runtime .env file (same source as Flask config).
+        _env: dict[str, str] = {}
+        _env_path = RESTAPI_DB.parent / ".env"
+        try:
+            for _line in _env_path.read_text().splitlines():
+                if "=" in _line and not _line.startswith("#"):
+                    _k, _, _v = _line.partition("=")
+                    _env[_k.strip()] = _v.strip()
+        except OSError:
+            pass
+        _pepper = _env.get("PEPPER", "")
+        pw_hash = generate_password_hash(password + _pepper, method="pbkdf2:sha256:600000")
         with sqlite3.connect(RESTAPI_DB) as conn:
             existing = conn.execute(
                 "SELECT id FROM users WHERE username='engineer'"
