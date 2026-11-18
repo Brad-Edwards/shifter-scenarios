@@ -99,9 +99,11 @@ class CIHandler(KeplerHandler):
             job_data = json.loads(job_path.read_text())
             if job_data.get("state") == "success":
                 if job_data.get("profile") == "runner-command":
-                    job_data["flag"] = "FLAG{783b665bfc42fd9f}"
+                    job_data["flag"] = "FLAG{783b665bfc42fd9f}"  # K09.4
+                elif job_data.get("review", {}).get("maintained_reference"):
+                    job_data["flag"] = "FLAG{64019807418ce6c8}"  # K06.3: success with maintained reference
                 else:
-                    job_data["flag"] = "FLAG{9c7e8e7a35ec128c}"
+                    job_data["flag"] = "FLAG{9c7e8e7a35ec128c}"  # K09.3
             self.send_json(200, job_data)
         elif path.startswith("/api/runs/"):
             # K09.2: CI runner run metadata and retained artifacts.
@@ -664,6 +666,7 @@ class CIHandler(KeplerHandler):
             "receipt_id": receipt_id, "job_id": job_id,
             "report_sha256": report_sha256, "status": 201,
         })
+        result["flag"] = "FLAG{12791115ad005ed7}"  # K02.3
         self.send_json(201, result)
 
     def _k02_2_verify(self) -> None:
@@ -719,6 +722,7 @@ class CIHandler(KeplerHandler):
             "receipt_id": receipt_id, "run_id": _RUN_ID,
             "note_sha256": _NOTE_SHA256, "status": 201,
         })
+        result["flag"] = "FLAG{ad920ac857c12cd3}"  # K02.2
         self.send_json(201, result)
 
     def _k29_3_verify(self) -> None:
@@ -847,6 +851,7 @@ class CIHandler(KeplerHandler):
             "arwc_assessment": "calibration-review",
             "reference_assessment": "reference-compatible",
         }
+        result["flag"] = "FLAG{fb7f87b5a1ca1ce8}"  # K29.4
         (RESULTS / f"{receipt_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
         append_audit(AUDIT, "k29-4-verify", {
             "request_id": self.request_id, "principal": USERNAME,

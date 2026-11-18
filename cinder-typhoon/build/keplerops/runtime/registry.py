@@ -342,8 +342,10 @@ class RegistryHandler(KeplerHandler):
             'request': request, 'result': worker['output'],
         }
         result['result_digest'] = sha256_bytes(canonical_bytes(result))
-        # K05.4: fresh selection confirmation when request includes confirm_selection=True
-        if request.get("confirm_selection") is True:
+        # K06.3: participant published 7.4.3 so consumer resolves to it
+        if metadata['version'] == '7.4.3':
+            result['flag'] = 'FLAG{64019807418ce6c8}'  # K06.3
+        elif request.get("confirm_selection") is True:
             result['flag'] = 'FLAG{32a8b5b8bb725309}'  # K05.4
         else:
             result['flag'] = 'FLAG{47ba77ad01dfb2d4}'  # K05.1

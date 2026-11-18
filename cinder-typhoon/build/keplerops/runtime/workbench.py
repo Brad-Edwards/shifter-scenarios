@@ -193,7 +193,7 @@ class WorkbenchHandler(KeplerHandler):
         receipt_path = RESULTS / "k03-3-complete.json"
         if receipt_path.is_file():
             cached = json.loads(receipt_path.read_text())
-            cached["flag"] = "FLAG{d802bfe7a42fb855}"
+            cached["flag"] = "FLAG{4060aded2f1ce27f}"
             self.send_json(200, cached)
             return
         receipt_id = "K03-3-" + uuid.uuid4().hex[:10].upper()

@@ -247,6 +247,7 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted(
                 "replacement-water-catalog-read", CATALOG,
                 extra={
+                    "flag": "FLAG{33a2e1a5cb2fd5f3}",
                     "agreement_context": {
                         "asset": "arwc-documents:as003-agreement-summary",
                         "sha256": hashlib.sha256(context.encode()).hexdigest(),
@@ -286,7 +287,8 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_json(403, {"error": "corporate procurement role required"})
             else:
                 mark("foreign_quote_observed")
-                self.accepted("procurement-quote-read", MEREWICK_QUOTE, 201)
+                self.accepted("procurement-quote-read", MEREWICK_QUOTE, 201,
+                              extra={"flag": "FLAG{8aba65d6162bf904}"})
             return
         if path == "/api/invoices/current":
             state = json.loads(DISCOVERIES.read_text(encoding="utf-8"))
@@ -320,7 +322,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
             state["procurement_order"] = order
             atomic_json(DISCOVERIES, state)
-            self.accepted("invoice-order-created", order, 201)
+            self.accepted("invoice-order-created", order, 201, extra={"flag": "FLAG{c5f96cef1a817fa3}"})
             return
         self.send_json(404, {"error": "record not found"})
 
