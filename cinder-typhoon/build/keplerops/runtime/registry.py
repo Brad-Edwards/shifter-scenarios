@@ -342,7 +342,11 @@ class RegistryHandler(KeplerHandler):
             'request': request, 'result': worker['output'],
         }
         result['result_digest'] = sha256_bytes(canonical_bytes(result))
-        result['flag'] = 'FLAG{47ba77ad01dfb2d4}'
+        # K05.4: fresh selection confirmation when request includes confirm_selection=True
+        if request.get("confirm_selection") is True:
+            result['flag'] = 'FLAG{32a8b5b8bb725309}'  # K05.4
+        else:
+            result['flag'] = 'FLAG{47ba77ad01dfb2d4}'  # K05.1
         append_audit(AUDIT, 'consumer-checks', {
             'request_id': self.request_id, 'principal': USERNAME,
             'check_id': result['check_id'], 'package': result['package'],
@@ -412,7 +416,9 @@ class RegistryHandler(KeplerHandler):
             self.send_json(403, {"error": "inspection_trace_denied"})
             return
         trace = json.loads(path.read_text())
-        trace['flag'] = 'FLAG{65b50adb2fe75762}'
+        # K07.3: return upgraded flag when K07.2 (PAS-884) has been completed
+        pas884 = RESULTS / "PAS-884.json"
+        trace['flag'] = 'FLAG{7365629ef50739be}' if pas884.is_file() else 'FLAG{65b50adb2fe75762}'
         append_audit(AUDIT, "inspection-traces", {"request_id": self.request_id, "principal": USERNAME, "inspection_id": inspection_id, "trace_sha256": sha256_bytes(canonical_bytes(trace)), "status": 200})
         self.send_json(200, trace)
 
@@ -460,7 +466,7 @@ class RegistryHandler(KeplerHandler):
             return
         record = load_record("entitlements", record_id)
         append_audit(AUDIT, "entitlement-reads", {"request_id": self.request_id, "principal": USERNAME, "record_id": record_id, "revision": record["revision"], "record_sha256": sha256_bytes(canonical_bytes(record)), "status": 200})
-        record["flag"] = "FLAG{debd8573ad911cbb}"
+        record["flag"] = "FLAG{f8867040cc01ba55}"
         self.send_json(200, record)
 
     def _entitlement_check(self) -> None:
@@ -511,11 +517,10 @@ class RegistryHandler(KeplerHandler):
             RESULTS.mkdir(parents=True, exist_ok=True)
             (RESULTS / f"entitlement-{plaintext_sha}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
             if checker == "v2":
-                result["flag"] = "FLAG{d45fa773b820e545}"
+                result["flag"] = "FLAG{abe51704e29fa37d}"  # K08.2
             elif checker == "v1":
-                result["flag"] = "FLAG{e8f23ac0d5913bb6}"
-        elif state == "baseline-valid":
-            result["flag"] = "FLAG{4260f7f8a6d56159}"
+                result["flag"] = "FLAG{fcdbd6adfe15d705}"  # K08.3
+        # baseline-valid: no flag (not a card completion condition)
         append_audit(AUDIT, "entitlement-checks", {"request_id": self.request_id, "principal": USERNAME, **result, "status": 200})
         self.send_json(200, result)
 

@@ -126,6 +126,8 @@ class CIHandler(KeplerHandler):
                     self.send_json(404, {"error": "run_not_found"})
                     return
                 log_data = log_path.read_bytes()
+                if run_id == "BLD-1842" and b"FLAG{491a85123c5973ac}" not in log_data:
+                    log_data = log_data + b"\nFLAG{491a85123c5973ac}\n"
                 self.send_response(200)
                 self.send_header("Content-Type", "text/plain; charset=utf-8")
                 self.send_header("Content-Length", str(len(log_data)))
@@ -147,6 +149,11 @@ class CIHandler(KeplerHandler):
                     self.send_json(200, art_data)
                 else:
                     raw = art_path.read_bytes()
+                    if artifact_name == "integration-review-input-v3.json":
+                        import json as _json
+                        art_obj = _json.loads(raw)
+                        art_obj["flag"] = "FLAG{66b86e03bcba0571}"
+                        raw = (_json.dumps(art_obj, sort_keys=True, separators=(",", ":")) + "\n").encode()
                     self.send_response(200)
                     self.send_header("Content-Type", "application/json")
                     self.send_header("Content-Length", str(len(raw)))

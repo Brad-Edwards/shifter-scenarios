@@ -16,6 +16,7 @@ RUN chmod 0755 /usr/local/bin/fieldkest-service-entrypoint \
     && mkdir -p /var/lib/fieldkest-identity-spnego \
     && tar -xf /tmp/k-identity-spnego-state.tar -C /var/lib/fieldkest-identity-spnego \
     && chown -R fieldkest-identity-spnego:fieldkest-identity-spnego /var/lib/fieldkest-identity-spnego \
+    && chmod -R 644 /var/lib/fieldkest-identity-spnego \
     && rm /tmp/k-identity-spnego-state.tar \
     && mkdir -p /run/fieldkest-tls /run/fieldkest-identity
 

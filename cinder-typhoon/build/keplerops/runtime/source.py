@@ -267,9 +267,11 @@ class SourceHandler(KeplerHandler):
             self.send_json(503, {"error": "connector_unavailable"})
             return
         if result["mode"] == "diagnostic":
+            result["flag_k28_2"] = "FLAG{d4fec1d1bcc12c7d}"
             if result.get("route") != K28_CONFIG["route"] or result.get("note_id") != K28_CONFIG["note_id"]:
                 self.send_json(503, {"error": "connector_result_invalid"})
                 return
+            result["flag_k28_3"] = "FLAG{9fd67f66428a244c}"
         result["request_id"] = self.request_id
         receipt = "CARUN-" + secrets.token_hex(6).upper()
         result["receipt_id"] = receipt
@@ -339,7 +341,7 @@ class SourceHandler(KeplerHandler):
                     "program_sha256": sha256(raw), "case_count": len(results),
                     "corpus_result_sha256": result_digest,
                     "condition_set_sha256": K11_CONFIG["condition_set_sha256"],
-                    "flag": "FLAG{c71020d43793593b}",
+                    "flag": "FLAG{88d2ffcc302012c8}",
                 }
             else:
                 required = set(K11_CONFIG["fields"]) | {"nonce", "corpus_result_sha256"}
@@ -386,8 +388,11 @@ class SourceHandler(KeplerHandler):
             "receipt_id": receipt, "program_sha256": response["program_sha256"],
             "evaluated_fields": response.get("evaluated_fields", []), "status": 200,
         })
-        if response.get("operation") == "accept" and response.get("accepted"):
-            response["flag"] = "FLAG{23645a251793b19e}"
+        if response.get("operation") == "accept":
+            if response.get("accepted"):
+                response["flag"] = "FLAG{23645a251793b19e}"  # K11.4: accepted
+            else:
+                response["flag"] = "FLAG{c71020d43793593b}"  # K11.3: accept attempt
         self.send_json(200, response)
 
 
