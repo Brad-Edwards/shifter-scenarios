@@ -3,11 +3,12 @@
   "review_id": "REVNOTE-1842",
   "run_id": "BLD-1842",
   "expected_interface": "fieldkest.report/v2",
-  "extension_point": "render_report",
+  "extension_point": "report_provider",
   "archive_layout": [
     "provider.py",
     "fixture.json"
   ],
+  "flag": "FLAG{ad920ac857c12cd3}",
   "immutable_fields": [
     "asset_id",
     "connector_revision",
