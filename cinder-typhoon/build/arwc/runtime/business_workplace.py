@@ -222,6 +222,8 @@ class Handler(BaseHTTPRequestHandler):
                  "template": "https://business-workplace.arwc.test/api/procurement-quotes/external"},
                 {"key": "business.invoice", "method": "GET",
                  "template": "https://business-workplace.arwc.test/api/invoices/current"},
+                {"key": "business.integration-contract", "method": "GET",
+                 "template": "https://business-workplace.arwc.test/api/integration-contracts/current"},
             ],
             "related": [
                 "https://planning-data.arwc.test/.well-known/arwc-client",
@@ -256,6 +258,25 @@ class Handler(BaseHTTPRequestHandler):
                     }
                 },
             )
+        elif path == "/api/integration-contracts/current":
+            # W09.4: issue the integration session that planning-data's
+            # /api/integration-sessions requires in X-ARWC-Integration-Session.
+            record = {
+                "record_id": "INT-CONTRACT-CRR-08",
+                "integration_client": "INT-CRR-08",
+                "report_binding": "REC-CRR-DP3-17",
+                "scope": "OG-CRR-02/read",
+                "feed": "FEED-OG2-R21",
+                "outlet_group": "OG-CRR-02",
+                "asset": "AST-CRR-017",
+                "live_feed": "https://read-data.arwc.test/api/operating-history",
+            }
+            supplied = self.headers.get("Authorization", "")[7:]
+            integration_session = hmac.new(
+                supplied.encode(), b"arwc-integration-session/INT-CRR-08", hashlib.sha256
+            ).hexdigest()
+            self.accepted("integration-contract-read", record,
+                          extra={"integration_session": integration_session})
         else:
             self.send_json(404, {"error": "record not found"})
 

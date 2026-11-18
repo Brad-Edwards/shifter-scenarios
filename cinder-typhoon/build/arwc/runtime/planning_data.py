@@ -47,6 +47,10 @@ PLANNER_EVIDENCE = pathlib.Path("/run/arwc-planning-evidence/planner-session.jso
 INTEGRATION_EVIDENCE = ROOT / "integration" / "planning-data.json"
 ARCHIVE_EVIDENCE = pathlib.Path("/run/arwc-planning-evidence/archive-lineage.json")
 OT_READ_EVIDENCE = pathlib.Path("/run/arwc-ot-read")
+# W09.4: the integration-bridge operating-reader Basic identity, mounted by the
+# OT-site integration overlay (it-compose.yaml) so the integration session can
+# hand the participant the live-feed credentials.
+OPERATING_READER_PATH = pathlib.Path("/tmp/arwc-operating-reader.json")
 PROCESS_EVIDENCE = pathlib.Path("/run/arwc-process-evidence")
 PROCESS_PATHS = {
     "/.well-known/arwc-client",
@@ -1107,12 +1111,24 @@ class Handler(BaseHTTPRequestHandler):
             "planning_window": "ALLOC-2026-DP3", "usable_reserve_ml": 12.4, "unit": "ML",
             "instruments": ["FIT-CRR-204A", "FIT-CRR-204B"],
         }
-        self.accepted("integration-session-issued", record, 201, {
+        feed_extra = {
             "process_session": process_session,
             "process_view": "https://process-view.arwc.test",
             "client_reference": "https://process-view.arwc.test/.well-known/arwc-client",
             "flag": "FLAG{2085674d8d2c8b96}",
-        })
+            "live_feed": "https://read-data.arwc.test/api/operating-history",
+        }
+        # W09.4: hand the participant the operating-reader Basic credentials for the
+        # live feed. The identity is the integration-bridge one mounted by the OT-site
+        # overlay; degrade gracefully if the overlay has not been applied yet.
+        try:
+            reader = json.loads(OPERATING_READER_PATH.read_text())
+            feed_extra["operating_reader"] = {
+                "username": reader["username"], "password": reader["password"],
+            }
+        except (OSError, ValueError, KeyError):
+            pass
+        self.accepted("integration-session-issued", record, 201, feed_extra)
 
 
     def query_report(self, request: dict[str, object]) -> None:

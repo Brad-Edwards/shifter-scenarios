@@ -24,6 +24,14 @@ for file in server.crt server.key; do
   install -o arwc-data -g arwc-data -m 0400 "/run/arwc-tls/$file" "/tmp/$file"
 done
 
+# W09.4: the OT-site overlay mounts the operating-reader Basic identity at
+# /run/arwc-operating-reader.json (root 0600). Copy it to an arwc-data-readable
+# path so the integration session can hand those credentials to the participant.
+if [ -r /run/arwc-operating-reader.json ]; then
+  install -o arwc-data -g arwc-data -m 0400 \
+    /run/arwc-operating-reader.json /tmp/arwc-operating-reader.json
+fi
+
 install -d -o postgres -g postgres -m 0700 "$PGDATA"
 install -d -o postgres -g postgres -m 2775 /var/run/postgresql
 chown postgres:postgres /var/run/postgresql
