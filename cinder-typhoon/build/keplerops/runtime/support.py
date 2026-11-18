@@ -432,6 +432,9 @@ class SupportHandler(KeplerHandler):
             data = self.read_json()
             revision = data.get("connector_revision", "")
             if not revision: return self.send_json(422, {"error": "connector_binding_denied"})
+            # K27.1 flaw is the omitted assigned-customer check; the customer must
+            # still be a real integration customer. Reject an unknown tenant (404).
+            if not any(tenant == tenant_diag for (tenant, _connector) in _INTEGRATIONS): return self.send_json(404, {"error": "customer_not_found"})
             state = extended(); job_id = "DIAG-ARWC-" + uuid.uuid4().hex[:8].upper(); value = {"job_id": job_id, "tenant": tenant_diag, "connector_revision": revision, "state": "draft", "flag": "FLAG{d58c860051957082}"}; state["diagnostics"][job_id] = value; save_extended(state)
             append_audit(AUDIT, "diagnostics", {"request_id": self.request_id, "principal": self.principal, **{k:v for k,v in value.items() if k!="flag"}, "status": 201}); return self.send_json(201, value)
         match = re.fullmatch(r"/api/diagnostics/([^/]+)/package", path)
