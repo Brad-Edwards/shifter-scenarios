@@ -64,6 +64,9 @@ copy the recovered file directly into the ZIP instead of re-serializing it.
 
 - Support desk: `https://support.keplerops.test/scp/`
 - Staff work board: `https://staff.keplerops.test/`
+- Retained staff login: the workstation support client profile
+  (`~/.config/fieldlink/support-client.json`) keeps a `retained_staff_login`
+  for the support desk.
 
 Use the normal staff identity. Tickets and their correspondence remain in the
 support desk; release reviews and attachments remain on the work board.
@@ -71,7 +74,6 @@ support desk; release reviews and attachments remain on the work board.
 ## FieldLink support integration
 
 - Conversation: `GET https://support.keplerops.test:8443/api/conversations/{conversation_id}`
-- Current handover: `GET https://support.keplerops.test:8443/api/handovers/current`
 
 The integration client uses the retained support authorization supplied in its
 private client profile.
