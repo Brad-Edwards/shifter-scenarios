@@ -24,16 +24,21 @@ def _sync_engineer_password(password: str) -> None:
     rotate after the initial provisioning, the stored hash becomes stale and
     the Editor upload fails. This upsert keeps the engineer account aligned
     with credentials.json without touching other users.
+
+    Uses the same derivation_method as restapi.py ("pbkdf2:sha256:600000") so
+    the Flask server's check_password_hash call succeeds without a code change.
+    Restarts the PLC container afterward so Flask reloads the user from the DB
+    rather than serving the stale in-memory object.
     """
     if not RESTAPI_DB.exists():
         return
-    # Import werkzeug from the OpenPLC runtime venv so the hash format matches.
-    import importlib.util, sys as _sys
+    import sys as _sys
     _site = str(_VENV_PYTHON.parent.parent / "lib" / "python3.11" / "site-packages")
     if _site not in _sys.path:
         _sys.path.insert(0, _site)
     from werkzeug.security import generate_password_hash
-    pw_hash = generate_password_hash(password)
+    # Match restapi.py: derivation_method = "pbkdf2:sha256:600000"
+    pw_hash = generate_password_hash(password, method="pbkdf2:sha256:600000")
     with sqlite3.connect(RESTAPI_DB) as conn:
         existing = conn.execute(
             "SELECT id FROM users WHERE username='engineer'"
@@ -48,6 +53,12 @@ def _sync_engineer_password(password: str) -> None:
                 "INSERT INTO users (username, password_hash, role) VALUES ('engineer', ?, 'admin')",
                 (pw_hash,),
             )
+    # Restart the PLC container so Flask reloads the user from the updated DB.
+    # The wait loop below waits for the web interface to become available again.
+    subprocess.run(
+        ["docker", "restart", "arwc-ot-compat-plc-1"],
+        check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+    )
 
 
 if __name__ == "__main__":
