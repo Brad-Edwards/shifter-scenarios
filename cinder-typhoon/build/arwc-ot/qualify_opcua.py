@@ -31,7 +31,7 @@ def client_certificate() -> None:
         .add_extension(x509.ExtendedKeyUsage([ExtendedKeyUsageOID.CLIENT_AUTH]), critical=False)
         .sign(key, hashes.SHA256()))
     key_path.write_bytes(key.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8, serialization.NoEncryption()))
-    key_path.chmod(0o600)
+    key_path.chmod(0o640)
     cert_path.write_bytes(certificate.public_bytes(serialization.Encoding.PEM))
 
 
