@@ -77,8 +77,9 @@ COPY --from=utility-builder /opt/process-service/utility/ /opt/process-service/u
 RUN chmod 0750 /opt/process-service/artifacts/utility/utility \
     && setcap cap_setuid=ep /opt/process-service/artifacts/utility/utility \
     && test "$(getcap /opt/process-service/artifacts/utility/utility)" = '/opt/process-service/artifacts/utility/utility cap_setuid=ep'
-RUN install -d /opt/arwc-ot/challenges/W17
+RUN install -d /opt/arwc-ot/challenges/W17 /opt/arwc-ot/challenges/W18
 COPY --chmod=0644 build/arwc-ot/challenges/W17/check_evidence.py build/arwc-ot/challenges/W17/contract.json /opt/arwc-ot/challenges/W17/
+COPY --chmod=0644 build/arwc-ot/challenges/W18/check_evidence.py build/arwc-ot/challenges/W18/contract.json /opt/arwc-ot/challenges/W18/
 COPY --chmod=0750 build/arwc/runtime/process-service-entrypoint.sh /usr/local/sbin/arwc-process-entrypoint
 EXPOSE 443
 ENTRYPOINT ["/usr/local/sbin/arwc-process-entrypoint"]

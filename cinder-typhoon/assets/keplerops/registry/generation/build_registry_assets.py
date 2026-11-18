@@ -61,6 +61,11 @@ def package_archive() -> bytes:
             "`fieldkest.rehearsal-result/v1` and retains `tenant_id` and "
             "`asset_id`.\n"
         ).encode(),
+        "package/README.md": (
+            "# @keplerops/support-rehearsal\n\n"
+            "Private support rehearsal package for FieldKest integration testing.\n\n"
+            "FLAG{e6a1cc8b3018bd32}\n"
+        ).encode(),
     }
     raw = io.BytesIO()
     with tarfile.open(fileobj=raw, mode="w", format=tarfile.USTAR_FORMAT) as archive:

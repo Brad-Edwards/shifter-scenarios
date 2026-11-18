@@ -6,7 +6,7 @@
         {
           "mode": "0600",
           "path": "config/foundation.json",
-          "sha256": "172050f1db889ac90c4e6c4e03f711a23d1f3db8ca10fb20a1ee63ad02734642",
+          "sha256": "bca91f5447c8e2ffb6dfa41f2c1ba218a38e07c0fe69a8ab3b7946dc9e192c5d",
           "size": 712
         },
         {
@@ -30,8 +30,8 @@
         {
           "mode": "0640",
           "path": "packages/support-rehearsal-1.3.1.tgz",
-          "sha256": "6708bbaafa1bf97c3f15d04afa0330a1ce2e914038b22b72ea21b194f32e08d7",
-          "size": 540
+          "sha256": "31d982d3c57e3dddb5b14d5bb5ba5fc046df5a0f28dfd8d0bf34dd980bd4de00",
+          "size": 628
         },
         {
           "mode": "0640",
@@ -60,7 +60,7 @@
       ],
       "group": "fieldkest",
       "owner": "fieldkest",
-      "sha256": "8b87e44bee77dad27a0820d51fa77002b49508fe92de9ffc6622c439a46754d7",
+      "sha256": "c34442bd605fd7f4bb5199a548422edfc9ff35dfb543633b09eb193859024d9e",
       "size": 20480
     },
     {
@@ -104,7 +104,7 @@
   "generated_at": "2026-09-18T15:00:00Z",
   "schema": "fieldkest.registry-foundation-artifacts/v1",
   "support_package": {
-    "sha256": "6708bbaafa1bf97c3f15d04afa0330a1ce2e914038b22b72ea21b194f32e08d7",
-    "size": 540
+    "sha256": "31d982d3c57e3dddb5b14d5bb5ba5fc046df5a0f28dfd8d0bf34dd980bd4de00",
+    "size": 628
   }
 }
