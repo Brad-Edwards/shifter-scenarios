@@ -7,7 +7,7 @@
 set -euo pipefail
 BACKUP=/var/run/runtime/libplc-backup.so
 BUILD=/workdir/build
-if [[ -f $BACKUP ]] && ! ls "$BUILD"/libplc_*.so 2>/dev/null | read -r; then
+if [[ -f $BACKUP ]] && ! ls "$BUILD"/libplc_*.so > /dev/null 2>&1; then
     mkdir -p "$BUILD"
     HASH=$(sha256sum "$BACKUP" | cut -c1-16)
     cp "$BACKUP" "$BUILD/libplc_${HASH}.so"
