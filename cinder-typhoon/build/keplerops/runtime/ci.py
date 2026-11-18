@@ -101,8 +101,8 @@ class CIHandler(KeplerHandler):
                 if job_data.get("profile") == "runner-command":
                     job_data["flag"] = "FLAG{783b665bfc42fd9f}"  # K09.4
                 elif job_data.get("review", {}).get("maintained_reference"):
-                    job_data["flag"] = "FLAG{64019807418ce6c8}"  # K06.3: success with maintained reference
-                else:
+                    # K09.3: the render-review job resolved the linked_support_ref
+                    # and returned the diagnostic-request-reference content.
                     job_data["flag"] = "FLAG{9c7e8e7a35ec128c}"  # K09.3
             self.send_json(200, job_data)
         elif path.startswith("/api/runs/"):
