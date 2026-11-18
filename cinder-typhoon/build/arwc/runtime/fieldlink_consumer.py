@@ -178,6 +178,27 @@ def unpack_package(payload: bytes, version: str) -> tuple[dict[str, object], str
 def earn_corporate(route: str, receipt_id: str, version: str) -> None:
     with LOCK:
         if TOKEN.exists():
+            # Idempotent repair. earn_corporate writes the token last, so a
+            # present token means the handover was already earned by a real
+            # delivery. A later partial clear can remove the customer token
+            # hash file (for example a volume reset that drops connector-customer
+            # but keeps the fieldlink token). Before this repair no re-run could
+            # restore that hash, because this function returned here, and the
+            # connector then rejected every corporate request. Re-derive the
+            # hash from the existing token and write it only when it is missing
+            # or does not match. This does not weaken the gate: the token was
+            # still earned, and only its own hash is re-asserted.
+            token = TOKEN.read_text(encoding="ascii").strip()
+            if re.fullmatch(r"[0-9a-f]{64}", token):
+                expected = hashlib.sha256(token.encode()).hexdigest()
+                current = (
+                    TOKEN_HASH.read_text(encoding="ascii").strip()
+                    if TOKEN_HASH.is_file()
+                    else None
+                )
+                if current != expected:
+                    atomic_bytes(TOKEN_HASH, (expected + "\n").encode(), 0o400)
+                    os.chmod(TOKEN_HASH, 0o400)
             return
         token = secrets.token_hex(32)
         token_hash = hashlib.sha256(token.encode()).hexdigest()
