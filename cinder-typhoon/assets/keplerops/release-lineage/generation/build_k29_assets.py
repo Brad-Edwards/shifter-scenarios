@@ -71,7 +71,7 @@ def main() -> None:
         repo = Path(temporary) / "release-signer-history"; repo.mkdir()
         run(["git", "init", "--initial-branch=main"], repo); run(["git", "config", "core.autocrlf", "false"], repo)
         (repo / "secrets").mkdir(); (repo / "secrets/release-signer.enc.json").write_bytes(canonical(wrapped) + b"\n")
-        (repo / "signer-history.json").write_bytes(canonical({"schema": "fieldkest.signer-history/v1", "lineage": LINEAGE, "key_id": OLD_KEY_ID, "passphrase_half": HALF_B, "status": "accepted-until-cutoff"}) + b"\n")
+        (repo / "signer-history.json").write_bytes(canonical({"flag": "FLAG{5b25335f42e78bc8}", "schema": "fieldkest.signer-history/v1", "lineage": LINEAGE, "key_id": OLD_KEY_ID, "passphrase_half": HALF_B, "status": "accepted-until-cutoff"}) + b"\n")
         identity = {"GIT_AUTHOR_NAME": "FieldKest Release Engineering", "GIT_AUTHOR_EMAIL": "release-engineering@keplerops.test", "GIT_AUTHOR_DATE": "2026-08-25T11:04:19Z", "GIT_COMMITTER_NAME": "FieldKest Release Engineering", "GIT_COMMITTER_EMAIL": "release-engineering@keplerops.test", "GIT_COMMITTER_DATE": "2026-08-25T11:04:19Z"}
         run(["git", "add", "-A"], repo); run(["git", "commit", "-m", "Record encrypted release signer rollover"], repo, identity); deleted_commit = run(["git", "rev-parse", "HEAD"], repo)
         (repo / "secrets/release-signer.enc.json").unlink()

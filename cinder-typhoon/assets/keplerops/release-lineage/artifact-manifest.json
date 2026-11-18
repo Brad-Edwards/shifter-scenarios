@@ -2,17 +2,17 @@
   "archives": [
     {
       "archive": "k-source-release-lineage-state.tar",
-      "sha256": "97514807d9eb56e8f46605b2cc0718148e462249732afea14079806bb2a7e992",
+      "sha256": "8ba1ea66faeb3ebc97e5b960c189642125262297fa903f5757103b59f01856d7",
       "size": 10240
     },
     {
       "archive": "k-registry-release-lineage-state.tar",
-      "sha256": "1e2cfa826dda45f80a9d2e4bdc6ebc49fe118259475718d166557c04039488fe",
+      "sha256": "c55378b323495853ea371932d009fa96e010956d8d4e17ec7e789515025bcc29",
       "size": 10240
     },
     {
       "archive": "k-ci-release-lineage-state.tar",
-      "sha256": "6a9b55151226ef527c2c7e2de2ef7dc40d9daba2a10a7b72687964b3108764d1",
+      "sha256": "d176035fa886f5b0ad00e3aa7a9293d45bda72c0cce98aa1bea4204a3048ea31",
       "size": 10240
     },
     {
@@ -30,9 +30,9 @@
     "old_public_key_base64": "fVb1PGuoR/d/np/rH3oJG9CgVCWD+nQkoEA/zK016dg="
   },
   "repository": {
-    "bundle_sha256": "55d47f601f8da4b75ecc3631f612c61f9b7ed3764e9bffd7f1ddb04f4481502c",
-    "current_commit": "e36239452900fd77164047f785d8116eaaea35b8",
-    "deleted_commit": "be1f58577829a77f999813b24a8fdeabb8a0298f"
+    "bundle_sha256": "5812da5dcd70c91b8d2906dec0e08afc000ab2aee8aebbf8033a7595f62c6de0",
+    "current_commit": "9c3bcec7454fcb5330f99535a4708b42ae18e05d",
+    "deleted_commit": "ae381c7d0952368aa2d1587099a36c0769f10976"
   },
   "schema": "fieldkest.k29-artifacts/v1"
 }
