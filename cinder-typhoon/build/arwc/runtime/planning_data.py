@@ -378,6 +378,12 @@ class Handler(BaseHTTPRequestHandler):
         )
         context = ssl.create_default_context(cafile="/run/arwc-tls/ca.crt")
         context.check_hostname = False
+        # Force TLS 1.2 to avoid Python 3.12 TLS 1.3 close_notify SSLEOFError
+        # when the instruments service closes the connection after sending its response.
+        try:
+            context.maximum_version = ssl.TLSVersion.TLSv1_2
+        except AttributeError:
+            pass
         try:
             response = urllib.request.urlopen(outbound, context=context, timeout=20)
         except urllib.error.HTTPError as error:

@@ -18,6 +18,20 @@ services:
     logging: *id001
   fieldlink-edge:
     logging: *id001
+  a-business:
+    logging: *id001
+  a-contractor-bridge:
+    logging: *id001
+  a-control-broker:
+    logging: *id001
+  a-diagnostics:
+    logging: *id001
+  a-engineering:
+    logging: *id001
+  a-instruments:
+    logging: *id001
+  a-renderer:
+    logging: *id001
 networks:
   history_exchange:
     external: true

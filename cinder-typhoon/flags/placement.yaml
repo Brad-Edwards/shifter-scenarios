@@ -1156,22 +1156,22 @@ flags:
     source: value
     value: "FLAG{a972558765950459}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/process_services.py:w33_1_post() line 1910 — flag in extra dict of accepted() call at POST /api/commissioning-calibrations/current."
   - flag_id: W33.2
     source: value
     value: "FLAG{7fc27069641f0cc2}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/process_services.py:w33_2_post() line 1980 — flag in extra dict of accepted() call at POST /api/operating-schedules/current."
   - flag_id: W33.3
     source: value
     value: "FLAG{271d8984b1b19a04}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/process_services.py:w33_3_post() line 2061 — flag in extra dict of accepted() call at POST /api/commissioning-runs/current."
   - flag_id: W33.4
     source: value
     value: "FLAG{8d62fb9ea4f1924f}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/process_services.py:w33_4_post() line 2162 — flag in extra dict of accepted() call at POST /api/operating-projections/current."
   - flag_id: W34.1
     source: value
     value: "FLAG{509426611d275191}"

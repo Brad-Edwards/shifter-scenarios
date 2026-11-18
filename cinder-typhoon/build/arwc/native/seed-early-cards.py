@@ -69,7 +69,7 @@ def rebuild_annex_history(path: str) -> None:
     request("DELETE", dav(path), accepted=(204, 404))
     request("PUT", dav(path), (RECORDS / "ANN-4417-R1.md").read_bytes())
     time.sleep(NEXTCLOUD_VERSION_INTERVAL_SECONDS)
-    request("PUT", dav(path), (RECORDS / "ANN-4417-R2.md").read_bytes())
+    request("PUT", dav(path), (RECORDS / "ANN-4417-R2-nc.md").read_bytes())
     files["verify_versions"](path, [(RECORDS / "ANN-4417-R1.md").read_bytes()])
 
 

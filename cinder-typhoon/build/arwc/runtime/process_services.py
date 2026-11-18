@@ -960,16 +960,16 @@ class Handler(BaseHTTPRequestHandler):
         if ROLE in ("engineering", "instruments") and path == "/api/remote-operations/current":
             self.w30_2_post(path, request, state)
             return
-        if ROLE == "engineering" and path == "/api/commissioning-calibrations/current":
+        if ROLE in ("engineering", "instruments") and path == "/api/commissioning-calibrations/current":
             self.w33_1_post(path, request, state)
             return
-        if ROLE == "engineering" and path == "/api/operating-schedules/current":
+        if ROLE in ("engineering", "instruments") and path == "/api/operating-schedules/current":
             self.w33_2_post(path, request, state)
             return
-        if ROLE == "engineering" and path == "/api/commissioning-runs/current":
+        if ROLE in ("engineering", "instruments") and path == "/api/commissioning-runs/current":
             self.w33_3_post(path, request, state)
             return
-        if ROLE == "engineering" and path == "/api/operating-projections/current":
+        if ROLE in ("engineering", "instruments") and path == "/api/operating-projections/current":
             self.w33_4_post(path, request, state)
             return
         if ROLE == "engineering" and path in {
@@ -1108,7 +1108,8 @@ class Handler(BaseHTTPRequestHandler):
                 import psycopg2 as _pg
                 ot_conn = _pg.connect(
                     host=OT_HISTORIAN, port=5432, dbname="historian",
-                    user="reader", password=OT_READER_PASS, connect_timeout=5
+                    user="reader", password=OT_READER_PASS, connect_timeout=5,
+                    options="-c statement_timeout=30000",
                 )
                 ot_conn.autocommit = True
                 with ot_conn.cursor() as cur:
@@ -1192,7 +1193,8 @@ class Handler(BaseHTTPRequestHandler):
                 import psycopg2 as _pg
                 ot_conn = _pg.connect(
                     host=OT_HISTORIAN, port=5432, dbname="historian",
-                    user="reader", password=OT_READER_PASS, connect_timeout=5
+                    user="reader", password=OT_READER_PASS, connect_timeout=5,
+                    options="-c statement_timeout=30000",
                 )
                 ot_conn.autocommit = True
                 with ot_conn.cursor() as cur:
@@ -1698,7 +1700,7 @@ class Handler(BaseHTTPRequestHandler):
                 """)
                 rows = cur.fetchall()
             ot.close()
-        except (OSError, ImportError):
+        except Exception:
             self.send_json(409, {"error": "OT historian unavailable"})
             return
         if not rows:
@@ -1805,7 +1807,7 @@ class Handler(BaseHTTPRequestHandler):
                 """)
                 row = cur.fetchone()
             ot.close()
-        except (OSError, ImportError):
+        except Exception:
             self.send_json(409, {"error": "OT historian unavailable"})
             return
         if not row or round(float(row[0])) != 364:
@@ -1877,7 +1879,7 @@ class Handler(BaseHTTPRequestHandler):
                 """, (plc_accepted, window_end))
                 rows = cur.fetchall()
             ot.close()
-        except (OSError, ImportError):
+        except Exception:
             self.send_json(409, {"error": "OT historian unavailable"})
             return
         good_rows = [(r[0].replace(tzinfo=UTC), float(r[1]))
@@ -2033,7 +2035,7 @@ class Handler(BaseHTTPRequestHandler):
                 )
                 hmi_row = cur.fetchone()
             ot.close()
-        except (OSError, ImportError):
+        except Exception:
             self.send_json(409, {"error": "OT historian unavailable"})
             return
         if len(completed_ids) != 12:
@@ -2125,7 +2127,7 @@ class Handler(BaseHTTPRequestHandler):
                 )
                 uv_row = cur.fetchone()
             ot.close()
-        except (OSError, ImportError):
+        except Exception:
             self.send_json(409, {"error": "OT historian unavailable"})
             return
         starting_volume = float(uv_row[0]) if uv_row else 10.85
@@ -2221,7 +2223,7 @@ class Handler(BaseHTTPRequestHandler):
                 )
                 command_rows = cur.fetchall()
             ot.close()
-        except (OSError, ImportError):
+        except Exception:
             self.send_json(409, {"error": "OT historian unavailable"})
             return
         if not dispatch_rows:

@@ -620,8 +620,10 @@ services:
       dockerfile: build/arwc/images/engineering.Dockerfile
     image: cinder-arwc/a-engineering:hand-build
     container_name: cinder-arwc-engineering
-    hostname: a-engineering
-    domainname: a-engineering.arwc.test
+    hostname: process-view
+    domainname: arwc.test
+    dns:
+    - 10.77.60.10
     restart: unless-stopped
     read_only: true
     cap_drop: [ALL]
@@ -638,6 +640,8 @@ services:
       - engineering-state:/var/lib/arwc-engineering
       - process-evidence:/run/arwc-process-evidence
       - control-issuer:/run/arwc
+      - connector-fieldlink:/run/arwc-corporate:ro
+      - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
@@ -645,8 +649,11 @@ services:
       engineering:
         ipv4_address: 10.77.63.40
         aliases: [a-engineering, engineering-workbench.arwc.test]
+      corporate:
+        ipv4_address: 10.77.60.55
+        aliases: [a-engineering]
       handover_supervisory:
-        ipv4_address: 172.29.63.6
+        ipv4_address: 172.29.63.9
         aliases: [a-engineering, process-view.arwc.test]
 
   a-instruments:
@@ -818,7 +825,7 @@ volumes:
     name: cinder-arwc-diagnostics-state
 
   engineering-state:
-    name: cinder-arwc-engineering-state
+    name: cinder-arwc-engineering-data
   instruments-state:
     name: cinder-arwc-instruments-state
   ot-read-evidence:
