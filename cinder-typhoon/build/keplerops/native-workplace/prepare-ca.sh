@@ -47,3 +47,8 @@ chown -R root:root "$CA/tls"
 chmod 0755 "$CA/tls"
 chmod 0644 "$CA/certs/root_ca.crt" "$CA/tls/server.crt"
 chmod 0600 "$CA/tls/server.key"
+# K19.2 mTLS: foundation-edge verifies the enrollment client certificate. The
+# enrollment leaf certs are signed by the intermediate CA, so the nginx
+# client-CA file must contain the intermediate and the root. Build that bundle.
+cat "$CA/certs/intermediate_ca.crt" "$CA/certs/root_ca.crt" > "$CA/certs/enrollment_client_ca.crt"
+chmod 0644 "$CA/certs/enrollment_client_ca.crt"

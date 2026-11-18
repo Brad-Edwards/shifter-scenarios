@@ -94,6 +94,7 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/ca.crt:/etc/ssl/cert.pem:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/ca/tls:/etc/nginx/enrollment/tls:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/ca/certs/root_ca.crt:/etc/nginx/enrollment/root_ca.crt:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-workplace/ca/certs/enrollment_client_ca.crt:/etc/nginx/enrollment/client_ca.crt:ro
       - ./config/assistant-app.js:/etc/nginx/assistant/app.js:ro
     tmpfs:
       - /var/cache/nginx:rw,nosuid,nodev,size=8m,mode=0755
