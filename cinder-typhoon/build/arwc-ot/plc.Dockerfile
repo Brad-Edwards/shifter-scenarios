@@ -8,3 +8,9 @@ RUN /workdir/venvs/runtime/bin/python3 /tmp/patch_opcua_identity.py
 # start (OPC UA disabled) and OPC UA only starts after upload_fixture.py
 # writes the enabled configuration — a step that does not run on recreate.
 COPY plugins.conf /workdir/plugins.conf
+# Entrypoint that restores the compiled PLC binary from the persistent volume
+# on recreate. The binary is saved to the volume by upload_fixture.py after a
+# successful compile; it is lost from the writable layer on every recreate.
+COPY plc-entrypoint.sh /usr/local/bin/plc-entrypoint.sh
+RUN chmod +x /usr/local/bin/plc-entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/plc-entrypoint.sh"]

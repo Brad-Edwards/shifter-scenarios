@@ -132,3 +132,12 @@ if __name__ == "__main__":
         str(EDITOR / "AppRun"), "--cli", "upload", str(project),
         "--target", "OpenPLC Runtime v4", "--host", "172.29.63.20", "--create-user", "--yes",
     ], env=environment, check=True)
+    # Save the compiled binary to the persistent plc-state volume so the
+    # entrypoint can restore it after a container recreate without a fresh upload.
+    _save_cmd = [
+        "docker", "exec", _PLC_CONTAINER, "bash", "-c",
+        "ls /workdir/build/libplc_*.so 2>/dev/null | head -1 | xargs -I{} cp {} /var/run/runtime/libplc-backup.so",
+    ]
+    result = subprocess.run(_save_cmd, stderr=subprocess.PIPE)
+    if result.returncode != 0 and b"permission denied" in result.stderr.lower():
+        subprocess.run(["sudo"] + _save_cmd, check=False)
