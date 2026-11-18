@@ -812,6 +812,20 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
     maxDiff = None
     evidence: dict[str, object] = {}
 
+    # Services the participant does not receive in the transition note. The
+    # participant finds them by crawling the client-reference graph from the
+    # note's discovery entry point. Each key maps to the service hostname that
+    # the service publishes in its own /.well-known/arwc-client document.
+    DISCOVERED_SERVICES = {
+        "retained_archive": "retained-archive.arwc.test",
+        "corporate_identity": "corporate-identity.arwc.test",
+        "business_workplace": "business-workplace.arwc.test",
+        "contractor_portal": "contractor-portal.arwc.test",
+        "field_gateway": "field-gateway.arwc.test",
+        "maintenance_review": "maintenance-review.arwc.test",
+        "planning_data": "planning-data.arwc.test",
+    }
+
     @classmethod
     def setUpClass(cls) -> None:
         # The participant is handed the corporate session and the transition note.
@@ -819,6 +833,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
         # Crawl client references starting from the transition's discovery entry point.
         first_ref = cls.transition.get("client_reference")
         cls._routes: dict[str, str] = {}
+        cls._services: dict[str, str] = {}
         if first_ref:
             visited: set[str] = set()
             queue = [first_ref]
@@ -829,6 +844,11 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
                 visited.add(url)
                 _, doc = request(url, expected=200)
                 if isinstance(doc, dict):
+                    # Record the service base from each document the crawl visits.
+                    service_name = doc.get("service")
+                    if isinstance(service_name, str):
+                        parts = urlsplit(url)
+                        cls._services[service_name] = f"{parts.scheme}://{parts.netloc}"
                     for route in doc.get("routes", []):
                         cls._routes[route["key"]] = route["template"]
                     for link in doc.get("related", []):
@@ -844,7 +864,18 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
     @classmethod
     def host(cls, key: str) -> str:
-        """Resolve a service base URL from the supplied customer transition note."""
+        """Resolve a service base URL.
+
+        Services the participant discovers by crawling the client-reference
+        graph resolve from that discovered map. The remaining services come
+        from the supplied customer transition note.
+        """
+        hostname = cls.DISCOVERED_SERVICES.get(key)
+        if hostname is not None:
+            base = cls._services.get(hostname)
+            if not base:
+                raise AssertionError(f"service not found in discovered client references: {key}")
+            return base
         value = cls.transition.get(key)
         if not value:
             raise AssertionError(f"service not listed in customer transition: {key}")
