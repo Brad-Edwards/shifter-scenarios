@@ -2343,7 +2343,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(409, {"error": "replay witness binding rejected"})
             return
         cached = state.get("replay_witness_response")
-        if isinstance(cached, dict):
+        if isinstance(cached, dict) and cached.get("flag"):
             self.send_json(201, cached)
             return
         record = {**witness, "evidence_role": "optional-model-evidence"}
