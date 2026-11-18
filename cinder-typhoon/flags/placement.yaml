@@ -41,17 +41,17 @@ flags:
     source: value
     value: "FLAG{40be0052650d9d7a}"
     host: keplerops-host
-    path: TBD
+    path: "FLAG{40be0052650d9d7a} in the base64 'instructions' field of Attachments/staging-FKCOL-2841.bin inside work/analysis/field-notes-2026-08.odt; participant decodes the instructions. Source: assets/keplerops/opening/k-dev/generate_k03_staging.py build_instructions()."
   - flag_id: K03.2
     source: value
     value: "FLAG{4484ff1616e6aeb5}"
     host: keplerops-host
-    path: TBD
+    path: "FLAG{4484ff1616e6aeb5} in the reconstructed stage-3 manifest (ODT staging bundle payload -> PowerShell -> JavaScript -> XOR+zlib JSON). Source: assets/keplerops/opening/k-dev/generate_k03_staging.py build_manifest()."
   - flag_id: K03.3
     source: value
     value: "FLAG{4060aded2f1ce27f}"
     host: keplerops-host
-    path: TBD
+    path: "FLAG{4060aded2f1ce27f} in the SeaweedFS object s3://fieldlink-collections/callbacks/CB-17/FKCOL-2841.json field 'flag' (GetObject with rowan credentials). Source: assets/keplerops/opening/k-dev/FKCOL-2841.json."
   - flag_id: K04.1
     source: value
     value: "FLAG{c21a0bdd9ca4afce}"

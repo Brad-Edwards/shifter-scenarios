@@ -51,6 +51,7 @@ def build_manifest(object_key: str, object_sha256: str) -> dict:
         "collection_id": COLLECTION_ID,
         "endpoint_id": ENDPOINT_ID,
         "object_sha256": object_sha256,
+        "flag": "FLAG{4484ff1616e6aeb5}",
     }
 
 
@@ -87,6 +88,7 @@ def build_instructions() -> bytes:
     return json.dumps(
         {
             "schema": "fieldkest.collection-instructions/v1",
+            "flag": "FLAG{40be0052650d9d7a}",
             "instruction_set": "COLLECT-FK-3",
             "encoding": "three-stage: base64+zlib PowerShell, base64+zlib JavaScript, XOR+zlib JSON manifest",
             "endpoint_id": ENDPOINT_ID,

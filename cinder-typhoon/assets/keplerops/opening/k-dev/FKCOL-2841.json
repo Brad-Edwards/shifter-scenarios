@@ -1,5 +1,6 @@
 {
   "schema": "fieldkest.retained-collection/v1",
+  "flag": "FLAG{4060aded2f1ce27f}",
   "collection_id": "FKCOL-2841",
   "endpoint_id": "CB-17",
   "captured_at": "2026-08-27T02:18:44Z",
