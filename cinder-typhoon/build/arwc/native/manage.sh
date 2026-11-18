@@ -354,6 +354,8 @@ PYEOF
     # measured from boot, not bake. On an image the bake-time pool would expire
     # before a participant boots the range, which breaks W04.2 enrollment.
     bash "$0" mint-ott-pool "${ARWC_OTT_VALIDITY:-336h}"
+    # The archive container reads its DB credentials from the IT operator directory.
+    golden_op="$(cd .. && pwd)/.operator"
     # Derive a stable password for the archive query role from the handover key.
     # The handover key is stable per range; this keeps the archive DB password
     # consistent across seed-archive runs without requiring manual updates.
