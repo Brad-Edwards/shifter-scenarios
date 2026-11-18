@@ -31,16 +31,42 @@ def session_for_fuxa(bootstrap=False) -> requests.Session:
     return session
 
 
+def _apply_users_and_settings(session: requests.Session, credentials: dict) -> None:
+    """Create or update FUXA accounts and write settings. Safe to call on a live range."""
+    for username, key, fullname, group in [
+        ("admin", "fuxa", "ARWC compatibility operator", -1),
+        ("operator", "fuxa_operator", "ARWC site operator", 2),
+        ("viewer", "fuxa_viewer", "ARWC observation", 1),
+    ]:
+        session.post(URL + "/api/users", json={"params": {"username": username, "fullname": fullname,
+            "password": credentials[key], "groups": group, "info": "{}"}}, timeout=15)
+        # 200/201 = created; ignore errors for existing accounts (idempotent).
+    settings = ROOT / ".operator/fuxa-settings.js"
+    settings.write_text("module.exports = {...require('../settings.default.js'), secureEnabled: true, userRole: false, secretCode: " + json.dumps(credentials["fuxa_session"]) + ", tokenExpiresIn: '1h'};\n")
+    settings.chmod(0o644)
+
+
 async def main() -> None:
     credentials = json.loads((ROOT / ".operator/credentials.json").read_text())
+    session = session_for_fuxa(bootstrap=True)
+
+    # Check whether the OPC UA project is already imported (device crr-plc with ≥1 tag).
+    # If so, skip the destructive project re-import and only update accounts and settings.
+    project = session.get(URL + "/api/project", timeout=15).json()
+    existing_tags = len((project.get("devices") or {}).get("crr-plc", {}).get("tags") or {})
+    if existing_tags > 0:
+        print(f"FUXA project already configured ({existing_tags} tags). Skipping re-import.")
+        _apply_users_and_settings(session, credentials)
+        print("FUXA accounts and settings updated without touching the device project.")
+        return
+
+    # First-time setup: import the full OPC UA project.
     register = json.loads((ROOT / "tags.json").read_text())
     client = await connect("reader")
     try:
         namespace = await client.get_namespace_index(register["namespace_uri"])
     finally:
         await client.disconnect()
-    session = session_for_fuxa(bootstrap=True)
-    project = session.get(URL + "/api/project", timeout=15).json()
     tags = {}
     for tag in register["tags"]:
         name = tag["variable"]
@@ -56,16 +82,7 @@ async def main() -> None:
         "mode": {"securityMode": 3, "securityPolicy": "http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256"},
         "uid": "operator", "pwd": credentials["opcua"],
     }}}, timeout=15).raise_for_status()
-    for username, key, fullname, group in [
-        ("admin", "fuxa", "ARWC compatibility operator", -1),
-        ("operator", "fuxa_operator", "ARWC site operator", 2),
-        ("viewer", "fuxa_viewer", "ARWC observation", 1),
-    ]:
-        session.post(URL + "/api/users", json={"params": {"username": username, "fullname": fullname,
-            "password": credentials[key], "groups": group, "info": "{}"}}, timeout=15).raise_for_status()
-    settings = ROOT / ".operator/fuxa-settings.js"
-    settings.write_text("module.exports = {...require('../settings.default.js'), secureEnabled: true, userRole: false, secretCode: " + json.dumps(credentials["fuxa_session"]) + ", tokenExpiresIn: '1h'};\n")
-    settings.chmod(0o644)
+    _apply_users_and_settings(session, credentials)
     print("FUXA imported the real native OPC UA namespace and encrypted operator connection.")
 
 
