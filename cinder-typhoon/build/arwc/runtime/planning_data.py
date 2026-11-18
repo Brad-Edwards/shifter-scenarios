@@ -384,7 +384,11 @@ class Handler(BaseHTTPRequestHandler):
             response = error
         except OSError:
             return 409, {"error": "reporting dependency unavailable"}
-        try: result = json.loads(response.read())
+        try:
+            body = response.read()
+        except OSError:
+            return response.status, {"error": "reporting dependency closed connection"}
+        try: result = json.loads(body)
         except json.JSONDecodeError: return 409, {"error": "reporting dependency returned invalid data"}
         return response.status, result
 

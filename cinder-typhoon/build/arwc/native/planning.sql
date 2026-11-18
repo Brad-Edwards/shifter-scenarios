@@ -248,14 +248,15 @@ GRANT SELECT ON public.district_excerpts TO planning_reader;
 -- W10.1: report_source_selection view for SEL-CRR-DP3-7.
 CREATE OR REPLACE VIEW public.report_source_selection AS
  SELECT
-   'SEL-CRR-DP3-7'    AS record_id,
-   7                   AS revision,
+   'SEL-CRR-DP3-7'       AS record_id,
+   7                      AS revision,
    al.district,
    al.planning_window,
-   al.record_id        AS allocation_source,
-   me.record_id        AS meter_source,
-   rr.record_id        AS reserve_report_source,
-   rr.duplicate_transfer
+   al.record_id           AS allocation_source,
+   me.record_id           AS meter_source,
+   rr.record_id           AS reserve_report_source,
+   rr.duplicate_transfer,
+   'FLAG{0657c9326fcc1aed}' AS flag
  FROM public.allocation_ledger al
  JOIN public.meter_export me ON al.planning_window = me.planning_window
  JOIN public.business_reserve_report rr
