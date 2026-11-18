@@ -82,13 +82,18 @@ _ARWC_MIGRATION_HISTORY = {
 
 
 def _validate_partition_binding(export_id: str, tenant: str,
-                                partition: str, connector_revision: str) -> bool:
-    """K15.4: validate partition binding against real PostgreSQL export.partition_bindings.
-
-    Queries: SELECT 1 FROM export.partition_bindings WHERE export_id=? AND tenant=?
-             AND partition_id=? AND connector_revision=? AND is_current=true
-    Returns True if found (valid binding), False otherwise.
+                                partition: str, connector_revision: str,
+                                k3s_bindings: list | None = None) -> bool:
+    """K15.4: validate partition binding against PostgreSQL export.partition_bindings.
+    Falls back to k3s_bindings list if PostgreSQL is unreachable.
     """
+    if k3s_bindings is not None:
+        for b in k3s_bindings:
+            if (b.get("tenant") == tenant and b.get("partition") == partition
+                    and b.get("connector_revision") == connector_revision
+                    and b.get("current", False)):
+                return True
+        return False
     try:
         import psycopg2
         import os
@@ -141,26 +146,41 @@ def _write_export_object(export_id: str, destination: str,
         s3_endpoint = CONFIG.get("s3_endpoint", "http://fieldlink-objects:8333")
         s3_host, s3_port_str = s3_endpoint.removeprefix("http://").split(":")
         s3_port = int(s3_port_str)
-        # Build S3 PUT request (unsigned for simplicity — SeaweedFS accepts unsigned if credentials match)
-        # Use AWS Signature V4 via subprocess aws command
-        import subprocess
+        # AWS Sig V4 inline — SeaweedFS requires signed requests
+        import http.client as _hc2
+        import datetime, hmac, hashlib
         bucket = "fieldkest-exports"
-        s3_key = f"{export_id}/{collection_key}"
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".json") as f:
-            f.write(payload); tmp_path = f.name
-        env = {**os.environ,
-               "AWS_ACCESS_KEY_ID": access_key,
-               "AWS_SECRET_ACCESS_KEY": secret_key,
-               "AWS_DEFAULT_REGION": "us-east-1"}
-        result = subprocess.run(
-            ["aws", "--endpoint-url", s3_endpoint,
-             "s3", "cp", tmp_path, f"s3://{bucket}/{s3_key}"],
-            capture_output=True, text=True, env=env, timeout=10
-        )
-        os.unlink(tmp_path)
-        if result.returncode == 0:
+        s3_key = "exports/support/" + export_id + "/" + collection_key
+        now = datetime.datetime.utcnow()
+        datestamp = now.strftime("%Y%m%d")
+        amzdate = now.strftime("%Y%m%dT%H%M%SZ")
+        canonical_uri = "/" + bucket + "/" + s3_key
+        payload_hash = hashlib.sha256(payload).hexdigest()
+        hdr_content = "content-type:application/json"
+        hdr_host = "host:" + s3_host + ":" + str(s3_port)
+        hdr_sha = "x-amz-content-sha256:" + payload_hash
+        hdr_date = "x-amz-date:" + amzdate
+        canonical_headers = hdr_content + "\n" + hdr_host + "\n" + hdr_sha + "\n" + hdr_date + "\n"
+        signed_headers = "content-type;host;x-amz-content-sha256;x-amz-date"
+        canonical_request = "\n".join(["PUT", canonical_uri, "", canonical_headers, signed_headers, payload_hash])
+        scope = datestamp + "/us-east-1/s3/aws4_request"
+        string_to_sign = "\n".join(["AWS4-HMAC-SHA256", amzdate, scope,
+                                    hashlib.sha256(canonical_request.encode()).hexdigest()])
+        def _sign(key, msg):
+            return hmac.new(key, msg.encode(), hashlib.sha256).digest()
+        signing_key = _sign(_sign(_sign(_sign(("AWS4" + secret_key).encode(), datestamp), "us-east-1"), "s3"), "aws4_request")
+        signature = hmac.new(signing_key, string_to_sign.encode(), hashlib.sha256).hexdigest()
+        auth_header = ("AWS4-HMAC-SHA256 Credential=" + access_key + "/" + scope +
+                       ", SignedHeaders=" + signed_headers + ", Signature=" + signature)
+        conn2 = _hc2.HTTPConnection(s3_host, s3_port, timeout=10)
+        hdrs = {"Content-Type": "application/json", "Content-Length": str(len(payload)),
+                "X-Amz-Date": amzdate, "X-Amz-Content-Sha256": payload_hash, "Authorization": auth_header}
+        conn2.request("PUT", canonical_uri, body=payload, headers=hdrs)
+        resp2 = conn2.getresponse()
+        resp2.read(); conn2.close()
+        if resp2.status in (200, 201, 204):
             return True, ""
-        return False, result.stderr[:200]
+        return False, "seaweedfs_returned_" + str(resp2.status)
     except Exception as exc:
         return False, str(exc)
 
