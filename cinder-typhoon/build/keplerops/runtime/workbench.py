@@ -142,7 +142,7 @@ class WorkbenchHandler(KeplerHandler):
         receipt_path = RESULTS / "k03-2-complete.json"
         if receipt_path.is_file():
             cached = json.loads(receipt_path.read_text())
-            cached["flag"] = "FLAG{3040a0c2f8443498}"
+            cached["flag"] = "FLAG{4484ff1616e6aeb5}"
             self.send_json(200, cached)
             return
         receipt_id = "K03-2-" + uuid.uuid4().hex[:10].upper()
@@ -163,7 +163,7 @@ class WorkbenchHandler(KeplerHandler):
             "collection": contract["collection_id"],
             "status": 201,
         })
-        result["flag"] = "FLAG{3040a0c2f8443498}"
+        result["flag"] = "FLAG{4484ff1616e6aeb5}"
         self.send_json(201, result)
 
 

@@ -2,7 +2,7 @@ FROM python:3.12.11-slim-bookworm
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -y ca-certificates iproute2 util-linux curl krb5-user \
-    && pip install --no-cache-dir pymysql==1.1.1 psycopg2-binary==2.9.10 \
+    && pip install --no-cache-dir pymysql==1.1.1 psycopg2-binary==2.9.10 cryptography==50.0.2 \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system fieldkest-staff \
     && useradd --system --gid fieldkest-staff --home-dir /nonexistent --shell /usr/sbin/nologin fieldkest-staff

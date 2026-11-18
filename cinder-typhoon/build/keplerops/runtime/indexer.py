@@ -207,12 +207,10 @@ class IndexerHandler(KeplerHandler):
             result = {"index_id": index_id, "state": "indexed", "bundle_sha256": sha256_bytes(bundle), **native_result}
             if native_result["sentinel"] == "mutated" and indexer["sentinel"] != "mutated":
                 # K04.1: write descriptor (bytes 80-511) and seed exception-state (bytes 512-575).
-                # The binary reads the full arena before each write.  A subsequent request
-                # with datalen=512 (K04.2) discloses the descriptor; datalen=576 also exposes
-                # the seeded exception-state region for the participant to study.
                 indexer["sentinel"] = "mutated"
                 write_arena_at_mutation(indexer["generation"])
                 self.record("sentinel-mutation", descriptor_written=True)
+                result["flag"] = "FLAG{c21a0bdd9ca4afce}"
             if not indexer.get("write_ready") and indexer.get("sentinel") == "mutated" and check_exception_write():
                 # K04.3: participant delivered a 576-byte bundle that wrote queue-ready +
                 # HMAC(worker_session, queue-ready) at bytes 512-575 while preserving the
