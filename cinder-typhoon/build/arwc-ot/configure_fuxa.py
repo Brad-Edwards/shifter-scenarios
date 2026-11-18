@@ -56,9 +56,15 @@ async def main() -> None:
         "mode": {"securityMode": 3, "securityPolicy": "http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256"},
         "uid": "operator", "pwd": credentials["opcua"],
     }}}, timeout=15).raise_for_status()
-    session.post(URL + "/api/users", json={"params": {"username": "admin", "fullname": "ARWC compatibility operator", "password": credentials["fuxa"], "groups": -1, "info": "{}"}}, timeout=15).raise_for_status()
+    for username, key, fullname, group in [
+        ("admin", "fuxa", "ARWC compatibility operator", -1),
+        ("operator", "fuxa_operator", "ARWC site operator", 2),
+        ("viewer", "fuxa_viewer", "ARWC observation", 1),
+    ]:
+        session.post(URL + "/api/users", json={"params": {"username": username, "fullname": fullname,
+            "password": credentials[key], "groups": group, "info": "{}"}}, timeout=15).raise_for_status()
     settings = ROOT / ".operator/fuxa-settings.js"
-    settings.write_text("module.exports = {...require('../settings.default.js'), secureEnabled: true, secretCode: " + json.dumps(credentials["fuxa_session"]) + ", tokenExpiresIn: '1h'};\n")
+    settings.write_text("module.exports = {...require('../settings.default.js'), secureEnabled: true, userRole: false, secretCode: " + json.dumps(credentials["fuxa_session"]) + ", tokenExpiresIn: '1h'};\n")
     settings.chmod(0o644)
     print("FUXA imported the real native OPC UA namespace and encrypted operator connection.")
 
