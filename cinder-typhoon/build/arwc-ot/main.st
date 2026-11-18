@@ -63,6 +63,14 @@ VAR RETAIN
   RequestedTargetPct : REAL := 0.0;
 END_VAR
 
+(* Guard HMI REAL inputs against NaN written by FUXA before the participant
+   enters a valid setpoint. NaN != NaN in IEEE 754. *)
+IF NOT (HmiTargetPct = HmiTargetPct) THEN HmiTargetPct := 0.0; END_IF;
+IF NOT (HmiTargetBPct = HmiTargetBPct) THEN HmiTargetBPct := 0.0; END_IF;
+IF NOT (HmiFlowM3s = HmiFlowM3s) THEN HmiFlowM3s := 0.0; END_IF;
+IF NOT (RemoteTargetPct = RemoteTargetPct) THEN RemoteTargetPct := 0.0; END_IF;
+IF NOT (RemoteTargetBPct = RemoteTargetBPct) THEN RemoteTargetBPct := 0.0; END_IF;
+IF NOT (RemoteFlowM3s = RemoteFlowM3s) THEN RemoteFlowM3s := 0.0; END_IF;
 IoTimeout(IN := Heartbeat = LastHeartbeat, PT := T#3s);
 IoHealthy := (Heartbeat > 0) AND NOT IoTimeout.Q;
 LastHeartbeat := Heartbeat;

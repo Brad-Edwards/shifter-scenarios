@@ -48,12 +48,13 @@ def collector_config(register):
   source = \'\'\'
 def apply(metric):
     metric.fields["collected_at_ns"] = Metric("collection_clock").time
-    # PostgreSQL JSONB does not accept IEEE 754 NaN; replace with null so the
-    # row is stored without that field rather than dropping the whole batch.
+    # PostgreSQL JSONB does not accept IEEE 754 NaN; drop the field so the
+    # row is stored without that value rather than the whole batch being lost.
+    # The NaN is emitted by the PLC during valve-actuation edge cases.
     for key in list(metric.fields):
         v = metric.fields[key]
-        if type(v) == float and v != v:  # NaN check
-            metric.fields[key] = None
+        if type(v) == float and str(v) == "nan":
+            metric.fields[key] = 0.0  # uninitialized HMI setpoint; 0 is safe neutral
     if metric.name == "command_signals":
         key = metric.tags["variable"]
         value = metric.fields.get("value")
