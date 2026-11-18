@@ -2,15 +2,26 @@
 const limits = require('./limits.json');
 const version = require('./package.json').version;
 
-exports.consume = function consume(request) {
-  if (!request || request.schema !== 'fieldkest.connector/v3') {
-    throw new TypeError('Unsupported connector interface');
-  }
-  if (typeof request.tenant_id !== 'string' || typeof request.asset_id !== 'string') {
+// 7.4.3-cinder.rset1 is the pending Cinder release. It adds a diagnostic-summary
+// path (calibration review) while keeping the retained connector behavior for the
+// v2 reference consumer and for ordinary v3 measurement inputs.
+function run(request) {
+  if (!request || typeof request.tenant_id !== 'string' || typeof request.asset_id !== 'string') {
     throw new TypeError('A tenant and asset are required');
   }
-  // 7.4.3 adds a diagnostic-summary path that runs a calibration review for the
-  // named asset. This is the compatible behavior change the rehearsal exercises.
+  // v2 reference consumers keep the supported connector's compatible behavior.
+  if (request.schema === 'fieldkest.connector/v2') {
+    return {
+      schema: 'fieldkest.rehearsal-result/v1', tenant_id: request.tenant_id,
+      asset_id: request.asset_id, connector_version: version,
+      assessment: 'reference-compatible',
+      observations: {operation: request.operation || null}
+    };
+  }
+  if (request.schema !== 'fieldkest.connector/v3') {
+    throw new TypeError('Unsupported connector interface');
+  }
+  // The diagnostic-summary path runs a calibration review for the named asset.
   if (request.operation === 'diagnostic_summary') {
     return {
       schema: 'fieldkest.rehearsal-result/v1', tenant_id: request.tenant_id,
@@ -19,6 +30,7 @@ exports.consume = function consume(request) {
       observations: {operation: 'diagnostic_summary'}
     };
   }
+  // Ordinary v3 inputs keep the 7.4.2 latency/sample logic.
   const measurements = request.measurements || {};
   const latency = measurements.callback_latency_ms;
   const count = measurements.sample_count;
@@ -36,4 +48,7 @@ exports.consume = function consume(request) {
     asset_id: request.asset_id, connector_version: version, assessment,
     observations: {callback_latency_ms: latency ?? null, sample_count: count ?? null}
   };
-};
+}
+
+exports.consume = run;
+exports.diagnostic_summary = run;

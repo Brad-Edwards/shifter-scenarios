@@ -13,6 +13,10 @@
     "README.md"
   ],
   "fieldkest": {
-    "interface": "fieldkest.connector/v3"
+    "interface": "fieldkest.connector/v3",
+    "compatible_interfaces": [
+      "fieldkest.connector/v2",
+      "fieldkest.connector/v3"
+    ]
   }
 }
