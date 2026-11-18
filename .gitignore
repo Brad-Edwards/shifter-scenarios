@@ -12,3 +12,6 @@ cinder-typhoon/build/keplerops/gcp/.terraform/
 cinder-typhoon/build/arwc/gcp/.terraform/
 cinder-typhoon/build/kepler-arwc/gcp/.terraform/
 /qa-test.json
+.claude/worktrees/
+qa*.json
+bigrae-status.md
