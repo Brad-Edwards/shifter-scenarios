@@ -5,6 +5,7 @@ association, document identity, and queue management routes.
 """
 from __future__ import annotations
 
+import base64
 import hashlib
 import http.client as _hc
 import http.server
@@ -719,6 +720,10 @@ class PreviewHandler(KeplerHandler):
             (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
             if ssrf_confirmed:
                 result["flag"] = "FLAG{3944ecd601ef90a2}"  # K10.3
+            # Return the rendered PDF so the participant can read what Chromium
+            # produced. K12.2 captures the review-session action nonce into the
+            # page DOM; the nonce appears in this PDF as rendered text.
+            result["pdf_base64"] = base64.b64encode(pdf_bytes).decode("ascii")
             self.send_json(200, result)
         elif path == "/api/preview/documents":
             try:
