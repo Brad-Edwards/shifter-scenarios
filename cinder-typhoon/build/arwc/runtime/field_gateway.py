@@ -240,7 +240,8 @@ class Handler(BaseHTTPRequestHandler):
         state = json.loads(STATE.read_text(encoding="utf-8"))
         state["manifest_observed"] = True
         atomic_json(STATE, state)
-        self.send_json(200, {"audit_id": append_audit("instrument-read", MANIFEST), "record": MANIFEST})
+        self.send_json(200, {"audit_id": append_audit("instrument-read", MANIFEST), "record": MANIFEST,
+                             "flag": "FLAG{dda40f67ae90302c}"})
 
     def do_POST(self) -> None:
         if urlsplit(self.path).path in PROCESS_PATHS:
@@ -311,7 +312,8 @@ class Handler(BaseHTTPRequestHandler):
         os.chown(OT_EVIDENCE, -1, grp.getgrnam("arwc-ot-read").gr_gid)
         os.chmod(OT_EVIDENCE, 0o640)
         self.send_json(201, {"audit_id": append_audit("reading-read", result),
-                             "record": result, "process_session": token})
+                             "record": result, "process_session": token,
+                             "flag": "FLAG{027331f36779f480}"})
 
 
 def main() -> None:

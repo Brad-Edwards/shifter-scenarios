@@ -231,6 +231,28 @@ class StaffHandler(KeplerHandler):
             self.send_json(200, docs["documents"]["staff.keplerops.test"])
             return
 
+        # K19.1: enrollment template endpoint. Serves template metadata for the cert enrollment flow.
+        import re as _re_enroll
+        _enroll_match = _re_enroll.fullmatch(r"/api/enrollment/([^/]+)", path)
+        if _enroll_match:
+            if not self._developer():
+                self.send_json(401, {"error": "unauthorized"})
+                return
+            template_name = _enroll_match.group(1)
+            known_templates = CONFIG.get("enrollment_templates", {"StaffArchiveUser": {"eku": "clientAuth"}})
+            if template_name not in known_templates:
+                self.send_json(404, {"error": "template_not_found"})
+                return
+            cert_host = CONFIG.get("cert_host", "cert.keplerops.test")
+            self.send_json(200, {
+                "template": template_name,
+                "subject_format": "{subject}",
+                "eku": known_templates[template_name].get("eku", "clientAuth"),
+                "requests_endpoint": f"https://{cert_host}/api/enrollment/{template_name}/requests",
+                "provisioner": "fieldkest-enrollment",
+            })
+            return
+
         if path == "/api/service-directory":
             if not self._developer():
                 self.send_json(401, {"error": "unauthorized"})
@@ -486,6 +508,130 @@ class StaffHandler(KeplerHandler):
                 "flag": "FLAG{de18a1c609de0e97}",
             })
             return
+
+        # K19.1: enrollment request endpoint — issues a client cert from the step-ca CA.
+        # Accepts the enrollment_worker bearer token; generates an EC keypair for the requested UPN;
+        # calls step-ca /1.0/sign with a JWK provisioner token to get a CA-signed cert.
+        import re as _re_enroll_post
+        _enroll_req_match = _re_enroll_post.fullmatch(r"/api/enrollment/([^/]+)/requests", path)
+        if _enroll_req_match:
+            template_name = _enroll_req_match.group(1)
+            known_templates = CONFIG.get("enrollment_templates", {"StaffArchiveUser": {"eku": "clientAuth"}})
+            if template_name not in known_templates:
+                self.send_json(404, {"error": "template_not_found"})
+                return
+            auth_hdr = self.headers.get("Authorization", "")
+            enroll_worker = credential("cert_enrollment_worker")
+            if auth_hdr != f"Bearer {enroll_worker}":
+                self.send_json(401, {"error": "enrollment_worker_required"})
+                return
+            try:
+                body = self.read_json(maximum_bytes=4096)
+            except Exception:
+                self.send_json(400, {"error": "bad_request"})
+                return
+            upn = body.get("upn", "")
+            if not upn or "@keplerops.test" not in upn:
+                self.send_json(422, {"error": "invalid_upn"})
+                return
+            try:
+                from cryptography.hazmat.primitives.asymmetric import ec as _ec
+                from cryptography.hazmat.primitives import serialization as _ser, hashes as _hashes
+                from cryptography.x509 import NameAttribute, NameOID, CertificateBuilder, random_serial_number
+                from cryptography.x509.oid import ExtendedKeyUsageOID
+                from cryptography.x509 import SubjectAlternativeName, RFC822Name, UniformResourceIdentifier
+                from cryptography.hazmat.primitives.asymmetric.utils import decode_dss_signature
+                import datetime as _dt, uuid as _uuid, urllib.request as _ureq, json as _json
+
+                # Generate keypair for the requesting subject
+                subject_key = _ec.generate_private_key(_ec.SECP256R1())
+                subject_pub = subject_key.public_key()
+
+                # Build CSR with UPN SAN (otherName UPN OID = 1.3.6.1.4.1.311.20.2.3)
+                from cryptography import x509
+                builder = x509.CertificateSigningRequestBuilder()
+                builder = builder.subject_name(x509.Name([
+                    NameAttribute(NameOID.COMMON_NAME, upn),
+                ]))
+                # Add email SAN
+                builder = builder.add_extension(
+                    SubjectAlternativeName([RFC822Name(upn)]),
+                    critical=False,
+                )
+                csr = builder.sign(subject_key, _hashes.SHA256())
+                csr_pem = csr.public_bytes(_ser.Encoding.PEM).decode()
+
+                # Create JWK token for step-ca fieldkest-enrollment provisioner
+                _ENROLLMENT_PRIVKEY_PEM = (
+                    "-----BEGIN PRIVATE KEY-----\n"
+                    "MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg6cLAUvuutzONTgam\n"
+                    "7Sf9kcX9wRz5sUIjUZl5O+nviG6hRANCAAR5T7SApsqCXvEk/w5bCos3Fcgp5zkd\n"
+                    "ib7DIudSnyddXq4ior1cqfDrSN5jeYvG6CDXMU3b6lei8gSXiLvxQB/+\n"
+                    "-----END PRIVATE KEY-----\n"
+                )
+                from cryptography.hazmat.serialization import load_pem_private_key
+                prov_key = load_pem_private_key(_ENROLLMENT_PRIVKEY_PEM.encode(), password=None)
+                now = int(_dt.datetime.now(_dt.timezone.utc).timestamp())
+                payload = {
+                    "aud": [f"https://{CONFIG.get('ca_host','ca.keplerops.test')}:9000/1.0/sign"],
+                    "iss": "fieldkest-enrollment",
+                    "jti": str(_uuid.uuid4()),
+                    "nbf": now,
+                    "exp": now + 300,
+                    "sub": upn,
+                    "sans": [upn],
+                }
+                # Build JWT header+payload manually (no PyJWT dependency)
+                import base64 as _b64_jwt
+                def _b64url_encode(data: bytes) -> str:
+                    return _b64_jwt.urlsafe_b64encode(data).rstrip(b"=").decode()
+                header = _b64url_encode(_json.dumps({"typ":"JWT","alg":"ES256","kid":"bi6aN5JmV8GgZKa4Kej2BmuaY0KhPgPMlb__uBNH72o"}, sort_keys=True, separators=(",",":")).encode())
+                payload_enc = _b64url_encode(_json.dumps(payload, sort_keys=True, separators=(",",":")).encode())
+                signing_input = f"{header}.{payload_enc}".encode()
+                sig_der = prov_key.sign(signing_input, _ec.ECDSA(_hashes.SHA256()))
+                r, s = decode_dss_signature(sig_der)
+                sig_bytes = r.to_bytes(32, "big") + s.to_bytes(32, "big")
+                jwt_token = f"{header}.{payload_enc}.{_b64url_encode(sig_bytes)}"
+
+                # Submit to step-ca — step-ca uses its own CA cert (enrollment CA),
+                # not the fieldkest CA. Use no-verify context for internal Docker call.
+                import ssl as _ssl_mod
+                ca_host = CONFIG.get("ca_host", "ca.keplerops.test")
+                ca_port = int(CONFIG.get("ca_port", 9000))
+                sign_url = f"https://{ca_host}:{ca_port}/1.0/sign"
+                sign_body = _json.dumps({"csr": csr_pem, "ott": jwt_token}).encode()
+                sign_req = _ureq.Request(sign_url, data=sign_body, headers={"Content-Type": "application/json"})
+                _ca_ctx = _ssl_mod.create_default_context()
+                _ca_ctx.check_hostname = False
+                _ca_ctx.verify_mode = _ssl_mod.CERT_NONE
+                try:
+                    with _ureq.urlopen(sign_req, context=_ca_ctx, timeout=10) as r:
+                        sign_resp = _json.load(r)
+                except Exception as exc:
+                    self.send_json(502, {"error": "ca_sign_failed", "detail": str(exc)})
+                    return
+
+                cert_pem = sign_resp.get("crt", "")
+                if not cert_pem:
+                    self.send_json(502, {"error": "ca_no_cert"})
+                    return
+                private_key_pem = subject_key.private_bytes(_ser.Encoding.PEM, _ser.PrivateFormat.PKCS8, _ser.NoEncryption()).decode()
+
+                append_audit(AUDIT, "cert-enrollment", {
+                    "action": "issue", "template": template_name, "upn": upn,
+                    "peer": self.client_address[0],
+                })
+                self.send_json(201, {
+                    "upn": upn,
+                    "eku": "clientAuth",
+                    "certificate_pem": cert_pem,
+                    "private_key_pem": private_key_pem,
+                    "flag": "FLAG{d4fd346be0ffce16}",
+                })
+                return
+            except Exception as exc:
+                self.send_json(503, {"error": "enrollment_failed", "detail": str(exc)})
+                return
 
         self.send_json(404, {"error": "not_found"})
 

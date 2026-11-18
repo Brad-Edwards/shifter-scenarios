@@ -15,8 +15,9 @@ RUN apt-get update \
     && groupadd --system --gid 2294 arwc-relation \
     && groupadd --system --gid 2320 arwc-process-evidence \
     && groupadd --system --gid 2321 arwc-ot-read \
+    && groupadd --system --gid 2295 arwc-plan-evidence \
     && groupadd --system arwc-data \
-    && useradd --system --gid arwc-data --groups arwc-planning,arwc-archive-source,arwc-integration,arwc-relation,arwc-process-evidence,arwc-ot-read --home-dir /var/lib/arwc-data --shell /usr/sbin/nologin arwc-data \
+    && useradd --system --gid arwc-data --groups arwc-planning,arwc-archive-source,arwc-integration,arwc-relation,arwc-process-evidence,arwc-ot-read,arwc-plan-evidence --home-dir /var/lib/arwc-data --shell /usr/sbin/nologin arwc-data \
     && install -d -o arwc-data -g arwc-data -m 0750 /opt/planning-data/assets
 
 COPY --chown=arwc-data:arwc-data --chmod=0640 \

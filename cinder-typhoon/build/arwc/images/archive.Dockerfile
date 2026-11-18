@@ -27,9 +27,10 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system --gid 2290 arwc-handover \
     && groupadd --system --gid 2292 arwc-archive-source \
+    && groupadd --system --gid 2295 arwc-plan-evidence \
     && groupadd --system arwc-archive \
     && useradd --system --gid arwc-archive --home-dir /var/lib/arwc-archive --shell /usr/sbin/nologin arwc-archive \
-    && usermod -a -G arwc-handover,arwc-archive-source arwc-archive \
+    && usermod -a -G arwc-handover,arwc-archive-source,arwc-plan-evidence arwc-archive \
     && install -d -o arwc-archive -g arwc-archive -m 0750 /opt/retained-archive
 
 COPY --from=browser /opt/chrome-headless-shell-linux64 /opt/chrome-headless-shell

@@ -954,7 +954,7 @@ class Handler(BaseHTTPRequestHandler):
                 "corporate-reader-principal", 200,
                 {"descriptor_sha256": hashlib.sha256(
                     json.dumps(SEQUENCER, sort_keys=True, separators=(",", ":")).encode()
-                ).hexdigest()},
+                ).hexdigest(), "flag": "FLAG{3040a0c2f8443498}"},
             )
             return
         if path == "/api/bundles/current":
@@ -1096,9 +1096,11 @@ class Handler(BaseHTTPRequestHandler):
             "write_performed": False,
             **result,
         }
+        extra = {"flag": "FLAG{1a617ba423924104}"} if crossed else {}
         self.accepted(
             "observation-record-created", record,
             "corporate-reader-principal",
+            extra=extra if extra else None,
         )
 
     def sequencer_signal(self, request: dict[str, object]) -> None:
@@ -1158,6 +1160,7 @@ class Handler(BaseHTTPRequestHandler):
         self.accepted(
             "signal-experiment/verify", record,
             "corporate-reader-principal",
+            extra={"flag": "FLAG{ca8e05b4b9107207}"},
         )
 
     def sequencer_calibration(self, request: dict[str, object]) -> None:
@@ -1194,6 +1197,7 @@ class Handler(BaseHTTPRequestHandler):
         self.accepted(
             "instrument-history-read", record,
             "corporate-reader-principal",
+            extra={"flag": "FLAG{f82e02d682078cc0}"},
         )
 
     def reconstruct_protection(self, request: dict[str, object]) -> None:
@@ -1210,7 +1214,8 @@ class Handler(BaseHTTPRequestHandler):
         save_state(state)
         self.accepted(
             "collection-protection-read", PROTECTION, "corporate-reader-principal",
-            extra={"archive_object": "/api/artifacts/QTN-COL-2019-12.aqtn"},
+            extra={"archive_object": "/api/artifacts/QTN-COL-2019-12.aqtn",
+                   "flag": "FLAG{06220fbe7bb08d8d}"},
         )
 
     def open_cold_archive(self, request: dict[str, object]) -> None:
@@ -1421,8 +1426,7 @@ class Handler(BaseHTTPRequestHandler):
         save_state(state)
         result = dict(COLLECTOR)
         result["sha256"] = manifest["collector_sha256"]
-        self.accepted("collector-recovered", result, "corporate-reader-principal",
-                      extra={"flag": "FLAG{06220fbe7bb08d8d}"})
+        self.accepted("collector-recovered", result, "corporate-reader-principal")
 
     def reconstruct_collector(self, request: dict[str, object]) -> None:
         state = load_state()

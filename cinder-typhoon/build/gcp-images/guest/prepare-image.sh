@@ -44,6 +44,12 @@ case "$phase" in
   keplerops)
     phase_root=/opt/cinder-typhoon/build/keplerops
     participant_image=cinder-keplerops/k-dev:hand-build
+    model=$phase_root/.operator/native-platform/model-converted/fieldlink-qwen-q4_k_m.gguf
+    if [[ -s $model ]]; then
+      install -d -m 0755 /opt/cinder-typhoon/cache/keplerops-model
+      install -m 0644 "$model" /opt/cinder-typhoon/cache/keplerops-model/fieldlink-qwen-q4_k_m.gguf
+    fi
+    test -s /opt/cinder-typhoon/cache/keplerops-model/fieldlink-qwen-q4_k_m.gguf
     printf '%s\n' keplerops.private-image/v1 >/etc/cinder-keplerops-image
     chmod 0644 /etc/cinder-keplerops-image
     ;;

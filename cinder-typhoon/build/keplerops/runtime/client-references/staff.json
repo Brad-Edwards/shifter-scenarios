@@ -33,6 +33,16 @@
           "key": "staff.managed-session",
           "method": "POST",
           "template": "https://staff.keplerops.test/api/managed-identities/{service_id}/session"
+        },
+        {
+          "key": "staff.enrollment-template",
+          "method": "GET",
+          "template": "https://staff.keplerops.test/api/enrollment/{template}"
+        },
+        {
+          "key": "staff.enrollment-requests",
+          "method": "POST",
+          "template": "https://staff.keplerops.test/api/enrollment/{template}/requests"
         }
       ],
       "title": "Staff service client reference"

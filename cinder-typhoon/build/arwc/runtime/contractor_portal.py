@@ -628,7 +628,8 @@ class Handler(BaseHTTPRequestHandler):
                 return
             state["field_bag_observed"] = True
             atomic_json(STATE, state)
-            self.accepted("field-kit-read", "veybridge.tech.204", field_bag)
+            self.accepted("field-kit-read", "veybridge.tech.204", field_bag,
+                          extra={"flag": "FLAG{8095bac46a61f18f}"})
             return
         if not self.corporate_authorized():
             return
@@ -638,7 +639,8 @@ class Handler(BaseHTTPRequestHandler):
                 return
             state["appointment_observed"] = True
             atomic_json(STATE, state)
-            self.accepted("appointment-window-read", "corporate-reader-principal", state["appointment"])
+            self.accepted("appointment-window-read", "corporate-reader-principal", state["appointment"],
+                          extra={"flag": "FLAG{4ec8d44be86edc36}"})
             return
         if path == "/api/appointment-windows/current/visitors":
             if not state.get("roster"):
@@ -646,7 +648,8 @@ class Handler(BaseHTTPRequestHandler):
                 return
             state["roster_observed"] = True
             atomic_json(STATE, state)
-            self.accepted("check-in-roster-read", "corporate-reader-principal", state["roster"])
+            self.accepted("check-in-roster-read", "corporate-reader-principal", state["roster"],
+                          extra={"flag": "FLAG{433da37187291602}"})
             return
         self.send_json(404, {"error": "record not found"})
 
@@ -749,7 +752,8 @@ class Handler(BaseHTTPRequestHandler):
             appointment["attendee"] = roster["identity"]
             state["appointment"] = appointment
             atomic_json(STATE, state)
-            self.accepted("appointment-created", roster["identity"], appointment, 201)
+            self.accepted("appointment-created", roster["identity"], appointment, 201,
+                          extra={"flag": "FLAG{ee54f78b836e3f3d}"})
             return
         if path == "/api/check-ins":
             appointment = state["appointment"]
@@ -788,7 +792,7 @@ class Handler(BaseHTTPRequestHandler):
                 os.chmod(HANDOVER, 0o640)
             public = {key: value for key, value in session.items() if key != "token_sha256"}
             self.accepted("contractor-check-in-created", roster["identity"], public, 201,
-                          {"contractor_session": token})
+                          {"contractor_session": token, "flag": "FLAG{25ef1438addf15f7}"})
             return
         self.send_json(404, {"error": "record not found"})
 

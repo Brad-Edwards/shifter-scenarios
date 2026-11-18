@@ -1057,13 +1057,11 @@ class Handler(BaseHTTPRequestHandler):
                 revision = 0
             self.send_json(409, {"record": {"record_id": feed, "revision": revision, "current": False}})
             return
-        try:
-            process_session = pathlib.Path(
-                "/run/arwc-corporate/handover/corporate-session"
-            ).read_text(encoding="utf-8").strip()
-        except OSError:
+        supplied = self.headers.get("Authorization", "")
+        if not supplied.startswith("Bearer "):
             self.send_json(503, {"error": "corporate session unavailable"})
             return
+        process_session = supplied[7:].strip()
         token_sha256 = hashlib.sha256(process_session.encode()).hexdigest()
         expires = int(time.time()) + 15 * 60
         ot_evidence = {

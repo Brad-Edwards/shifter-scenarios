@@ -58,6 +58,11 @@
           "key": "assistant.completion-job",
           "method": "GET",
           "template": "https://assistant.keplerops.test/api/completions/jobs/{job_id}"
+        },
+        {
+          "key": "assistant.accept-duplicate-review",
+          "method": "POST",
+          "template": "https://assistant.keplerops.test/api/tools/accept-duplicate-review"
         }
       ],
       "title": "Assistant client reference"

@@ -6,7 +6,14 @@ operator=${KEPLEROPS_OPERATOR_DIR:-./.operator}
 source_dir="$operator/native-platform/model-source"
 converted="$operator/native-platform/model-converted"
 mkdir -p "$source_dir" "$converted"
-if [[ ! -f $source_dir/.fieldlink-model-copied ]]; then
+# A range image carries the converted model outside .operator, so first boot
+# does not repeat the long conversion. The cache holds only derived weights.
+cache=${KEPLEROPS_MODEL_CACHE:-/opt/cinder-typhoon/cache/keplerops-model}
+if [[ ! -f $converted/fieldlink-qwen-q4_k_m.gguf && -s $cache/fieldlink-qwen-q4_k_m.gguf ]]; then
+  cp -- "$cache/fieldlink-qwen-q4_k_m.gguf" "$converted/fieldlink-qwen-q4_k_m.gguf.part"
+  mv -- "$converted/fieldlink-qwen-q4_k_m.gguf.part" "$converted/fieldlink-qwen-q4_k_m.gguf"
+fi
+if [[ ! -f $converted/fieldlink-qwen-q4_k_m.gguf && ! -f $source_dir/.fieldlink-model-copied ]]; then
   original=$(docker create --network none --entrypoint /bin/true cinder-keplerops/k-assistant:hand-build)
   trap 'docker rm "$original" >/dev/null' EXIT
   docker cp "$original:/opt/fieldkest-assistant/models/Qwen2.5-3B-Instruct/." "$source_dir/"

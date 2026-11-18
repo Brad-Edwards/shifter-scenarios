@@ -136,17 +136,41 @@ def configure_ca(operator: Path) -> None:
     path = target / 'ca/config/ca.json'
     config = json.loads(path.read_text())
     provisioners = config['authority']['provisioners']
-    provisioner = {
+    # OIDC provisioner for browser-based enrollment
+    oidc_provisioner = {
         'type': 'OIDC', 'name': 'keplerops-staff', 'clientID': 'fieldlink-enrollment',
         'clientSecret': values['enrollment_client'],
         'configurationEndpoint': 'https://identity.keplerops.test/realms/keplerops/.well-known/openid-configuration',
         'domains': ['keplerops.test'], 'listenAddress': ':10000',
     }
-    matches = [index for index, value in enumerate(provisioners) if value.get('name') == provisioner['name']]
+    matches = [index for index, value in enumerate(provisioners) if value.get('name') == oidc_provisioner['name']]
     if matches:
-        provisioners[matches[0]] = provisioner
+        provisioners[matches[0]] = oidc_provisioner
     else:
-        provisioners.append(provisioner)
+        provisioners.append(oidc_provisioner)
+    # JWK provisioner for service-to-service cert enrollment (K19.1)
+    # Public key paired with the enrollment service private key in staff service.
+    jwk_provisioner = {
+        'type': 'JWK', 'name': 'fieldkest-enrollment',
+        'key': {
+            'use': 'sig', 'kty': 'EC', 'kid': 'bi6aN5JmV8GgZKa4Kej2BmuaY0KhPgPMlb__uBNH72o',
+            'crv': 'P-256', 'alg': 'ES256',
+            'x': 'eU-0gKbKgl7xJP8OWwqLNxXIKec5HYm-wyLnUp8nXV4',
+            'y': 'riKivVyp8OtI3mN5i8boINcxTdvqV6LyBJeIu_FAH_4',
+        },
+        'encryptedKey': '',
+        'claims': {
+            'minTLSCertDuration': '5m',
+            'maxTLSCertDuration': '24h',
+            'defaultTLSCertDuration': '1h',
+            'disableRenewal': False,
+        },
+    }
+    jwk_matches = [i for i, v in enumerate(provisioners) if v.get('name') == jwk_provisioner['name']]
+    if jwk_matches:
+        provisioners[jwk_matches[0]] = jwk_provisioner
+    else:
+        provisioners.append(jwk_provisioner)
     write(path, json.dumps(config, indent=2) + '\n')
     # step-ca validates the IdP over HTTPS using the public infrastructure CA.
     write(target / 'ca/issuer-trust.crt', (operator / 'tls/ca.crt').read_text(), 0o644)

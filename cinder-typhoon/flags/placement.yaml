@@ -271,162 +271,162 @@ flags:
     source: value
     value: "FLAG{25a027fe80e77ca0}"
     host: keplerops-host
-    path: "in GET /api/schedules/{schedule_id} JSON response field 'flag'. Service: cloud-api (k-cloud-api container). Code tree: build/keplerops/runtime/cloud-api.py _schedule_summary() result dict. Live fix applied."
+    path: "FLAG{25a027fe80e77ca0} in GET /api/schedules/SCHED-2841 response field 'flag'. Service: cloud-api. Code tree: build/keplerops/runtime/cloud-api.py K16.1 schedule handler."
   - flag_id: K16.2
     source: value
     value: "FLAG{ba92d77607f974b5}"
     host: keplerops-host
-    path: "in PATCH /api/schedules/{schedule_id} response field 'flag' when startup_hook is updated. Service: cloud-api. Code tree: build/keplerops/runtime/cloud-api.py schedule PATCH handler."
+    path: "FLAG{ba92d77607f974b5} in PATCH /api/schedules/SCHED-2841 response field 'flag'. Service: cloud-api. Code tree: build/keplerops/runtime/cloud-api.py K16.2 schedule-update handler."
   - flag_id: K16.3
     source: value
     value: "FLAG{266ad4f238daf867}"
     host: keplerops-host
-    path: "in POST /api/schedules/{schedule_id}/runs response field 'flag' (first run before assignment change). Service: cloud-api."
+    path: "FLAG{266ad4f238daf867} in POST /api/schedules/SCHED-2841/runs response field 'flag' (run without assignment change). Service: cloud-api. Code tree: build/keplerops/runtime/cloud-api.py K16.3 runs handler."
   - flag_id: K16.4
     source: value
     value: "FLAG{5e9d34bd2d5bc44d}"
     host: keplerops-host
-    path: "in POST /api/schedules/{schedule_id}/runs response field 'flag' after PATCH assignment change. Service: cloud-api."
+    path: "FLAG{5e9d34bd2d5bc44d} in POST /api/schedules/SCHED-2841/runs response field 'flag' (run after assignment change). Service: cloud-api. Code tree: build/keplerops/runtime/cloud-api.py K16.4 runs handler."
   - flag_id: K17.1
     source: value
     value: "FLAG{a56dde25afcee8cb}"
     host: keplerops-host
-    path: "in GET https://support.keplerops.test:8443/api/handovers/current response field 'flag'. Service: k-support. Code tree: build/keplerops/runtime/support.py handover handler."
+    path: "FLAG{a56dde25afcee8cb} in GET /api/handovers/current response field 'flag'. Service: support. Code tree: build/keplerops/runtime/support.py K17.1 handover handler."
   - flag_id: K17.2
     source: value
     value: "FLAG{d9c146b29c13ab3f}"
     host: keplerops-host
-    path: "in POST https://support.keplerops.test:8443/api/recovery/redeem response field 'flag'. Service: k-support."
+    path: "FLAG{d9c146b29c13ab3f} in POST /api/recovery/redeem response field 'flag'. Service: support. Code tree: build/keplerops/runtime/support.py K17.2 recovery-redeem handler."
   - flag_id: K17.3
     source: value
     value: "FLAG{a732179b6bc51139}"
     host: keplerops-host
-    path: "in GET https://support.keplerops.test:8443/api/assignments/{assignment_id} response field 'flag'. Service: k-support."
+    path: "FLAG{a732179b6bc51139} in GET /api/assignments/ASMT-SUP-2841 response field 'flag'. Service: support. Code tree: build/keplerops/runtime/support.py K17.3 assignment handler."
   - flag_id: K17.4
     source: value
     value: "FLAG{9189af9bedad78f5}"
     host: keplerops-host
-    path: "in POST https://support.keplerops.test:8443/api/cases/{case_id}/copy-handover response field 'flag'. Service: k-support."
+    path: "FLAG{9189af9bedad78f5} in POST /api/cases/SUP-2841/copy-handover response field 'flag'. Service: support. Code tree: build/keplerops/runtime/support.py K17.4 copy-handover handler."
   - flag_id: K18.1
     source: value
     value: "FLAG{3177559b5e2a80d8}"
     host: keplerops-host
-    path: "in GET https://staff.keplerops.test/api/notes/{note_id} response field 'flag'. Service: k-staff. Code tree: build/keplerops/runtime/service.py note GET handler."
+    path: "FLAG{3177559b5e2a80d8} in GET /api/notes/NOTE-SUP-2841-7 response field 'flag'. Service: staff. Code tree: build/keplerops/runtime/staff.py notes handler."
   - flag_id: K18.2
     source: value
     value: "FLAG{8978e5b290f6d320}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/staff.py, build/keplerops/runtime/__pycache__/staff.cpython-312.pyc"
   - flag_id: K18.3
     source: value
     value: "FLAG{f444b58a456fcd50}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/staff.py, build/keplerops/runtime/__pycache__/staff.cpython-312.pyc"
   - flag_id: K18.4
     source: value
     value: "FLAG{b6cd284e8b911de5}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/support.py, build/keplerops/runtime/__pycache__/support.cpython-312.pyc"
   - flag_id: K19.1
     source: value
     value: "FLAG{d4fd346be0ffce16}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/staff.py, build/keplerops/runtime/__pycache__/staff.cpython-312.pyc"
   - flag_id: K19.2
     source: value
     value: "FLAG{e47f6aa72d8045aa}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/staff.py, build/keplerops/runtime/__pycache__/staff.cpython-312.pyc"
   - flag_id: K19.3
     source: value
     value: "FLAG{de18a1c609de0e97}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/staff.py, build/keplerops/runtime/__pycache__/staff.cpython-312.pyc"
   - flag_id: K20.1
     source: value
     value: "FLAG{2cdab32b99f226a6}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/identity_spnego.py, build/keplerops/runtime/__pycache__/identity_spnego.cpython-312.pyc"
   - flag_id: K20.2
     source: value
     value: "FLAG{25ed4cc37bfb7031}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/staff.py, build/keplerops/runtime/__pycache__/staff.cpython-312.pyc"
   - flag_id: K20.3
     source: value
     value: "FLAG{cc5504772d80de3d}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/registry.py, build/keplerops/runtime/__pycache__/registry.cpython-312.pyc"
   - flag_id: K21.1
     source: value
     value: "FLAG{bda988856f374cc1}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/assistant_api.py, build/keplerops/runtime/__pycache__/assistant_api.cpython-312.pyc"
   - flag_id: K21.2
     source: value
     value: "FLAG{302e391567fb7188}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/assistant_api.py, build/keplerops/runtime/__pycache__/assistant_api.cpython-312.pyc"
   - flag_id: K21.3
     source: value
     value: "FLAG{0613dee9e717f1e3}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/assistant_api.py, build/keplerops/runtime/__pycache__/assistant_api.cpython-312.pyc"
   - flag_id: K22.1
     source: value
     value: "FLAG{fd78eb11ae6a4158}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/assistant_api.py, build/keplerops/runtime/__pycache__/assistant_api.cpython-312.pyc"
   - flag_id: K22.2
     source: value
     value: "FLAG{599046b0487a95cb}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/assistant_api.py, build/keplerops/runtime/__pycache__/assistant_api.cpython-312.pyc"
   - flag_id: K22.3
     source: value
     value: "FLAG{0d48f10f683d9894}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/assistant_api.py, build/keplerops/runtime/__pycache__/assistant_api.cpython-312.pyc"
   - flag_id: K23.1
     source: value
     value: "FLAG{7ff69ab443a968ef}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/assistant_api.py, build/keplerops/runtime/__pycache__/assistant_api.cpython-312.pyc"
   - flag_id: K23.2
     source: value
     value: "FLAG{25723607dbdb5768}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/assistant_api.py, build/keplerops/runtime/__pycache__/assistant_api.cpython-312.pyc"
   - flag_id: K23.3
     source: value
     value: "FLAG{4a4620cd59307eb7}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/assistant_api.py, build/keplerops/runtime/__pycache__/assistant_api.cpython-312.pyc"
   - flag_id: K24.1
     source: value
     value: "FLAG{664724eb7d7073e9}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/assistant_api.py, build/keplerops/runtime/__pycache__/assistant_api.cpython-312.pyc"
   - flag_id: K24.2
     source: value
     value: "FLAG{150195dba6413e00}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/assistant_api.py, build/keplerops/runtime/__pycache__/assistant_api.cpython-312.pyc"
   - flag_id: K24.3
     source: value
     value: "FLAG{e26cdb0df4d7a56c}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/assistant_api.py, build/keplerops/runtime/__pycache__/assistant_api.cpython-312.pyc"
   - flag_id: K25.1
     source: value
     value: "FLAG{417d135055e5a7ca}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/support.py, build/keplerops/runtime/__pycache__/support.cpython-312.pyc"
   - flag_id: K25.2
     source: value
     value: "FLAG{413cfb47616bcf1f}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/support.py, build/keplerops/runtime/__pycache__/support.cpython-312.pyc"
   - flag_id: K26.1
     source: value
     value: "FLAG{1dda3ef23d7a81f8}"
@@ -446,7 +446,7 @@ flags:
     source: value
     value: "FLAG{d58c860051957082}"
     host: keplerops-host
-    path: TBD
+    path: "in code: build/keplerops/runtime/support.py, build/keplerops/runtime/__pycache__/support.cpython-312.pyc"
   - flag_id: K27.2
     source: value
     value: "FLAG{f77bdbb3436a8bab}"
@@ -461,17 +461,17 @@ flags:
     source: value
     value: "FLAG{f7802e39cb9fd438}"
     host: keplerops-host
-    path: TBD
+    path: "FLAG{f7802e39cb9fd438} in POST /api/exercises/connector-archive/run response field 'flag_k28_1' when mode=diagnostic. Service: source-tools. Fix applied: build/keplerops/runtime/source.py (added flag_k28_1 to diagnostic mode response)."
   - flag_id: K28.2
     source: value
     value: "FLAG{d4fec1d1bcc12c7d}"
     host: keplerops-host
-    path: TBD
+    path: "FLAG{d4fec1d1bcc12c7d} in POST /api/exercises/connector-archive/run response field 'flag_k28_2' when mode=diagnostic. Service: source-tools. Code tree: build/keplerops/runtime/source.py."
   - flag_id: K28.3
     source: value
     value: "FLAG{9fd67f66428a244c}"
     host: keplerops-host
-    path: TBD
+    path: "FLAG{9fd67f66428a244c} in POST /api/exercises/connector-archive/run response field 'flag_k28_3' when mode=diagnostic with route and note_id. Service: source-tools. Code tree: build/keplerops/runtime/source.py."
   - flag_id: K29.1
     source: value
     value: "FLAG{0d88af0d047a3839}"
@@ -496,32 +496,32 @@ flags:
     source: value
     value: "FLAG{c8bcc391ce763872}"
     host: keplerops-host
-    path: "in GET /api/build-records/BLD-REC-021 response field 'flag'. Service: cloud-api. Code tree: build/keplerops/runtime/cloud-api.py _build_record_history_recovery()."
+    path: "FLAG{c8bcc391ce763872} in GET /api/build-records/BLD-REC-021 response field 'flag'. Service: cloud-api. Code tree: build/keplerops/runtime/cloud-api.py K30.1 handler."
   - flag_id: K30.2
     source: value
     value: "FLAG{a4e3552a48f21f30}"
     host: keplerops-host
-    path: "in GET /api/backups/BAK-2026-021 response field 'flag'. Service: cloud-api (via data.keplerops.test)."
+    path: "FLAG{a4e3552a48f21f30} in GET /api/backups/BAK-2026-021 response field 'flag'. Service: cloud-api. Code tree: build/keplerops/runtime/cloud-api.py K30.2 handler."
   - flag_id: K30.3
     source: value
     value: "FLAG{862b3bb92d638213}"
     host: keplerops-host
-    path: "in GET /api/recovery/{namespace_id}/customer-migration-history response field 'flag'. Service: cloud-api (via data.keplerops.test)."
+    path: "FLAG{862b3bb92d638213} in GET /api/recovery/NS-REC-.../customer-migration-history response field 'flag'. Service: cloud-api. Code tree: build/keplerops/runtime/cloud-api.py K30.3 handler."
   - flag_id: K31.1
     source: value
     value: "FLAG{c3f9834223486bbe}"
     host: keplerops-host
-    path: "in GET /api/policies/fieldlink-maintenance response field 'flag'. Service: cloud-api. Code tree: build/keplerops/runtime/cloud-api.py K31.1 policy handler."
+    path: "FLAG{c3f9834223486bbe} in GET /api/policies/fieldlink-maintenance response field 'flag'. Service: cloud-api. Code tree: build/keplerops/runtime/cloud-api.py K31.1 policy handler."
   - flag_id: K31.2
     source: value
     value: "FLAG{a17c2fea31043bd8}"
     host: keplerops-host
-    path: "in GET /api/workloads/MAINT-FLK-01/whoami response field 'flag'. Service: cloud-api. Code tree: build/keplerops/runtime/cloud-api.py K31.2 whoami handler."
+    path: "FLAG{a17c2fea31043bd8} in GET /api/workloads/MAINT-FLK-01/whoami response field 'flag'. Service: cloud-api. Code tree: build/keplerops/runtime/cloud-api.py K31.2 whoami handler."
   - flag_id: K31.3
     source: value
     value: "FLAG{fde258527cfc25b1}"
     host: keplerops-host
-    path: "in GET /api/field-archive/FIELD-CRR-2026-09 response field 'flag'. Service: cloud-api (via data.keplerops.test proxy). Code tree: build/keplerops/runtime/cloud-api.py K31.3 field-archive handler."
+    path: "FLAG{fde258527cfc25b1} in GET /api/field-archive/FIELD-CRR-2026-09 response field 'flag'. Service: cloud-api (via data proxy). Code tree: build/keplerops/runtime/cloud-api.py K31.3 field-archive handler."
   - flag_id: T01.1
     source: value
     value: "FLAG{2e184cd91352e573}"
@@ -736,22 +736,22 @@ flags:
     source: value
     value: "FLAG{47d6fc3a22c3a83d}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/planning_data.py:allocation() — flag in extra dict of accepted() call."
   - flag_id: W09.2
     source: value
     value: "FLAG{6b7ed39132fd235a}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/planning_data.py:meter() — flag in extra dict of accepted() call."
   - flag_id: W09.3
     source: value
     value: "FLAG{b938b4afcc7e8a90}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/native/seed-reports.py recon_sql — added chr()-encoded flag column. Applied to range via Metabase PUT /api/card/42 (card uses stages format). Flag as computed column in reserve_reconciliation query."
   - flag_id: W09.4
     source: value
     value: "FLAG{2085674d8d2c8b96}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/planning_data.py:integration() — flag in extra dict alongside process_session. W09.4 passes (FEED-OG2-R21 record, process_session, process_view returned)."
   - flag_id: W10.1
     source: value
     value: "FLAG{0657c9326fcc1aed}"
@@ -781,22 +781,22 @@ flags:
     source: value
     value: "FLAG{8790fcf0e1a1dd6a}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/planning_data.py:lineage_record() — flag in extra dict. Also: build/arwc/runtime/archive-entrypoint.sh: changed chmod 0755 to 0777 on planning-evidence dir so a-data can write archive-lineage.json."
   - flag_id: W12.1
     source: value
     value: "FLAG{34ea95f4e91748f3}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/retained_archive.py /api/collectors/quarantine handler — flag in extra dict. Also added arwc-identity-archive-evidence volume mount to a-archive."
   - flag_id: W12.2
     source: value
     value: "FLAG{06220fbe7bb08d8d}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/retained_archive.py:recover_collector() — flag in extra dict of accepted() call."
   - flag_id: W12.3
     source: value
     value: "FLAG{7b143e6dc66add3e}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/retained_archive.py:open_cold_archive() — flag in extra dict of accepted() call."
   - flag_id: W12.4
     source: value
     value: "FLAG{fed310c0be7a623e}"
@@ -831,52 +831,52 @@ flags:
     source: value
     value: "FLAG{dda40f67ae90302c}"
     host: arwc-host
-    path: TBD
+    path: "in code: build/arwc/runtime/field_gateway.py"
   - flag_id: W14.3
     source: value
     value: "FLAG{027331f36779f480}"
     host: arwc-host
-    path: TBD
+    path: "in code: build/arwc/runtime/field_gateway.py"
   - flag_id: W15.1
     source: value
     value: "FLAG{0fba33d55c2cc299}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/maintenance_review.py:do_GET /api/drawing-cache/current — flag in extra dict. a-approval service (maintenance-review.arwc.test)."
   - flag_id: W15.2
     source: value
     value: "FLAG{f2d9936e057d1f57}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/maintenance_review.py:do_POST /api/drawing-cache/current — flag in extra dict when cache is poisoned."
   - flag_id: W15.3
     source: value
     value: "FLAG{1d256fdc7599d32f}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/maintenance_review.py:do_POST /api/drawing-approvals — flag in extra dict alongside review_capability."
   - flag_id: W15.4
     source: value
     value: "FLAG{f0c8905464c8ef69}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/maintenance_review.py:do_POST /api/approval-tokens/current — flag in extra dict alongside approval record."
   - flag_id: W16.1
     source: value
     value: "FLAG{3040a0c2f8443498}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/retained_archive.py /api/sequencer-specs/current handler — flag in extra dict."
   - flag_id: W16.2
     source: value
     value: "FLAG{1a617ba423924104}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/retained_archive.py:sequencer_boundary() — flag in extra dict only when boundary is crossed (boundary_index is not None)."
   - flag_id: W16.3
     source: value
     value: "FLAG{ca8e05b4b9107207}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/retained_archive.py:sequencer_signal() verify operation — flag in extra dict of accepted() call."
   - flag_id: W16.4
     source: value
     value: "FLAG{f82e02d682078cc0}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/retained_archive.py:sequencer_calibration() — flag in extra dict of accepted() call."
   - flag_id: W17.1
     source: value
     value: "FLAG{33a22dd3dae3a5a9}"
@@ -921,32 +921,32 @@ flags:
     source: value
     value: "FLAG{a701d55117606501}"
     host: arwc-host
-    path: TBD
+    path: "FLAG{a701d55117606501} in process_services.py accepted('legacy-diagnostic-read') extra. GET /api/diagnostic-programs/current with process_session."
   - flag_id: W19.2
     source: value
     value: "FLAG{3074d89b1b111db1}"
     host: arwc-host
-    path: TBD
+    path: "FLAG{3074d89b1b111db1} in process_services.py accepted('legacy-interpretation-created') extra. POST /api/signature-records/current/interpretation."
   - flag_id: W19.3
     source: value
     value: "FLAG{9babf5077ba75607}"
     host: arwc-host
-    path: TBD
+    path: "FLAG{9babf5077ba75607} in process_services.py accepted('legacy-check-read') extra. POST /api/signature-programs/current."
   - flag_id: W19.4
     source: value
     value: "FLAG{bbf27da1a4f01783}"
     host: arwc-host
-    path: TBD
+    path: "FLAG{bbf27da1a4f01783} in process_services.py accepted('legacy-map-read') extra. POST /api/diagnostic-programs/legacy."
   - flag_id: W20.1
     source: value
     value: "FLAG{65213f715150f979}"
     host: arwc-host
-    path: TBD
+    path: "FLAG{65213f715150f979} in process_services.py accepted('firmware-image-read') extra. GET /api/firmware-images/current proxied engineering->instruments."
   - flag_id: W20.2
     source: value
     value: "FLAG{fc1ffbdd541e5aa8}"
     host: arwc-host
-    path: TBD
+    path: "FLAG{fc1ffbdd541e5aa8} in process_services.py accepted('maintenance-record-created') extra. POST /api/maintenance-records/current proxied engineering->instruments."
   - flag_id: W20.3
     source: value
     value: "FLAG{d802bfe7a42fb855}"

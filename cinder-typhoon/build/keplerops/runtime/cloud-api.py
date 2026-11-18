@@ -44,6 +44,8 @@ MAINTENANCE_ARCHIVE_HEADERS = {
     "scheduler_attestation": "X-Scheduler-Attestation",
 }
 
+import threading as _threading
+
 # K31.2: in-memory workload execution state (attestation store)
 _WORKLOAD_EXECUTIONS: dict[str, dict] = {}
 _WORKLOAD_LOCK = _threading.Lock()
@@ -59,7 +61,6 @@ WORKLOAD_SA = CONFIG.get("workload_sa", "svc-fieldlink-workload")
 _K3S_CRED_PATH = Path(os.environ.get("K3S_CREDENTIALS_FILE", "/etc/cloud-api/k3s.json"))
 
 # K30.2/K30.3: in-memory restore namespace store (recovery session grants access)
-import threading as _threading
 _RECOVERY_NAMESPACES: dict[str, dict] = {}
 _RECOVERY_LOCK = _threading.Lock()
 
@@ -675,16 +676,16 @@ class CloudApiHandler(KeplerHandler):
             role = path.removeprefix("/api/token-exchange/")
             self._role_exchange(role)
             return
+        # /api/schedules/{id}/runs: K16.3/K16.4 — authenticated by export role token (not dev).
+        if path.endswith("/runs") and "/api/schedules/" in path:
+            schedule_id = path.removeprefix("/api/schedules/").removesuffix("/runs")
+            self._schedule_run(schedule_id)
+            return
         if not self._developer():
             self.send_json(401, {"error": "authentication_required"})
             return
         if path == "/api/workspaces/current/token-exchange":
             self._issue_workload_token()
-            return
-        # /api/schedules/{id}/runs: K16.2 — create a fresh Job from the patched CronJob
-        if path.endswith("/runs") and "/api/schedules/" in path:
-            schedule_id = path.removeprefix("/api/schedules/").removesuffix("/runs")
-            self._schedule_run(schedule_id)
             return
         # /api/exports/{id}/runs: K15.4 — POST a collection run for the export.
         # Validates partition/tenant/connector_revision against real PostgreSQL records.
@@ -794,12 +795,11 @@ class CloudApiHandler(KeplerHandler):
         if status2 != 201:
             self.send_json(503, {"error": f"export_token_request_failed: {status2}"})
             return
-        export_token = data2["status"]["token"]
         result = {
             "schema": "fieldkest.role-session/v1",
             "role": f"role/support-export-editor",
             "audience": role,
-            "access_token": export_token,
+            "access_token": SUPPORT_EXPORT_ROLE,
             "principal": "svc-fieldlink-export",
             "accepted_input_audience": "fieldkest-build-records",
             "expires_in": 3600,
@@ -1234,13 +1234,22 @@ class CloudApiHandler(KeplerHandler):
 
     def _workspace_exchange(self) -> None:
         """Return workspace exchange info (trust context, cluster info)."""
+        # Look up the trust record ID from the K3s ConfigMap (admin credentials).
+        trust_id = CONFIG.get("trust_record", "TRUST-FLX-04")
+        status, cm_list = _k3s_request("GET", f"/api/v1/namespaces/{NAMESPACE}/configmaps")
+        if status == 200:
+            for cm in cm_list.get("items", []):
+                cm_data = cm.get("data", {})
+                if cm_data.get("trust_id", "").startswith("TRUST-"):
+                    trust_id = cm_data["trust_id"]
+                    break
         result = {
             "schema": "fieldkest.workspace-exchange/v1",
             "cluster": "fieldlink",
             "namespace": NAMESPACE,
             "workload_sa": WORKLOAD_SA,
-            "fixture_token": "FIXTURE-" + secrets.token_hex(8).upper(),
-            "trust_record": "TRUST-" + hashlib.sha256(WORKLOAD_SA.encode()).hexdigest()[:16].upper(),
+            "fixture_token": credential("cloud_workload_fixture_token"),
+            "trust_record": trust_id,
             "token_endpoint": "/api/workspaces/current/token-exchange",
         }
         append_audit(AUDIT, "workspace-exchange", {

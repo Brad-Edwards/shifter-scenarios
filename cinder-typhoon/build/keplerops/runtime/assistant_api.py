@@ -150,6 +150,9 @@ class AssistantApiHandler(KeplerHandler):
             self.send_json(200, {"status": "up"})
             return
 
+        if self.send_client_document():
+            return
+
         # K24 completion-example endpoint — session-required, returns COMP-JOB-17 example + note.
         # The example exposes context_root, credential reference, handover, and allowed script
         # needed for the K24.2 path traversal exploit.

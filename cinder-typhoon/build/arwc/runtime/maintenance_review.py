@@ -423,7 +423,8 @@ class Handler(BaseHTTPRequestHandler):
             return
         state["association_observed"] = True
         atomic_json(STATE, state)
-        self.accepted("drawing-cache-read", principal, assoc, 200)
+        self.accepted("drawing-cache-read", principal, assoc, 200,
+                      extra={"flag": "FLAG{0fba33d55c2cc299}"})
 
     def do_POST(self) -> None:
         principal = self.authorized()
@@ -464,7 +465,8 @@ class Handler(BaseHTTPRequestHandler):
             }
             state["cached_response"] = {**record, "body": body}
             atomic_json(STATE, state)
-            self.accepted("drawing-context-created", principal, record, 201)
+            self.accepted("drawing-context-created", principal, record, 201,
+                          extra={"flag": "FLAG{f2d9936e057d1f57}"})
             return
         if path == "/api/drawing-approvals":
             cached = state.get("cached_response")
@@ -499,7 +501,7 @@ class Handler(BaseHTTPRequestHandler):
             atomic_json(STATE, state)
             public = {key: value for key, value in capability.items() if key != "token_sha256"}
             self.accepted("drawing-approved", principal, public, 201,
-                          {"review_capability": token})
+                          {"review_capability": token, "flag": "FLAG{1d256fdc7599d32f}"})
             return
         if path == "/api/approval-tokens/current":
             capability = state.get("review_capability")
@@ -521,7 +523,8 @@ class Handler(BaseHTTPRequestHandler):
             atomic_json(APPROVAL_EVIDENCE, approval)
             os.chown(APPROVAL_EVIDENCE, -1, grp.getgrnam("arwc-approval-evidence").gr_gid)
             os.chmod(APPROVAL_EVIDENCE, 0o640)
-            self.accepted("approval-token-exchanged", principal, approval, 201)
+            self.accepted("approval-token-exchanged", principal, approval, 201,
+                          extra={"flag": "FLAG{f0c8905464c8ef69}"})
             return
         self.send_json(404, {"error": "record not found"})
 

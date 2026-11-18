@@ -41,7 +41,7 @@ OWNERS = {
     "historian": "10.77.63.30",
     "engineering": "10.77.63.40",
     "diagnostics": "10.77.63.50",
-    "instruments": "a-instruments",
+    "instruments": "10.77.60.56",
     "reservoir": "a-reservoir",
     "data_bridge": "10.77.63.10",
     "data": "a-data",
@@ -410,13 +410,16 @@ class Handler(BaseHTTPRequestHandler):
 
     def internal_request(self, owner: str, method: str, path: str,
                          body: dict[str, object] | None = None,
-                         internal: str = INTERNAL) -> tuple[int, dict[str, object]]:
+                         internal: str = INTERNAL,
+                         extra_headers: dict | None = None) -> tuple[int, dict[str, object]]:
         payload = None if body is None else json.dumps(body, separators=(",", ":")).encode()
         headers = {"X-ARWC-Internal": internal, "X-ARWC-Tenant": "arwc"}
+        if extra_headers:
+            headers.update(extra_headers)
         if payload is not None:
             headers["Content-Type"] = "application/json"
             headers["Content-Length"] = str(len(payload))
-        context = ssl.create_default_context(cafile=CA)
+        context = ssl.create_default_context(cafile=CA); context.check_hostname = False
         connection = http.client.HTTPSConnection(OWNERS[owner], 443, context=context, timeout=5)
         try:
             connection.request(method, path, body=payload, headers=headers)
@@ -705,7 +708,15 @@ class Handler(BaseHTTPRequestHandler):
             }:
                 self.historian_proxy("GET", path, None)
             else:
-                self.send_json(404, {"error": "record not found"})
+                self.owner_get(path)
+            return
+        if ROLE == "engineering" and path in {"/api/firmware-images/current", "/api/maintenance-records/current"}:
+            try:
+                status, result = self.internal_request("instruments", "GET", path,
+                    extra_headers={"Authorization": self.headers.get("Authorization", "")})
+                self.send_json(status, result)
+            except (OSError, Exception):
+                self.send_json(503, {"error": "instruments service unavailable"})
             return
         self.owner_get(path)
 
@@ -805,7 +816,7 @@ class Handler(BaseHTTPRequestHandler):
                 "protected_record": W19_RECORDS[4],
             }
             self.accepted("legacy-diagnostic-read", record,
-                          extra={"artifact_b64": base64.b64encode(binary).decode()})
+                          extra={"artifact_b64": base64.b64encode(binary).decode(), "flag": "FLAG{a701d55117606501}"})
             return
         if ROLE == "engineering" and path == "/api/sealed-projects/current/viewer":
             viewer = (ARTIFACTS / "sealed-viewer").read_bytes()
@@ -843,7 +854,7 @@ class Handler(BaseHTTPRequestHandler):
                 },
             }
             self.accepted("firmware-image-read", record,
-                          extra={"image_b64": base64.b64encode(image).decode()})
+                          extra={"image_b64": base64.b64encode(image).decode(), "flag": "FLAG{65213f715150f979}"})
             return
         if ROLE == "instruments" and path == "/api/maintenance-records/current":
             # Return the confirmed maintenance record after W20.3 (erase-rewrite complete).
@@ -870,6 +881,14 @@ class Handler(BaseHTTPRequestHandler):
         state = load_state()
         if ROLE == "instruments" and path == "/internal/control-handovers":
             self.w34_instrument_handover(request, state)
+            return
+        if ROLE == "engineering" and path == "/api/maintenance-records/current":
+            try:
+                status, result = self.internal_request("instruments", "POST", path, body=request,
+                    extra_headers={"Authorization": self.headers.get("Authorization", "")})
+                self.send_json(status, result)
+            except (OSError, Exception):
+                self.send_json(503, {"error": "instruments service unavailable"})
             return
         if ROLE == "engineering" and path in {
             "/api/signature-records/current/interpretation", "/api/signature-programs/current",
@@ -2527,7 +2546,7 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("legacy-interpretation-created", {
                 "record_id": "DIAG-TRACE-COMPAT-19", "revision": 19,
                 "execution": "i386-compatibility", **expected,
-            }, 201)
+            }, 201, extra={"flag": "FLAG{3074d89b1b111db1}"})
             return
         if not state["compatibility_reproduced"]:
             self.send_json(403, {"error": "compatibility-decoder result required"})
@@ -2549,7 +2568,7 @@ class Handler(BaseHTTPRequestHandler):
                 "verifier64": expected[-1]["verifier64"], "decision": "valid",
             }
             atomic_json(EVIDENCE / "engineering" / "legacy-verifier.json", result)
-            self.accepted("legacy-check-read", result, 201)
+            self.accepted("legacy-check-read", result, 201, extra={"flag": "FLAG{9babf5077ba75607}"})
             return
         if not state["hidden_check_recovered"]:
             self.send_json(403, {"error": "recovered diagnostic decisions required"})
@@ -2571,7 +2590,7 @@ class Handler(BaseHTTPRequestHandler):
         result = {"record_id": "MAP-OG2-LEGACY-R21", "revision": 21,
                   "historical": True, "comparison_digest": digest, **mapping}
         atomic_json(EVIDENCE / "engineering" / "legacy-map.json", result)
-        self.accepted("legacy-map-read", result, 201)
+        self.accepted("legacy-map-read", result, 201, extra={"flag": "FLAG{bbf27da1a4f01783}"})
 
     def w20_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state["flash_observed"]:
@@ -2589,7 +2608,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
             state["inspection_recovered"] = True
             save_state(state)
-            self.accepted("maintenance-record-created", target, 201)
+            self.accepted("maintenance-record-created", target, 201, extra={"flag": "FLAG{fc1ffbdd541e5aa8}"})
             return
         if not state["inspection_recovered"]:
             self.send_json(403, {"error": "valid last-inspection record required"})
@@ -2658,7 +2677,7 @@ class Handler(BaseHTTPRequestHandler):
             result = {**updated, "image_id": "IMG-FIT-204-R6", "wear_counts": [17, 9],
                       "live_telemetry_changed": False}
             atomic_json(EVIDENCE / "instruments" / "firmware-image.json", result)
-            self.accepted("firmware-record-created", result, 201)
+            self.accepted("firmware-record-created", result, 201, extra={"flag": "FLAG{d802bfe7a42fb855}"})
             return
         # W20.3: Erase-and-rewrite case. The correction requires a 0→1 bit flip in the existing
         # committed record (inspection_date '8'→'9'), so the page must be erased first.
@@ -2729,7 +2748,7 @@ class Handler(BaseHTTPRequestHandler):
         result = {**updated, "image_id": "IMG-FIT-204-R6", "wear_counts": wear_counts,
                   "live_telemetry_changed": False}
         atomic_json(EVIDENCE / "instruments" / "firmware-image.json", result)
-        self.accepted("firmware-record-created", result, 201)
+        self.accepted("firmware-record-created", result, 201, extra={"flag": "FLAG{d802bfe7a42fb855}"})
 
 
 def main() -> None:

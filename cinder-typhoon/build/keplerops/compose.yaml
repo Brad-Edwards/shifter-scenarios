@@ -152,6 +152,10 @@ services:
         if [ ! -e /home/rowan/.config/fieldlink/support-client.json ]; then
           install -m 0600 -o rowan -g rowan /run/participant-seed/support-client.json /home/rowan/.config/fieldlink/support-client.json
         fi
+        if [ ! -e /home/rowan/.config/chromium/Default/Cookies ]; then
+          install -d -m 0700 -o rowan -g rowan /home/rowan/.config/chromium/Default
+          install -m 0600 -o rowan -g rowan /run/participant-seed/chromium-Cookies /home/rowan/.config/chromium/Default/Cookies
+        fi
         for directory in .kube .aws; do
           if [ ! -d /home/rowan/$$directory ]; then
             install -d -m 0700 -o rowan -g rowan /home/rowan/$$directory
@@ -175,6 +179,7 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/git-credentials:/run/participant-seed/git-credentials:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/npmrc:/run/participant-seed/npmrc:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/support-client.json:/run/participant-seed/support-client.json:ro
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/participant/chromium-Cookies:/run/participant-seed/chromium-Cookies:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/kubernetes/rowan.yaml:/run/platform-seed/kubeconfig:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/aws-credentials:/run/platform-seed/aws-credentials:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/aws-config:/run/platform-seed/aws-config:ro
@@ -898,6 +903,7 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/cloud-api-k3s.json:/etc/cloud-api/k3s.json:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
       - cloud-api-audit:/var/lib/fieldkest-cloud-api/audit
+      - cloud-api-results:/var/lib/fieldkest-cloud-api/results
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
     extra_hosts:
@@ -1089,6 +1095,7 @@ volumes:
   registry-verdaccio: {name: cinder-keplerops-registry-verdaccio}
   support-audit: {name: cinder-keplerops-support-audit}
   cloud-api-audit: {name: cinder-keplerops-cloud-api-audit}
+  cloud-api-results: {name: cinder-keplerops-cloud-api-results}
   staff-audit: {name: cinder-keplerops-staff-audit}
   assistant-api-audit: {name: cinder-keplerops-assistant-api-audit}
   preview-audit: {name: cinder-keplerops-preview-audit}

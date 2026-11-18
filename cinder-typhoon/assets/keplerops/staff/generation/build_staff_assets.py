@@ -52,9 +52,14 @@ def main() -> None:
         },
         "support_registration": "OIDC-FIELDKEST-SUPPORT",
         "restricted_note": "NOTE-SUP-2841-7",
-        "cert_host": "cert.keplerops.test",
+        "cert_host": "staff.keplerops.test",
         "archive_subject": "evan.calderoux@keplerops.test",
         "enrollment_template": "StaffArchiveUser",
+        "enrollment_templates": {
+            "StaffArchiveUser": {"eku": "clientAuth", "grant": "support-runner-enrollment"}
+        },
+        "ca_host": "ca.keplerops.test",
+        "ca_port": 443,
         "support_db_host": "fieldlink-support-db",
         "support_db_port": 3306,
         "support_db": "fieldlink_support",

@@ -18,8 +18,8 @@ install -d -o arwc-archive -g arwc-archive -m 0700 \
 # Set up the shared planning-evidence directory (for W06.3 PLANNER_EVIDENCE output).
 # The planning-data service reads from this same volume to validate planner sessions.
 if [ -d /run/arwc-planning-evidence ]; then
-  chown arwc-archive:arwc-archive /run/arwc-planning-evidence
-  chmod 0755 /run/arwc-planning-evidence
+  chown arwc-archive:arwc-plan-evidence /run/arwc-planning-evidence
+  chmod 2770 /run/arwc-planning-evidence
 fi
 
 python3 /usr/local/libexec/arwc-handover.py wait \

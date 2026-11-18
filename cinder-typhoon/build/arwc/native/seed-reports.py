@@ -193,7 +193,8 @@ def seed() -> None:
     recon_sql = (
         "SELECT allocation_record, planning_window, district, asset, "
         "committed_ml, meter_record, usable_reserve_ml, reserve_report, "
-        "reported_ml, duplicate_transfer, overstatement_ml, uncommitted_margin_ml "
+        "reported_ml, duplicate_transfer, overstatement_ml, uncommitted_margin_ml, "
+        "'FLAG{b938b4afcc7e8a90}' AS flag "
         "FROM reserve_reconciliation"
     )
     recon_card = next((card for card in api("card") if card["name"] == recon_title), None)

@@ -448,6 +448,9 @@ subjects:
   - kind: ServiceAccount
     name: svc-fieldlink-export
     namespace: fieldlink
+  - kind: ServiceAccount
+    name: svc-cloud-api
+    namespace: fieldlink
 roleRef:
   kind: Role
   name: schedule-reader
