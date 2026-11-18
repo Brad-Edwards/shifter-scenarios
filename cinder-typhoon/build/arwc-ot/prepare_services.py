@@ -56,6 +56,7 @@ def main() -> None:
             if not db.execute("SELECT 1 FROM pg_roles WHERE rolname=%s", (user,)).fetchone():
                 db.execute(sql.SQL("CREATE ROLE {} LOGIN PASSWORD {}").format(sql.Identifier(user), sql.Literal(credentials[key])))
         db.execute("GRANT CREATE, USAGE ON SCHEMA public TO collector")
+        db.execute("GRANT INSERT ON ALL TABLES IN SCHEMA public TO collector")
         db.execute("GRANT USAGE ON SCHEMA public TO reader")
         db.execute("ALTER DEFAULT PRIVILEGES FOR USER collector IN SCHEMA public GRANT SELECT ON TABLES TO reader")
         db.execute("GRANT SELECT ON ALL TABLES IN SCHEMA public TO reader")
