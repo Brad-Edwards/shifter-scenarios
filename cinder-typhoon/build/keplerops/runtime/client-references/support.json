@@ -25,21 +25,6 @@
           "template": "https://support.keplerops.test/api/handovers/current"
         },
         {
-          "key": "support.recovery-lookup",
-          "method": "POST",
-          "template": "https://support.keplerops.test/api/recovery/lookup"
-        },
-        {
-          "key": "support.recovery-redeem",
-          "method": "POST",
-          "template": "https://support.keplerops.test/api/recovery/redeem"
-        },
-        {
-          "key": "support.assignment",
-          "method": "GET",
-          "template": "https://support.keplerops.test/api/assignments/{assignment_id}"
-        },
-        {
           "key": "support.copy-handover",
           "method": "POST",
           "template": "https://support.keplerops.test/api/cases/{case_id}/copy-handover"

