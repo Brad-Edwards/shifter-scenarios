@@ -68,14 +68,38 @@ def packages() -> None:
         environment = os.environ | {
             'NPM_CONFIG_USERCONFIG': str(config), 'NPM_CONFIG_CACHE': str(work / 'cache'),
         }
-        sources = list(sorted((SEEDS / 'fieldlink-connector').iterdir()))
+        # Publish the connector versions so the highest stable release is published
+        # last. The registry sets the package-level readme from the last publish, so
+        # the "latest" readme must come from the stable release, not a prerelease.
+        def source_order(path: Path) -> tuple[int, tuple[int, ...]]:
+            value = json.loads((path / 'package.json').read_text())['version']
+            is_stable = 0 if '-' in value else 1
+            return (is_stable, tuple(int(part) for part in value.split('-')[0].split('.')))
+        sources = sorted(
+            (p for p in (SEEDS / 'fieldlink-connector').iterdir() if p.is_dir()),
+            key=source_order,
+        )
         sources.append(SEEDS / 'support-rehearsal-1.3.1.tgz')
+        connector = '@keplerops/fieldlink-connector'
+        stable_releases: list[str] = []
+        prereleases: list[str] = []
         for source in sources:
             if source.is_dir():
                 metadata = json.loads((source / 'package.json').read_text())
                 name, version = metadata['name'], metadata['version']
             else:
                 name, version = '@keplerops/support-rehearsal', '1.3.1'
+            # The legacy v2 line keeps its own tag. A prerelease publishes to a
+            # non-latest channel so it never takes the "latest" dist-tag. Only a
+            # stable release line can be "latest".
+            if version == '6.9.8':
+                tag = 'legacy'
+            elif '-' in version:
+                tag = 'next'
+            else:
+                tag = 'latest'
+            if name == connector and version != '6.9.8':
+                (prereleases if '-' in version else stable_releases).append(version)
             existing = subprocess.run(
                 ['npm', 'view', f'{name}@{version}', 'version', '--json'],
                 env=environment, capture_output=True, text=True, timeout=30,
@@ -83,11 +107,23 @@ def packages() -> None:
             if existing.returncode == 0 and json.loads(existing.stdout) == version:
                 continue
             subprocess.run(
-                ['npm', 'publish', str(source), '--access', 'restricted', '--tag',
-                 'legacy' if version == '6.9.8' else 'latest'],
+                ['npm', 'publish', str(source), '--access', 'restricted', '--tag', tag],
                 env=environment, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE,
                 check=True, timeout=30,
             )
+        # Pin the connector dist-tags explicitly, so the result does not depend on
+        # publish order or on versions that were already present. "latest" is the
+        # highest stable release; prereleases stay on the "next" channel.
+        def release_key(value: str) -> tuple[int, ...]:
+            return tuple(int(part) for part in value.split('-')[0].split('.'))
+        for channel, candidates in (('latest', stable_releases), ('next', prereleases)):
+            if candidates:
+                top = max(candidates, key=release_key)
+                subprocess.run(
+                    ['npm', 'dist-tag', 'add', f'{connector}@{top}', channel],
+                    env=environment, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE,
+                    check=True, timeout=30,
+                )
         subprocess.run(
             ['npm', 'deprecate', '@keplerops/fieldlink-connector@6.9.8',
              'The legacy v2 interface is retained for maintained installations.'],
