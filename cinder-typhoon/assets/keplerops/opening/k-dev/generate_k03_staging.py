@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import base64
 import hashlib
-import io
 import json
 from pathlib import Path
 import sys
@@ -169,26 +168,28 @@ def main() -> None:
         f.write(staging_bin)
     print(f"[staging_bin] written: {out_bin}")
 
-    # 8. Rebuild ODT by replacing the attachment
-    odt_in = "assets/keplerops/opening/k-dev/field-notes-2026-08.odt"
-    odt_out = odt_in
-    with open(odt_in, "rb") as f:
-        odt_bytes = f.read()
-    with zipfile.ZipFile(io.BytesIO(odt_bytes)) as zin:
-        names = zin.namelist()
-        members = {name: zin.read(name) for name in names}
-    # Replace the staging attachment
-    attachment_name = next(
-        n for n in names if "staging" in n and n.endswith(".bin")
-    )
-    members[attachment_name] = staging_bin.encode("ascii")
-    buf = io.BytesIO()
-    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zout:
-        for name in names:
-            zout.writestr(name, members[name])
-    with open(odt_out, "wb") as f:
-        f.write(buf.getvalue())
-    print(f"[odt] rebuilt: {odt_out}")
+    # 8. Build the ODT deterministically from the authored content and the staging bin.
+    # This generator is the sole source of the ODT; build_opening_artifacts.py no longer builds it.
+    fixed_time = (2026, 9, 18, 12, 0, 0)
+    kdev = Path("assets/keplerops/opening/k-dev")
+
+    def odt_entry(name: str, data: bytes, stored: bool = False) -> tuple[zipfile.ZipInfo, bytes]:
+        info = zipfile.ZipInfo(name, fixed_time)
+        info.create_system = 3
+        info.external_attr = 0o100644 << 16
+        info.compress_type = zipfile.ZIP_STORED if stored else zipfile.ZIP_DEFLATED
+        return info, data
+
+    odt_out = kdev / "field-notes-2026-08.odt"
+    with zipfile.ZipFile(odt_out, "w") as archive:
+        for info, data in (
+            odt_entry("mimetype", b"application/vnd.oasis.opendocument.text", stored=True),
+            odt_entry("content.xml", (kdev / "field-notes-content.xml").read_bytes()),
+            odt_entry("META-INF/manifest.xml", (kdev / "generation/odt-manifest.xml").read_bytes()),
+            odt_entry("Attachments/staging-FKCOL-2841.bin", staging_bin.encode("ascii")),
+        ):
+            archive.writestr(info, data)
+    print(f"[odt] built: {odt_out}")
 
     # 9. Print workbench-service.json update values
     print("\n--- workbench-service.json reconstruction section ---")
