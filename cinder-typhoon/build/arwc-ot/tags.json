@@ -1,42 +1,556 @@
 {
   "schema": "arwc.ot-tags/v1",
-  "scope": "compatibility fixture: one Cairn Reach outlet",
+  "scope": "full CRR site tags; one Cairn Reach outlet with computed two-outlet stubs",
   "asset": "AST-CRR-017",
   "namespace_uri": "urn:arwc:crr:tags",
-  "opcua": {"application_uri": "urn:arwc:crr:plc", "endpoint": "opc.tcp://plc:4840/arwc", "node_id_template": "nsu=urn:arwc:crr:tags;s=CRR.{variable}", "security_policy": "Basic256Sha256", "security_mode": "SignAndEncrypt", "authentication": "UserName", "access": {"operator": "read all; write Hmi* request/selection tags only", "dispatcher": "read all; write RemoteTargetPct and RemoteSequence only", "reader": "read only"}},
+  "opcua": {
+    "application_uri": "urn:arwc:crr:plc",
+    "endpoint": "opc.tcp://plc:4840/arwc",
+    "node_id_template": "nsu=urn:arwc:crr:tags;s=CRR.{variable}",
+    "security_policy": "Basic256Sha256",
+    "security_mode": "SignAndEncrypt",
+    "authentication": "UserName",
+    "access": {
+      "operator": "read all; write Hmi* request/selection tags only",
+      "dispatcher": "read all; write RemoteTargetPct and RemoteSequence only",
+      "reader": "read only"
+    }
+  },
   "scan_ms": 100,
   "sample_ms": 1000,
   "source": "OpenPLC native OPC UA; fields derived from real Modbus I/O",
   "modbus": {
-    "device": "CairnReachIO", "host": "172.29.64.30", "port": 502, "unit_id": 1,
-    "address_base": 0, "word_order": "single unsigned 16-bit register; network byte order",
-    "read_function": 4, "write_function": 16,
+    "device": "CairnReachIO",
+    "host": "172.29.64.30",
+    "port": 502,
+    "unit_id": 1,
+    "address_base": 0,
+    "word_order": "single unsigned 16-bit register; network byte order",
+    "read_function": 4,
+    "write_function": 16,
     "inputs": [
-      {"offset": 0, "iec": "%IW0", "meaning": "level", "unit": "m", "counts_per_unit": 1000},
-      {"offset": 1, "iec": "%IW1", "meaning": "position feedback", "unit": "%", "counts_per_unit": 100},
-      {"offset": 2, "iec": "%IW2", "meaning": "flow measurement", "unit": "m3/s", "counts_per_unit": 10000},
-      {"offset": 3, "iec": "%IW3", "meaning": "I/O heartbeat", "unit": "count", "counts_per_unit": 1}
+      {
+        "offset": 0,
+        "iec": "%IW0",
+        "meaning": "level",
+        "unit": "m",
+        "counts_per_unit": 1000
+      },
+      {
+        "offset": 1,
+        "iec": "%IW1",
+        "meaning": "position feedback",
+        "unit": "%",
+        "counts_per_unit": 100
+      },
+      {
+        "offset": 2,
+        "iec": "%IW2",
+        "meaning": "flow measurement",
+        "unit": "m3/s",
+        "counts_per_unit": 10000
+      },
+      {
+        "offset": 3,
+        "iec": "%IW3",
+        "meaning": "I/O heartbeat",
+        "unit": "count",
+        "counts_per_unit": 1
+      }
     ],
-    "outputs": [{"offset": 0, "iec": "%QW0", "meaning": "actuator target", "unit": "%", "counts_per_unit": 100}]
+    "outputs": [
+      {
+        "offset": 0,
+        "iec": "%QW0",
+        "meaning": "actuator target",
+        "unit": "%",
+        "counts_per_unit": 100
+      }
+    ]
   },
-  "commands": {"priority": "HMI request takes local ownership and disables remote; remote requires explicit HmiRemoteEnabled", "handshake": "target first, sequence last; accepted sequence is PLC feedback; inactive remote requests are consumed without acceptance", "retained": ["RequestedTargetPct"], "io_timeout_s": 3},
-  "modes": {"fixture": "manual setpoint", "remote_enable": "HmiRemoteEnabled; resets false at PLC restart", "full_site": "manual/automatic sequences and site alarm catalogue are delivered in issue 364"},
-  "alarms": {"fixture": "IoHealthy=false identifies unavailable field I/O after 3 seconds; no site alarm/acknowledgement engine in this compatibility fixture"},
-  "quality": {"transport": "OPC UA StatusCode", "process": "IoHealthy", "rule": "A Good OPC UA transport value alone does not prove current field I/O"},
-  "timestamps": {"source": "OPC UA SourceTimestamp, sampled at 1 second by Telegraf", "storage": "raw time is UTC timestamp without time zone; process_history.source_time restores UTC zone", "ingestion": "PostgreSQL clock_timestamp() at insert; unknown for pre-migration samples", "restart": "retained setpoint; request sequences, Owner and remote enable reset; clients reconnect without replay"},
+  "commands": {
+    "priority": "HMI request takes local ownership and disables remote; remote requires explicit HmiRemoteEnabled",
+    "handshake": "target first, sequence last; accepted sequence is PLC feedback; inactive remote requests are consumed without acceptance",
+    "retained": [
+      "RequestedTargetPct"
+    ],
+    "io_timeout_s": 3
+  },
+  "modes": {
+    "fixture": "manual setpoint",
+    "remote_enable": "HmiRemoteEnabled; resets false at PLC restart",
+    "full_site": "manual/automatic sequences and site alarm catalogue are delivered in issue 364"
+  },
+  "alarms": {
+    "fixture": "IoHealthy=false identifies unavailable field I/O after 3 seconds; no site alarm/acknowledgement engine in this compatibility fixture"
+  },
+  "quality": {
+    "transport": "OPC UA StatusCode",
+    "process": "IoHealthy",
+    "rule": "A Good OPC UA transport value alone does not prove current field I/O"
+  },
+  "timestamps": {
+    "source": "OPC UA SourceTimestamp, sampled at 1 second by Telegraf",
+    "storage": "raw time is UTC timestamp without time zone; process_history.source_time restores UTC zone",
+    "ingestion": "PostgreSQL clock_timestamp() at insert; unknown for pre-migration samples",
+    "restart": "retained setpoint; request sequences, Owner and remote enable reset; clients reconnect without replay"
+  },
   "tags": [
-    {"variable": "LevelM", "type": "REAL", "unit": "m", "range": [0, 10], "write": false, "owner": "field measurement", "table": "level_m"},
-    {"variable": "PositionPct", "type": "REAL", "unit": "%", "range": [0, 100], "write": false, "owner": "field measurement", "table": "position_pct"},
-    {"variable": "FlowM3s", "type": "REAL", "unit": "m3/s", "range": [0, 0.5], "write": false, "owner": "field measurement", "table": "flow_m3s"},
-    {"variable": "HmiTargetPct", "type": "REAL", "unit": "%", "range": [0, 100], "write": true, "owner": "HMI request", "table": "hmi_target"},
-    {"variable": "HmiSequence", "type": "UINT", "unit": "count", "range": [0, 65535], "write": true, "owner": "HMI request", "table": "hmi_sequence"},
-    {"variable": "HmiAccepted", "type": "UINT", "unit": "count", "range": [0, 65535], "write": false, "owner": "PLC", "table": "hmi_accepted"},
-    {"variable": "HmiRemoteEnabled", "type": "BOOL", "unit": "boolean", "write": true, "owner": "HMI local/remote selection", "table": "remote_enabled"},
-    {"variable": "RemoteTargetPct", "type": "REAL", "unit": "%", "range": [0, 100], "write": true, "owner": "dispatcher request", "table": "remote_target"},
-    {"variable": "RemoteSequence", "type": "UINT", "unit": "count", "range": [0, 65535], "write": true, "owner": "dispatcher request", "table": "remote_sequence"},
-    {"variable": "RemoteAccepted", "type": "UINT", "unit": "count", "range": [0, 65535], "write": false, "owner": "PLC", "table": "remote_accepted"},
-    {"variable": "RequestedTargetPct", "type": "REAL", "unit": "%", "range": [0, 100], "write": false, "owner": "PLC retained setpoint", "table": "target_pct"},
-    {"variable": "IoHealthy", "type": "BOOL", "unit": "boolean", "write": false, "owner": "PLC I/O age check", "table": "io_healthy"},
-    {"variable": "Owner", "type": "UINT", "unit": "enum", "range": [0, 2], "write": false, "owner": "PLC command arbiter", "table": "command_owner"}
+    {
+      "variable": "LevelM",
+      "type": "REAL",
+      "unit": "m",
+      "range": [
+        0,
+        10
+      ],
+      "write": false,
+      "owner": "PLC scaling",
+      "table": "level_m"
+    },
+    {
+      "variable": "PositionPct",
+      "type": "REAL",
+      "unit": "%",
+      "range": [
+        0,
+        100
+      ],
+      "write": false,
+      "owner": "outlet A feedback",
+      "table": "position_pct"
+    },
+    {
+      "variable": "FlowM3s",
+      "type": "REAL",
+      "unit": "m3/s",
+      "range": [
+        0,
+        0.5
+      ],
+      "write": false,
+      "owner": "outlet A measurement",
+      "table": "flow_m3s"
+    },
+    {
+      "variable": "HmiTargetPct",
+      "type": "REAL",
+      "unit": "%",
+      "range": [
+        0,
+        100
+      ],
+      "write": true,
+      "owner": "HMI outlet A request",
+      "table": "hmi_target"
+    },
+    {
+      "variable": "HmiSequence",
+      "type": "UINT",
+      "unit": "count",
+      "write": true,
+      "owner": "HMI transaction",
+      "table": "hmi_sequence"
+    },
+    {
+      "variable": "HmiAccepted",
+      "type": "UINT",
+      "unit": "count",
+      "write": false,
+      "owner": "PLC acknowledgement",
+      "table": "hmi_accepted"
+    },
+    {
+      "variable": "HmiRemoteEnabled",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": true,
+      "owner": "HMI local/remote selection",
+      "table": "remote_enabled"
+    },
+    {
+      "variable": "RemoteTargetPct",
+      "type": "REAL",
+      "unit": "%",
+      "range": [
+        0,
+        100
+      ],
+      "write": true,
+      "owner": "dispatcher outlet A request",
+      "table": "remote_target"
+    },
+    {
+      "variable": "RemoteSequence",
+      "type": "UINT",
+      "unit": "count",
+      "write": true,
+      "owner": "dispatcher transaction",
+      "table": "remote_sequence"
+    },
+    {
+      "variable": "RemoteAccepted",
+      "type": "UINT",
+      "unit": "count",
+      "write": false,
+      "owner": "PLC acknowledgement",
+      "table": "remote_accepted"
+    },
+    {
+      "variable": "RequestedTargetPct",
+      "type": "REAL",
+      "unit": "%",
+      "range": [
+        0,
+        100
+      ],
+      "write": false,
+      "owner": "retained manual outlet A setting",
+      "table": "target_pct"
+    },
+    {
+      "variable": "IoHealthy",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": false,
+      "owner": "PLC field freshness",
+      "table": "io_healthy"
+    },
+    {
+      "variable": "Owner",
+      "type": "UINT",
+      "unit": "enum",
+      "write": false,
+      "owner": "PLC arbitration",
+      "table": "command_owner"
+    },
+    {
+      "variable": "UsableVolumeML",
+      "type": "REAL",
+      "unit": "ML",
+      "range": [
+        0,
+        18
+      ],
+      "write": false,
+      "owner": "PLC level conversion",
+      "table": "usable_volume_ml"
+    },
+    {
+      "variable": "PositionBPct",
+      "type": "REAL",
+      "unit": "%",
+      "range": [
+        0,
+        100
+      ],
+      "write": false,
+      "owner": "outlet B feedback",
+      "table": "position_b_pct"
+    },
+    {
+      "variable": "FlowBM3s",
+      "type": "REAL",
+      "unit": "m3/s",
+      "range": [
+        0,
+        0.5
+      ],
+      "write": false,
+      "owner": "outlet B measurement",
+      "table": "flow_b_m3s"
+    },
+    {
+      "variable": "TotalFlowM3s",
+      "type": "REAL",
+      "unit": "m3/s",
+      "range": [
+        0,
+        1
+      ],
+      "write": false,
+      "owner": "PLC sum of both measurements",
+      "table": "total_flow_m3s"
+    },
+    {
+      "variable": "HmiTargetBPct",
+      "type": "REAL",
+      "unit": "%",
+      "range": [
+        0,
+        100
+      ],
+      "write": true,
+      "owner": "HMI outlet B request",
+      "table": "hmi_target_b"
+    },
+    {
+      "variable": "HmiAutoMode",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": true,
+      "owner": "HMI mode request",
+      "table": "hmi_auto_mode"
+    },
+    {
+      "variable": "HmiFlowM3s",
+      "type": "REAL",
+      "unit": "m3/s",
+      "range": [
+        0,
+        1
+      ],
+      "write": true,
+      "owner": "HMI automatic flow request",
+      "table": "hmi_flow"
+    },
+    {
+      "variable": "HmiStop",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": true,
+      "owner": "HMI operator stop",
+      "table": "hmi_stop"
+    },
+    {
+      "variable": "HmiResetFaults",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": true,
+      "owner": "HMI rising-edge fault reset",
+      "table": "hmi_reset_faults"
+    },
+    {
+      "variable": "RemoteTargetBPct",
+      "type": "REAL",
+      "unit": "%",
+      "range": [
+        0,
+        100
+      ],
+      "write": true,
+      "owner": "dispatcher outlet B request",
+      "table": "remote_target_b"
+    },
+    {
+      "variable": "RemoteAutoMode",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": true,
+      "owner": "dispatcher mode request",
+      "table": "remote_auto_mode"
+    },
+    {
+      "variable": "RemoteFlowM3s",
+      "type": "REAL",
+      "unit": "m3/s",
+      "range": [
+        0,
+        1
+      ],
+      "write": true,
+      "owner": "dispatcher automatic flow request",
+      "table": "remote_flow"
+    },
+    {
+      "variable": "RequestedTargetBPct",
+      "type": "REAL",
+      "unit": "%",
+      "write": false,
+      "owner": "retained manual outlet B setting",
+      "table": "target_b_pct"
+    },
+    {
+      "variable": "RequestedFlowM3s",
+      "type": "REAL",
+      "unit": "m3/s",
+      "write": false,
+      "owner": "retained automatic flow setting",
+      "table": "requested_flow"
+    },
+    {
+      "variable": "AutoMode",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": false,
+      "owner": "PLC accepted mode",
+      "table": "auto_mode"
+    },
+    {
+      "variable": "Armed",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": false,
+      "owner": "PLC motion authorization",
+      "table": "armed"
+    },
+    {
+      "variable": "HmiSeen",
+      "type": "UINT",
+      "unit": "count",
+      "write": false,
+      "owner": "PLC consumed HMI sequence",
+      "table": "hmi_seen"
+    },
+    {
+      "variable": "RemoteSeen",
+      "type": "UINT",
+      "unit": "count",
+      "write": false,
+      "owner": "PLC consumed dispatcher sequence",
+      "table": "remote_seen"
+    },
+    {
+      "variable": "HmiRejected",
+      "type": "UINT",
+      "unit": "count",
+      "write": false,
+      "owner": "PLC rejected HMI sequence",
+      "table": "hmi_rejected"
+    },
+    {
+      "variable": "RemoteRejected",
+      "type": "UINT",
+      "unit": "count",
+      "write": false,
+      "owner": "PLC rejected dispatcher sequence",
+      "table": "remote_rejected"
+    },
+    {
+      "variable": "RejectReason",
+      "type": "UINT",
+      "unit": "enum",
+      "write": false,
+      "owner": "PLC last decision",
+      "table": "reject_reason"
+    },
+    {
+      "variable": "HmiRejectReason",
+      "type": "UINT",
+      "unit": "enum",
+      "write": false,
+      "owner": "PLC HMI decision",
+      "table": "hmi_reject_reason"
+    },
+    {
+      "variable": "RemoteRejectReason",
+      "type": "UINT",
+      "unit": "enum",
+      "write": false,
+      "owner": "PLC dispatcher decision",
+      "table": "remote_reject_reason"
+    },
+    {
+      "variable": "LowLevelAlarm",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": false,
+      "owner": "PLC low-level hysteresis",
+      "table": "low_level_alarm"
+    },
+    {
+      "variable": "PermissiveA",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": false,
+      "owner": "PLC outlet A permissives",
+      "table": "permissive_a"
+    },
+    {
+      "variable": "PermissiveB",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": false,
+      "owner": "PLC outlet B permissives",
+      "table": "permissive_b"
+    },
+    {
+      "variable": "MovingA",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": false,
+      "owner": "PLC outlet A motion",
+      "table": "moving_a"
+    },
+    {
+      "variable": "MovingB",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": false,
+      "owner": "PLC outlet B motion",
+      "table": "moving_b"
+    },
+    {
+      "variable": "TravelFaultA",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": false,
+      "owner": "PLC outlet A travel timeout",
+      "table": "travel_fault_a"
+    },
+    {
+      "variable": "TravelFaultB",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": false,
+      "owner": "PLC outlet B travel timeout",
+      "table": "travel_fault_b"
+    },
+    {
+      "variable": "AtTargetA",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": false,
+      "owner": "PLC outlet A position check",
+      "table": "at_target_a"
+    },
+    {
+      "variable": "AtTargetB",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": false,
+      "owner": "PLC outlet B position check",
+      "table": "at_target_b"
+    },
+    {
+      "variable": "MotionStateA",
+      "type": "UINT",
+      "unit": "enum",
+      "write": false,
+      "owner": "PLC outlet A sequence",
+      "table": "motion_state_a"
+    },
+    {
+      "variable": "MotionStateB",
+      "type": "UINT",
+      "unit": "enum",
+      "write": false,
+      "owner": "PLC outlet B sequence",
+      "table": "motion_state_b"
+    },
+    {
+      "variable": "MotorEnableA",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": false,
+      "owner": "PLC output coil A",
+      "table": "motor_enable_a"
+    },
+    {
+      "variable": "MotorEnableB",
+      "type": "BOOL",
+      "unit": "boolean",
+      "write": false,
+      "owner": "PLC output coil B",
+      "table": "motor_enable_b"
+    },
+    {
+      "variable": "ProjectRevision",
+      "type": "UINT",
+      "unit": "revision",
+      "write": false,
+      "owner": "PLC project identity",
+      "table": "project_revision"
+    }
   ]
 }
