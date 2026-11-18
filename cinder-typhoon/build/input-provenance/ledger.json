@@ -48,63 +48,9 @@
             "source": "prior accepted API responses in the known-solution sequence"
           }
         ],
-        "inventory_sha256": "6fef7932c1c559dc821814cb3a33beae1f63f1e53a87eea33991790e4ff75f53",
+        "inventory_sha256": "9b60e960d5003af70743f75b95651478fc74f4df29e2eb7953905980615df4c9",
         "profile": "arwc",
-        "request_count": 5,
-        "review_status": "complete",
-        "unresolved": []
-      },
-      "test_w02_asset_association": {
-        "citations": [
-          {
-            "class": "earlier_accepted_response",
-            "inputs": [
-              "response-derived identifier",
-              "revision",
-              "credential or session"
-            ],
-            "locator": "named evidence fields carried into a later request by this method",
-            "source": "accepted response chain in test_w02_asset_association"
-          },
-          {
-            "class": "earlier_accepted_response",
-            "inputs": [
-              "exact request field values from prior API responses and protocol schema"
-            ],
-            "locator": "fields in test_w02_asset_association derived from self.evidence (earlier_accepted_response), self.transition (supplied_starting_surface), and protocol field names (normal_interface_or_artifact)",
-            "source": "prior accepted API responses in the known-solution sequence"
-          }
-        ],
-        "inventory_sha256": "8a5ccb9f75ec9559f230fa0448cbee0efc6407a84fe0844c8052e20603251a7f",
-        "profile": "arwc",
-        "request_count": 4,
-        "review_status": "complete",
-        "unresolved": []
-      },
-      "test_w03_annex_reference": {
-        "citations": [
-          {
-            "class": "earlier_accepted_response",
-            "inputs": [
-              "response-derived identifier",
-              "revision",
-              "credential or session"
-            ],
-            "locator": "named evidence fields carried into a later request by this method",
-            "source": "accepted response chain in test_w03_annex_reference"
-          },
-          {
-            "class": "earlier_accepted_response",
-            "inputs": [
-              "exact request field values from prior API responses and protocol schema"
-            ],
-            "locator": "fields in test_w03_annex_reference derived from self.evidence (earlier_accepted_response), self.transition (supplied_starting_surface), and protocol field names (normal_interface_or_artifact)",
-            "source": "prior accepted API responses in the known-solution sequence"
-          }
-        ],
-        "inventory_sha256": "04db6ba780fb205122fc2022f2830888b45881063852fc7271136e7c1c4c674a",
-        "profile": "arwc",
-        "request_count": 4,
+        "request_count": 1,
         "review_status": "complete",
         "unresolved": []
       },
@@ -294,33 +240,6 @@
         "inventory_sha256": "b2f28d917586aaa471dcaf67689b4efea6a05cc18fee328f7cc1c80bb5951652",
         "profile": "arwc",
         "request_count": 6,
-        "review_status": "complete",
-        "unresolved": []
-      },
-      "test_w11_relation_protocol": {
-        "citations": [
-          {
-            "class": "earlier_accepted_response",
-            "inputs": [
-              "response-derived identifier",
-              "revision",
-              "credential or session"
-            ],
-            "locator": "named evidence fields carried into a later request by this method",
-            "source": "accepted response chain in test_w11_relation_protocol"
-          },
-          {
-            "class": "earlier_accepted_response",
-            "inputs": [
-              "exact request field values from prior API responses and protocol schema"
-            ],
-            "locator": "fields in test_w11_relation_protocol derived from self.evidence (earlier_accepted_response), self.transition (supplied_starting_surface), and protocol field names (normal_interface_or_artifact)",
-            "source": "prior accepted API responses in the known-solution sequence"
-          }
-        ],
-        "inventory_sha256": "9b744506b368eb6959945c2e95f48e7d463609ae079f1d21880895a314c1bcbe",
-        "profile": "arwc",
-        "request_count": 3,
         "review_status": "complete",
         "unresolved": []
       },
@@ -843,8 +762,8 @@
               "browser-history ticket reference",
               "helper route and sample files"
             ],
-            "source": "/home/rowan/work/service-notes.md, .config/git/credentials, Chromium History, work/local-helper.md, and native application responses",
-            "locator": "Gitea issue, osTicket queue, Kanboard task and local-helper entries; identifiers and authenticated session state returned by those ordinary product paths"
+            "locator": "Gitea issue, osTicket queue, Kanboard task and local-helper entries; identifiers and authenticated session state returned by those ordinary product paths",
+            "source": "/home/rowan/work/service-notes.md, .config/git/credentials, Chromium History, work/local-helper.md, and native application responses"
           }
         ],
         "inventory_sha256": "d9f5cf17f9d7c4cd99a2ce104610ad01f9b8fad72f3a93f38179367d8971fc7d",
@@ -863,32 +782,13 @@
               "developer credential",
               "support cookie"
             ],
-            "source": "/home/rowan/work/service-notes.md, native Jenkins build and artifact responses, Gitea history, and the accepted K01 support response",
-            "locator": "fieldlink-report/1842 and fieldlink-report-review entries; build console fixture reference; native artifact and build identifiers; developer identity and support-cookie evidence carried from K01"
+            "locator": "fieldlink-report/1842 and fieldlink-report-review entries; build console fixture reference; native artifact and build identifiers; developer identity and support-cookie evidence carried from K01",
+            "source": "/home/rowan/work/service-notes.md, native Jenkins build and artifact responses, Gitea history, and the accepted K01 support response"
           }
         ],
         "inventory_sha256": "af1721a3a971b05967425a11b485231c442c09a3bb864c9ed091866ad46f3495",
         "profile": "keplerops",
         "request_count": 14,
-        "review_status": "complete",
-        "unresolved": []
-      },
-      "test_k03_predecessor_callback": {
-        "citations": [
-          {
-            "class": "computed_from_participant_visible_inputs",
-            "inputs": [
-              "reconstruction route",
-              "callback route",
-              "endpoint, collection, and integrity values"
-            ],
-            "source": "/home/rowan/work/local-helper.md and accepted reconstruction response",
-            "locator": "Reconstruction endpoint and callback path documented in local-helper.md; endpoint_id, collection_id, and callback_integrity read from the reconstruction receipt"
-          }
-        ],
-        "inventory_sha256": "8fecfbd4d2b1f40e2c304b3c1f22c4848cc4cc6e662d374384a7a6e04cb622a2",
-        "profile": "keplerops",
-        "request_count": 3,
         "review_status": "complete",
         "unresolved": []
       },
@@ -910,65 +810,13 @@
               "state and completion routes",
               "worker lease and descriptor values"
             ],
-            "source": "/home/rowan/work/reproducers/indexer-client.json, work/reproducers/fieldkest-bundle-indexer, and accepted indexer descriptor response",
-            "locator": "offline_reproducer entry selects the binary; a printable-byte scan and boundary probes derive allocation and sentinel; state_route, completion_route, worker_lease, ready_state, integrity, routine, and process_generation come from the descriptor response"
+            "locator": "offline_reproducer entry selects the binary; a printable-byte scan and boundary probes derive allocation and sentinel; state_route, completion_route, worker_lease, ready_state, integrity, routine, and process_generation come from the descriptor response",
+            "source": "/home/rowan/work/reproducers/indexer-client.json, work/reproducers/fieldkest-bundle-indexer, and accepted indexer descriptor response"
           }
         ],
-        "inventory_sha256": "7e1db3fb230f987b8cf407f749dfa1b61f0be83806522c0b4889b5dbca42cefc",
+        "inventory_sha256": "14972fae46743df88f32598e5f60f85fac3ba91701badbfd8d8fa3721e7e0582",
         "profile": "keplerops",
         "request_count": 7,
-        "review_status": "complete",
-        "unresolved": []
-      },
-      "test_k05_package_foundation": {
-        "citations": [
-          {
-            "class": "normal_interface_or_artifact",
-            "inputs": [
-              "HTTP request route templates"
-            ],
-            "locator": "route keys resolved by the setUpClass crawler: packages.metadata, packages.consumer-check, support.conversation, packages.release, packages.reconcile, packages.resolver",
-            "source": "linked client-reference documents crawled from the Client reference URL in /home/rowan/work/service-notes.md"
-          },
-          {
-            "class": "earlier_accepted_response",
-            "inputs": [
-              "package, release, tenant, ticket, cookie, range, and revision values"
-            ],
-            "source": "accepted packages.metadata response and K01 handover/conversation responses",
-            "locator": "package name comes from packages.metadata; release, tenant, ticket, support cookie, declared_range, consumer_revision, and archive release ID come from named accepted response fields"
-          }
-        ],
-        "inventory_sha256": "22a3f3a21f496e6fb96c3fd234305810541d5326ad867ceceafb0e5dbc01851e",
-        "profile": "keplerops",
-        "request_count": 6,
-        "review_status": "complete",
-        "unresolved": []
-      },
-      "test_k06_house_credentials_and_rehearsal": {
-        "citations": [
-          {
-            "class": "normal_interface_or_artifact",
-            "inputs": [
-              "HTTP request route templates"
-            ],
-            "locator": "route keys resolved by the setUpClass crawler: packages.import, packages.view, packages.publish, ci.connector-rehearsal",
-            "source": "linked client-reference documents crawled from the Client reference URL in /home/rowan/work/service-notes.md"
-          },
-          {
-            "class": "earlier_accepted_response",
-            "inputs": [
-              "package version",
-              "publisher token and scope",
-              "publication channel and rehearsal version"
-            ],
-            "source": "accepted packages.metadata, packages.import, packages.view, and packages.publish responses",
-            "locator": "dist_tags.latest supplies the import version; import response supplies package locator; package view supplies token and scope; scope supplies package and channel; publish response supplies rehearsal version"
-          }
-        ],
-        "inventory_sha256": "e180d5ed7a07de915c999f0f712eb62452e5cce80d711d66fc0c17aaa24d5fba",
-        "profile": "keplerops",
-        "request_count": 5,
         "review_status": "complete",
         "unresolved": []
       },
@@ -990,8 +838,8 @@
               "trace fields",
               "binary envelope"
             ],
-            "source": "accepted K02 report artifact and packages.inspections and packages.inspection-trace responses",
-            "locator": "changed report bytes are the inspection input; inspection_id selects the trace; seed, nonce, digest, and envelope fields come from the accepted trace and inspection responses"
+            "locator": "changed report bytes are the inspection input; inspection_id selects the trace; seed, nonce, digest, and envelope fields come from the accepted trace and inspection responses",
+            "source": "accepted K02 report artifact and packages.inspections and packages.inspection-trace responses"
           }
         ],
         "inventory_sha256": "a78494619edca72fc9df04ef94a9b4a67336b95ea87c02f4ddc1889e03cff322",
@@ -1017,8 +865,8 @@
               "entitlement record",
               "encoded entitlement checks"
             ],
-            "source": "accepted support conversation and packages.entitlement responses",
-            "locator": "conversation supplies entitlement_id; entitlement endpoint supplies the record; subsequent check bodies are direct encodings of that returned record, with the rejection case changing only the tested type field"
+            "locator": "conversation supplies entitlement_id; entitlement endpoint supplies the record; subsequent check bodies are direct encodings of that returned record, with the rejection case changing only the tested type field",
+            "source": "accepted support conversation and packages.entitlement responses"
           }
         ],
         "inventory_sha256": "0482726ebdc4153dd666287ced56a91878a2be1f5fdcf18f957e0b5c6cd5101f",
@@ -1044,8 +892,8 @@
               "run IDs",
               "result and retained-object URLs"
             ],
-            "source": "accepted K02/K08 evidence and ci.review-jobs, ci.review-job, and ci.run responses",
-            "locator": "report, entitlement, package, and build identifiers come from named earlier evidence; run_id, result, retained object URL, and ordinary result URL come from accepted CI responses and are joined to their discovered service origins"
+            "locator": "report, entitlement, package, and build identifiers come from named earlier evidence; run_id, result, retained object URL, and ordinary result URL come from accepted CI responses and are joined to their discovered service origins",
+            "source": "accepted K02/K08 evidence and ci.review-jobs, ci.review-job, and ci.run responses"
           }
         ],
         "inventory_sha256": "a5e3b0d7bedf19a2d63fdd9d3e21d4cc3573d05db83dd607d2b4f618317ef563",
@@ -1070,8 +918,8 @@
               "support conversation route",
               "attachment, association, source, and review IDs"
             ],
-            "source": "/home/rowan/work/service-notes.md and accepted support conversation, preview association, and preview render responses",
-            "locator": "Conversation entry plus ticket selects the support record; attachment ID comes from that record; association supplies digital_twin; render supplies review_id"
+            "locator": "Conversation entry plus ticket selects the support record; attachment ID comes from that record; association supplies digital_twin; render supplies review_id",
+            "source": "/home/rowan/work/service-notes.md and accepted support conversation, preview association, and preview render responses"
           }
         ],
         "inventory_sha256": "9e6c85d2198f8f66be4a1860a6a0fcb5a2cd7a3474b32bfd2a6f6e8e585fa8b5",
@@ -1098,8 +946,8 @@
               "nonce",
               "compiler request fields"
             ],
-            "source": "retained fieldkest/policy-compiler repository artifacts plus accepted source.policy-evaluate and source.policy-nonce responses",
-            "locator": "opcode names and byte values are parsed from exported fieldkest_opcode_* symbols in bin/fieldkest-policyc; the complete program is parsed from its FKPC table; the accepted input comes from examples/accepted.env; the corpus digest and nonce come from accepted resource responses"
+            "locator": "opcode names and byte values are parsed from exported fieldkest_opcode_* symbols in bin/fieldkest-policyc; the complete program is parsed from its FKPC table; the accepted input comes from examples/accepted.env; the corpus digest and nonce come from accepted resource responses",
+            "source": "retained fieldkest/policy-compiler repository artifacts plus accepted source.policy-evaluate and source.policy-nonce responses"
           }
         ],
         "inventory_sha256": "d843435265f5d138853ebf7645b31ea93361921bc8c8f6cde207d6da4b729c2b",
@@ -1123,8 +971,8 @@
             "inputs": [
               "review, source, queue, nonce, and worker-scope values"
             ],
-            "source": "accepted K10 preview render and K11 policy responses, then preview.assignment and preview.prepare responses",
-            "locator": "review_id and digital_twin are named prior evidence; assignment response supplies reviewer_nonce and queue context; prepare response supplies worker_scope used by the review render"
+            "locator": "review_id and digital_twin are named prior evidence; assignment response supplies reviewer_nonce and queue context; prepare response supplies worker_scope used by the review render",
+            "source": "accepted K10 preview render and K11 policy responses, then preview.assignment and preview.prepare responses"
           }
         ],
         "inventory_sha256": "9e06b8835fa4ffe68b5cde70fd60360f98441ab06792e7bfcd5cb427bf5bc92d",
@@ -1148,8 +996,8 @@
             "inputs": [
               "workspace, object, version, build, and workload credential values"
             ],
-            "source": "accepted data.workspace-list, data.workspace-object, cloud.workspace-exchange, and cloud.workspace-token responses",
-            "locator": "workspace list supplies object template and keys; object history supplies old version; exchange supplies build_id; token response supplies access_token"
+            "locator": "workspace list supplies object template and keys; object history supplies old version; exchange supplies build_id; token response supplies access_token",
+            "source": "accepted data.workspace-list, data.workspace-object, cloud.workspace-exchange, and cloud.workspace-token responses"
           }
         ],
         "inventory_sha256": "30442a04762de020a9b43311da82db6446164ac12081ce6292e068e440293989",
@@ -1173,8 +1021,8 @@
             "inputs": [
               "trust record, role exchange, fixture token, role token, and export ID"
             ],
-            "source": "accepted K13 cloud.build-record, cloud.trust-record, cloud.role-exchange, and data.export-definition responses",
-            "locator": "build record supplies trust_record and fixture token; trust record supplies role exchange route and export ID; role exchange supplies role token"
+            "locator": "build record supplies trust_record and fixture token; trust record supplies role exchange route and export ID; role exchange supplies role token",
+            "source": "accepted K13 cloud.build-record, cloud.trust-record, cloud.role-exchange, and data.export-definition responses"
           }
         ],
         "inventory_sha256": "9a3cdf96aef9ca8dbd6972ae76ad3177563a4be7d3eb8198fb6beeabd855ec9b",
@@ -1198,8 +1046,8 @@
             "inputs": [
               "export, schedule, tenant, revision, destination registry, partition bindings, and role token values"
             ],
-            "source": "accepted K14 export definition and data.export/workloads.schedule responses",
-            "locator": "export_id and role token come from K14; the export definition supplies tenant, participant-owned destination, and current/stale partition-to-revision bindings; later request payloads reuse those returned values"
+            "locator": "export_id and role token come from K14; the export definition supplies tenant, participant-owned destination, and current/stale partition-to-revision bindings; later request payloads reuse those returned values",
+            "source": "accepted K14 export definition and data.export/workloads.schedule responses"
           }
         ],
         "inventory_sha256": "cbeeaa027bdf4122d39357e47b2abf6296615d48a19b2a67f2604d27bc98b08e",
@@ -1227,8 +1075,8 @@
               "role token",
               "run attestations"
             ],
-            "source": "accepted K15 workloads.schedule response followed by workloads.schedule-update and workloads.schedule-runs responses",
-            "locator": "schedule_id and role token are prior evidence; startup_hook and alternate assignment come from the schedule record; run responses supply the resulting attestations"
+            "locator": "schedule_id and role token are prior evidence; startup_hook and alternate assignment come from the schedule record; run responses supply the resulting attestations",
+            "source": "accepted K15 workloads.schedule response followed by workloads.schedule-update and workloads.schedule-runs responses"
           }
         ],
         "inventory_sha256": "1ce6496ca4b11538c5e4e29f7b8e88767a5049a1d4c70047971e0d76b87dde67",
@@ -1253,8 +1101,8 @@
               "support handover route",
               "account, ticket, recovery, session, assignment, and reviewer values"
             ],
-            "source": "/home/rowan/work/service-notes.md, Chromium Cookies, and accepted support recovery/session responses",
-            "locator": "Support handover entry and browser cookie start the flow; account and ticket come from the handover/session; recovery lookup supplies recovery_id; redeemed session supplies assignment_id; reviewer is named earlier evidence"
+            "locator": "Support handover entry and browser cookie start the flow; account and ticket come from the handover/session; recovery lookup supplies recovery_id; redeemed session supplies assignment_id; reviewer is named earlier evidence",
+            "source": "/home/rowan/work/service-notes.md, Chromium Cookies, and accepted support recovery/session responses"
           }
         ],
         "inventory_sha256": "33de0abe4e3e172e47815f6a341a0074c897c99129f3e0a9fc5c04e8008dc8c2",
@@ -1280,11 +1128,11 @@
               "provider, issuer, discovery, and assertion submission routes",
               "audience, claim contract, subject syntax, tenant, dossier, pairwise subject, assertion, and session values"
             ],
-            "source": "accepted staff.directory, identity.registration, retained-support metadata, support.session, support.dossier, retained-support assertion, and identity.login responses",
-            "locator": "directory supplies note and staff fields; the changed registration supplies provider, issuer, metadata URI, and assertion submission URI; provider metadata supplies audience, claims, pairwise subject syntax, assertion endpoint, signing algorithm, and lifetime; session supplies the tenant and dossier ID; dossier supplies the exact provider, tenant, pairwise subject, and protected record; assertion and login responses supply the signed assertion and federated session"
+            "locator": "directory supplies note and staff fields; the changed registration supplies provider, issuer, metadata URI, and assertion submission URI; provider metadata supplies audience, claims, pairwise subject syntax, assertion endpoint, signing algorithm, and lifetime; session supplies the tenant and dossier ID; dossier supplies the exact provider, tenant, pairwise subject, and protected record; assertion and login responses supply the signed assertion and federated session",
+            "source": "accepted staff.directory, identity.registration, retained-support metadata, support.session, support.dossier, retained-support assertion, and identity.login responses"
           }
         ],
-        "inventory_sha256": "2db65b8ce7c5cffd13cdec455087800edaf793e7afc3eced11d3676ea6eebd8f",
+        "inventory_sha256": "8c9d2e055e4a408b330dc27d83991f7a32578e5d00ff02ff751bf11c87c0547d",
         "profile": "keplerops",
         "request_count": 11,
         "review_status": "complete",
@@ -1308,8 +1156,8 @@
               "managed session",
               "approval contract and rehearsal input"
             ],
-            "source": "accepted K18 staff.directory plus cert.requests, staff.delegation, staff.managed-session, identity.service-relation, and managed administration responses",
-            "locator": "directory supplies enrollment URI, archive subject, and worker; certificate template supplies subject format and request endpoint; archive supplies delegated SPN and service relation; managed administration supplies approval interfaces, lineage, key ID, consumer, and synthetic rehearsal input"
+            "locator": "directory supplies enrollment URI, archive subject, and worker; certificate template supplies subject format and request endpoint; archive supplies delegated SPN and service relation; managed administration supplies approval interfaces, lineage, key ID, consumer, and synthetic rehearsal input",
+            "source": "accepted K18 staff.directory plus cert.requests, staff.delegation, staff.managed-session, identity.service-relation, and managed administration responses"
           }
         ],
         "inventory_sha256": "472a0ca3772d990252850c32a9db3e0ea5234d75a4400fc30d6c30893ed14deb",
@@ -1333,8 +1181,8 @@
             "inputs": [
               "assistant request modes and reference fields, context, conversation, selection, document, completion example, credential reference, script, lease, handover, and job values"
             ],
-            "source": "accepted assistant.config, assistant.contexts, assistant.answers, assistant.selection, assistant.document, assistant.completion-example, assistant.completion-context, and assistant.completion-jobs responses",
-            "locator": "config supplies answer modes and reference fields; context records supply conversation, selection, document, review, and example IDs; the completion example supplies context root, credential namespace and object key, assigned handover, and allowed script; issued responses supply the lease and job ID"
+            "locator": "config supplies answer modes and reference fields; context records supply conversation, selection, document, review, and example IDs; the completion example supplies context root, credential namespace and object key, assigned handover, and allowed script; issued responses supply the lease and job ID",
+            "source": "accepted assistant.config, assistant.contexts, assistant.answers, assistant.selection, assistant.document, assistant.completion-example, assistant.completion-context, and assistant.completion-jobs responses"
           }
         ],
         "inventory_sha256": "6af3638886843e22fb944c6ecab38c87e5a072b22a81e22bef7736baf508520c",
@@ -1358,8 +1206,8 @@
             "inputs": [
               "tenant, dossier, integration revisions, and reconciliation candidates"
             ],
-            "source": "accepted support.session, support.dossier, and support.integration responses",
-            "locator": "session supplies tenant and history dossier; dossier supplies customer record; integration supplies current and obsolete tenant/revision pairs used unchanged as reconciliation candidates"
+            "locator": "session supplies tenant and history dossier; dossier supplies customer record; integration supplies current and obsolete tenant/revision pairs used unchanged as reconciliation candidates",
+            "source": "accepted support.session, support.dossier, and support.integration responses"
           }
         ],
         "inventory_sha256": "d01bf5ecffc916a2ee9fb7009fb490f3f942a85b2040fb6644d2b4ea0444a46b",
@@ -1385,8 +1233,8 @@
               "diagnostic configuration",
               "source credential"
             ],
-            "source": "/home/rowan/work/journey-ca/examples/fieldkest.bin, work/journey-ca/config/diagnostic.conf, and .config/git/credentials",
-            "locator": "the two participant files are submitted to source.connector-run; the developer credential parsed in K01 authenticates the request; the rejection case changes only the copied diagnostic configuration"
+            "locator": "the two participant files are submitted to source.connector-run; the developer credential parsed in K01 authenticates the request; the rejection case changes only the copied diagnostic configuration",
+            "source": "/home/rowan/work/journey-ca/examples/fieldkest.bin, work/journey-ca/config/diagnostic.conf, and .config/git/credentials"
           }
         ],
         "inventory_sha256": "5fe549a9082de5ca66e9ecbb8f99c1691f17be9e3a9de7cc1f1d11cd80ed33b3",
@@ -1414,8 +1262,8 @@
               "signing material",
               "approval-issued channel credentials"
             ],
-            "source": "accepted packages.metadata, cloud.build-record, ci.run-artifact, packages.publish, packages.approval, and K19 managed-administration responses",
-            "locator": "metadata supplies pending_release, package name, interface, channel history, rollback candidate and slot; build artifact supplies release dossier and signer history; K19 supplies publisher/release credentials; approval response supplies the operation-scoped channel credentials"
+            "locator": "metadata supplies pending_release, package name, interface, channel history, rollback candidate and slot; build artifact supplies release dossier and signer history; K19 supplies publisher/release credentials; approval response supplies the operation-scoped channel credentials",
+            "source": "accepted packages.metadata, cloud.build-record, ci.run-artifact, packages.publish, packages.approval, and K19 managed-administration responses"
           }
         ],
         "inventory_sha256": "1cb1a66a54ef01bc89aaf95d7379320db49c434d87bbb27ea39202720fb1679f",
@@ -1439,8 +1287,8 @@
             "inputs": [
               "tenant, connector revision, diagnostic job, package interface, and delivery payload"
             ],
-            "source": "accepted K25 support.session/support.integration and support.diagnostics/support.diagnostic-package responses",
-            "locator": "session and integration supply tenant and revision; diagnostics supplies job_id; diagnostic-package accepts the published interface and source before delivery reuses that job ID"
+            "locator": "session and integration supply tenant and revision; diagnostics supplies job_id; diagnostic-package accepts the published interface and source before delivery reuses that job ID",
+            "source": "accepted K25 support.session/support.integration and support.diagnostics/support.diagnostic-package responses"
           }
         ],
         "inventory_sha256": "a2ad2d7f16c6fb803c94b1d1b9b98dc65699e79a41545f9ce4b086b389ebde85",
@@ -1468,8 +1316,8 @@
               "operation-scoped channel grants",
               "rollback version and slot"
             ],
-            "source": "accepted K15 export and K29 packages.metadata/packages.approval responses",
-            "locator": "export response supplies tenant; signed publication supplies version and channel; approval supplies poll, activation, receipt and rollback grants; package channel history supplies rollback candidate and rollback_slot; the test fails before polling if any field is absent"
+            "locator": "export response supplies tenant; signed publication supplies version and channel; approval supplies poll, activation, receipt and rollback grants; package channel history supplies rollback candidate and rollback_slot; the test fails before polling if any field is absent",
+            "source": "accepted K15 export and K29 packages.metadata/packages.approval responses"
           }
         ],
         "inventory_sha256": "9d1630a2f922ef692e947b30ac49d9c57aae1d4586b78914bc8a1a59dbb517da",
@@ -1493,8 +1341,8 @@
             "inputs": [
               "recovery build, session, backup, restore, and namespace values"
             ],
-            "source": "accepted cloud.build-record, data.backup, and data.restore responses",
-            "locator": "recovery_build is named prior evidence; build record supplies recovery_session and backup_id; restore response supplies namespace_id used to fetch recovery history"
+            "locator": "recovery_build is named prior evidence; build record supplies recovery_session and backup_id; restore response supplies namespace_id used to fetch recovery history",
+            "source": "accepted cloud.build-record, data.backup, and data.restore responses"
           }
         ],
         "inventory_sha256": "12276d9c9cfcc9f1e9eb5a4ae0430c6d00a45cc9afa0dd2cd69a931b79a2eeb5",
@@ -1518,8 +1366,8 @@
             "inputs": [
               "maintenance index, policy command, workload, archive, credentials, required label, archive headers, runtime identity, and attestation values"
             ],
-            "source": "accepted cloud.maintenance, cloud.policy, workloads.workload, workloads.whoami, and K16 schedule-run responses",
-            "locator": "maintenance index supplies policy_id, workload_id, archive_id, and credentials; policy supplies the command, required label, archive header names, and expected runtime identity; whoami supplies the scheduler attestation"
+            "locator": "maintenance index supplies policy_id, workload_id, archive_id, and credentials; policy supplies the command, required label, archive header names, and expected runtime identity; whoami supplies the scheduler attestation",
+            "source": "accepted cloud.maintenance, cloud.policy, workloads.workload, workloads.whoami, and K16 schedule-run responses"
           }
         ],
         "inventory_sha256": "ad58743ff3e3d87b1d8979ae7e35757e82534e8509e58005012fd8d90ac31875",
@@ -1795,7 +1643,7 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/build_w28_native.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/arwc/runtime/build_w28_native.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
@@ -1811,12 +1659,12 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/business_workplace.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/arwc/runtime/business_workplace.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 26,
-      "inventory_sha256": "1ff50d9b7dd8394d6c53794b244c558efb1eba1d5fd2632f4b5fd67bd3278c07",
+      "comparison_count": 13,
+      "inventory_sha256": "47fd878cefebef86d91cf5d859871c473df0488ba358fff1894db85d84d29b3b",
       "review_status": "complete",
       "unresolved": []
     },
@@ -1827,12 +1675,12 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/contractor_portal.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/arwc/runtime/contractor_portal.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 14,
-      "inventory_sha256": "0e9022a447d3e4ed8a85c9d10a4bca5b1fb2347b319c57663a818f95111c4ac8",
+      "comparison_count": 31,
+      "inventory_sha256": "d79b0438e878548eab748f2bb9097c8a0a697fd828e61e7eb6e4463fa1b6c678",
       "review_status": "complete",
       "unresolved": []
     },
@@ -1843,7 +1691,7 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/control_broker.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/arwc/runtime/control_broker.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
@@ -1859,12 +1707,12 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/corporate_identity.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/arwc/runtime/corporate_identity.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 17,
-      "inventory_sha256": "ac03d6b5b4d3c537c4308430fe790680c20103abeb142501521c292af68fd6fa",
+      "comparison_count": 11,
+      "inventory_sha256": "26155f323f6bfc098b8a057775066620165040014252f88070adf20e88009222",
       "review_status": "complete",
       "unresolved": []
     },
@@ -1875,12 +1723,12 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/customer_handover.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/arwc/runtime/customer_handover.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 7,
-      "inventory_sha256": "8e4984541971b1341a9946cdbd5cd2e91531d44722336f05a8af404e76f4b707",
+      "comparison_count": 12,
+      "inventory_sha256": "e873b82ef15ceb59af017a103dc42e8e6676a261c144118d9444af72508f8a8f",
       "review_status": "complete",
       "unresolved": []
     },
@@ -1895,8 +1743,8 @@
           "source": "paired integration-gateway sender and diagnostic-service receiver"
         }
       ],
-      "comparison_count": 47,
-      "inventory_sha256": "84f6af6b8e2056b6e6324680319232745b24f6391540dcb36f257d462fedbc0c",
+      "comparison_count": 63,
+      "inventory_sha256": "6f930c094dc1e601de32c75e94227f4dcd66e7afe6408edb3366d435e44463b4",
       "review_status": "complete",
       "unresolved": []
     },
@@ -1907,7 +1755,7 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/dpg1.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/arwc/runtime/dpg1.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
@@ -1923,12 +1771,28 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/extract_document.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/arwc/runtime/extract_document.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
       "comparison_count": 3,
       "inventory_sha256": "4aec1d19bc8d7e5c7140f57e8b4c0abbeeb2cb09d922e24da0395b8418760049",
+      "review_status": "complete",
+      "unresolved": []
+    },
+    "build/arwc/runtime/fetch_archive_workflow.py": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "fixed accepted request structures in service runtime"
+          ],
+          "locator": "exact equality checks in build/arwc/runtime/fetch_archive_workflow.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
+          "source": "service runtime protocol implementation"
+        }
+      ],
+      "comparison_count": 2,
+      "inventory_sha256": "27b771896966656a3ce605aa8066f9208f5b28072c25113de6ca374872509810",
       "review_status": "complete",
       "unresolved": []
     },
@@ -1939,7 +1803,7 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/field_gateway.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/arwc/runtime/field_gateway.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
@@ -1955,7 +1819,7 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/fieldlink_consumer.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/arwc/runtime/fieldlink_consumer.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
@@ -1971,7 +1835,7 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/generate_archive_artifacts.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/arwc/runtime/generate_archive_artifacts.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
@@ -1987,7 +1851,7 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/generate_dpg1.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/arwc/runtime/generate_dpg1.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
@@ -2003,7 +1867,7 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/generate_process_artifacts.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/arwc/runtime/generate_process_artifacts.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
@@ -2023,8 +1887,8 @@
           "source": "paired planning/process senders and integration-gateway receivers"
         }
       ],
-      "comparison_count": 25,
-      "inventory_sha256": "b7ec810bf02a73b16f62f572fefc4d66c3b917563bca583a4f8dfd1e4ec3bf16",
+      "comparison_count": 1,
+      "inventory_sha256": "801ed8b69bec30bab6e2566cf42a50d444d211c18a3768943cb6b06b0fa61cc1",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2035,7 +1899,7 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/maintenance_renderer.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/arwc/runtime/maintenance_renderer.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
@@ -2051,12 +1915,28 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/maintenance_review.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/arwc/runtime/maintenance_review.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 22,
-      "inventory_sha256": "c83102b69b731ae2dd8779a738a911021e125d42e490ca32bd8701db689be04e",
+      "comparison_count": 25,
+      "inventory_sha256": "78dc9da3bccd09f6dd9019eec16cdfa8ac25e66c6626e0021cd662f9967d651c",
+      "review_status": "complete",
+      "unresolved": []
+    },
+    "build/arwc/runtime/operating_history.py": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "operating-history route, reader identity, read-only database service, and five-minute native history window"
+          ],
+          "locator": "business_workplace.py publishes /api/operating-history; data-bridge-entrypoint.sh provisions the scoped reader and read-only PostgreSQL service; operating_history.py validates that contract",
+          "source": "paired corporate HTTPS bridge, data-bridge reader provisioning, and native PostgreSQL history"
+        }
+      ],
+      "comparison_count": 1,
+      "inventory_sha256": "7845bdfb60febeff8e77686643db80fb05d1a5ecb5f65d0965f8ac877f8a7878",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2067,7 +1947,7 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/patch_review_helper.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/arwc/runtime/patch_review_helper.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
@@ -2088,7 +1968,7 @@
         }
       ],
       "comparison_count": 73,
-      "inventory_sha256": "cd8265922f82f622f0de08a7e80aa371b1ad5afc071c996122ddb87bad3c0570",
+      "inventory_sha256": "86c5af1b0fb7b914c44397c9d9e25322401df4ea6eb1e69d0c7c234437dcf8b0",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2103,8 +1983,24 @@
           "source": "process-view service contracts and paired reporting handover"
         }
       ],
-      "comparison_count": 108,
-      "inventory_sha256": "02ef97bf16a307b413e1d5791390552da4598025eed3b9001032d955d3ce0b96",
+      "comparison_count": 207,
+      "inventory_sha256": "796fde561df47bc9b58988a4fb1a36a90c818b6d5c07a3feaf15750e98e60524",
+      "review_status": "complete",
+      "unresolved": []
+    },
+    "build/arwc/runtime/reporting_schedule.py": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "published W34 schedule fields and operating bounds"
+          ],
+          "locator": "reporting_schedule.py validates the schedule carried through the W34 reporting contract; it is isolated from W33 native product evidence",
+          "source": "W34 reporting contract and participant-supplied schedule"
+        }
+      ],
+      "comparison_count": 1,
+      "inventory_sha256": "2dc0e6a067353cf98ec0e4f6c1e235c5d8589959234b8caccf67b92c3cbc6b3c",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2131,12 +2027,44 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/arwc/runtime/retained_archive.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/arwc/runtime/retained_archive.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 72,
-      "inventory_sha256": "6d7d915f1d7ecb91caebd244f8cb1e590cbfa3c1434b488c5eda8cb06f06baf3",
+      "comparison_count": 86,
+      "inventory_sha256": "5ddf5c824afe847c158487a716fde18df08f5db1c9c82466aabcdeeb4335ef8c",
+      "review_status": "complete",
+      "unresolved": []
+    },
+    "build/keplerops/runtime/assessor.py": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "fixed accepted request structures in service runtime"
+          ],
+          "locator": "exact equality checks in build/keplerops/runtime/assessor.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
+          "source": "service runtime protocol implementation"
+        }
+      ],
+      "comparison_count": 6,
+      "inventory_sha256": "cea089afe50901372fe6b9310ec974b3f6832d433a6d248922c13ccd1c64c6c7",
+      "review_status": "complete",
+      "unresolved": []
+    },
+    "build/keplerops/runtime/assistant_api.py": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "fixed accepted request structures in service runtime"
+          ],
+          "locator": "exact equality checks in build/keplerops/runtime/assistant_api.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
+          "source": "service runtime protocol implementation"
+        }
+      ],
+      "comparison_count": 26,
+      "inventory_sha256": "d3af6213782ec83cc4cb333c292d44e9427ceae189bec759dc35c58444713d97",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2163,12 +2091,28 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/keplerops/runtime/ci.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/keplerops/runtime/ci.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 27,
-      "inventory_sha256": "8be3dbd757fe2b3de6f86f6f83057238a43cb783dcd36e26fc2d1112d2d8898a",
+      "comparison_count": 41,
+      "inventory_sha256": "575e208d5a4da696334c69ffdd9e78142b3c3225cb5d7070248f0157f0bbeb9b",
+      "review_status": "complete",
+      "unresolved": []
+    },
+    "build/keplerops/runtime/cloud-api.py": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "fixed accepted request structures in service runtime"
+          ],
+          "locator": "exact equality checks in build/keplerops/runtime/cloud-api.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
+          "source": "service runtime protocol implementation"
+        }
+      ],
+      "comparison_count": 56,
+      "inventory_sha256": "113847e69ea4a3fd27f93d3dcabd9772377d0f862798a28bbb141d99f8f6fdfb",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2179,28 +2123,12 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/keplerops/runtime/cloud_api.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/keplerops/runtime/cloud_api.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 13,
-      "inventory_sha256": "b8e76197392f351d2d91c3840e01e431be1adeeeacc5efa04231c808ef29ea6f",
-      "review_status": "complete",
-      "unresolved": []
-    },
-    "build/keplerops/runtime/command_worker.py": {
-      "citations": [
-        {
-          "class": "normal_interface_or_artifact",
-          "inputs": [
-            "fixed accepted request structures in service runtime"
-          ],
-          "locator": "exact equality checks in build/keplerops/runtime/command_worker.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
-          "source": "service runtime protocol implementation"
-        }
-      ],
-      "comparison_count": 1,
-      "inventory_sha256": "801ed8b69bec30bab6e2566cf42a50d444d211c18a3768943cb6b06b0fa61cc1",
+      "comparison_count": 23,
+      "inventory_sha256": "667b9218edacf3c2f9f6f9e82b1830a7cdc2cf346ea067eec5d6fbdd0028e80e",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2211,7 +2139,7 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/keplerops/runtime/customer_relay.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/keplerops/runtime/customer_relay.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
@@ -2227,7 +2155,7 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/keplerops/runtime/http_support.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/keplerops/runtime/http_support.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
@@ -2236,35 +2164,67 @@
       "review_status": "complete",
       "unresolved": []
     },
-    "build/keplerops/runtime/platform_service.py": {
+    "build/keplerops/runtime/identity_spnego.py": {
       "citations": [
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/keplerops/runtime/platform_service.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/keplerops/runtime/identity_spnego.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 89,
-      "inventory_sha256": "c784819e3b15bb589e87b65c6590311604b1d67e6bd7e8d3fd20f71db9ff77c4",
+      "comparison_count": 3,
+      "inventory_sha256": "c7d4de47e33fb96dde9c391d2c35cc6a006024c1ecbc6ed6ca07f8d4bcc49993",
       "review_status": "complete",
       "unresolved": []
     },
-    "build/keplerops/runtime/preview_worker.py": {
+    "build/keplerops/runtime/indexer.py": {
       "citations": [
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/keplerops/runtime/preview_worker.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/keplerops/runtime/indexer.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 2,
-      "inventory_sha256": "f33fd3da6f6ac2b01e56b96b6c15146e4a3aba581d469a0f2effffc706b7e4f3",
+      "comparison_count": 10,
+      "inventory_sha256": "e53e766f8e22a5916b3293dc9b2f7734d77ce912de1382de50649b5fed261229",
+      "review_status": "complete",
+      "unresolved": []
+    },
+    "build/keplerops/runtime/package_delivery.py": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "fixed accepted request structures in service runtime"
+          ],
+          "locator": "exact equality checks in build/keplerops/runtime/package_delivery.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
+          "source": "service runtime protocol implementation"
+        }
+      ],
+      "comparison_count": 1,
+      "inventory_sha256": "8d59983ae821db03a6e3025a9bda35820e0b1a391f76e7eb58f414bfdcd84f2e",
+      "review_status": "complete",
+      "unresolved": []
+    },
+    "build/keplerops/runtime/preview.py": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "fixed accepted request structures in service runtime"
+          ],
+          "locator": "exact equality checks in build/keplerops/runtime/preview.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
+          "source": "service runtime protocol implementation"
+        }
+      ],
+      "comparison_count": 40,
+      "inventory_sha256": "48f578721a244889e725f473d5ca10eb2e89d10b9d4870e98a68811c2ca00a05",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2275,12 +2235,12 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/keplerops/runtime/registry.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/keplerops/runtime/registry.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 44,
-      "inventory_sha256": "9e925baa600327a375134bf10f3b51117349a83cb1d3399066577ac45ab48548",
+      "comparison_count": 41,
+      "inventory_sha256": "940599d96f22196e9092ee312f76c07d9b4e29a35e797404fa58c8e8b9649d8c",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2291,12 +2251,28 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/keplerops/runtime/report_runner.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/keplerops/runtime/report_runner.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 32,
-      "inventory_sha256": "766556a643755a1d29ad792acf64898817cb07ad295efcc8a22c52002929981d",
+      "comparison_count": 9,
+      "inventory_sha256": "937204c3e40751e7783e260ce293309a8361df31c6cea9850a5670d5976163a3",
+      "review_status": "complete",
+      "unresolved": []
+    },
+    "build/keplerops/runtime/seed-gitea.py": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "fixed accepted request structures in service runtime"
+          ],
+          "locator": "exact equality checks in build/keplerops/runtime/seed-gitea.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
+          "source": "service runtime protocol implementation"
+        }
+      ],
+      "comparison_count": 8,
+      "inventory_sha256": "1c6683b095c9c8479a52b58a49b5dccbca40fcd088c2695139fc51f851750664",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2307,12 +2283,44 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/keplerops/runtime/source.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/keplerops/runtime/source.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 43,
-      "inventory_sha256": "aba20a5785aabed5fd0d57823687ba6e7a03151361120a844967f1c2d7a1ae85",
+      "comparison_count": 40,
+      "inventory_sha256": "3e8d7ceecc2637fc459ede90ce56774994370ee4b9328bb3deb9b994817307c4",
+      "review_status": "complete",
+      "unresolved": []
+    },
+    "build/keplerops/runtime/staff.py": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "fixed accepted request structures in service runtime"
+          ],
+          "locator": "exact equality checks in build/keplerops/runtime/staff.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
+          "source": "service runtime protocol implementation"
+        }
+      ],
+      "comparison_count": 24,
+      "inventory_sha256": "19b925a0c26cc2a9191f2055ef51fe74e0dcaf3472e11c8dcf5391c29e666476",
+      "review_status": "complete",
+      "unresolved": []
+    },
+    "build/keplerops/runtime/staff_spnego.py": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "fixed accepted request structures in service runtime"
+          ],
+          "locator": "exact equality checks in build/keplerops/runtime/staff_spnego.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
+          "source": "service runtime protocol implementation"
+        }
+      ],
+      "comparison_count": 3,
+      "inventory_sha256": "65dd6f04af451746d45127ee325d0ca06569f98ba44f509317711c2686b148b3",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2323,12 +2331,12 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/keplerops/runtime/support.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/keplerops/runtime/support.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
       "comparison_count": 25,
-      "inventory_sha256": "a8ce94aec37c1b80beb9c446b9271c86e1837f2327446ce75967c1c202e6befb",
+      "inventory_sha256": "f66a13a634fac16a383821595c491beea4ac91025030f7243979aabb8be3816f",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2339,7 +2347,7 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/keplerops/runtime/workbench.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/keplerops/runtime/workbench.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
@@ -2355,7 +2363,7 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/training/runtime/accounts.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/training/runtime/accounts.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
@@ -2371,7 +2379,7 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/training/runtime/build_repository.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/training/runtime/build_repository.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
@@ -2387,12 +2395,12 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/training/runtime/developer.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/training/runtime/developer.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
-      "comparison_count": 37,
-      "inventory_sha256": "8e84e1b1ad274793504f4a42e8b2f919cac571be06a4131f882c2851f712ab29",
+      "comparison_count": 38,
+      "inventory_sha256": "6ac81c28c1dae1f4bd8c11f1459d47b160e5ea2456ab2b6317d9fe082a291048",
       "review_status": "complete",
       "unresolved": []
     },
@@ -2403,7 +2411,7 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/training/runtime/http_support.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/training/runtime/http_support.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
@@ -2419,7 +2427,7 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/training/runtime/runner_controller.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/training/runtime/runner_controller.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
@@ -2435,7 +2443,7 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/training/runtime/state.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/training/runtime/state.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
@@ -2451,44 +2459,12 @@
           "inputs": [
             "fixed accepted request structures in service runtime"
           ],
-          "locator": "exact equality checks in build/training/runtime/workbench.py enforce protocol contracts, response schemas, and service boundaries — not author-only values",
+          "locator": "exact equality checks in build/training/runtime/workbench.py enforce protocol contracts, response schemas, and service boundaries \u2014 not author-only values",
           "source": "service runtime protocol implementation"
         }
       ],
       "comparison_count": 24,
       "inventory_sha256": "2f8d612f9d4ffcfa9954678d2a2309f8456f386573c6ca4be59525eea0a7db96",
-      "review_status": "complete",
-      "unresolved": []
-    },
-    "build/arwc/runtime/operating_history.py": {
-      "citations": [
-        {
-          "class": "normal_interface_or_artifact",
-          "inputs": [
-            "operating-history route, reader identity, read-only database service, and five-minute native history window"
-          ],
-          "locator": "business_workplace.py publishes /api/operating-history; data-bridge-entrypoint.sh provisions the scoped reader and read-only PostgreSQL service; operating_history.py validates that contract",
-          "source": "paired corporate HTTPS bridge, data-bridge reader provisioning, and native PostgreSQL history"
-        }
-      ],
-      "comparison_count": 1,
-      "inventory_sha256": "7845bdfb60febeff8e77686643db80fb05d1a5ecb5f65d0965f8ac877f8a7878",
-      "review_status": "complete",
-      "unresolved": []
-    },
-    "build/arwc/runtime/reporting_schedule.py": {
-      "citations": [
-        {
-          "class": "normal_interface_or_artifact",
-          "inputs": [
-            "published W34 schedule fields and operating bounds"
-          ],
-          "locator": "reporting_schedule.py validates the schedule carried through the W34 reporting contract; it is isolated from W33 native product evidence",
-          "source": "W34 reporting contract and participant-supplied schedule"
-        }
-      ],
-      "comparison_count": 1,
-      "inventory_sha256": "2dc0e6a067353cf98ec0e4f6c1e235c5d8589959234b8caccf67b92c3cbc6b3c",
       "review_status": "complete",
       "unresolved": []
     }
@@ -2521,7 +2497,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "11478305abd2bf31b69c3230736d6c90ec396581a63e6d6727ffaa2a546c3b73",
+      "source_sha256": "ca543843f6e1a077f5ebc444b06917ad0adce8137fb3c5d2aa6340036135e1e3",
       "unresolved": []
     },
     "build/arwc/runtime/archive-entrypoint.sh": {
@@ -2537,14 +2513,14 @@
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "entrypoint logic — indefinite wait replaces timed exit loop"
+            "entrypoint logic \u2014 indefinite wait replaces timed exit loop"
           ],
           "locator": "build/arwc/runtime/archive-entrypoint.sh",
           "source": "ARWC service entrypoint"
         }
       ],
       "review_status": "complete",
-      "source_sha256": "29a3e589a8668d5d56fd4bcb9a495847ffcbf40aaa82a01f764b3f3c859c4ef6",
+      "source_sha256": "bd4be6b44991a5685bd22b5eb79657512fd2fdd83a51d32f32b7f911f81620ff",
       "unresolved": []
     },
     "build/arwc/runtime/business-entrypoint.sh": {
@@ -2560,7 +2536,7 @@
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "entrypoint logic — indefinite wait replaces timed exit loop"
+            "entrypoint logic \u2014 indefinite wait replaces timed exit loop"
           ],
           "locator": "build/arwc/runtime/business-entrypoint.sh",
           "source": "ARWC service entrypoint"
@@ -2597,7 +2573,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "feabe63c9fc01161c73adcb0c4dff4e20f1c29d358db936f5e4e0d39e7fd9192",
+      "source_sha256": "5d8876a9eaaac855d9ffb84088c31623628aaad304e90eb3bbca8c663c3d5628",
       "unresolved": []
     },
     "build/arwc/runtime/connector-health.sh": {
@@ -2643,14 +2619,14 @@
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "entrypoint logic — indefinite wait replaces timed exit loop"
+            "entrypoint logic \u2014 indefinite wait replaces timed exit loop"
           ],
           "locator": "build/arwc/runtime/contractors-entrypoint.sh",
           "source": "ARWC service entrypoint"
         }
       ],
       "review_status": "complete",
-      "source_sha256": "ea3d76b8036de264bd526de9a24334badf6e8804c46a9699e98367abe173d4a5",
+      "source_sha256": "93ac043fef093b9c50f61ea4930f8d9e8730a711c97a2babc73e57fc1595141d",
       "unresolved": []
     },
     "build/arwc/runtime/control-broker-entrypoint.sh": {
@@ -2680,7 +2656,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "09c4aefb23519668db5f9416a767cb5c0c411a19b9b3140c6efa4d86a0520975",
+      "source_sha256": "e71e144f8d1b58fb58e7a4bc8fe92942f9f77513bece9eb91a35bafa3eac2294",
       "unresolved": []
     },
     "build/arwc/runtime/data-entrypoint.sh": {
@@ -2696,14 +2672,14 @@
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "entrypoint logic — indefinite wait replaces timed exit loop"
+            "entrypoint logic \u2014 indefinite wait replaces timed exit loop"
           ],
           "locator": "build/arwc/runtime/data-entrypoint.sh",
           "source": "ARWC service entrypoint"
         }
       ],
       "review_status": "complete",
-      "source_sha256": "05c3c65ab778f6d1fadb8a0e640e43797b0a1d9c40aec8731743b3b00bd9ccdb",
+      "source_sha256": "59753aec069848798bbec2b964611ceb32a65be4fdfc17d4cdb50cda85e50855",
       "unresolved": []
     },
     "build/arwc/runtime/diagnostics-entrypoint.sh": {
@@ -2749,7 +2725,7 @@
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "entrypoint logic — indefinite wait replaces timed exit loop"
+            "entrypoint logic \u2014 indefinite wait replaces timed exit loop"
           ],
           "locator": "build/arwc/runtime/identity-entrypoint.sh",
           "source": "ARWC service entrypoint"
@@ -2786,7 +2762,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "6265d783800ca76a1b36cc87626ae29e8419384de7e2c4dfe72cc968ab290ebe",
+      "source_sha256": "777931f8db1f66088d6ff1ef0b3e8a1812067fee468e2fba04671df348c48404",
       "unresolved": []
     },
     "build/arwc/runtime/renderer-entrypoint.sh": {
@@ -2924,6 +2900,21 @@
       "source_sha256": "8b1417dde0358686e76c973a7d43b4f9d8a652d3ff5d8257103f05a3b4d1ba6e",
       "unresolved": []
     },
+    "build/keplerops/runtime/assistant-api-entrypoint.sh": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "fixed comparison values in runtime source"
+          ],
+          "locator": "fixed values in build/keplerops/runtime/assistant-api-entrypoint.sh are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
+          "source": "service runtime implementation"
+        }
+      ],
+      "review_status": "complete",
+      "source_sha256": "8a4ccab9bf4ae6e169a1f03e5305ca85219104570c2a90f5fbba79ab0b315d53",
+      "unresolved": []
+    },
     "build/keplerops/runtime/bundle_indexer.c": {
       "citations": [
         {
@@ -2937,7 +2928,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "6abf6bc2beddc613550f14793f1aa60e48cb1d7a5f37dd8bd8830d41f377fbde",
+      "source_sha256": "64864c13fc545cf5a5d03a19443743bfc5af0649f17a5cf7bdfcb0e16588d592",
       "unresolved": []
     },
     "build/keplerops/runtime/ci-entrypoint.sh": {
@@ -2952,7 +2943,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "b1b7bb05c3bea3bc613566a9658596f6be5d64dec7e3e31e55aa3c61d7b2c55b",
+      "source_sha256": "e1396ed156dc415c7f5892b377a5bc2404aff01a78df1b488946df3fb3a37a6c",
       "unresolved": []
     },
     "build/keplerops/runtime/cloud-api-entrypoint.sh": {
@@ -2967,7 +2958,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "6e18210b6d20dea500f20c2af2c49d9859d9473a141bb8dad02ec7fa290769c1",
+      "source_sha256": "5660c15b8f4f313e607ea5ccef409c6260c6c63a9c6b05a55eff95dc3ebca5e4",
       "unresolved": []
     },
     "build/keplerops/runtime/customer-relay-entrypoint.sh": {
@@ -2985,19 +2976,34 @@
       "source_sha256": "a66242ceccfca72084b89ce4d9029ba05714d47b5ba8e108bc1432543d07c342",
       "unresolved": []
     },
-    "build/keplerops/runtime/data-entrypoint.sh": {
+    "build/keplerops/runtime/identity-spnego-entrypoint.sh": {
       "citations": [
         {
           "class": "normal_interface_or_artifact",
           "inputs": [
-            "fixed comparison values in runtime Python source"
+            "fixed comparison values in runtime source"
           ],
-          "locator": "fixed values in build/keplerops/runtime/data-entrypoint.sh are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
+          "locator": "fixed values in build/keplerops/runtime/identity-spnego-entrypoint.sh are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
           "source": "service runtime implementation"
         }
       ],
       "review_status": "complete",
-      "source_sha256": "f8d5d7989fe89f32adc19b4c87d2f047d4a7ba737d910a22f355ef1a67749915",
+      "source_sha256": "c7673df61dbd5f3ce55210c93307d876d446a663c3825ddf8e33e0b989c3bc9e",
+      "unresolved": []
+    },
+    "build/keplerops/runtime/indexer-entrypoint.sh": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "fixed comparison values in runtime source"
+          ],
+          "locator": "fixed values in build/keplerops/runtime/indexer-entrypoint.sh are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
+          "source": "service runtime implementation"
+        }
+      ],
+      "review_status": "complete",
+      "source_sha256": "a12c5fb36b6d2953849e611d9f8540b00aa9673ce922d1b7f6b360c6db84b987",
       "unresolved": []
     },
     "build/keplerops/runtime/k-dev-entrypoint.sh": {
@@ -3012,37 +3018,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "10dc5e180461db7d521f65821e14f12538be8af00057305a4955bc53a1d75cfe",
-      "unresolved": []
-    },
-    "build/keplerops/runtime/platform-entrypoint.sh": {
-      "citations": [
-        {
-          "class": "normal_interface_or_artifact",
-          "inputs": [
-            "fixed comparison values in runtime Python source"
-          ],
-          "locator": "fixed values in build/keplerops/runtime/platform-entrypoint.sh are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
-          "source": "service runtime implementation"
-        }
-      ],
-      "review_status": "complete",
-      "source_sha256": "004c834ee4100dda12299e21e2c593ca4ff9c1aeb57154fdab80e548a87002fc",
-      "unresolved": []
-    },
-    "build/keplerops/runtime/provision-kerberos.sh": {
-      "citations": [
-        {
-          "class": "normal_interface_or_artifact",
-          "inputs": [
-            "fixed comparison values in runtime Python source"
-          ],
-          "locator": "fixed values in build/keplerops/runtime/provision-kerberos.sh are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
-          "source": "service runtime implementation"
-        }
-      ],
-      "review_status": "complete",
-      "source_sha256": "3d0d5102056aeec80b2985f8ac68fb4795b3b3274a32321c7e8c6cc46dddf7be",
+      "source_sha256": "cbeac9c9722fde7b78355913c605ba6cdd3ac4db0d484c5f264d6cffebad4443",
       "unresolved": []
     },
     "build/keplerops/runtime/registry-entrypoint.sh": {
@@ -3057,7 +3033,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "910ddcb13cd0ef7526f0b39a7022285d216b707ef6b574b18685f5e6ea54388c",
+      "source_sha256": "3f4a96c8a4b603cf0445b0a46db5c7a5e253333530d4a6bf4d14f4741522ddf0",
       "unresolved": []
     },
     "build/keplerops/runtime/router.sh": {
@@ -3072,7 +3048,7 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "68c6380455429edd675d6aeed19a8beb6cab2ad5610730cb9750a5159ddce8ce",
+      "source_sha256": "580e551a5cce7b8db87b9d2df6bb06c96b4274113496959f4488f9fead84e3c6",
       "unresolved": []
     },
     "build/keplerops/runtime/service-entrypoint.sh": {
@@ -3102,7 +3078,37 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "e07f72439aa05d844e69d70f63249c09754306e56215cd72c3199be1d7b2c161",
+      "source_sha256": "a4cf7b54ebfae9058baa3e01e19b7b7825f6015d11bb03ad3e7698120ebc6beb",
+      "unresolved": []
+    },
+    "build/keplerops/runtime/staff-entrypoint.sh": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "fixed comparison values in runtime source"
+          ],
+          "locator": "fixed values in build/keplerops/runtime/staff-entrypoint.sh are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
+          "source": "service runtime implementation"
+        }
+      ],
+      "review_status": "complete",
+      "source_sha256": "7531710eec46138f1632a134479a836e6d82ef37b121fc844068958c0645a992",
+      "unresolved": []
+    },
+    "build/keplerops/runtime/staff-spnego-entrypoint.sh": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "fixed comparison values in runtime source"
+          ],
+          "locator": "fixed values in build/keplerops/runtime/staff-spnego-entrypoint.sh are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
+          "source": "service runtime implementation"
+        }
+      ],
+      "review_status": "complete",
+      "source_sha256": "79f46913c0665f36b642ef2126faf6ce24cf6d53ea072c4d6be911b58a1186b3",
       "unresolved": []
     },
     "build/keplerops/runtime/support-entrypoint.sh": {
@@ -3117,7 +3123,22 @@
         }
       ],
       "review_status": "complete",
-      "source_sha256": "e6c12a3ea6ecb1a2d4d80df7e3392a2df70cc9c56c91000bda669005a4c01c02",
+      "source_sha256": "7300aa5e1a40f2500468d996cef8a26df17de1f3b3f49cbd63e49f232ccb8101",
+      "unresolved": []
+    },
+    "build/training/runtime/participant-entrypoint.sh": {
+      "citations": [
+        {
+          "class": "normal_interface_or_artifact",
+          "inputs": [
+            "fixed comparison values in runtime source"
+          ],
+          "locator": "fixed values in build/training/runtime/participant-entrypoint.sh are service protocol constants, response schemas, or hardcoded IDs that participants can discover via normal API responses",
+          "source": "service runtime implementation"
+        }
+      ],
+      "review_status": "complete",
+      "source_sha256": "544e259b0b8317bd01da34008905127a5c4414eea1d5fea24c8661852d084748",
       "unresolved": []
     }
   },
