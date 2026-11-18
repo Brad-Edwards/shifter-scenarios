@@ -217,6 +217,30 @@ def _k3s_request(method: str, path: str, body: object = None,
         return resp.status, {}
 
 
+def _is_export_identity(token: str) -> bool:
+    """Return True if the token is the svc-fieldlink-export identity.
+
+    The K14.2 role exchange issues a real K3s service-account token for
+    svc-fieldlink-export. K15 passes that token to the K3s API. K14.3, K16 and
+    K31 only need to confirm the identity, so they validate the token with a K3s
+    TokenReview and check the subject. The legacy SUPPORT_EXPORT_ROLE constant is
+    also accepted for backward compatibility.
+    """
+    if not token:
+        return False
+    if token == SUPPORT_EXPORT_ROLE:
+        return True
+    status, review = _k3s_request(
+        "POST", "/apis/authentication.k8s.io/v1/tokenreviews",
+        body={"apiVersion": "authentication.k8s.io/v1", "kind": "TokenReview",
+              "spec": {"token": token}},
+    )
+    if status != 201 or not review.get("status", {}).get("authenticated"):
+        return False
+    username = review["status"].get("user", {}).get("username", "")
+    return username == f"system:serviceaccount:{NAMESPACE}:svc-fieldlink-export"
+
+
 class CloudApiHandler(KeplerHandler):
     def _developer(self) -> bool:
         return self.basic_or_bearer(USERNAME, TOKEN)
@@ -240,7 +264,7 @@ class CloudApiHandler(KeplerHandler):
         if path == "/api/maintenance":
             auth = self.headers.get("Authorization", "")
             token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
-            if token not in {SUPPORT_EXPORT_ROLE, WORKLOAD_SESSION, MAINTENANCE_WORKER}:
+            if token not in {WORKLOAD_SESSION, MAINTENANCE_WORKER} and not _is_export_identity(token):
                 self.send_json(401, {"error": "authentication_required"})
                 return
             result = {
@@ -263,7 +287,7 @@ class CloudApiHandler(KeplerHandler):
         if path == "/api/policies/fieldlink-maintenance":
             auth = self.headers.get("Authorization", "")
             token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
-            if token not in {SUPPORT_EXPORT_ROLE, MAINTENANCE_WORKER}:
+            if token != MAINTENANCE_WORKER and not _is_export_identity(token):
                 self.send_json(401, {"error": "earned_identity_required"})
                 return
             result = {
@@ -474,7 +498,7 @@ class CloudApiHandler(KeplerHandler):
             self.send_json(401, {"error": "export_token_required"})
             return
         role_token = auth[7:].strip()
-        if role_token != SUPPORT_EXPORT_ROLE:
+        if not _is_export_identity(role_token):
             self.send_json(403, {"error": "export_role_required"})
             return
         try:
@@ -817,11 +841,15 @@ class CloudApiHandler(KeplerHandler):
         if status2 != 201:
             self.send_json(503, {"error": f"export_token_request_failed: {status2}"})
             return
+        # Return the real K3s service-account token for svc-fieldlink-export.
+        # K15 passes it to the K3s API (RBAC enforced); K14.3/K16/K31 confirm the
+        # identity with _is_export_identity.
+        export_sa_token = data2["status"]["token"]
         result = {
             "schema": "fieldkest.role-session/v1",
             "role": f"role/support-export-editor",
             "audience": role,
-            "access_token": SUPPORT_EXPORT_ROLE,  # K16+ Python checks validate against this constant
+            "access_token": export_sa_token,
             "principal": "svc-fieldlink-export",
             "accepted_input_audience": "fieldkest-build-records",
             "expires_in": 3600,
@@ -899,7 +927,7 @@ class CloudApiHandler(KeplerHandler):
             return
         sa_token = auth[7:].strip()
         # Validate export SA token at Python level
-        if sa_token != SUPPORT_EXPORT_ROLE:
+        if not _is_export_identity(sa_token):
             self.send_json(401, {"error": "export_token_required"})
             return
         cronjob_name = schedule_id.lower()
@@ -939,16 +967,16 @@ class CloudApiHandler(KeplerHandler):
 
         The K3s CronJob sched-2841 is the recurring support-export workflow that
         runs after the current operator's shift ends (daily 08:00). The participant
-        reads this using the K14.2 export role token; cloud-api uses its own k3s
-        credentials to read the CronJob (the FieldKest role token is validated
-        against SUPPORT_EXPORT_ROLE, not passed directly to K3s).
+        reads this using the K14.2 export role token; cloud-api confirms the export
+        identity with _is_export_identity and then uses its own k3s credentials to
+        read the CronJob (the export token is not passed directly to K3s here).
         """
         auth = self.headers.get("Authorization", "")
         if not auth.startswith("Bearer "):
             self.send_json(401, {"error": "export_token_required"})
             return
         role_token = auth[7:].strip()
-        if role_token != SUPPORT_EXPORT_ROLE:
+        if not _is_export_identity(role_token):
             self.send_json(403, {"error": "export_role_required"})
             return
         cronjob_name = schedule_id.lower()
@@ -1051,7 +1079,7 @@ class CloudApiHandler(KeplerHandler):
             self.send_json(401, {"error": "export_token_required"})
             return
         role_token = auth[7:].strip()
-        if role_token != SUPPORT_EXPORT_ROLE:
+        if not _is_export_identity(role_token):
             self.send_json(403, {"error": "export_role_required"})
             return
         import uuid as _uuid2
@@ -1189,7 +1217,7 @@ class CloudApiHandler(KeplerHandler):
             return
         sa_token = auth[7:].strip()
         # Validate the export SA token (compare to the issued K14.2 export credential)
-        if sa_token != SUPPORT_EXPORT_ROLE:
+        if not _is_export_identity(sa_token):
             self.send_json(401, {"error": "export_token_invalid"})
             return
         username = f"system:serviceaccount:{NAMESPACE}:svc-fieldlink-export"

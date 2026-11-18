@@ -904,6 +904,9 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/runtime-credentials.json:/run/fieldkest-auth/runtime-credentials.json:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/cloud-api-k3s.json:/etc/cloud-api/k3s.json:ro
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/worker-hmac.key:/run/fieldkest-auth/worker-hmac.key:ro
+      # K15.4: export S3 credentials for the SeaweedFS collection write. The
+      # entrypoint installs this file and sets EXPORT_CREDENTIALS_FILE.
+      - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/native-platform/aws-export:/run/fieldkest-auth/aws-export:ro
       - cloud-api-audit:/var/lib/fieldkest-cloud-api/audit
       - cloud-api-results:/var/lib/fieldkest-cloud-api/results
     tmpfs:
