@@ -24,7 +24,7 @@ TOKEN_HASH = ROOT / "auth" / "corporate-session.sha256"
 HANDOVER = pathlib.Path("/run/arwc-archive-evidence/access-grant.json")
 PLANNER_EVIDENCE = ROOT / "planning" / "planner-session.json"
 ARCHIVE_EVIDENCE = ROOT / "archive" / "archive-source.json"
-PLANNER_SESSION_LIFETIME_SECONDS = 15 * 60
+PLANNER_SESSION_LIFETIME_SECONDS = 4 * 3600
 
 STARTER = {
     "record_id": "START-MIRA-2026",

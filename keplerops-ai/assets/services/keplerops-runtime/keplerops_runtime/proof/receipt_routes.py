@@ -41,8 +41,8 @@ def receipt(flag_id: str, session: Annotated[SessionClaims, Depends(_session)]) 
     with _database() as connection:
         rows = connection.execute(
             "SELECT evidence_id FROM evidence WHERE range_instance=? AND participant=? "
-            "AND reset_generation=? AND expires_at>=?",
-            (session.range_instance, session.participant, generation, now),
+            "AND reset_generation=?",
+            (session.range_instance, session.participant, generation),
         ).fetchall()
         recorded = {row[0] for row in rows}
         if contract.get("outcome") == "ai-capstone" and contract.get("evidence") == "ev-capstone-receipt":

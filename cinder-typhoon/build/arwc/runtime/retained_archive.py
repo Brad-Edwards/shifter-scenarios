@@ -1548,7 +1548,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(503, {"error": "planner Metabase session creation failed"})
             return
 
-        expires = int(time.time()) + 28800
+        expires = int(time.time()) + 72 * 3600  # 72h covers the full event window
         # Write PLANNER_EVIDENCE so the planning_data service can validate the Metabase session.
         # The token_sha256 is the hash of the Metabase session ID, used by planning_data
         # to validate the X-ARWC-Planner-Session header without storing the session ID.
