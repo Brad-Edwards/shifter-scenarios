@@ -48,9 +48,63 @@
             "source": "prior accepted API responses in the known-solution sequence"
           }
         ],
-        "inventory_sha256": "9b60e960d5003af70743f75b95651478fc74f4df29e2eb7953905980615df4c9",
+        "inventory_sha256": "53a90168dedbd2aedb46fcc5a6073f4be36ce305401411a20a57a8be09c88fad",
         "profile": "arwc",
-        "request_count": 1,
+        "request_count": 5,
+        "review_status": "complete",
+        "unresolved": []
+      },
+      "test_w02_asset_association": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w02_asset_association"
+          },
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "exact request field values from prior API responses and protocol schema"
+            ],
+            "locator": "fields in test_w02_asset_association derived from self.evidence (earlier_accepted_response), self.transition (supplied_starting_surface), and protocol field names (normal_interface_or_artifact)",
+            "source": "prior accepted API responses in the known-solution sequence"
+          }
+        ],
+        "inventory_sha256": "fabfa99c0356de7e715230974daee5b7c7d97afe00421aa189468e7aedae069e",
+        "profile": "arwc",
+        "request_count": 8,
+        "review_status": "complete",
+        "unresolved": []
+      },
+      "test_w03_annex_reference": {
+        "citations": [
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "response-derived identifier",
+              "revision",
+              "credential or session"
+            ],
+            "locator": "named evidence fields carried into a later request by this method",
+            "source": "accepted response chain in test_w03_annex_reference"
+          },
+          {
+            "class": "earlier_accepted_response",
+            "inputs": [
+              "exact request field values from prior API responses and protocol schema"
+            ],
+            "locator": "fields in test_w03_annex_reference derived from self.evidence (earlier_accepted_response), self.transition (supplied_starting_surface), and protocol field names (normal_interface_or_artifact)",
+            "source": "prior accepted API responses in the known-solution sequence"
+          }
+        ],
+        "inventory_sha256": "00d421be196d55dd63bd3a327bc55bbc33099e4fc06394fa2aa285ed4f50fa5b",
+        "profile": "arwc",
+        "request_count": 11,
         "review_status": "complete",
         "unresolved": []
       },

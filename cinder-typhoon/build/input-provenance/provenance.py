@@ -24,6 +24,7 @@ SUITES = {
 REQUEST_FUNCTIONS = {
     "request", "get_text", "get_json", "curl", "curl_json",
     "post_json_route", "get_bytes", "cbor_request",
+    "native_request", "native_json", "erp_list",
 }
 PROVENANCE_CLASSES = {
     "supplied_starting_surface",
