@@ -114,14 +114,26 @@ def prepare(operator: Path) -> None:
             'realmRoles': ['default-roles-keplerops', 'developer'], 'groups': ['/Engineering'],
             'credentials': [{'type': 'password', 'value': runtime['developer_token'], 'temporary': False}],
         }],
-        'clients': [{
-            'clientId': 'fieldlink-enrollment', 'name': 'FieldLink certificate enrollment',
-            'enabled': True, 'protocol': 'openid-connect', 'publicClient': False,
-            'secret': values['enrollment_client'], 'standardFlowEnabled': True,
-            'directAccessGrantsEnabled': False, 'serviceAccountsEnabled': False,
-            'redirectUris': ['http://127.0.0.1:10000'],
-            'defaultClientScopes': ['web-origins', 'acr', 'profile', 'roles', 'email'],
-        }],
+        'clients': [
+            {
+                'clientId': 'fieldlink-enrollment', 'name': 'FieldLink certificate enrollment',
+                'enabled': True, 'protocol': 'openid-connect', 'publicClient': False,
+                'secret': values['enrollment_client'], 'standardFlowEnabled': True,
+                'directAccessGrantsEnabled': False, 'serviceAccountsEnabled': False,
+                'redirectUris': ['http://127.0.0.1:10000'],
+                'defaultClientScopes': ['web-origins', 'acr', 'profile', 'roles', 'email'],
+            },
+            {
+                'clientId': 'OIDC-FIELDKEST-SUPPORT',
+                'name': 'FieldKest Support Registration',
+                'enabled': True, 'protocol': 'openid-connect', 'publicClient': False,
+                'standardFlowEnabled': True, 'directAccessGrantsEnabled': False,
+                'serviceAccountsEnabled': False,
+                'redirectUris': ['https://support.keplerops.test/federation/callback'],
+                'registrationAccessTokenLifespan': 0,
+                'defaultClientScopes': ['web-origins', 'acr', 'profile', 'roles', 'email'],
+            },
+        ],
     }
     write(target / 'realm.json', json.dumps(realm), 0o644)
     ca = target / 'ca'

@@ -549,17 +549,20 @@ class AssistantApiHandler(KeplerHandler):
         # The job runs support-review-completion.py as svc-assistant-completion and reads
         # HANDOVER-COMP-2841. Both execution and destination read audits are written.
         if path in ("/api/completion/jobs", "/api/completions/jobs"):
+            # Accept auth via session cookie OR lease token (K24.3: lease proves session)
             cookie = self.headers.get("Cookie", "")
             user = _get_session(cookie)
-            if user is None:
-                self.send_json(403, {"error": "session_required"})
-                return
             try:
                 body = self.read_json(maximum_bytes=4096)
             except Exception:
                 self.send_json(400, {"error": "bad_request"})
                 return
             lease_token = body.get("credential_lease", "")
+            # Try lease-based auth if no session cookie (bearer = lease token)
+            if user is None:
+                auth_hdr = self.headers.get("Authorization", "")
+                if auth_hdr.startswith("Bearer "):
+                    lease_token = auth_hdr[7:]
             lease = _validate_completion_lease(lease_token)
             if not lease:
                 self.send_json(403, {"error": "lease_invalid_or_expired"})
@@ -567,6 +570,9 @@ class AssistantApiHandler(KeplerHandler):
             if lease.get("audience") != "completion-handover":
                 self.send_json(403, {"error": "lease_audience_mismatch"})
                 return
+            # Use lease's user if no session cookie auth
+            if user is None:
+                user = lease.get("user", "svc-assistant-completion")
             handover_id = "HANDOVER-COMP-2841"
             # Execute the completion script as the job runtime identity svc-assistant-completion
             import sys as _sys

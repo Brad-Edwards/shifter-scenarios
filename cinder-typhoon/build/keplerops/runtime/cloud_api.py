@@ -78,11 +78,11 @@ class CloudAPIHandler(KeplerHandler):
             append_audit(AUDIT, "workspace-exchange", {"request_id": self.request_id, "principal": DEV_USER, "status": 200})
             return self.send_json(200, value)
         if path == "/api/build-records/BLD-1842" and token == WORKLOAD_SESSION:
-            value = {"build_id": "BLD-1842", "principal": "svc-fieldlink-workload", "revision": "c37effd7cc86ae4d44f18e95f899b7557d65e0a9", "dossier": "BLD-REL-742", "flag": "FLAG{0b9877c3539fbcfa}"}
+            value = {"build_id": "BLD-1842", "principal": "svc-fieldlink-workload", "revision": "c37effd7cc86ae4d44f18e95f899b7557d65e0a9", "dossier": "BLD-REL-742", "flag": "FLAG{10a79b42b8e652b2}"}
             append_audit(AUDIT, "build-records", {"request_id": self.request_id, "principal": value["principal"], "build_id": value["build_id"], "status": 200})
             return self.send_json(200, value)
         if path == "/api/trust-records/TRUST-FLX-04" and token == WORKLOAD_SESSION:
-            value = {"trust_id": "TRUST-FLX-04", "issuer": "https://workload.keplerops.test", "subject": "svc-fieldlink-workload", "accepted_audiences": ["fieldkest-cloud-policy"], "role": "role/support-export-editor", "flag": "FLAG{c1e0dbfdffe75425}"}
+            value = {"trust_id": "TRUST-FLX-04", "issuer": "https://workload.keplerops.test", "subject": "svc-fieldlink-workload", "accepted_audiences": ["fieldkest-cloud-policy"], "role": "role/support-export-editor", "flag": "FLAG{418e19c3ed0c13ef}"}
             append_audit(AUDIT, "trust-records", {"request_id": self.request_id, "principal": "svc-fieldlink-workload", "status": 200})
             return self.send_json(200, value)
         if path == "/api/roles/support-export-editor" and token == SUPPORT_EXPORT_ROLE:
@@ -247,7 +247,7 @@ class CloudAPIHandler(KeplerHandler):
         if path == "/api/token-exchange/support-export-editor":
             if self.headers.get("Authorization") != f"Bearer {WORKLOAD_FIXTURE_TOKEN}":
                 return self.send_json(403, {"error": "workload_token_required"})
-            value = {"principal": "role/support-export-editor", "access_token": SUPPORT_EXPORT_ROLE, "audience": "fieldkest-cloud-policy", "expires_in": 600, "accepted_input_audience": "fieldkest-build-records", "flag": "FLAG{244cd323590694f6}"}
+            value = {"principal": "role/support-export-editor", "access_token": SUPPORT_EXPORT_ROLE, "audience": "fieldkest-cloud-policy", "expires_in": 600, "accepted_input_audience": "fieldkest-build-records", "flag": "FLAG{f1aee508e418ac7c}"}
             append_audit(AUDIT, "role-exchange", {"request_id": self.request_id, "principal": "svc-fieldlink-workload", "role": value["principal"], "status": 201})
             return self.send_json(201, value)
         self.send_json(404, {"error": "not_found"})

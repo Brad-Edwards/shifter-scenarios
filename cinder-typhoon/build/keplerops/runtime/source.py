@@ -307,7 +307,7 @@ class SourceHandler(KeplerHandler):
                 if set(policy_input) != {"fragment_id", "case"} or not isinstance(policy_input["fragment_id"], str):
                     raise ValueError("invalid_fragment_request")
                 fragment = K11_CONFIG["fragments"].get(policy_input["fragment_id"])
-                if fragment is None or sha256(raw) != fragment["program_sha256"]:
+                if fragment is None or sha256(raw) != K11_CONFIG["program_sha256"]:
                     raise ValueError("fragment_binding_mismatch")
                 case = policy_fields(policy_input["case"])
                 result, evaluated = execute_program(instructions, case)
@@ -316,6 +316,7 @@ class SourceHandler(KeplerHandler):
                     "schema": "fieldkest.policy-migration-result/v1", "receipt_id": receipt,
                     "operation": operation, "fragment_id": policy_input["fragment_id"],
                     "program_sha256": sha256(raw), "accepted": result, "evaluated_fields": evaluated,
+                    "flag": "FLAG{65213f715150f979}",
                 }
             elif operation == "corpus-check":
                 if set(policy_input) != {"corpus_id"} or policy_input["corpus_id"] != K11_CONFIG["corpus_id"]:
