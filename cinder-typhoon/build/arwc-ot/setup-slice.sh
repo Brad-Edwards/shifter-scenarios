@@ -1,8 +1,11 @@
 #!/bin/bash
-# Manual development setup on the dedicated VM. No cloud credentials required.
+# First-boot setup for the OT compatibility slice.
+# Runs on the dedicated development VM (cinder-arwc-ot-compat-363) or any
+# cinder-* range VM that carries the OT slice at /opt/arwc-ot-compat/slice.
 set -euo pipefail
-[[ $(hostname) == cinder-arwc-ot-compat-363 ]] || {
-  echo 'Run on cinder-arwc-ot-compat-363.' >&2; exit 1;
+_host=$(hostname)
+[[ $_host == cinder-arwc-ot-compat-363 || $_host == cinder-* ]] || {
+  echo "Run on a Cinder OT VM (got: $_host)." >&2; exit 1;
 }
 [[ $EUID != 0 ]] || { echo 'Run as the IAP operator, not root.' >&2; exit 1; }
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
@@ -33,15 +36,16 @@ for attempt in {1..60}; do
   [[ $attempt != 60 ]] || exit 1
   sleep 1
 done
-python3 upload_fixture.py > /tmp/arwc-ot-upload.log 2>&1
-for attempt in {1..60}; do
-  if sudo docker exec arwc-ot-compat-plc-1 test -s /workdir/core/src/drivers/plugins/python/opcua/certs/server_cert.pem; then
-    break
-  fi
-  [[ $attempt != 60 ]] || { echo 'Native OPC UA certificate did not become ready.' >&2; exit 1; }
-  sleep 1
-done
-sudo docker cp arwc-ot-compat-plc-1:/workdir/core/src/drivers/plugins/python/opcua/certs/server_cert.pem .operator/server-cert.pem
+# Seed the PLC program, save runtime artefacts (binary, cert, opcua.json) to the
+# plc-state volume, and copy the server cert to .operator/ for Telegraf.
+# seed_plc.py uses a committed plc-program.zip if present (no editor needed);
+# otherwise it falls back to the host build directory from a previous editor run.
+python3 seed_plc.py > /tmp/arwc-ot-seed.log 2>&1
+# On the dedicated development VM the editor is also available; keep upload_fixture.py
+# for iterative development where the program source has changed.
+if [[ $_host == cinder-arwc-ot-compat-363 ]] && [[ -x "$editor/AppRun" ]]; then
+  python3 upload_fixture.py > /tmp/arwc-ot-upload.log 2>&1
+fi
 sudo docker compose run --rm -T tools python /slice/prepare_services.py
 # Hash the bootstrap passwords once with the broker's own maintained utility.
 if ! sudo head -c 12 .operator/mosquitto/passwords | rg -q '^operator:\$7\$'; then

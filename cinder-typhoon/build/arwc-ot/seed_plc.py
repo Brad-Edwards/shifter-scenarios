@@ -23,6 +23,11 @@ import zipfile
 
 ROOT = pathlib.Path(__file__).resolve().parent
 OPERATOR = ROOT / ".operator"
+# Preferred source: a committed program zip in the same directory as this script.
+# Generate it once from a configured slice (see README) and commit it so every
+# bake uses the same pre-validated program without the OpenPLC Editor.
+COMMITTED_ZIP = ROOT / "plc-program.zip"
+# Fallback: the C++ source tree produced by a previous editor run on this host.
 BUILD_SRC = pathlib.Path("/opt/arwc-ot-compat/work/arwc-compat/build/OpenPLC Runtime v4/src")
 _PLC_CONTAINER = "arwc-ot-compat-plc-1"
 _PLC_HOST = "172.29.63.20"
@@ -107,10 +112,27 @@ def main() -> None:
     if not (node == "cinder-arwc-ot-compat-363" or node.startswith("cinder-")):
         raise SystemExit("Run on a Cinder range VM.")
 
-    if not BUILD_SRC.is_dir():
+    # Resolve the program zip from the committed artifact or the host build dir.
+    if COMMITTED_ZIP.is_file():
+        program_zip = COMMITTED_ZIP.read_bytes()
+        print(f"Program zip: {len(program_zip):,} bytes from committed {COMMITTED_ZIP.name}")
+    elif BUILD_SRC.is_dir():
+        buf = io.BytesIO()
+        with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+            for src_file in BUILD_SRC.rglob("*"):
+                if src_file.is_file():
+                    rel = src_file.relative_to(BUILD_SRC)
+                    zf.write(src_file, f"core/generated/{rel}")
+        program_zip = buf.getvalue()
+        print(f"Program zip: {len(program_zip):,} bytes from host build dir")
+    else:
         raise SystemExit(
-            f"Build source directory not found: {BUILD_SRC}\n"
-            "Run the OpenPLC Editor to generate the C++ source first."
+            "No program source found.\n"
+            f"  Committed zip: {COMMITTED_ZIP} — not present\n"
+            f"  Host build dir: {BUILD_SRC} — not present\n"
+            "Either commit plc-program.zip (run seed_plc.py --save-zip on a\n"
+            "configured slice first) or run the OpenPLC Editor to populate the\n"
+            "build directory."
         )
 
     credentials = json.loads((OPERATOR / "credentials.json").read_text())
@@ -144,17 +166,6 @@ def main() -> None:
         token = json.loads(r.read()).get("access_token", "")
     if not token:
         raise RuntimeError("Failed to authenticate with PLC server")
-
-    # Build the program zip from the pre-generated C++ source tree.
-    # The PLC upload endpoint extracts it into core/generated/.
-    buf = io.BytesIO()
-    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
-        for src_file in BUILD_SRC.rglob("*"):
-            if src_file.is_file():
-                rel = src_file.relative_to(BUILD_SRC)
-                zf.write(src_file, f"core/generated/{rel}")
-    program_zip = buf.getvalue()
-    print(f"Program zip: {len(program_zip):,} bytes from {BUILD_SRC}")
 
     # Upload the zip and wait for compilation.
     result = _plc_upload(token, program_zip)
@@ -258,5 +269,28 @@ print('opcua.json updated with range credentials')
     print("Done. Run prepare_services.py next to configure Telegraf.")
 
 
+def save_zip() -> None:
+    """Write plc-program.zip from the host build directory.
+
+    Run once on a configured slice, then commit the zip so subsequent bakes
+    need neither the host build directory nor the OpenPLC Editor.
+
+    Usage: python3 seed_plc.py --save-zip
+    """
+    if not BUILD_SRC.is_dir():
+        raise SystemExit(f"Host build directory not found: {BUILD_SRC}")
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        for src_file in BUILD_SRC.rglob("*"):
+            if src_file.is_file():
+                rel = src_file.relative_to(BUILD_SRC)
+                zf.write(src_file, f"core/generated/{rel}")
+    COMMITTED_ZIP.write_bytes(buf.getvalue())
+    print(f"Wrote {COMMITTED_ZIP} ({len(buf.getvalue()):,} bytes). Commit this file.")
+
+
 if __name__ == "__main__":
-    main()
+    if "--save-zip" in sys.argv:
+        save_zip()
+    else:
+        main()
