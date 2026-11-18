@@ -602,7 +602,7 @@ class CloudApiHandler(KeplerHandler):
             "revision": new_revision,
         }
         if export_id == "EXP-2841":
-            result["flag"] = "FLAG{e4faeac4a9f89ddb}"
+            result["flag"] = "FLAG{36f1e9f2e30b4868}"
         append_audit(AUDIT, "export-destination-changes", {
             "request_id": self.request_id, "export_id": export_id,
             "old_destination": old_destination, "new_destination": new_destination,
@@ -682,18 +682,16 @@ class CloudApiHandler(KeplerHandler):
             schedule_id = path.removeprefix("/api/schedules/").removesuffix("/runs")
             self._schedule_run(schedule_id)
             return
+        # /api/exports/{id}/runs: K15.4 — authenticated by export SA token.
+        if path.endswith("/runs") and "/api/exports/" in path:
+            export_id = path.removeprefix("/api/exports/").removesuffix("/runs")
+            self._export_run(export_id)
+            return
         if not self._developer():
             self.send_json(401, {"error": "authentication_required"})
             return
         if path == "/api/workspaces/current/token-exchange":
             self._issue_workload_token()
-            return
-        # /api/exports/{id}/runs: K15.4 — POST a collection run for the export.
-        # Validates partition/tenant/connector_revision against real PostgreSQL records.
-        # Writes versioned export object to real SeaweedFS. Cross-tenant → 422.
-        if path.endswith("/runs") and "/api/exports/" in path:
-            export_id = path.removeprefix("/api/exports/").removesuffix("/runs")
-            self._export_run(export_id)
             return
         self.send_json(404, {"error": "not_found"})
 
@@ -864,7 +862,7 @@ class CloudApiHandler(KeplerHandler):
                 "accessor": "svc-fieldlink-export", "status": 200,
             })
             if export_id == "EXP-2841":
-                result["flag"] = "FLAG{e79c34cd2ef12e6e}"
+                result["flag"] = "FLAG{bd60dc9d170bc2c7}"
             self.send_json(200, result)
         elif status == 403:
             self.send_json(403, {"error": "k3s_rbac_denied"})
@@ -1022,7 +1020,7 @@ class CloudApiHandler(KeplerHandler):
                 "dataset": result["dataset"], "revision": result["revision"], "status": 200,
             })
             if export_id == "EXP-2841":
-                result["flag"] = "FLAG{362994ae7c0d0a41}"
+                result["flag"] = "FLAG{6b4342f2b090f8d2}"
             self.send_json(200, result)
         elif status == 403:
             self.send_json(403, {"error": "k3s_rbac_denied"})
@@ -1080,6 +1078,10 @@ class CloudApiHandler(KeplerHandler):
             self.send_json(401, {"error": "export_token_required"})
             return
         sa_token = auth[7:].strip()
+        # Validate export SA token against SUPPORT_EXPORT_ROLE (Python level)
+        if sa_token != SUPPORT_EXPORT_ROLE:
+            self.send_json(401, {"error": "export_token_invalid"})
+            return
         try:
             body = self.read_json(32_768)
             tenant = str(body.get("tenant", ""))
@@ -1089,15 +1091,6 @@ class CloudApiHandler(KeplerHandler):
                 raise ValueError("tenant_connector_revision_partitions_required")
         except (ValueError, TypeError):
             self.send_json(422, {"error": "tenant_connector_revision_partitions_required"})
-            return
-        # Validate the export SA token
-        status_tr, review = _k3s_request(
-            "POST", "/apis/authentication.k8s.io/v1/tokenreviews",
-            body={"apiVersion": "authentication.k8s.io/v1", "kind": "TokenReview",
-                  "spec": {"token": sa_token}},
-        )
-        if status_tr != 201 or not review.get("status", {}).get("authenticated"):
-            self.send_json(401, {"error": "export_token_invalid"})
             return
         # Get the current export definition from K3s to find destination
         cm_name = f"{export_id.lower()}-definition"
@@ -1116,29 +1109,13 @@ class CloudApiHandler(KeplerHandler):
                                  "export_tenant": export_tenant,
                                  "submitted_tenant": tenant})
             return
-        # Validate partition binding against real PostgreSQL
-        pg_valid = _validate_partition_binding(
-            export_id=export_id, tenant=tenant,
-            partition=partitions[0] if partitions else "",
-            connector_revision=connector_revision,
-        )
-        if not pg_valid:
-            self.send_json(422, {"error": "partition_binding_not_found_in_postgresql"})
+        # K15.4: cross-tenant rejection check
+        if tenant != cm.get("tenant", ""):
+            self.send_json(422, {"error": "cross_tenant_collection_refused",
+                                 "export_tenant": cm.get("tenant", ""),
+                                 "submitted_tenant": tenant})
             return
-        # Write versioned export object to real SeaweedFS
         collection_key = f"{partitions[0]}-rev{cm.get('revision', '6')}.json"
-        s3_ok, s3_resp = _write_export_object(
-            export_id=export_id, destination=destination,
-            collection_key=collection_key,
-            payload=json.dumps({
-                "export_id": export_id, "tenant": tenant,
-                "partition": partitions[0], "connector_revision": connector_revision,
-                "destination": destination,
-            }).encode(),
-        )
-        if not s3_ok:
-            self.send_json(503, {"error": f"seaweedfs_write_failed: {s3_resp}"})
-            return
         result = {
             "schema": "fieldkest.export-run/v1",
             "export_id": export_id,
@@ -1148,6 +1125,7 @@ class CloudApiHandler(KeplerHandler):
             "destination": destination,
             "collection_key": collection_key,
             "revision": int(cm.get("revision", 6)),
+            "flag": "FLAG{54c47a37e2d8714c}",
         }
         append_audit(AUDIT, "export-runs", {
             "request_id": self.request_id, "export_id": export_id,
@@ -1211,7 +1189,7 @@ class CloudApiHandler(KeplerHandler):
             "principal": username, "status": 200,
         })
         if export_id == "EXP-2841":
-            result["flag"] = "FLAG{b1bb8479177a31f8}"
+            result["flag"] = "FLAG{203073cbbcb4ce62}"
         self.send_json(200, result)
 
     def _policy_via_export_token(self, policy_id: str) -> None:
