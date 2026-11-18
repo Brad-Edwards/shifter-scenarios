@@ -1197,7 +1197,7 @@ class CloudApiHandler(KeplerHandler):
             "principal": username, "status": 200,
         })
         if export_id == "EXP-2841":
-            result["flag"] = "FLAG{19f186b21e73e545}"
+            result["flag"] = "FLAG{b1bb8479177a31f8}"
         self.send_json(200, result)
 
     def _policy_via_export_token(self, policy_id: str) -> None:
@@ -1406,7 +1406,7 @@ class CloudApiHandler(KeplerHandler):
                 **cm_data,
             }
             if build_id == "BLD-1842":
-                result["flag"] = "FLAG{0b9877c3539fbcfa}"
+                result["flag"] = "FLAG{10a79b42b8e652b2}"
             append_audit(AUDIT, "build-records", {
                 "request_id": self.request_id,
                 "build_id": build_id, "principal": cm_data.get("principal"),

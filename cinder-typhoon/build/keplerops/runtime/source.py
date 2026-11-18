@@ -316,7 +316,7 @@ class SourceHandler(KeplerHandler):
                     "schema": "fieldkest.policy-migration-result/v1", "receipt_id": receipt,
                     "operation": operation, "fragment_id": policy_input["fragment_id"],
                     "program_sha256": sha256(raw), "accepted": result, "evaluated_fields": evaluated,
-                    "flag": "FLAG{65213f715150f979}",
+                    "flag": "FLAG{5f3e067c00b70ca5}",
                 }
             elif operation == "corpus-check":
                 if set(policy_input) != {"corpus_id"} or policy_input["corpus_id"] != K11_CONFIG["corpus_id"]:
