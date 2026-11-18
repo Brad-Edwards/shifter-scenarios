@@ -520,9 +520,25 @@ PYEOF
     fi
     docker volume rm cinder-arwc-connector-fieldlink cinder-arwc-connector-customer 2>/dev/null || true
     if [[ -d $reset_slice ]]; then
+      # The OT engineering desktop mounts cinder-arwc-connector-fieldlink as an
+      # external volume, and the native up (corporate-access.sh, desktop-access.sh)
+      # needs that desktop running. Recreate both connector volumes empty, with the
+      # labels the application compose project uses, before recreating the desktop.
+      for volume in connector-fieldlink connector-customer; do
+        docker volume create \
+          --label com.docker.compose.project=cinder-arwc \
+          --label "com.docker.compose.volume=${volume}" \
+          "cinder-arwc-${volume}" >/dev/null
+      done
+      # The desktop mounts the volume's handover subpath, which the connector
+      # entrypoint normally creates. Create it the same way so the mount resolves.
+      docker run --rm --pull never --network none --user 0:0 --entrypoint sh \
+        -v cinder-arwc-connector-fieldlink:/var/lib/fieldlink-connector \
+        cinder-arwc/a-connector:hand-build -c \
+        'chown fieldlink:fieldlink /var/lib/fieldlink-connector && chmod 0750 /var/lib/fieldlink-connector && install -d -o fieldlink -g fieldlink -m 0770 /var/lib/fieldlink-connector/handover'
       docker compose -f "${reset_slice}/compose.yaml" -f "${reset_slice}/site/compose.yaml" \
         -f "${reset_slice}/historian/compose.yaml" -f "${reset_slice}/dispatch/compose.yaml" \
-        -f "${reset_slice}/workstation/compose.yaml" up -d --no-build --pull never engineering 2>/dev/null || true
+        -f "${reset_slice}/workstation/compose.yaml" up -d --no-build --pull never --no-deps engineering
     fi
     # The native down can return non-zero from a benign "network still in use"
     # race while still removing every native container. Treat it as fatal only
