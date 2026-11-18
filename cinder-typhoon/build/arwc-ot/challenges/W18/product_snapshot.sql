@@ -19,5 +19,5 @@ WHERE c.variable IN (
   'LevelM', 'PositionPct', 'PositionBPct', 'FlowM3s', 'FlowBM3s',
   'ProjectRevision'
 )
-  AND (h.source_time IS NULL OR h.source_time >= current_timestamp - interval '7 days')
+  AND (h.source_time IS NULL OR h.source_time >= current_timestamp - interval '2 hours')
 ORDER BY c.variable, h.source_time;
