@@ -16,9 +16,9 @@ services:
       supervisory: {ipv4_address: 172.29.63.20}
       field: {ipv4_address: 172.29.64.20}
     healthcheck:
-      test: ["CMD", "python3", "-c", "import socket; s=socket.socket(); s.settimeout(3); s.connect(('127.0.0.1', 8443)); s.close()"]
+      test: ["CMD", "python3", "-c", "import socket; s=socket.socket(); s.settimeout(3); s.connect(('127.0.0.1', 8443)); s.close(); s=socket.socket(); s.settimeout(3); s.connect(('172.29.63.20', 4840)); s.close()"]
       interval: 10s
-      timeout: 5s
+      timeout: 8s
       retries: 3
       start_period: 30s
   io:
