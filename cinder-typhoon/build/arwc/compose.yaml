@@ -399,6 +399,7 @@ services:
     volumes:
     - arwc-approval-data:/var/lib/arwc-approval
     - arwc-contractors-data:/var/lib/arwc-contractors
+    - contractor-session:/var/lib/arwc-contractors/handover:ro
     - connector-fieldlink:/run/arwc-corporate:ro
     - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
     - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
@@ -461,6 +462,7 @@ services:
     - /run:rw,nosuid,nodev,size=8m,mode=0755
     volumes:
     - arwc-contractors-data:/var/lib/arwc-contractors
+    - contractor-session:/var/lib/arwc-contractors/handover
     - connector-fieldlink:/run/arwc-corporate:ro
     - ${ARWC_OPERATOR_DIR:-./.operator}/handover.key:/run/arwc-handover/authentication.key:ro
     - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/arwc-tls/server.crt:ro
