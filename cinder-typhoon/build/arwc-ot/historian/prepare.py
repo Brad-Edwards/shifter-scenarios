@@ -48,6 +48,12 @@ def collector_config(register):
   source = \'\'\'
 def apply(metric):
     metric.fields["collected_at_ns"] = Metric("collection_clock").time
+    # PostgreSQL JSONB does not accept IEEE 754 NaN; replace with null so the
+    # row is stored without that field rather than dropping the whole batch.
+    for key in list(metric.fields):
+        v = metric.fields[key]
+        if type(v) == float and v != v:  # NaN check
+            metric.fields[key] = None
     if metric.name == "command_signals":
         key = metric.tags["variable"]
         value = metric.fields.get("value")
