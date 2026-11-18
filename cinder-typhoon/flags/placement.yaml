@@ -291,7 +291,7 @@ flags:
     source: value
     value: "FLAG{a56dde25afcee8cb}"
     host: keplerops-host
-    path: "FLAG{a56dde25afcee8cb} in GET /api/handovers/current response field 'flag'. Service: support. Code tree: build/keplerops/runtime/support.py K17.1 handover handler."
+    path: "FLAG{a56dde25afcee8cb} in the private internal note 'K17 Private Handover — ARWC Case Transition' on osTicket case SUP-2841, read via the staff panel support.keplerops.test/scp as maya.ranscombe (Expanded Access). Seeded by build/keplerops/native-workplace/seed-k17-handover.php."
   - flag_id: K17.2
     source: value
     value: "FLAG{d9c146b29c13ab3f}"

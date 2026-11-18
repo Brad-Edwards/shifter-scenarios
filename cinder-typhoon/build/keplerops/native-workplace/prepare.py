@@ -36,6 +36,12 @@ def prepare(operator: Path) -> None:
         'service_url': 'https://support.keplerops.test:8443', 'principal': 'rowan.ito',
         'authorization': 'Bearer ' + runtime['support_rowan_session'],
         'ca_file': '/home/rowan/.local/share/keplerops/ca.crt',
+        'retained_staff_login': {
+            'url': 'https://support.keplerops.test/scp/',
+            'username': 'maya.ranscombe',
+            'password': values['staff_maya'],
+            'note': 'Retained support-desk staff login left in the shared workstation profile.',
+        },
     }), 0o444)
     write(target / 'kerberos.json', json.dumps({
         'master': values['kerberos_master'],
