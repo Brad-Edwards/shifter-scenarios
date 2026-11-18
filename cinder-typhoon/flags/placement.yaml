@@ -661,7 +661,7 @@ flags:
     source: value
     value: "FLAG{441c12b5f7f4310e}"
     host: arwc-host
-    path: "build/arwc/runtime/retained_archive.py:query() — flag in extra field when record_id==AR-CRR-229. Additional fixes: restored issue_certificate() using archive CA; added ARCHIVE_CA/ARCHIVE_CA_KEY constants; archive-entrypoint.sh adds archive-ca.crt to CA bundle for mTLS."
+    path: "build/arwc/runtime/retained_archive.py:query() operation=query — flag in extra field when record_id==AR-CRR-229. Native path (per W04.2 design): GET /api/archived-queries/current returns a step-ca one-time token; the participant signs a CSR at native step-ca (ca.arwc.test:9000) with an injected organizationalUnit and runs the mTLS query. The OU flows unparameterized into the archive.records query, reaching AR-CRR-229."
   - flag_id: W04.3
     source: value
     value: "FLAG{19f186b21e73e545}"
