@@ -29,6 +29,12 @@ case "$phase" in
       touch "$state_root/keplerops.initialized"
     else
       docker compose -f "$root/compose.yaml" up -d
+      # Cross-segment routing is host iptables set by host-routing.py; it is not
+      # persistent across a reboot. restore-pristine applies it on first boot, so
+      # re-apply it on every later boot. Without this, after a reboot k-support
+      # cannot reach the delivery relay (the KeplerOps->ARWC diagnostic delivery
+      # returns 504) and every other cross-network card path is blocked too.
+      python3 "$root/native-platform/host-routing.py"
     fi
     ;;
   arwc)
