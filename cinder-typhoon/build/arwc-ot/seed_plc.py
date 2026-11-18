@@ -269,6 +269,44 @@ print('opcua.json updated with range credentials')
     print("Done. Run prepare_services.py next to configure Telegraf.")
 
 
+_SOURCE_FILES = (
+    "main.st",
+    "configure_fixture.py",
+    "project_config.py",
+    "tags.json",
+)
+
+
+def _source_digest() -> str:
+    """SHA-256 of the OT source files that determine the PLC program."""
+    h = hashlib.sha256()
+    for name in _SOURCE_FILES:
+        path = ROOT / name
+        if path.is_file():
+            h.update(path.read_bytes())
+    return h.hexdigest()
+
+
+def _check_zip_freshness() -> None:
+    """Warn when the committed zip was built from a different source tree."""
+    try:
+        with zipfile.ZipFile(COMMITTED_ZIP) as zf:
+            if "MANIFEST.json" not in zf.namelist():
+                print("Warning: plc-program.zip has no MANIFEST.json — cannot verify freshness.")
+                return
+            manifest = json.loads(zf.read("MANIFEST.json"))
+        committed = manifest.get("source_digest", "")
+        current = _source_digest()
+        if committed and committed != current:
+            print(
+                f"Warning: plc-program.zip was built from source digest {committed[:16]}… "
+                f"but current source digest is {current[:16]}… "
+                "The zip may be stale. Run `python3 seed_plc.py --save-zip` and commit."
+            )
+    except Exception:
+        pass
+
+
 def save_zip() -> None:
     """Write plc-program.zip from the host build directory.
 
@@ -279,18 +317,24 @@ def save_zip() -> None:
     """
     if not BUILD_SRC.is_dir():
         raise SystemExit(f"Host build directory not found: {BUILD_SRC}")
+    digest = _source_digest()
+    manifest = json.dumps({"source_digest": digest, "source_files": list(_SOURCE_FILES)}, indent=2)
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        zf.writestr("MANIFEST.json", manifest)
         for src_file in BUILD_SRC.rglob("*"):
             if src_file.is_file():
                 rel = src_file.relative_to(BUILD_SRC)
                 zf.write(src_file, f"core/generated/{rel}")
     COMMITTED_ZIP.write_bytes(buf.getvalue())
-    print(f"Wrote {COMMITTED_ZIP} ({len(buf.getvalue()):,} bytes). Commit this file.")
+    print(f"Wrote {COMMITTED_ZIP} ({len(buf.getvalue()):,} bytes) — source digest: {digest[:16]}…")
+    print("Commit this file alongside its source.")
 
 
 if __name__ == "__main__":
     if "--save-zip" in sys.argv:
         save_zip()
     else:
+        if COMMITTED_ZIP.is_file():
+            _check_zip_freshness()
         main()
