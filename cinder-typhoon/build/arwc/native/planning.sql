@@ -299,6 +299,15 @@ CREATE TABLE IF NOT EXISTS public.current_collection (
 INSERT INTO public.current_collection VALUES
   ('CUR-COL-CRR-R11', 11, 'AST-CRR-017', 'OG-CRR-02', 'read-only', 'collect-archive/v3')
 ON CONFLICT DO NOTHING;
+-- Fresh initialization runs before manage.sh seed-archive, which sets the role's
+-- login password. Create the role here first, with the same attributes.
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'archive_query') THEN
+        CREATE ROLE archive_query NOINHERIT;
+    END IF;
+END
+$$;
 GRANT USAGE ON SCHEMA public TO archive_query;
 GRANT SELECT ON public.current_collection TO archive_query;
 -- planning_reader intentionally has NO SELECT on current_collection.
