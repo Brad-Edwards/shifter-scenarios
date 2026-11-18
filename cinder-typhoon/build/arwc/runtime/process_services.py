@@ -1888,7 +1888,7 @@ class Handler(BaseHTTPRequestHandler):
             "flow_gain": gain, "good_sample_count": len(good_rows),
         }
         atomic_json(ROOT / "artifacts" / "commissioning-calibration" / "result.json", record)
-        self.accepted("commissioning-calibration", record, 201)
+        self.accepted("commissioning-calibration", record, 201, extra={"flag": "FLAG{a972558765950459}"})
 
     def w33_2_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state.get("w33_calibrated"):
@@ -1958,7 +1958,7 @@ class Handler(BaseHTTPRequestHandler):
             "final_buffer_m3": buffers[-1], "feasible": True,
         }
         atomic_json(ROOT / "artifacts" / "operating-schedule" / "result.json", record)
-        self.accepted("operating-schedule", record, 201)
+        self.accepted("operating-schedule", record, 201, extra={"flag": "FLAG{7fc27069641f0cc2}"})
 
     def w33_3_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state.get("w33_schedule"):
@@ -2039,7 +2039,7 @@ class Handler(BaseHTTPRequestHandler):
             "started_at": request["started_at"], "completed_at": request["completed_at"],
         }
         atomic_json(ROOT / "artifacts" / "commissioning-run" / "result.json", record)
-        self.accepted("commissioning-run", record, 201)
+        self.accepted("commissioning-run", record, 201, extra={"flag": "FLAG{271d8984b1b19a04}"})
 
     def w33_4_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state.get("w33_commissioned"):
@@ -2140,7 +2140,7 @@ class Handler(BaseHTTPRequestHandler):
             "baseline_restored": True,
         }
         atomic_json(ROOT / "artifacts" / "operating-projection" / "result.json", record)
-        self.accepted("operating-projection", record, 201)
+        self.accepted("operating-projection", record, 201, extra={"flag": "FLAG{8d62fb9ea4f1924f}"})
 
     def w30_2_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state.get("request_planned"):

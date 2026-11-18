@@ -1306,7 +1306,7 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_json(409, {"error": "historical identity does not match"})
                 return
             token = secrets.token_urlsafe(40)
-            expires = now + 600
+            expires = now + 28800
             state["current_session"] = {
                 "token_sha256": hashlib.sha256(token.encode()).hexdigest(),
                 "expires_at_epoch": expires,
@@ -1524,7 +1524,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(503, {"error": "planner Metabase session creation failed"})
             return
 
-        expires = int(time.time()) + 15 * 60
+        expires = int(time.time()) + 28800
         # Write PLANNER_EVIDENCE so the planning_data service can validate the Metabase session.
         # The token_sha256 is the hash of the Metabase session ID, used by planning_data
         # to validate the X-ARWC-Planner-Session header without storing the session ID.

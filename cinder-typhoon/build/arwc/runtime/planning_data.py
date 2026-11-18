@@ -601,7 +601,7 @@ class Handler(BaseHTTPRequestHandler):
         if urlsplit(self.path).path == "/internal/reserve-reconciled":
             if (self.headers.get("X-ARWC-Internal") != "engineering-r29" or
                     self.headers.get("X-ARWC-Tenant") != "arwc" or
-                    self.client_address[0] not in {"10.77.60.55", "10.77.60.51"}):
+                    self.client_address[0] not in {"10.77.60.55", "10.77.60.51", "10.77.60.56"}):
                 self.send_json(403, {"error": "engineering service context required"})
                 return
             request = self.body()
