@@ -507,7 +507,7 @@ class SupportHandler(KeplerHandler):
                 "request_id": self.request_id, "principal": self.principal,
                 "job_id": match.group(1), "digest": data["package_sha256"], "status": 200,
             })
-            return self.send_json(200, job)
+            return self.send_json(200, {**job, "flag": "FLAG{f77bdbb3436a8bab}"})
         self.send_json(404, {"error": "not_found"})
 
 
