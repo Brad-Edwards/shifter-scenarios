@@ -6,6 +6,7 @@
   "release": "FLK-7.4.2",
   "owner": "Rowan Ito",
   "updated_at": "2026-09-18T16:40:00Z",
+  "flag": "FLAG{b4827df7ab6888be}",
   "notes": [
     "The connector sample for CRR-OG2 is in the workstation samples directory.",
     "BLD-1842 still references a report fixture removed from the current tree.",
