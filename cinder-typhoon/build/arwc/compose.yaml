@@ -134,6 +134,12 @@ services:
     dns:
     - 10.77.60.10
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "/usr/local/libexec/arwc-handover.py", "health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     read_only: true
     cap_drop:
     - ALL
@@ -266,6 +272,12 @@ services:
     dns:
     - 10.77.60.10
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "/usr/local/libexec/arwc-handover.py", "health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     cap_drop:
     - ALL
     cap_add:
@@ -320,6 +332,12 @@ services:
     dns:
     - 10.77.60.10
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "/usr/local/libexec/arwc-handover.py", "health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     read_only: true
     cap_drop:
     - ALL
@@ -420,6 +438,12 @@ services:
     dns:
     - 10.77.60.10
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "/usr/local/libexec/arwc-handover.py", "health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     read_only: true
     cap_drop:
     - ALL
