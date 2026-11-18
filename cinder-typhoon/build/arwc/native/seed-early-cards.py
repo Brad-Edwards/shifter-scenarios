@@ -169,7 +169,7 @@ def seed() -> None:
     share("Corporate Records/Merewick/PLN-MER-DP3-R6.json", "jules.orswick@veybridge.test", 0)
     # W01.4: Custom Field + Server Script for flag delivery on Task update.
     # Requires server_script_enabled in site config (set before seeding).
-    api("/api/resource/System Settings", {"server_script_enabled": 1}, method="PUT")
+    api("/api/resource/System%20Settings/System%20Settings", {"server_script_enabled": 1}, method="PUT")
     insert("Custom Field", {"dt": "Task", "fieldname": "cinder_receipt"}, {
         "label": "Cinder Receipt", "fieldtype": "Data", "read_only": 1, "in_list_view": 0,
     })
@@ -179,8 +179,8 @@ def seed() -> None:
         'and doc.description and "INSP-CRR-2026-09-18" in doc.description:\n'
         '    doc.cinder_receipt = "FLAG{ce5d42bc2791d4e5}"'
     )
-    if not api('/api/resource/Server Script?filters=[["name","=","W01.4 Task Flag - Supplier Handback"]]&fields=["name"]&limit_page_length=1')["data"]:
-        api("/api/resource/Server Script", {
+    if not api('/api/resource/Server%20Script?filters=[["name","=","W01.4%20Task%20Flag%20-%20Supplier%20Handback"]]&fields=["name"]&limit_page_length=1')["data"]:
+        api("/api/resource/Server%20Script", {
             "doctype": "Server Script",
             "name": "W01.4 Task Flag - Supplier Handback",
             "script_type": "DocType Event",
