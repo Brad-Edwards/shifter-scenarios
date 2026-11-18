@@ -1176,17 +1176,17 @@ flags:
     source: value
     value: "FLAG{509426611d275191}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/planning_data.py:w34_view() line 882 — flag in response dict from POST /api/reporting-submissions/current/result."
   - flag_id: W34.2
     source: value
     value: "FLAG{30f75150343d624e}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/planning_data.py:w34_decision() line 920 — flag in response dict from POST /api/planning-bids."
   - flag_id: W34.3
     source: value
     value: "FLAG{19b29c1602862994}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/planning_data.py:w34_handover() line 979 — flag in response dict from POST /api/planning-bids/current."
   - flag_id: W35.1
     source: value
     value: "FLAG{33a2e1a5cb2fd5f3}"
