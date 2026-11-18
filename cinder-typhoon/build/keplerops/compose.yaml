@@ -909,6 +909,7 @@ services:
       - /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
     extra_hosts:
       - "cloud-api.keplerops.test:10.77.52.11"
+      - "objects.keplerops.test:10.77.56.60"
     healthcheck:
       test: ["CMD", "curl", "-f", "--cacert", "/run/fieldkest-tls/server.crt", "https://localhost:443/health"]
       interval: 10s
@@ -916,6 +917,7 @@ services:
       retries: 5
     networks:
       cloud: {ipv4_address: 10.77.52.70}
+      foundation_data: {ipv4_address: 10.77.56.70}
 
   k-data:
     image: nginx:alpine@sha256:4a73073bd557c65b759505da037898b61f1be6cbcc3c2c3aeac22d2a470c1752
