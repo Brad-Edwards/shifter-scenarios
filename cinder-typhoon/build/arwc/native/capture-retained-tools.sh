@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 umask 077
-[[ $(hostname) == cinder-arwc-dev || $(hostname) == cinder-arwc-golden ]] || exit 1
+[[ $(hostname) == cinder-arwc-dev || $(hostname) == cinder-arwc-golden || -f /etc/cinder-arwc-image ]] || exit 1
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 cache=$PWD/.operator/retained-tools
 if [[ -s $cache/SHA256SUMS ]] && (cd "$cache/files" && sha256sum --check --quiet ../SHA256SUMS); then

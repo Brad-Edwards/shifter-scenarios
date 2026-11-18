@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-[[ $(hostname) == cinder-arwc-dev || $(hostname) == cinder-arwc-golden ]] || exit 1
+[[ $(hostname) == cinder-arwc-dev || $(hostname) == cinder-arwc-golden || -f /etc/cinder-arwc-image ]] || exit 1
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 desktop=cinder-arwc-ot-engineering
 docker cp .operator/ca/certs/root_ca.crt "$desktop:/usr/local/share/ca-certificates/arwc-native-it.crt"

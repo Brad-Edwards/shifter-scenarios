@@ -48,7 +48,7 @@ def revoke_batch_token(label, previous_ids):
 
 
 def main():
-    if socket.gethostname() not in ('cinder-arwc-dev','cinder-arwc-golden') or os.geteuid() != 0:
+    if (socket.gethostname() not in ('cinder-arwc-dev','cinder-arwc-golden') and not os.path.exists('/etc/cinder-arwc-image')) or os.geteuid() != 0:
         raise SystemExit('Use root on cinder-arwc-dev for the explicit data import')
     os.chdir(Path(__file__).resolve().parent)
     os.umask(0o077)
