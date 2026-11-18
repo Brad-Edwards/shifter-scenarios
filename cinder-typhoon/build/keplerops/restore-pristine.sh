@@ -52,6 +52,8 @@ python3 native-workplace/seed-k18-keycloak-client.py --operator-dir "$operator"
 docker compose up -d --wait --wait-timeout 420 fieldlink-assistant
 # Participant-facing services behind the edge (staff, SPNEGO, cloud API).
 # k-assistant-api starts later, after the K21-K23 seeds write its config file.
+# Extract the KDC service keytabs before the SPNEGO services mount them (K20).
+bash native-workplace/extract-kerberos-keytabs.sh
 docker compose up -d --no-deps k-staff k-staff-spnego k-identity-spnego k-cloud-api
 bash native-platform/import-model.sh
 bash native-platform/cache-embedder.sh
