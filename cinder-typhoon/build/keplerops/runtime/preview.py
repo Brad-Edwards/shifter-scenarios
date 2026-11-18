@@ -2,6 +2,7 @@
 
 Wraps Gotenberg for document rendering and provides the K10 preview
 association, document identity, and queue management routes.
+K12: privileged review queue assignment, prepare, and render endpoints.
 """
 from __future__ import annotations
 
@@ -10,6 +11,7 @@ import http.client as _hc
 import json
 import os
 from pathlib import Path
+import threading
 import uuid
 from urllib.parse import urlsplit, parse_qs
 
@@ -24,6 +26,24 @@ CONFIG = json.loads((STATE / "config/preview.json").read_text())
 USERNAME = CONFIG["developer"]["username"]
 TOKEN = credential("developer_token")
 GOTENBERG_PORT = int(os.environ.get("GOTENBERG_PORT", "3000"))
+
+# K12: in-memory review state (loaded from STATE/reviews/*.json at startup)
+_REVIEWS: dict[str, dict] = {}
+_REVIEWS_LOCK = threading.Lock()
+_REVIEW_NONCES: dict[str, str] = {}  # review_id -> action_nonce
+
+def _load_reviews() -> None:
+    reviews_dir = STATE / "reviews"
+    if not reviews_dir.is_dir():
+        return
+    for path in reviews_dir.glob("*.json"):
+        try:
+            d = json.loads(path.read_text())
+            _REVIEWS[d["review_id"]] = dict(d)
+        except Exception:
+            pass
+
+_load_reviews()
 
 
 def _render_html_via_gotenberg(html_content: bytes) -> bytes:
@@ -124,8 +144,56 @@ class PreviewHandler(KeplerHandler):
             if source_id == "SUP-K-2841":
                 result["flag"] = "FLAG{e79c34cd2ef12e6e}"
             self.send_json(200, result)
-        else:
-            self.send_json(404, {"error": "not_found"})
+        # K12.1: read a stored render result as a review record
+        if path.startswith("/api/preview/reviews/") and not path.endswith("/assignment"):
+            result_id = path.removeprefix("/api/preview/reviews/")
+            if not self._developer():
+                self.send_json(401, {"error": "authentication_required"})
+                return
+            review_path = RESULTS / f"{result_id}.json"
+            if not review_path.is_file():
+                self.send_json(404, {"error": "review_not_found"})
+                return
+            review = json.loads(review_path.read_text())
+            if review.get("collision_detected"):
+                review["flag"] = "FLAG{3073e7ddb80f48ee}"
+            self.send_json(200, review)
+            return
+        # K12.2: get review assignment
+        if path.startswith("/api/preview/reviews/") and path.endswith("/assignment"):
+            result_id = path.removeprefix("/api/preview/reviews/").removesuffix("/assignment")
+            if not self._developer():
+                self.send_json(401, {"error": "authentication_required"})
+                return
+            review_path = RESULTS / f"{result_id}.json"
+            if not review_path.is_file():
+                self.send_json(404, {"error": "review_not_found"})
+                return
+            review = json.loads(review_path.read_text())
+            if review.get("collision_detected"):
+                self.send_json(200, {
+                    "schema": "fieldkest.preview-assignment/v1",
+                    "result_id": result_id,
+                    "owner": review.get("owner", ""),
+                    "protected_case_id": review.get("protected_case_id", ""),
+                    "protected_source_id": review.get("protected_source_id", ""),
+                    "protected_version": review.get("protected_version", ""),
+                    "flag": "FLAG{9d14e5b959bb4bb5}",
+                })
+                return
+            self.send_json(422, {"error": "collision_not_detected"})
+            return
+        # K12.4: get attachment (viewer's document)
+        if path.startswith("/attachment/"):
+            source_id = path.removeprefix("/attachment/")
+            assoc = _load_association(source_id)
+            if assoc is None:
+                self.send_json(404, {"error": "attachment_not_found"})
+                return
+            self.send_json(200, {"source_id": source_id, "document_id": assoc["document_id"],
+                                  "source_version": assoc["source_version"]})
+            return
+        self.send_json(404, {"error": "not_found"})
 
     def do_POST(self) -> None:
         path = urlsplit(self.path).path
@@ -193,6 +261,65 @@ class PreviewHandler(KeplerHandler):
             (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
             result["flag"] = "FLAG{e4c9623c3e3c146c}"
             self.send_json(200, result)
+        elif path.startswith("/api/preview/reviews/") and path.endswith("/prepare"):
+            # K12.3: prepare custom preview content in the review
+            result_id = path.removeprefix("/api/preview/reviews/").removesuffix("/prepare")
+            if not self._developer():
+                self.send_json(401, {"error": "authentication_required"})
+                return
+            try:
+                body = self.read_json(32_768)
+                content_b64 = body.get("content_base64", "")
+                if not content_b64:
+                    raise ValueError("content_required")
+            except (ValueError, TypeError):
+                self.send_json(422, {"error": "content_required"})
+                return
+            review_path = RESULTS / f"{result_id}.json"
+            if not review_path.is_file():
+                self.send_json(404, {"error": "review_not_found"})
+                return
+            review = json.loads(review_path.read_text())
+            if not review.get("collision_detected"):
+                self.send_json(422, {"error": "collision_not_detected"})
+                return
+            prepare_path = RESULTS / f"prepare-{result_id}.json"
+            prepare_id = "PREP-" + uuid.uuid4().hex[:10].upper()
+            prepare = {
+                "schema": "fieldkest.preview-prepare/v1",
+                "prepare_id": prepare_id,
+                "result_id": result_id,
+                "content_sha256": hashlib.sha256(content_b64.encode()).hexdigest(),
+                "flag": "FLAG{7b89fd70e897ed74}",
+            }
+            prepare_path.write_text(json.dumps(prepare, sort_keys=True, separators=(",", ":")) + "\n")
+            append_audit(AUDIT, "preview-prepare", {"request_id": self.request_id, "principal": USERNAME,
+                         "result_id": result_id, "prepare_id": prepare_id, "status": 201})
+            self.send_json(201, prepare)
+            return
+        elif path.startswith("/api/preview/release/"):
+            # K12.4: complete the preview release chain
+            result_id = path.removeprefix("/api/preview/release/")
+            if not self._developer():
+                self.send_json(401, {"error": "authentication_required"})
+                return
+            prepare_path = RESULTS / f"prepare-{result_id}.json"
+            if not prepare_path.is_file():
+                self.send_json(409, {"error": "prepare_required"})
+                return
+            prepare = json.loads(prepare_path.read_text())
+            release_id = "REL-" + uuid.uuid4().hex[:10].upper()
+            result = {
+                "schema": "fieldkest.preview-release/v1",
+                "release_id": release_id,
+                "result_id": result_id,
+                "prepare_id": prepare.get("prepare_id"),
+                "flag": "FLAG{89f65c4ede64fbcc}",
+            }
+            append_audit(AUDIT, "preview-release", {"request_id": self.request_id, "principal": USERNAME,
+                         "result_id": result_id, "release_id": release_id, "status": 201})
+            self.send_json(201, result)
+            return
         elif path == "/api/preview/documents":
             # K10.2: derive a document identity from the supplied source URL.
             # Canonicalization (lowercase + strip trailing slash) collapses certain
@@ -230,6 +357,137 @@ class PreviewHandler(KeplerHandler):
             self.send_json(200, result)
         else:
             self.send_json(404, {"error": "not_found"})
+
+    def do_PATCH(self) -> None:
+        path = urlsplit(self.path).path
+        if not self._developer():
+            self.send_json(401, {"error": "authentication_required"})
+            return
+        # K12.1: PATCH /api/preview/reviews/{review_id}/assignment
+        if path.endswith("/assignment") and "/api/preview/reviews/" in path:
+            review_id = path.removeprefix("/api/preview/reviews/").removesuffix("/assignment")
+            with _REVIEWS_LOCK:
+                review = _REVIEWS.get(review_id)
+            if review is None:
+                self.send_json(404, {"error": "review_not_found"})
+                return
+            try:
+                body = self.read_json(maximum_bytes=4096)
+            except Exception:
+                self.send_json(400, {"error": "bad_request"})
+                return
+            queue = body.get("queue", "")
+            source_id = body.get("source_id", "")
+            # Vulnerability: no ownership check on queue reassignment
+            action_nonce = "PRV-NONCE-" + uuid.uuid4().hex[:12].upper()
+            with _REVIEWS_LOCK:
+                _REVIEWS[review_id] = {**review, "queue": queue, "source_id": source_id, "state": "loaded"}
+                _REVIEW_NONCES[review_id] = action_nonce
+            append_audit(AUDIT, "review-assignments", {
+                "request_id": self.request_id, "review_id": review_id,
+                "queue": queue, "source_id": source_id, "principal": USERNAME,
+            })
+            self.send_json(200, {
+                "review_id": review_id, "state": "loaded",
+                "queue": queue, "source_id": source_id,
+                "action_nonce": action_nonce,
+                "flag": "FLAG{3073e7ddb80f48ee}",
+            })
+            return
+        self.send_json(404, {"error": "not_found"})
+
+    def do_GET(self) -> None:
+        path = urlsplit(self.path).path
+        if path == "/health":
+            self.send_json(200, {"status": "up"})
+            return
+        if self.send_client_document():
+            return
+        if not self._developer():
+            self.send_json(401, {"error": "authentication_required"})
+            return
+        # K10.1: association lookup
+        if path == "/api/preview/association":
+            query = parse_qs(urlsplit(self.path).query)
+            source_id = query.get("source", [None])[0]
+            if source_id is None:
+                self.send_json(422, {"error": "source_required"})
+                return
+            assoc_dir = STATE / "associations"
+            result_id = "ASSOC-" + uuid.uuid4().hex[:10].upper()
+            # Build the document_id from the source (lowercase + strip trailing slash)
+            document_id = _derive_document_id(source_id)
+            assoc = {
+                "schema": "fieldkest.preview-association/v1",
+                "result_id": result_id,
+                "source_id": source_id,
+                "document_id": document_id,
+                "case_id": CONFIG.get("case_id", "CAS-MAYA-2841"),
+                "owner": "maya.ranscombe",
+                "viewer_request": "PRV-771",
+                "derived_document_id": document_id,
+                "source_version": "cb72f4a8",
+            }
+            if source_id == "SUP-K-2841":
+                assoc["flag"] = "FLAG{e79c34cd2ef12e6e}"
+            RESULTS.mkdir(parents=True, exist_ok=True)
+            (RESULTS / f"{result_id}.json").write_text(json.dumps(assoc, sort_keys=True, separators=(",", ":")) + "\n")
+            append_audit(AUDIT, "preview-associations", {
+                "request_id": self.request_id, "source_id": source_id,
+                "document_id": document_id, "result_id": result_id, "status": 200,
+            })
+            self.send_json(200, assoc)
+            return
+        # K12 review-render: GET /review/{review_id} with bearer="reviewer-worker"
+        if path.startswith("/review/"):
+            review_id = path.removeprefix("/review/")
+            auth = self.headers.get("Authorization", "")
+            if auth != "Bearer reviewer-worker":
+                self.send_json(403, {"error": "reviewer_worker_required"})
+                return
+            with _REVIEWS_LOCK:
+                review = _REVIEWS.get(review_id)
+            if review is None:
+                self.send_json(404, {"error": "review_not_found"})
+                return
+            if review.get("state") != "prepared":
+                self.send_json(409, {"error": "review_not_prepared"})
+                return
+            source_id = review.get("source_id", "")
+            # Render via Gotenberg (use simple HTML)
+            html = f"<html><body><h1>Review {review_id}</h1><p>Source: {source_id}</p></body></html>".encode()
+            try:
+                pdf_bytes = _render_html_via_gotenberg(html)
+                render_digest = hashlib.sha256(pdf_bytes).hexdigest()
+            except Exception:
+                render_digest = hashlib.sha256(html).hexdigest()
+                pdf_bytes = html
+            support_receipt = "PRV-RCPT-" + uuid.uuid4().hex[:8].upper()
+            result_id = "RREND-" + uuid.uuid4().hex[:8].upper()
+            result = {
+                "review_id": review_id,
+                "worker_scope": "/review/",
+                "renderer_identity": "svc-preview-reviewer",
+                "execution_backend": "isolated-container",
+                "render_digest": render_digest,
+                "source_id": source_id,
+                "compatibility_summary": "fieldlink.connector/v3 compatible",
+                "support_receipt": support_receipt,
+                "original_owner": review.get("owner", "maya.ranscombe"),
+            }
+            RESULTS.mkdir(parents=True, exist_ok=True)
+            (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+            append_audit(AUDIT, "review-renders", {
+                "request_id": self.request_id, "review_id": review_id,
+                "renderer_identity": "svc-preview-reviewer",
+                "original_owner": result["original_owner"],
+                "source_id": source_id, "render_digest": render_digest,
+                "support_receipt": support_receipt, "status": 200,
+            })
+            result["flag"] = "FLAG{7b89fd70e897ed74}"
+            self.send_json(200, result)
+            return
+        self.send_json(404, {"error": "not_found"})
 
 
 def main() -> None:

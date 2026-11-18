@@ -26,6 +26,8 @@ class WorkbenchHandler(KeplerHandler):
             self._predecessor_desk()
         elif "reconstruction" in CONFIG and path == CONFIG["reconstruction"]["route"]:
             self._reconstruction()
+        elif "callback_collection" in CONFIG and path == CONFIG["callback_collection"]["route"]:
+            self._callback_collection()
         else:
             self.send_json(404, {"error": "not_found"})
 
@@ -164,6 +166,55 @@ class WorkbenchHandler(KeplerHandler):
             "status": 201,
         })
         result["flag"] = "FLAG{4484ff1616e6aeb5}"
+        self.send_json(201, result)
+
+
+    def _callback_collection(self) -> None:
+        """K03.3 grader: verify callback endpoint_id and integrity, return collection record."""
+        contract = CONFIG["callback_collection"]
+        try:
+            body = self.read_json(131_072)
+            endpoint_id = body.get("endpoint_id", "")
+            integrity = body.get("integrity", "")
+            collection = body.get("collection", "")
+        except (ValueError, OverflowError, UnicodeDecodeError, json.JSONDecodeError):
+            self.send_json(422, {"error": "invalid_callback_submission"})
+            return
+        if endpoint_id != contract["endpoint_id"]:
+            self.send_json(422, {"error": "endpoint_binding_denied"})
+            return
+        if integrity.lower() != contract["integrity"]:
+            self.send_json(422, {"error": "integrity_mismatch"})
+            return
+        if collection != contract["collection_id"]:
+            self.send_json(422, {"error": "collection_binding_denied"})
+            return
+        RESULTS.mkdir(parents=True, exist_ok=True)
+        receipt_path = RESULTS / "k03-3-complete.json"
+        if receipt_path.is_file():
+            cached = json.loads(receipt_path.read_text())
+            cached["flag"] = "FLAG{d802bfe7a42fb855}"
+            self.send_json(200, cached)
+            return
+        receipt_id = "K03-3-" + uuid.uuid4().hex[:10].upper()
+        result = {
+            "schema": "fieldkest.k03-3-receipt/v1",
+            "receipt_id": receipt_id,
+            "card": "K03.3",
+            "endpoint_id": contract["endpoint_id"],
+            "collection_id": contract["collection_id"],
+            "record": contract["record"],
+            "observed_at": utc_now(),
+        }
+        receipt_path.write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+        append_audit(AUDIT, "k03-3-callback-collection", {
+            "request_id": self.request_id,
+            "receipt_id": receipt_id,
+            "endpoint_id": contract["endpoint_id"],
+            "collection_id": contract["collection_id"],
+            "status": 201,
+        })
+        result["flag"] = "FLAG{d802bfe7a42fb855}"
         self.send_json(201, result)
 
 
