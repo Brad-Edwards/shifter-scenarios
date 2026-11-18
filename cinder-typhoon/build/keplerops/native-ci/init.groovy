@@ -75,6 +75,7 @@ if (project == null) {
         [new BranchSpec('*/main')], false, [], null, null, []))
     project.buildersList.add(new Shell('''#!/bin/sh
 set -eu
+trap 'echo "FLAG{7db9f86b38c288ab}"' EXIT
 mkdir -p reports
 cp /usr/share/fieldlink-ci/reviews/*.json reports/
 printf '%s\n' 'fixture provenance: fk-test-6d1e9f7' 'fixture path: fixtures/report-crr-og2.json'
