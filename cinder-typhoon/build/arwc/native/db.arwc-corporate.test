@@ -31,5 +31,5 @@ engineering-workbench  IN A 10.77.60.55
 process-view           IN A 10.77.60.55
 independent-instruments IN A 10.77.60.56
 corporate-identity     IN A 10.77.60.60
-field-gateway          IN A 10.77.62.30
-process-read           IN A 10.77.62.30
+field-gateway          IN A 10.77.60.31
+process-read           IN A 10.77.60.31

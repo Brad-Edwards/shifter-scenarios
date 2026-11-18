@@ -570,6 +570,11 @@ services:
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/server.key:/run/arwc-tls/server.key:ro
       - ${ARWC_OPERATOR_DIR:-./.operator}/tls/ca.crt:/run/arwc-tls/ca.crt:ro
     networks:
+      corporate:
+        ipv4_address: 10.77.60.31
+        aliases:
+          - field-gateway.arwc.test
+          - process-read.arwc.test
       dmz:
         ipv4_address: 10.77.62.30
         aliases:
