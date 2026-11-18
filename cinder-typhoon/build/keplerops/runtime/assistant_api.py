@@ -156,8 +156,8 @@ class AssistantApiHandler(KeplerHandler):
         # K24 completion-example endpoint — session-required, returns COMP-JOB-17 example + note.
         # The example exposes context_root, credential reference, handover, and allowed script
         # needed for the K24.2 path traversal exploit.
-        if path.startswith("/api/completions/examples/"):
-            comp_id = path.removeprefix("/api/completions/examples/")
+        if path.startswith("/api/completion/examples/") or path.startswith("/api/completions/examples/"):
+            comp_id = path.removeprefix("/api/completion/examples/").removeprefix("/api/completions/examples/")
             cookie = self.headers.get("Cookie", "")
             user = _get_session(cookie)
             if user is None:

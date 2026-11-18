@@ -500,6 +500,7 @@ class PreviewHandler(KeplerHandler):
             })
             RESULTS.mkdir(parents=True, exist_ok=True)
             (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+            result["flag"] = "FLAG{e79c34cd2ef12e6e}"  # K10.1
             self.send_json(200, result)
         else:
             self.send_json(404, {"error": "not_found"})
@@ -716,6 +717,8 @@ class PreviewHandler(KeplerHandler):
             }
             RESULTS.mkdir(parents=True, exist_ok=True)
             (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+            if ssrf_confirmed:
+                result["flag"] = "FLAG{3944ecd601ef90a2}"  # K10.3
             self.send_json(200, result)
         elif path == "/api/preview/documents":
             try:
@@ -744,6 +747,7 @@ class PreviewHandler(KeplerHandler):
             })
             RESULTS.mkdir(parents=True, exist_ok=True)
             (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+            result["flag"] = "FLAG{e4c9623c3e3c146c}"  # K10.2
             self.send_json(200, result)
         else:
             self.send_json(404, {"error": "not_found"})
