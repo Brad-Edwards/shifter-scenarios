@@ -223,12 +223,22 @@ def main() -> None:
 
     # Update opcua.json with range credentials and save to volume.
     _update_script = r"""
-import hashlib, os, base64, json, pathlib
+import json, pathlib, sys
 
-def hash_pw(p):
-    s = os.urandom(16)
-    h = hashlib.pbkdf2_hmac('sha256', p.encode(), s, 600000)
-    return 'pbkdf2:sha256:600000$' + base64.b64encode(s).decode() + '$' + base64.b64encode(h).decode()
+# Use bcrypt when available (the PLC venv ships it on Linux) so the hash
+# format matches what user_manager.hash_password() produces. Fall back to
+# PBKDF2 only if bcrypt cannot be imported.
+try:
+    sys.path.insert(0, '/workdir/venvs/opcua/lib/python3.11/site-packages')
+    import bcrypt as _bcrypt
+    def hash_pw(p):
+        return _bcrypt.hashpw(p.encode(), _bcrypt.gensalt()).decode()
+except ImportError:
+    import hashlib, os, base64
+    def hash_pw(p):
+        s = os.urandom(16)
+        h = hashlib.pbkdf2_hmac('sha256', p.encode(), s, 600000)
+        return 'pbkdf2:sha256:600000$' + base64.b64encode(s).decode() + '$' + base64.b64encode(h).decode()
 
 creds = json.loads(pathlib.Path('/var/run/runtime/credentials.json').read_text())
 roles = {'operator': 'opcua', 'dispatcher': 'ua_dispatcher', 'reader': 'ua_reader'}
