@@ -389,7 +389,7 @@ class StaffHandler(KeplerHandler):
                 "resolved": resolved, "target": target_url, "method": method,
                 "peer": self.client_address[0],
             })
-            if method == "GET" and status == 200 and "registration_id" in data:
+            if method == "GET" and status == 200 and ("registration_id" in data or "client_id" in data):
                 data["flag"] = "FLAG{8978e5b290f6d320}"
             elif method == "PATCH" and status == 200 and "provider_configuration" in data:
                 data["flag"] = "FLAG{f444b58a456fcd50}"
