@@ -472,6 +472,14 @@ PYEOF
     }
     # Stop and remove the application stack (cinder-arwc project) before resetting the native stack.
     docker compose --project-name cinder-arwc --env-file images.env -f ../compose.yaml down --volumes 2>/dev/null || true
+    # connector-fieldlink is read-only-mounted by several application services,
+    # so a partial down can leave it behind with a stale corporate-session token.
+    # A stale token blocks a fresh handover (earn_corporate is a no-op when the
+    # token exists) and, if only some handover hashes survive, trips the
+    # anti-replay guard on the services that kept the old token. Remove the
+    # connector handover volumes explicitly so a fresh delivery re-issues one
+    # consistent handover that every service accepts.
+    docker volume rm cinder-arwc-connector-fieldlink cinder-arwc-connector-customer 2>/dev/null || true
     # The native down can return non-zero from a benign "network still in use"
     # race while still removing every native container. Treat it as fatal only
     # when native containers survive; otherwise a benign non-zero must not abort
