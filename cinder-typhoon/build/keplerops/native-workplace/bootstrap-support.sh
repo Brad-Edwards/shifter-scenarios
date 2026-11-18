@@ -7,3 +7,5 @@ docker compose -f compose.yaml up -d --no-deps fieldlink-support
 docker compose -f compose.yaml exec -T fieldlink-support php /opt/fieldlink/install-support.php
 docker compose -f compose.yaml exec -T fieldlink-support php /opt/fieldlink/seed-support-users.php
 docker compose -f compose.yaml exec -T fieldlink-support php /opt/fieldlink/seed-support-case.php
+docker compose -f compose.yaml exec -T fieldlink-support php /opt/fieldlink/seed-k17-handover.php
+docker compose -f compose.yaml exec -T fieldlink-support php /opt/fieldlink/seed-k18-note.php
