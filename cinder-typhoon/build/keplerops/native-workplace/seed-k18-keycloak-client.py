@@ -12,7 +12,6 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import ssl
 from pathlib import Path
 from urllib.request import Request, urlopen
 
@@ -23,14 +22,20 @@ def main() -> None:
     args = parser.parse_args()
 
     creds_path = args.operator_dir / "range-seed/runtime-credentials.json"
-    ca_cert = args.operator_dir / "tls/ca.crt"
 
-    # Load bootstrap values for Keycloak admin credentials (operator material).
-    bootstrap = json.loads((args.operator_dir / "native-platform/bootstrap.json").read_text())
-    admin_pass = bootstrap["assistant_admin"]  # platform-admin password
+    # Load Keycloak admin credentials from keycloak.env (operator material).
+    keycloak_env = {}
+    for line in (args.operator_dir / "native-workplace/keycloak.env").read_text().splitlines():
+        line = line.strip()
+        if "=" in line and not line.startswith("#"):
+            k, _, v = line.partition("=")
+            keycloak_env[k.strip()] = v.strip()
+    admin_pass = keycloak_env["KC_BOOTSTRAP_ADMIN_PASSWORD"]
 
-    ctx = ssl.create_default_context(cafile=str(ca_cert))
-    base = "https://identity.keplerops.test"
+    # Reach Keycloak directly via its container IP/port on the Docker bridge.
+    # identity.keplerops.test does not resolve on the host; other host-side seeds
+    # use container IPs the same way (e.g. seed-assistant.py → 10.77.56.42:3001).
+    base = "http://10.77.56.20:8080"
 
     # Get admin token.
     token_req = Request(
@@ -38,7 +43,7 @@ def main() -> None:
         data=f"client_id=admin-cli&username=platform-admin&password={admin_pass}&grant_type=password".encode(),
         headers={"Content-Type": "application/x-www-form-urlencoded"},
     )
-    with urlopen(token_req, context=ctx, timeout=15) as r:
+    with urlopen(token_req, timeout=15) as r:
         admin_token = json.load(r)["access_token"]
 
     # Create or find the OIDC-FIELDKEST-SUPPORT client.
@@ -46,7 +51,7 @@ def main() -> None:
         f"{base}/admin/realms/keplerops/clients?clientId=OIDC-FIELDKEST-SUPPORT",
         headers={"Authorization": f"Bearer {admin_token}"},
     )
-    with urlopen(find_req, context=ctx, timeout=10) as r:
+    with urlopen(find_req, timeout=10) as r:
         existing = json.load(r)
 
     if not existing:
@@ -67,10 +72,10 @@ def main() -> None:
             data=create_body,
             headers={"Authorization": f"Bearer {admin_token}", "Content-Type": "application/json"},
         )
-        with urlopen(create_req, context=ctx, timeout=10) as r:
+        with urlopen(create_req, timeout=10) as r:
             r.read()
 
-        with urlopen(find_req, context=ctx, timeout=10) as r:
+        with urlopen(find_req, timeout=10) as r:
             existing = json.load(r)
 
     client_id = existing[0]["id"]
@@ -82,7 +87,7 @@ def main() -> None:
         method="POST",
         headers={"Authorization": f"Bearer {admin_token}"},
     )
-    with urlopen(rat_req, context=ctx, timeout=10) as r:
+    with urlopen(rat_req, timeout=10) as r:
         rat = json.load(r)["registrationAccessToken"]
 
     # Write to runtime-credentials.json (operator material updated during setup).
