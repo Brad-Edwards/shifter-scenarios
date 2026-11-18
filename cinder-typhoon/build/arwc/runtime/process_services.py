@@ -1877,7 +1877,6 @@ class Handler(BaseHTTPRequestHandler):
                     cur.execute(
                         "SELECT source_time FROM public.command_history "
                         "WHERE asset='AST-CRR-017' AND channel='dispatcher' "
-                        "AND source_time >= current_timestamp - interval '24 hours' "
                         "ORDER BY source_time DESC LIMIT 1"
                     )
                     cmd_row = cur.fetchone()
