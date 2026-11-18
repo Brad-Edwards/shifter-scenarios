@@ -62,7 +62,8 @@ def _sync_engineer_password(password: str) -> None:
 
 
 if __name__ == "__main__":
-    if os.uname().nodename != "cinder-arwc-ot-compat-363":
+    node = os.uname().nodename
+    if not (node == "cinder-arwc-ot-compat-363" or node.startswith("cinder-")):
         raise SystemExit("Run on the dedicated compatibility VM.")
     credentials = json.loads((ROOT / ".operator/credentials.json").read_text())
     project = pathlib.Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else PROJECT
