@@ -92,17 +92,21 @@ def _sync_engineer_password(password: str) -> None:
                 )
     else:
         # Running on the host VM; exec into the container where the volume is mounted.
-        subprocess.run(
-            ["docker", "exec", _PLC_CONTAINER,
-             "/workdir/venvs/runtime/bin/python3", "-c", _UPSERT_SCRIPT, password],
-            check=True, stdout=subprocess.DEVNULL,
-        )
+        # Try without sudo first; fall back to sudo if the socket is not accessible.
+        cmd = ["docker", "exec", _PLC_CONTAINER,
+               "/workdir/venvs/runtime/bin/python3", "-c", _UPSERT_SCRIPT, password]
+        result = subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+        if result.returncode != 0 and b"permission denied" in result.stderr.lower():
+            subprocess.run(["sudo"] + cmd, check=True, stdout=subprocess.DEVNULL)
     # Restart the PLC container so Flask reloads the user from the updated DB.
     # The wait loop below waits for the web interface to become available again.
-    subprocess.run(
+    r = subprocess.run(
         ["docker", "restart", _PLC_CONTAINER],
-        check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL, stderr=subprocess.PIPE,
     )
+    if r.returncode != 0 and b"permission denied" in r.stderr.lower():
+        subprocess.run(["sudo", "docker", "restart", _PLC_CONTAINER],
+                       check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
 if __name__ == "__main__":
