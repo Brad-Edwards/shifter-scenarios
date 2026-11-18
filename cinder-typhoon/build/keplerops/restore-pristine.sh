@@ -50,14 +50,18 @@ bash native-workplace/bootstrap-support.sh
 # access token as staff_preview_service so the staff note-preview SSRF can call the DCR.
 python3 native-workplace/seed-k18-keycloak-client.py --operator-dir "$operator"
 docker compose up -d --wait --wait-timeout 420 fieldlink-assistant
-# Participant-facing services behind the edge (staff, SPNEGO, cloud API, assistant API).
-docker compose up -d --no-deps k-staff k-staff-spnego k-identity-spnego k-cloud-api k-assistant-api
+# Participant-facing services behind the edge (staff, SPNEGO, cloud API).
+# k-assistant-api starts later, after the K21-K23 seeds write its config file.
+docker compose up -d --no-deps k-staff k-staff-spnego k-identity-spnego k-cloud-api
 bash native-platform/import-model.sh
 bash native-platform/cache-embedder.sh
 python3 native-platform/seed-assistant.py --operator-dir "$operator"
 python3 native-platform/seed-k21-assistant.py --operator-dir "$operator"
 python3 native-platform/seed-k22-assistant.py --operator-dir "$operator"
 python3 native-platform/seed-k23-assistant.py --operator-dir "$operator"
+# Start k-assistant-api only now that the K21-K23 seeds have written its config
+# file, so Docker bind-mounts the config as a file, not an auto-created directory.
+docker compose up -d --no-deps k-assistant-api
 python3 native-ci/seed-k06-ci.py --operator-dir "$operator"
 DATABASE_URL="postgres://fieldlink_admin:$(cat "$operator/native-platform/pg_admin_password")@fieldlink-postgres:5432/fieldlink_data" \
   python3 native-platform/seed-k18-customer.py

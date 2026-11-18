@@ -73,6 +73,15 @@ if [[ $mode != --boot-only ]]; then
       test -s /opt/cinder-typhoon/build/keplerops/.operator/integration/arwc-ca.crt
       grep -Eq '^ARWC_CARRIER_ADDRESS=[0-9]+(\.[0-9]+){3}$' \
         /opt/cinder-typhoon/build/keplerops/.env
+      # Assistant (K21-K23): the retrieval model is loaded, the assistant seeds
+      # applied, and k-assistant-api reads its config as a file. A missing model,
+      # unseeded api key, or a Docker-auto-created config directory each break
+      # every K21-K23 card, so fail the image build when any is wrong.
+      docker exec cinder-keplerops-ollama ollama list | grep -q 'fieldlink-qwen'
+      docker exec cinder-keplerops-k-assistant-api sh -c \
+        'test -f /run/fieldkest-assistant/k21-config.json'
+      docker exec cinder-keplerops-k-assistant-api sh -c \
+        'grep -q "\"anyllm_api_key\": \"[A-Za-z0-9]" /run/fieldkest-assistant/k21-config.json'
       ;;
     arwc)
       arwc_root=/opt/cinder-typhoon/build/arwc
