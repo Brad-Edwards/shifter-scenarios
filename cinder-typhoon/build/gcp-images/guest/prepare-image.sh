@@ -71,6 +71,8 @@ case "$phase" in
     participant_image=cinder-arwc/a-connector:hand-build
     # BigRAE installs the participant key but requires the account to exist.
     id fieldlink >/dev/null 2>&1 || useradd --system --create-home --shell /bin/bash fieldlink
+    printf '%s\n' arwc.private-image/v1 >/etc/cinder-arwc-image
+    chmod 0644 /etc/cinder-arwc-image
     install -m 0755 "$source_root/cinder-arwc-participant-shell" \
       /usr/local/libexec/cinder-arwc-participant-shell
     install -m 0755 "$source_root/cinder-arwc-container-shell" \

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 umask 077
-[[ $(hostname) == cinder-arwc-dev || $(hostname) == cinder-arwc-golden ]] || {
-  echo 'This mutable deployment is restricted to cinder-arwc-dev.' >&2
+[[ $(hostname) == cinder-arwc-dev || $(hostname) == cinder-arwc-golden || -f /etc/cinder-arwc-image ]] || {
+  echo 'This mutable deployment is restricted to cinder-arwc-dev, cinder-arwc-golden, or an ARWC private-image host.' >&2
   exit 1
 }
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
