@@ -59,12 +59,12 @@ flags:
     path: TBD
   - flag_id: K04.2
     source: value
-    value: "FLAG{29029c633f5f6bda}"
+    value: "FLAG{54c47a37e2d8714c}"
     host: keplerops-host
     path: TBD
   - flag_id: K04.3
     source: value
-    value: "FLAG{54c47a37e2d8714c}"
+    value: "FLAG{29029c633f5f6bda}"
     host: keplerops-host
     path: TBD
   - flag_id: K04.4
