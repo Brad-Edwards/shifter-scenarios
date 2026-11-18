@@ -5,12 +5,19 @@
 # This entrypoint restores it before the runtime starts so OPC UA comes up without
 # needing a fresh editor upload after every recreate.
 set -euo pipefail
-BACKUP=/var/run/runtime/libplc-backup.so
+BINARY_BACKUP=/var/run/runtime/libplc-backup.so
 BUILD=/workdir/build
-if [[ -f $BACKUP ]] && ! ls "$BUILD"/libplc_*.so > /dev/null 2>&1; then
+if [[ -f $BINARY_BACKUP ]] && ! ls "$BUILD"/libplc_*.so > /dev/null 2>&1; then
     mkdir -p "$BUILD"
-    HASH=$(sha256sum "$BACKUP" | cut -c1-16)
-    cp "$BACKUP" "$BUILD/libplc_${HASH}.so"
+    HASH=$(sha256sum "$BINARY_BACKUP" | cut -c1-16)
+    cp "$BINARY_BACKUP" "$BUILD/libplc_${HASH}.so"
     echo "[plc-entrypoint] Restored compiled PLC binary from persistent volume (hash prefix: $HASH)."
+fi
+OPCUA_BACKUP=/var/run/runtime/opcua.json.bak
+OPCUA_DEST=/workdir/core/src/drivers/plugins/python/opcua/opcua.json
+if [[ -f $OPCUA_BACKUP ]] && ! [[ -f $OPCUA_DEST ]]; then
+    mkdir -p "$(dirname "$OPCUA_DEST")"
+    cp "$OPCUA_BACKUP" "$OPCUA_DEST"
+    echo "[plc-entrypoint] Restored opcua.json from persistent volume."
 fi
 exec bash /workdir/start_openplc.sh "$@"

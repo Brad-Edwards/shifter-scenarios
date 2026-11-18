@@ -134,10 +134,57 @@ if __name__ == "__main__":
     ], env=environment, check=True)
     # Save the compiled binary to the persistent plc-state volume so the
     # entrypoint can restore it after a container recreate without a fresh upload.
-    _save_cmd = [
+    _save_bin = [
         "docker", "exec", _PLC_CONTAINER, "bash", "-c",
         "ls /workdir/build/libplc_*.so 2>/dev/null | head -1 | xargs -I{} cp {} /var/run/runtime/libplc-backup.so",
     ]
-    result = subprocess.run(_save_cmd, stderr=subprocess.PIPE)
+    result = subprocess.run(_save_bin, stderr=subprocess.PIPE)
     if result.returncode != 0 and b"permission denied" in result.stderr.lower():
-        subprocess.run(["sudo"] + _save_cmd, check=False)
+        subprocess.run(["sudo"] + _save_bin, check=False)
+
+    # Update opcua.json with range credentials and save to the volume so the
+    # entrypoint can restore both the binary and the config after a recreate.
+    # The editor generates opcua.json with development-VM passwords; the range
+    # has its own randomly-generated credentials that must replace them.
+    _update_opcua = r"""
+import hashlib, os, base64, json, pathlib
+
+def hash_pw(password):
+    salt = os.urandom(16)
+    h = hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 600000)
+    return 'pbkdf2:sha256:600000$' + base64.b64encode(salt).decode() + '$' + base64.b64encode(h).decode()
+
+creds = json.loads(pathlib.Path('/var/run/runtime/credentials.json').read_text())
+roles = {'operator': 'opcua', 'dispatcher': 'ua_dispatcher', 'reader': 'ua_reader'}
+opcua_path = pathlib.Path('/workdir/core/src/drivers/plugins/python/opcua/opcua.json')
+backup_path = pathlib.Path('/var/run/runtime/opcua.json.bak')
+if not opcua_path.exists():
+    print('opcua.json not found, skipping')
+    raise SystemExit(0)
+cfg = json.loads(opcua_path.read_text())
+for u in cfg[0]['config']['users']:
+    key = roles.get(u.get('username'))
+    if key and key in creds:
+        u['password_hash'] = hash_pw(creds[key])
+        u.pop('password', None)
+opcua_path.write_text(json.dumps(cfg, indent=2))
+backup_path.write_text(json.dumps(cfg, indent=2))
+print('opcua.json updated with range credentials and saved to volume')
+"""
+    # First write the credentials to the volume so the update script can read them.
+    creds_path = ROOT / ".operator/credentials.json"
+    _copy_creds = [
+        "docker", "exec", _PLC_CONTAINER, "bash", "-c",
+        f"cat > /var/run/runtime/credentials.json",
+    ]
+    r = subprocess.run(_copy_creds, input=creds_path.read_bytes(), stderr=subprocess.PIPE)
+    if r.returncode != 0 and b"permission denied" in r.stderr.lower():
+        subprocess.run(["sudo"] + _copy_creds, input=creds_path.read_bytes(), check=False)
+    _update_cmd = ["docker", "exec", _PLC_CONTAINER, "/workdir/venvs/runtime/bin/python3", "-c", _update_opcua]
+    result = subprocess.run(_update_cmd, stderr=subprocess.PIPE)
+    if result.returncode != 0 and b"permission denied" in result.stderr.lower():
+        subprocess.run(["sudo"] + _update_cmd, check=False)
+    # Remove the temporary credentials file from the container volume.
+    _rm_creds = ["docker", "exec", _PLC_CONTAINER, "rm", "-f", "/var/run/runtime/credentials.json"]
+    subprocess.run(_rm_creds, stderr=subprocess.DEVNULL)
+    subprocess.run(["sudo"] + _rm_creds, stderr=subprocess.DEVNULL)
