@@ -285,15 +285,24 @@ print(q[0]['id'] if q else '')
   seed-identity)
     "${compose[@]}" --profile seed run --rm seed-identity
     ;;
-  seed-archive)
-    # Generate a pool of step-ca OTTs for the archive enrollment endpoint.
-    # The provisioner key stays on the host; the archive container receives
-    # only the pre-generated tokens, not the signing secrets.
-    # Each OTT is single-use (step-ca enforces jti uniqueness).
-    # Generate enough for a full participant session.
+  mint-ott-pool)
+    # Mint the step-ca one-time-token pool for the archive enrollment endpoint.
+    # The provisioner key stays on the host; the archive container receives only
+    # the pre-generated tokens, not the signing secrets. Each OTT is single-use
+    # (step-ca enforces jti uniqueness). This is a separate action so it can run
+    # both at reset (dev) and at first boot of an image clone, which lets the
+    # token validity be measured from boot rather than from bake time.
+    # Usage: manage.sh mint-ott-pool [validity] [pool-size]
+    ott_validity=${2:-336h}
+    ott_pool=${3:-50}
+    # The step-ca container mints the tokens; wait for it on a fresh boot.
+    for _ in $(seq 1 60); do
+      docker exec cinder-arwc-native-ca-1 true 2>/dev/null && break
+      sleep 5
+    done
     mkdir -p .operator/archive-workflow/tokens
     chmod 0755 .operator/archive-workflow/tokens
-    # Clear any stale tokens from a previous reset.
+    # Clear any stale tokens from a previous mint.
     rm -f .operator/archive-workflow/tokens/ott-*.jwt
     # Extract the provisioner encrypted key if not already done.
     python3 - <<'PYEOF'
@@ -306,12 +315,10 @@ if p.exists() and not out.exists():
         if prov.get('name') == 'infrastructure' and prov.get('encryptedKey'):
             out.write_text(prov['encryptedKey']); out.chmod(0o644); break
 PYEOF
-    # Generate OTTs from within the running step-ca container.
-    # The step-ca server must be running (it was started by 'up' above).
-    # Generate 50 OTTs (1-hour validity each; participant calls GET for a fresh one).
-    # 50 tokens covers repeated enrollment attempts across a full event session.
-    echo "Generating step-ca enrollment tokens..."
-    for i in $(seq -w 1 50); do
+    # Generate the OTTs from within the running step-ca container. Each token is
+    # valid for ${ott_validity}; the participant calls GET for a fresh one.
+    echo "Minting ${ott_pool} step-ca enrollment tokens (validity ${ott_validity})..."
+    for i in $(seq -w 1 "${ott_pool}"); do
       # Note: stdout redirect must come before stderr redirect for docker exec.
       docker exec cinder-arwc-native-ca-1 \
         step ca token \
@@ -320,7 +327,7 @@ PYEOF
         --password-file /home/step/secrets/password \
         --ca-url https://ca.arwc.test:9000 \
         --root /home/step/certs/root_ca.crt \
-        --not-after 1h \
+        --not-after "${ott_validity}" \
         "archive-submitter" \
         > ".operator/archive-workflow/tokens/ott-${i}.jwt" 2>/dev/null || true
     done
@@ -328,14 +335,25 @@ PYEOF
     cp .operator/ca/certs/root_ca.crt .operator/archive-workflow/step-ca-root.pem
     cp .operator/ca/certs/intermediate_ca.crt .operator/archive-workflow/step-ca-intermediate.pem
     chmod 0644 .operator/archive-workflow/step-ca-root.pem .operator/archive-workflow/step-ca-intermediate.pem
-    echo "Generated $(ls .operator/archive-workflow/tokens/ott-*.jwt 2>/dev/null | wc -l) enrollment tokens"
-    # Copy tokens to the golden ARWC operator directory for the archive container.
-    # From build/arwc/native/, the golden .operator is at ../  (build/arwc/.operator).
+    echo "Minted $(ls .operator/archive-workflow/tokens/ott-*.jwt 2>/dev/null | wc -l) enrollment tokens"
+    # Publish tokens and certs to the golden ARWC operator directory for the
+    # archive container. From build/arwc/native/, the golden .operator is at
+    # ../ (build/arwc/.operator).
     golden_op="$(cd .. && pwd)/.operator"
     mkdir -p "${golden_op}/archive-workflow/tokens"
     chmod 0755 "${golden_op}/archive-workflow/tokens"
+    rm -f "${golden_op}/archive-workflow/tokens/"ott-*.jwt 2>/dev/null || true
     cp .operator/archive-workflow/tokens/ott-*.jwt "${golden_op}/archive-workflow/tokens/" 2>/dev/null || true
     chmod 0644 "${golden_op}/archive-workflow/tokens/"ott-*.jwt 2>/dev/null || true
+    cp .operator/archive-workflow/step-ca-root.pem .operator/archive-workflow/step-ca-intermediate.pem \
+       "${golden_op}/archive-workflow/" 2>/dev/null || true
+    ;;
+  seed-archive)
+    # Mint the archive enrollment OTT pool. Dev resets mint it here; image clones
+    # re-mint it at first boot (cinder-arwc-clone-boot) so the validity is
+    # measured from boot, not bake. On an image the bake-time pool would expire
+    # before a participant boots the range, which breaks W04.2 enrollment.
+    bash "$0" mint-ott-pool "${ARWC_OTT_VALIDITY:-336h}"
     # Derive a stable password for the archive query role from the handover key.
     # The handover key is stable per range; this keeps the archive DB password
     # consistent across seed-archive runs without requiring manual updates.
@@ -516,5 +534,5 @@ PYEOF
     bash "$0" seed-corporate-documents
     exec bash "$0" seed-applications
     ;;
-  *) echo 'Usage: manage.sh build|up|status|seed|seed-documents|seed-corporate-documents|seed-reports|seed-engineering|seed-dmz|seed-portal|seed-early-cards|seed-identity|seed-archive|seed-applications|reset cinder-arwc-native' >&2; exit 2 ;;
+  *) echo 'Usage: manage.sh build|up|status|seed|seed-documents|seed-corporate-documents|seed-reports|seed-engineering|seed-dmz|seed-portal|seed-early-cards|seed-identity|seed-archive|seed-applications|mint-ott-pool [validity] [pool-size]|reset cinder-arwc-native' >&2; exit 2 ;;
 esac
