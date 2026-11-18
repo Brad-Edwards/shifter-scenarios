@@ -447,6 +447,7 @@ class RegistryHandler(KeplerHandler):
             "assessor": {"request_id": assessor_name, "assessment_id": "PAS-884", "action": "inspect_support_package"},
             "finding": {"package": "@keplerops/support-rehearsal", "version": "1.3.1", "view_binding": "publisher", "status": "protected-inspection-complete"},
         }
+        result["flag"] = "FLAG{5845ec9686e25e07}"
         append_audit(AUDIT, "inspection-envelopes", {"request_id": self.request_id, "principal": USERNAME, "inspection_id": "INSP-2047", "front_request_id": front_name, "assessor_request_id": assessor_name, "assessment_id": "PAS-884", "envelope_sha256": sha256_bytes(data), "status": 200})
         self.send_json(200, result)
 

@@ -1366,7 +1366,7 @@ class Handler(BaseHTTPRequestHandler):
                     user="reader", password=OT_READER_PASS, connect_timeout=5
                 )
                 ot_conn.autocommit = True
-                with ot_conn.cursor(_factory=_ext.RealDictCursor) as cur:
+                with ot_conn.cursor(cursor_factory=_ext.RealDictCursor) as cur:
                     cur.execute("""
                         SELECT c.variable, h.source_time, h.value, h.unit,
                                h.process_quality AS quality, c.node_id, c.series
@@ -1385,6 +1385,9 @@ class Handler(BaseHTTPRequestHandler):
                     catalog_rows = cur.fetchall()
                 ot_conn.close()
             except Exception as exc:
+                import traceback as _tb
+                print(f"W17 historian error: {exc}", flush=True)
+                _tb.print_exc()
                 self.send_json(503, {"error": "process history unavailable"}); return
             import datetime as _dt
             captured_at = _dt.datetime.now(_dt.timezone.utc).isoformat()

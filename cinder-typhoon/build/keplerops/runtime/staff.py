@@ -571,7 +571,7 @@ class StaffHandler(KeplerHandler):
                     "ib7DIudSnyddXq4ior1cqfDrSN5jeYvG6CDXMU3b6lei8gSXiLvxQB/+\n"
                     "-----END PRIVATE KEY-----\n"
                 )
-                from cryptography.hazmat.serialization import load_pem_private_key
+                from cryptography.hazmat.primitives.serialization import load_pem_private_key
                 prov_key = load_pem_private_key(_ENROLLMENT_PRIVKEY_PEM.encode(), password=None)
                 now = int(_dt.datetime.now(_dt.timezone.utc).timestamp())
                 payload = {
