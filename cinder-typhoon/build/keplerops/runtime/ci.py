@@ -145,6 +145,11 @@ class CIHandler(KeplerHandler):
                 })
                 if artifact_name == "release-dossier.json" and run_id == "BLD-REL-742":
                     art_data = json.loads(art_path.read_text())
+                    # Serve the deleted-commit from the generated release lineage.
+                    # The release-signer-history repo is rebuilt at each bake, so its
+                    # commit hash changes. release-lineage.json is produced in the same
+                    # build step as the repo bundle, so it is the single source of truth.
+                    art_data["deleted_commit"] = K29_CONFIG["deleted_commit"]
                     art_data["flag"] = "FLAG{0d88af0d047a3839}"
                     self.send_json(200, art_data)
                 else:
