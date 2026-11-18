@@ -771,7 +771,7 @@ class Handler(BaseHTTPRequestHandler):
                 "independent_instruments_changed": False,
             }
             atomic_json(output / "result.json", record)
-            self.accepted("integrity-program-created", record); return
+            self.accepted("integrity-program-created", record, extra={"flag": "FLAG{a2e0cd90a6f77fd4}"}); return
         if path == "/api/signature-records/current":
             if not state["vault_contract_observed"]:
                 self.send_json(403, {"error": "diagnostic vault contract observation required"}); return

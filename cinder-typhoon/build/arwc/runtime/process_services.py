@@ -1044,7 +1044,7 @@ class Handler(BaseHTTPRequestHandler):
                 "total_flow_m3s": 0.20,
             }
             atomic_json(EVIDENCE / "engineering" / "process-envelope.json", result)
-            self.accepted("envelope-observed", result, 201)
+            self.accepted("envelope-observed", result, 201, extra={"flag": "FLAG{3655af7659c41c08}"})
             return
         # W25.2: Permissive chain observation (read-only, requires envelope_observed).
         # Participant reads FUXA, OpenPLC, and OT historian for current permissive conditions.
@@ -1086,7 +1086,7 @@ class Handler(BaseHTTPRequestHandler):
                 "blocking_conditions": ["controller_not_armed", "owner_not_hmi"],
             }
             atomic_json(EVIDENCE / "engineering" / "process-permissive.json", result)
-            self.accepted("permissive-observed", result, 201)
+            self.accepted("permissive-observed", result, 201, extra={"flag": "FLAG{8e4cb7c7002330cc}"})
             return
         # W25.3: Bounded movement observation — validates against FRESH OT historian evidence.
         # The service queries ot_history.process_samples to confirm real actuation occurred:
@@ -1173,7 +1173,7 @@ class Handler(BaseHTTPRequestHandler):
                 "actuation_confirmed": True,
             }
             atomic_json(EVIDENCE / "engineering" / "process-movement.json", result)
-            self.accepted("movement-observed", result, 201)
+            self.accepted("movement-observed", result, 201, extra={"flag": "FLAG{fca8c6786592eb89}"})
             return
         # W25.4: Restoration observation — validates A20/B20 return from OT historian.
         # Participant issues FUXA A20/B20 restore and reads resulting historian evidence.
@@ -1253,7 +1253,7 @@ class Handler(BaseHTTPRequestHandler):
                 "mode": "W25.MODE",
             }
             atomic_json(EVIDENCE / "engineering" / "process-restoration.json", result)
-            self.accepted("restoration-observed", result, 201)
+            self.accepted("restoration-observed", result, 201, extra={"flag": "FLAG{454e55928d0c1326}"})
             return
         # W23.3: sufficiency verification — reads real PostgreSQL and real binary output.
         # Gated on W23.2 controlled_allocation_committed=True.
@@ -1458,7 +1458,7 @@ class Handler(BaseHTTPRequestHandler):
                       "program_set": "DPG1-CASES-R3", "cases_verified": 6,
                       "approved_digest": manifest["approved_digest"]}
             atomic_json(INTEGRITY_STATE / "integrity-verifier" / "result.json", record)
-            self.accepted("integrity-verifier", record, 201)
+            self.accepted("integrity-verifier", record, 201, extra={"flag": "FLAG{783b582e0ba2a939}"})
             return
 
         if not state["integrity_verifier_reproduced"]:
@@ -1511,7 +1511,7 @@ class Handler(BaseHTTPRequestHandler):
                   "digest": dpg1.digest_hex(candidate), "nonidentical": True,
                   "structure": "accepted", "outputs": parsed["outputs"]}
         atomic_json(output / "result.json", record)
-        self.accepted("collision-model", record, 201)
+        self.accepted("collision-model", record, 201, extra={"flag": "FLAG{de0df9d4236a7ea9}"})
 
     def w29_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         required = {
@@ -2448,6 +2448,7 @@ class Handler(BaseHTTPRequestHandler):
                 "relationship": relationship, "ordinary_invocations": ordinary,
                 "relocations": (UTILITY_ARTIFACTS / "relocations.txt").read_text(),
                 "seccomp_policy": seccomp,
+                "flag": "FLAG{3f8005c9af25c506}",
             })
             return
 
@@ -2488,7 +2489,7 @@ class Handler(BaseHTTPRequestHandler):
                 "pie": True, "aslr": True, "controlled_flow": True,
             }
             atomic_json(UTILITY_STATE / "controlled-flow" / "result.json", record)
-            self.accepted("controlled-flow", record, 201)
+            self.accepted("controlled-flow", record, 201, extra={"flag": "FLAG{08c247e97a430854}"})
             return
 
         if not state["utility_flow_controlled"]:
@@ -2541,7 +2542,7 @@ class Handler(BaseHTTPRequestHandler):
             if not isinstance(response, dict) or not isinstance(response.get("record"), dict):
                 self.send_json(403, {"error": "scoped utility control client required"})
                 return
-            self.send_json(201, response)
+            self.send_json(201, {**response, "flag": "FLAG{e0cc03bd006f272b}"})
             return
         self.send_json(409, {"error": "utility control operation is not valid"})
 

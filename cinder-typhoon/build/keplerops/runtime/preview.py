@@ -457,6 +457,7 @@ class PreviewHandler(KeplerHandler):
                 "original_owner": review.get("owner"),
                 "status": 200,
             })
+            release["flag"] = "FLAG{89f65c4ede64fbcc}"
             self.send_json(200, release)
             return
         # GET /api/preview/reviews/{review_id} — read review state (evidence for K12.1)
@@ -467,6 +468,8 @@ class PreviewHandler(KeplerHandler):
             if review is None:
                 self.send_json(404, {"error": "review_not_found"})
                 return
+            if review.get("state") == "rendered":
+                review["flag"] = "FLAG{7b89fd70e897ed74}"
             self.send_json(200, review)
             return
         if path == "/api/preview/association":
