@@ -278,6 +278,10 @@ Legacy entitlement records use
 derivation context for its retained entitlement.
 """.encode()
 
+    # One compatibility envelope, used for both the service example and the
+    # participant work copy. K07.1 derives compatibility_envelope_sha256 from the
+    # service copy, and K07.2 uploads the work copy, so the two must be identical.
+    inspection_compat_envelope = bytes.fromhex("464b493103e284aa7161000101")
     registry_files = {
         "config/foundation.json": (json_bytes(config), 0o600),
         "records/releases/REL-FLK-6.9.8-ARCHIVE.json": (json_bytes(release_698), 0o640),
@@ -287,13 +291,13 @@ derivation context for its retained entitlement.
         "packages/support-rehearsal-1.3.1.tgz": (support_package, 0o640),
         "examples/consumer-request.json": (json_bytes(consumer_request), 0o640),
         "examples/inspection-normal.json": (json_bytes(normal_inspection), 0o640),
-        "examples/inspection-compat.fki": (bytes.fromhex("464b493103e284aa0003000101"), 0o640),
+        "examples/inspection-compat.fki": (inspection_compat_envelope, 0o640),
     }
     workstation_files = {
         "work/registry/README.md": (guide, 0o644),
         "work/registry/consumer-request.json": (json_bytes(consumer_request), 0o640),
         "work/registry/inspection-normal.json": (json_bytes(normal_inspection), 0o640),
-        "work/registry/inspection-compat.fki": (bytes.fromhex("464b493103e284aa7161000101"), 0o640),
+        "work/registry/inspection-compat.fki": (inspection_compat_envelope, 0o640),
     }
     records = [
         make_archive(ROOT / "k-registry-state.tar", registry_files),
