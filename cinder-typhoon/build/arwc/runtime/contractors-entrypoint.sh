@@ -3,12 +3,12 @@ set -eu
 umask 077
 
 chown arwc-contractors:arwc-contractors /var/lib/arwc-contractors
-chmod 0700 /var/lib/arwc-contractors
+chmod 0701 /var/lib/arwc-contractors
 install -d -o arwc-contractors -g arwc-contractors -m 0700 \
   /var/lib/arwc-contractors/audit \
   /var/lib/arwc-contractors/auth \
   /var/lib/arwc-contractors/state
-install -d -o arwc-contractors -g arwc-field-session -m 0750 \
+install -d -o root -g arwc-field-session -m 0751 \
   /var/lib/arwc-contractors/handover
 
 python3 /usr/local/libexec/arwc-handover.py wait \

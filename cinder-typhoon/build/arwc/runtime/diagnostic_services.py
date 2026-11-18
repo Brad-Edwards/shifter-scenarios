@@ -443,7 +443,7 @@ class Handler(BaseHTTPRequestHandler):
             "audit_id": append_audit("diagnostic-answer-set-read", record),
             "record": record,
             "selector_artifact_b64": base64.b64encode(SELECTOR_ARTIFACT.read_bytes()).decode(),
-            "flag": "FLAG{1f645e26df3a9337}",
+            "flag": "FLAG{55f32a8cc75f8721}",
         })
 
     def do_POST(self) -> None:
@@ -636,7 +636,7 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("signature-oracle-read", {
                 "record_id": "SELECTOR-CRR-R4", "revision": 4, "cases_accepted": len(PREDICTION_CASES),
                 "selector": "xorshift128+", "replayable": False,
-            }, extra={"flag": "FLAG{872d5e092b71a887}"}); return
+            }, extra={"flag": "FLAG{0a22e68f334df110}"}); return
         if path == "/api/estimator-tasks/current":
             if not state["selector_predicted"]:
                 self.send_json(403, {"error": "response selector capability required"}); return
@@ -686,7 +686,7 @@ class Handler(BaseHTTPRequestHandler):
                     "record_id": "DIAG-EVID-CRR-R7", "revision": 7,
                     "project_id": "CRR-CTRL-R21", "signer": "DSIGN-CRR-R3",
                     "signed_record_count": 16, "signing_authority_granted": False,
-                }, {"bundle": bundle, "flag": "FLAG{d0cc78b0a39a4025}"}); return
+                }, {"bundle": bundle, "flag": "FLAG{bf2eb3671e18157c}"}); return
             self.send_json(409, {"error": "diagnostic evidence operation rejected"}); return
         if path == "/api/reporting-submissions":
             if not state["bundle_opened"]:
@@ -714,7 +714,7 @@ class Handler(BaseHTTPRequestHandler):
                 ],
                 "scope": "calibration-exceptions/read", "maintenance_approval": False,
                 "control_authority": False,
-            }, extra={"flag": "FLAG{59e9352118f165df}"}); return
+            }, extra={"flag": "FLAG{df1fffb2d5f21078}"}); return
         if path == "/api/diagnostic-runs":
             try:
                 engineering = json.loads(ENGINEERING_STATE.read_text())

@@ -235,7 +235,7 @@ class SupportHandler(KeplerHandler):
             conv_id = match_conv.group(1)
             response = {"conversation_id": conv_id, "ticket_ref": conv_id, "status": "retained", "asset_id": "SUP-K-" + conv_id.replace("SUP-", "")}
             if conv_id == "SUP-2841":
-                response["flag"] = "FLAG{c3add5a56e78f14e}"
+                response["flag"] = "FLAG{408710d448134ab5}"
             return self.send_json(200, response)
 
         # K25.2: tenant-integration route — returns current integration record for session customer.
@@ -435,7 +435,6 @@ class SupportHandler(KeplerHandler):
                 "action": "reconcile", "tenant": tenant, "connector": connector,
                 "active_revision": receipt["active_revision"],
             })
-            receipt["flag"] = "FLAG{0b49ce87466c9946}"
             return self.send_json(200, receipt)
 
         # K17.2: recovery lookup (public)
@@ -498,7 +497,7 @@ class SupportHandler(KeplerHandler):
             data = self.read_json()
             revision = data.get("connector_revision", "")
             if not revision: return self.send_json(422, {"error": "connector_binding_denied"})
-            state = extended(); job_id = "DIAG-ARWC-" + uuid.uuid4().hex[:8].upper(); value = {"job_id": job_id, "tenant": tenant_diag, "connector_revision": revision, "state": "draft", "flag": "FLAG{1b1140a49220ce2d}"}; state["diagnostics"][job_id] = value; save_extended(state)
+            state = extended(); job_id = "DIAG-ARWC-" + uuid.uuid4().hex[:8].upper(); value = {"job_id": job_id, "tenant": tenant_diag, "connector_revision": revision, "state": "draft", "flag": "FLAG{d58c860051957082}"}; state["diagnostics"][job_id] = value; save_extended(state)
             append_audit(AUDIT, "diagnostics", {"request_id": self.request_id, "principal": self.principal, **{k:v for k,v in value.items() if k!="flag"}, "status": 201}); return self.send_json(201, value)
         match = re.fullmatch(r"/api/diagnostics/([^/]+)/package", path)
         if match:
@@ -511,7 +510,7 @@ class SupportHandler(KeplerHandler):
                 return self.send_json(422, {"error": "package_denied"})
             signed = {key: data[key] for key in ("interface", "source", "expected_output")}
             data["package_sha256"] = hashlib.sha256(json.dumps(signed, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
-            job.update({"package": data, "state": "packaged"}); save_extended(state); append_audit(AUDIT, "diagnostic-package", {"request_id": self.request_id, "principal": self.principal, "job_id": match.group(1), "digest": data["package_sha256"], "status": 200}); return self.send_json(200, {**job, "flag": "FLAG{0e70287767fe900a}"})
+            job.update({"package": data, "state": "packaged"}); save_extended(state); append_audit(AUDIT, "diagnostic-package", {"request_id": self.request_id, "principal": self.principal, "job_id": match.group(1), "digest": data["package_sha256"], "status": 200}); return self.send_json(200, {**job, "flag": "FLAG{f77bdbb3436a8bab}"})
         match = re.fullmatch(r"/api/diagnostics/([^/]+)/deliver", path)
         if match:
             state = extended(); job = state["diagnostics"].get(match.group(1))
@@ -539,7 +538,7 @@ class SupportHandler(KeplerHandler):
                     or not isinstance(value.get("audit_id"), str)):
                 append_audit(AUDIT, "diagnostic-delivery", {"request_id": self.request_id, "principal": self.principal, "job_id": match.group(1), "status": 502})
                 return self.send_json(502, {"error": "diagnostic_delivery_invalid_response"})
-            job.update({"state": "delivered", "receipt": value}); save_extended(state); append_audit(AUDIT, "diagnostic-delivery", {"request_id": self.request_id, "principal": self.principal, "job_id": match.group(1), "receipt_id": value["receipt_id"], "destination_audit_id": value["audit_id"], "status": 202}); return self.send_json(202, {**value, "flag": "FLAG{06bff5331f0c2052}"})
+            job.update({"state": "delivered", "receipt": value}); save_extended(state); append_audit(AUDIT, "diagnostic-delivery", {"request_id": self.request_id, "principal": self.principal, "job_id": match.group(1), "receipt_id": value["receipt_id"], "destination_audit_id": value["audit_id"], "status": 202}); return self.send_json(202, {**value, "flag": "FLAG{8e5eb57412212e11}"})
         self.send_json(404, {"error": "not_found"})
 
     def do_PUT(self) -> None:

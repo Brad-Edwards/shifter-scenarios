@@ -10,4 +10,4 @@ compares the observed latency and sample count with `limits.json`.
 Missing measurements are reported as unknown values rather than invented
 samples. Invalid units or negative measurements are rejected.
 
-FLAG{a4046971d9b4974b}
+FLAG{fc4bf7dbb3c5d53a}

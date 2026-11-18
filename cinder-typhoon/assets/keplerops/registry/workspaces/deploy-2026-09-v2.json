@@ -2,7 +2,7 @@
   "authored_by": "maya.ranscombe",
   "customer_note": "Deployment notebook for field deployment batch \u2014 September 2026",
   "export_ref": "EXP-2841",
-  "flag": "FLAG{2688ab401d2fb0dd}",
+  "flag": "FLAG{6bb66074f2325405}",
   "job": "SCHED-2841",
   "notebook_id": "NB-DEPLOY-2026-09",
   "schema": "fieldkest.workspace-notebook/v1",

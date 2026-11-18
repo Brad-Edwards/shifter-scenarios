@@ -122,7 +122,7 @@ class PreviewHandler(KeplerHandler):
             RESULTS.mkdir(parents=True, exist_ok=True)
             (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
             if source_id == "SUP-K-2841":
-                result["flag"] = "FLAG{b146d6f6e4c22bb0}"
+                result["flag"] = "FLAG{e79c34cd2ef12e6e}"
             self.send_json(200, result)
         else:
             self.send_json(404, {"error": "not_found"})
@@ -191,8 +191,7 @@ class PreviewHandler(KeplerHandler):
             }
             RESULTS.mkdir(parents=True, exist_ok=True)
             (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
-            if source_id == "SUP-K-2841":
-                result["flag"] = "FLAG{b146d6f6e4c22bb0}"
+            result["flag"] = "FLAG{d80272e908362cf6}"
             self.send_json(200, result)
         elif path == "/api/preview/documents":
             # K10.2: derive a document identity from the supplied source URL.
@@ -225,7 +224,9 @@ class PreviewHandler(KeplerHandler):
             RESULTS.mkdir(parents=True, exist_ok=True)
             (RESULTS / f"{result_id}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
             if source_id == "SUP-K-2841":
-                result["flag"] = "FLAG{b146d6f6e4c22bb0}"
+                result["flag"] = "FLAG{e79c34cd2ef12e6e}"
+            elif document_id == "DOC-9BC054D6F95DFA6A":
+                result["flag"] = "FLAG{3262988684853120}"
             self.send_json(200, result)
         else:
             self.send_json(404, {"error": "not_found"})

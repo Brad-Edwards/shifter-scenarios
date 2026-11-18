@@ -2,7 +2,7 @@
   "created": "2026-09-18T16:00:00Z",
   "destination": "fieldkest-exports",
   "export_id": "EXP-2841",
-  "flag": "FLAG{7ee9c8accac3a580}",
+  "flag": "FLAG{adfbabdcdaca98ac}",
   "job": "SCHED-2841",
   "owner": "maya.ranscombe",
   "schema": "fieldkest.workspace-handover/v1"

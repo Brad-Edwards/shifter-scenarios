@@ -24,6 +24,8 @@ class WorkbenchHandler(KeplerHandler):
             self._inspection()
         elif "predecessor_desk" in CONFIG and path == CONFIG["predecessor_desk"]["route"]:
             self._predecessor_desk()
+        elif "reconstruction" in CONFIG and path == CONFIG["reconstruction"]["route"]:
+            self._reconstruction()
         else:
             self.send_json(404, {"error": "not_found"})
 
@@ -61,7 +63,7 @@ class WorkbenchHandler(KeplerHandler):
             "output_sha256": output_sha,
         }
         append_audit(AUDIT, "inspection", {"request_id": self.request_id, "sample_id": sample["sample_id"], "asset_id": sample["asset_id"], "connector_revision": sample["connector_revision"], "input_sha256": receipt["input_sha256"], "output_sha256": output_sha, "status": 201})
-        receipt["flag"] = "FLAG{b333bddf473ffe8c}"
+        receipt["flag"] = "FLAG{2b66416be507ee69}"
         self.send_json(201, receipt)
 
     def _predecessor_desk(self) -> None:
@@ -90,7 +92,7 @@ class WorkbenchHandler(KeplerHandler):
         receipt_path = RESULTS / "k03-1-complete.json"
         if receipt_path.is_file():
             cached = json.loads(receipt_path.read_text())
-            cached["flag"] = "FLAG{dc079e33f8c31fc3}"
+            cached["flag"] = "FLAG{40be0052650d9d7a}"
             self.send_json(200, cached)
             return
         receipt_id = "K03-1-" + uuid.uuid4().hex[:10].upper()
@@ -104,7 +106,7 @@ class WorkbenchHandler(KeplerHandler):
             "odt_path": contract["odt_path"],
             "observed_at": utc_now(),
         }
-        result["flag"] = "FLAG{dc079e33f8c31fc3}"
+        result["flag"] = "FLAG{40be0052650d9d7a}"
         receipt_path.write_text(json.dumps({k: v for k,v in result.items() if k != "flag"}, sort_keys=True, separators=(",", ":")) + "\n")
         append_audit(AUDIT, "k03-1-predecessor-desk", {
             "request_id": self.request_id,
@@ -113,6 +115,55 @@ class WorkbenchHandler(KeplerHandler):
             "attachment_sha256": contract["attachment_sha256"],
             "status": 201,
         })
+        self.send_json(201, result)
+
+
+    def _reconstruction(self) -> None:
+        """K03.2 grader: verify recovered script and instructions sha256 against retained digests."""
+        contract = CONFIG["reconstruction"]
+        try:
+            body = self.read_json(131_072)
+            script_sha256 = body.get("script_sha256", "")
+            instructions_sha256 = body.get("instructions_sha256", "")
+            collection = body.get("collection", "")
+        except (ValueError, OverflowError, UnicodeDecodeError, json.JSONDecodeError):
+            self.send_json(422, {"error": "invalid_reconstruction_submission"})
+            return
+        if script_sha256.lower() != contract["script_sha256"]:
+            self.send_json(422, {"error": "script_digest_mismatch"})
+            return
+        if instructions_sha256.lower() != contract["instructions_sha256"]:
+            self.send_json(422, {"error": "instructions_digest_mismatch"})
+            return
+        if collection != contract["collection_id"]:
+            self.send_json(422, {"error": "collection_binding_denied"})
+            return
+        RESULTS.mkdir(parents=True, exist_ok=True)
+        receipt_path = RESULTS / "k03-2-complete.json"
+        if receipt_path.is_file():
+            cached = json.loads(receipt_path.read_text())
+            cached["flag"] = "FLAG{3040a0c2f8443498}"
+            self.send_json(200, cached)
+            return
+        receipt_id = "K03-2-" + uuid.uuid4().hex[:10].upper()
+        result = {
+            "schema": "fieldkest.k03-2-receipt/v1",
+            "receipt_id": receipt_id,
+            "card": "K03.2",
+            "collection": contract["collection_id"],
+            "script_sha256": script_sha256,
+            "instructions_sha256": instructions_sha256,
+            "endpoint_id": contract["endpoint_id"],
+            "observed_at": utc_now(),
+        }
+        receipt_path.write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+        append_audit(AUDIT, "k03-2-reconstruction", {
+            "request_id": self.request_id,
+            "receipt_id": receipt_id,
+            "collection": contract["collection_id"],
+            "status": 201,
+        })
+        result["flag"] = "FLAG{3040a0c2f8443498}"
         self.send_json(201, result)
 
 

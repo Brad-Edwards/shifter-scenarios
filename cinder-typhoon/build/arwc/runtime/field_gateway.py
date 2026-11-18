@@ -20,7 +20,7 @@ from urllib.parse import urlsplit
 ROOT = pathlib.Path("/var/lib/arwc-contractor-bridge")
 STATE = ROOT / "state" / "field-gateway.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
-SESSION = pathlib.Path("/run/arwc-field-session/contractor-session.json")
+SESSION = pathlib.Path("/run/arwc-field-session/handover/contractor-session.json")
 OT_EVIDENCE = ROOT / "handover" / "contractor.json"
 PROCESS_PATHS = {
     "/api/diagnostic-programs/current", "/api/signature-records/current/interpretation",

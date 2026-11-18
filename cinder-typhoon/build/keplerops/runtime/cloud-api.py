@@ -725,7 +725,7 @@ class CloudApiHandler(KeplerHandler):
                 **cm_data,
             }
             if trust_id == "TRUST-FLX-04":
-                result["flag"] = "FLAG{c1e0dbfdffe75425}"
+                result["flag"] = "FLAG{418e19c3ed0c13ef}"
             append_audit(AUDIT, "trust-records", {
                 "request_id": self.request_id,
                 "trust_id": trust_id, "subject": cm_data.get("subject"),
@@ -807,7 +807,7 @@ class CloudApiHandler(KeplerHandler):
             "expires_in": 3600,
         }
         if role == "support-export-editor":
-            result["flag"] = "FLAG{244cd323590694f6}"
+            result["flag"] = "FLAG{f1aee508e418ac7c}"
         append_audit(AUDIT, "role-exchange", {
             "request_id": self.request_id, "role": role,
             "input_subject": username, "output_principal": "svc-fieldlink-export",
@@ -1410,7 +1410,7 @@ class CloudApiHandler(KeplerHandler):
                 **cm_data,
             }
             if build_id == "BLD-1842":
-                result["flag"] = "FLAG{0b9877c3539fbcfa}"
+                result["flag"] = "FLAG{10a79b42b8e652b2}"
             append_audit(AUDIT, "build-records", {
                 "request_id": self.request_id,
                 "build_id": build_id, "principal": cm_data.get("principal"),

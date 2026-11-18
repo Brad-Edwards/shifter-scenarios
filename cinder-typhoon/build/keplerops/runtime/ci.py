@@ -98,7 +98,7 @@ class CIHandler(KeplerHandler):
                 return
             job_data = json.loads(job_path.read_text())
             if job_data.get("state") == "success":
-                job_data["flag"] = "FLAG{fbd7154bb29c94fa}"
+                job_data["flag"] = "FLAG{9c7e8e7a35ec128c}"
             self.send_json(200, job_data)
         elif path.startswith("/api/runs/"):
             # K09.2: CI runner run metadata and retained artifacts.
@@ -114,7 +114,7 @@ class CIHandler(KeplerHandler):
                     return
                 run_data = json.loads(run_path.read_text())
                 if run_id == "BLD-1842":
-                    run_data["flag"] = "FLAG{a4b836c914be9dc1}"
+                    run_data["flag"] = "FLAG{bf8dabff893031f3}"
                 self.send_json(200, run_data)
             elif remainder.endswith("/log"):
                 run_id = remainder.removesuffix("/log")
@@ -138,10 +138,17 @@ class CIHandler(KeplerHandler):
                     "request_id": self.request_id, "principal": USERNAME,
                     "run_id": run_id, "artifact": artifact_name, "status": 200,
                 })
-                art_data = json.loads(art_path.read_text())
                 if artifact_name == "release-dossier.json" and run_id == "BLD-REL-742":
-                    art_data["flag"] = "FLAG{e1cd013a6cdd8991}"
-                self.send_json(200, art_data)
+                    art_data = json.loads(art_path.read_text())
+                    art_data["flag"] = "FLAG{0d88af0d047a3839}"
+                    self.send_json(200, art_data)
+                else:
+                    raw = art_path.read_bytes()
+                    self.send_response(200)
+                    self.send_header("Content-Type", "application/json")
+                    self.send_header("Content-Length", str(len(raw)))
+                    self.end_headers()
+                    self.wfile.write(raw)
             else:
                 self.send_json(404, {"error": "not_found"})
         else:

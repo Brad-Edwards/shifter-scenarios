@@ -56,6 +56,13 @@ case "$phase" in
       install -m 0644 "$k3s" /opt/cinder-typhoon/cache/keplerops-k3s/k3s-airgap-images-amd64.tar.zst
     fi
     test -s /opt/cinder-typhoon/cache/keplerops-k3s/k3s-airgap-images-amd64.tar.zst
+    embedder=$(docker volume inspect --format '{{.Mountpoint}}' cinder-keplerops-native-assistant-data 2>/dev/null || true)
+    if [[ -n $embedder && -d $embedder/models ]]; then
+      rm -rf /opt/cinder-typhoon/cache/keplerops-embedder
+      install -d -m 0755 /opt/cinder-typhoon/cache/keplerops-embedder
+      cp -a "$embedder/models" /opt/cinder-typhoon/cache/keplerops-embedder/models
+    fi
+    test -d /opt/cinder-typhoon/cache/keplerops-embedder/models
     printf '%s\n' keplerops.private-image/v1 >/etc/cinder-keplerops-image
     chmod 0644 /etc/cinder-keplerops-image
     ;;

@@ -56,6 +56,8 @@ python3 native-platform/seed-k21-assistant.py --operator-dir "$operator"
 python3 native-platform/seed-k22-assistant.py --operator-dir "$operator"
 python3 native-platform/seed-k23-assistant.py --operator-dir "$operator"
 python3 native-ci/seed-k06-ci.py --operator-dir "$operator"
+DATABASE_URL="postgres://fieldlink_admin:$(cat "$operator/native-platform/pg_admin_password")@fieldlink-postgres:5432/fieldlink_data" \
+  python3 native-platform/seed-k18-customer.py
 bash native-platform/seed-objects.sh
 docker compose up --no-deps --force-recreate k-dev-seed
 docker compose up -d --no-deps k-dev

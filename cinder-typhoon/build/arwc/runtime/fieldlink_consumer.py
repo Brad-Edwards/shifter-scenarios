@@ -354,7 +354,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send_json(409, {"error": "immutable_candidate_conflict"})
             atomic_json(path, candidate)
         correlation = append_audit({"action": "package-poll", "principal": PACKAGE_PRINCIPAL, "tenant": candidate["tenant"], "version": version, "sha256": candidate["sha256"]})
-        self.send_json(200, {key: candidate[key] for key in ("tenant", "channel", "version", "sha256")} | {"interface": "fieldkest.connector/v3", "audit_id": correlation, "flag": "FLAG{dcb9c36f1eb38451}"})
+        self.send_json(200, {key: candidate[key] for key in ("tenant", "channel", "version", "sha256")} | {"interface": "fieldkest.connector/v3", "audit_id": correlation, "flag": "FLAG{1dda3ef23d7a81f8}"})
 
     def activate(self, version: str, request: dict[str, object]) -> None:
         if request != {"tenant": "TEN-ARWC-047", "channel": "arwc-stable"}:
@@ -381,7 +381,7 @@ class Handler(BaseHTTPRequestHandler):
         receipt["audit_id"] = correlation
         atomic_json(RECEIPTS / f"{version}.json", receipt)
         earn_corporate("package-activation", receipt_id, version)
-        receipt["flag"] = "FLAG{09929e787131c2bf}"
+        receipt["flag"] = "FLAG{d45fa773b820e545}"
         self.send_json(201, receipt)
 
     def rollback(self, request: dict[str, object]) -> None:
@@ -392,7 +392,7 @@ class Handler(BaseHTTPRequestHandler):
         receipt = {"receipt_id": receipt_id, "tenant": "TEN-ARWC-047", "selected_version": "7.4.2", "slot": "future-state", "current_activation": "unchanged", "operation": "diagnostic_summary", "output": output, "state": "complete", "completed_at": now()}
         receipt["audit_id"] = append_audit({"action": "rollback-rehearsal", "principal": PACKAGE_PRINCIPAL, **receipt})
         atomic_json(RECEIPTS / f"rollback-{receipt_id}.json", receipt)
-        receipt["flag"] = "FLAG{b461f302f2a11c33}"
+        receipt["flag"] = "FLAG{1ec37b00a50b6e29}"
         self.send_json(201, receipt)
 
     def diagnostic(self, request: dict[str, object]) -> None:

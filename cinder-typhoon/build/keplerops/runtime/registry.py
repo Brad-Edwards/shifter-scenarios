@@ -209,7 +209,7 @@ class RegistryHandler(KeplerHandler):
             response["channel_credentials"] = credentials
             approval["channel_credential_id"] = credentials["credential_id"]
             approval["channel_credential_expires_at_epoch"] = credentials["expires_at_epoch"]
-            response["flag"] = "FLAG{fdecb38cd9d8caf9}"
+            response["flag"] = "FLAG{bd3422ac88bd90d8}"
         (PUBLISHED / f"{metadata['version']}.tgz").write_bytes(archive)
         record_path.write_text(json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n")
         append_audit(AUDIT, "release-approvals", {"request_id": self.request_id, **approval, "status": 201})
@@ -342,7 +342,7 @@ class RegistryHandler(KeplerHandler):
             'request': request, 'result': worker['output'],
         }
         result['result_digest'] = sha256_bytes(canonical_bytes(result))
-        result['flag'] = 'FLAG{b0a818a78d859f0c}'
+        result['flag'] = 'FLAG{47ba77ad01dfb2d4}'
         append_audit(AUDIT, 'consumer-checks', {
             'request_id': self.request_id, 'principal': USERNAME,
             'check_id': result['check_id'], 'package': result['package'],
@@ -409,7 +409,7 @@ class RegistryHandler(KeplerHandler):
             self.send_json(403, {"error": "inspection_trace_denied"})
             return
         trace = json.loads(path.read_text())
-        trace['flag'] = 'FLAG{9099ebbc409c46a6}'
+        trace['flag'] = 'FLAG{65b50adb2fe75762}'
         append_audit(AUDIT, "inspection-traces", {"request_id": self.request_id, "principal": USERNAME, "inspection_id": inspection_id, "trace_sha256": sha256_bytes(canonical_bytes(trace)), "status": 200})
         self.send_json(200, trace)
 

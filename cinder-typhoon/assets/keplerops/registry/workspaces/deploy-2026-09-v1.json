@@ -2,7 +2,7 @@
   "authored_by": "maya.ranscombe",
   "customer_note": "Deployment for TEN-ARWC-019 cedar run customer \u2014 retain for support reconciliation",
   "export_ref": "EXP-2841",
-  "flag": "FLAG{04fd2fd48f756040}",
+  "flag": "FLAG{a21253236ef7660b}",
   "job": "SCHED-2841",
   "notebook_id": "NB-DEPLOY-2026-09",
   "schema": "fieldkest.workspace-notebook/v1",
