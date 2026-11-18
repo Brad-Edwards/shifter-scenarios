@@ -9,9 +9,16 @@ role=${ARWC_PROCESS_ROLE:?}
 chown "$user:$user" "$root"
 chmod 0700 "$root"
 install -d -o "$user" -g "$user" -m 0700 "$root/audit" "$root/state"
-if [ "$role" = engineering ]; then
+if [ "$role" = engineering ] || [ "$role" = instruments ]; then
   install -d -o "$user" -g "$user" -m 0700 \
     "$root/artifacts" \
+    "$root/artifacts/reserve-reconciliation" \
+    "$root/artifacts/paper-reconciliation" \
+    "$root/artifacts/request-plan" \
+    "$root/artifacts/remote-operation"
+fi
+if [ "$role" = engineering ]; then
+  install -d -o "$user" -g "$user" -m 0700 \
     "$root/artifacts/integrity-verifier" \
     "$root/artifacts/collision-model" \
     "$root/artifacts/utility-contract" \

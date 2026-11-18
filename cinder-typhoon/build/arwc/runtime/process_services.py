@@ -55,6 +55,7 @@ INITIAL = {
         "reserve_observed": False,
         "paper_variance_observed": False,
         "request_planned": False,
+        "w30_result": False,
         "w33_calibrated": False, "w33_flow_gain": None,
         "w33_schedule": None, "w33_schedule_volume": None,
         "w33_commissioned": False, "w33_request_ids": None,
@@ -374,6 +375,9 @@ class Handler(BaseHTTPRequestHandler):
 
     def corporate_authorized(self) -> bool:
         """Authorize against the FieldLink-issued CORPORATE handover session token."""
+        if self.headers.get("X-ARWC-Tenant", "arwc") != "arwc":
+            self.send_json(403, {"error": "corporate session required"})
+            return False
         supplied = self.headers.get("Authorization", "")
         if not supplied.startswith("Bearer "):
             self.send_json(403, {"error": "corporate session required"})
@@ -944,16 +948,16 @@ class Handler(BaseHTTPRequestHandler):
         }:
             self.w28_post(path, request, state)
             return
-        if ROLE == "engineering" and path == "/api/reserve-reconciliations/current":
+        if ROLE in ("engineering", "instruments") and path == "/api/reserve-reconciliations/current":
             self.w29_post(path, request, state)
             return
-        if ROLE == "engineering" and path == "/api/paper-reconciliations/current":
+        if ROLE in ("engineering", "instruments") and path == "/api/paper-reconciliations/current":
             self.w29_3_post(path, request, state)
             return
-        if ROLE == "engineering" and path == "/api/request-plans/current":
+        if ROLE in ("engineering", "instruments") and path == "/api/request-plans/current":
             self.w30_post(path, request, state)
             return
-        if ROLE == "engineering" and path == "/api/remote-operations/current":
+        if ROLE in ("engineering", "instruments") and path == "/api/remote-operations/current":
             self.w30_2_post(path, request, state)
             return
         if ROLE == "engineering" and path == "/api/commissioning-calibrations/current":

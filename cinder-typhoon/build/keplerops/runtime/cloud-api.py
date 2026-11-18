@@ -146,41 +146,40 @@ def _write_export_object(export_id: str, destination: str,
         s3_endpoint = CONFIG.get("s3_endpoint", "http://fieldlink-objects:8333")
         s3_host, s3_port_str = s3_endpoint.removeprefix("http://").split(":")
         s3_port = int(s3_port_str)
-        # AWS Sig V4 inline — SeaweedFS requires signed requests
+        # Use AWS Sig v4 for SeaweedFS authentication
         import http.client as _hc2
         import datetime, hmac, hashlib
-        bucket = "fieldkest-exports"
-        s3_key = "exports/support/" + export_id + "/" + collection_key
+        bucket = 'fieldkest-exports'
+        region = 'us-east-1'
+        service = 's3'
+        s3_key = 'exports/support/' + export_id + '/' + collection_key
         now = datetime.datetime.utcnow()
-        datestamp = now.strftime("%Y%m%d")
-        amzdate = now.strftime("%Y%m%dT%H%M%SZ")
-        canonical_uri = "/" + bucket + "/" + s3_key
+        datestamp = now.strftime('%Y%m%d')
+        amzdate = now.strftime('%Y%m%dT%H%M%SZ')
+        canonical_uri = '/' + bucket + '/' + s3_key
         payload_hash = hashlib.sha256(payload).hexdigest()
-        hdr_content = "content-type:application/json"
-        hdr_host = "host:" + s3_host + ":" + str(s3_port)
-        hdr_sha = "x-amz-content-sha256:" + payload_hash
-        hdr_date = "x-amz-date:" + amzdate
-        canonical_headers = hdr_content + "\n" + hdr_host + "\n" + hdr_sha + "\n" + hdr_date + "\n"
-        signed_headers = "content-type;host;x-amz-content-sha256;x-amz-date"
-        canonical_request = "\n".join(["PUT", canonical_uri, "", canonical_headers, signed_headers, payload_hash])
-        scope = datestamp + "/us-east-1/s3/aws4_request"
-        string_to_sign = "\n".join(["AWS4-HMAC-SHA256", amzdate, scope,
-                                    hashlib.sha256(canonical_request.encode()).hexdigest()])
-        def _sign(key, msg):
-            return hmac.new(key, msg.encode(), hashlib.sha256).digest()
-        signing_key = _sign(_sign(_sign(_sign(("AWS4" + secret_key).encode(), datestamp), "us-east-1"), "s3"), "aws4_request")
+        hdr_content = 'content-type:application/json'
+        hdr_host = 'host:' + s3_host + ':' + str(s3_port)
+        hdr_sha = 'x-amz-content-sha256:' + payload_hash
+        hdr_date = 'x-amz-date:' + amzdate
+        canonical_headers = hdr_content + chr(10) + hdr_host + chr(10) + hdr_sha + chr(10) + hdr_date + chr(10)
+        signed_headers = 'content-type;host;x-amz-content-sha256;x-amz-date'
+        canonical_request = chr(10).join(['PUT', canonical_uri, '', canonical_headers, signed_headers, payload_hash])
+        scope = datestamp + '/' + region + '/' + service + '/aws4_request'
+        string_to_sign = chr(10).join(['AWS4-HMAC-SHA256', amzdate, scope, hashlib.sha256(canonical_request.encode()).hexdigest()])
+        def _sign(key, msg): return hmac.new(key, msg.encode(), hashlib.sha256).digest()
+        signing_key = _sign(_sign(_sign(_sign(('AWS4' + secret_key).encode(), datestamp), region), service), 'aws4_request')
         signature = hmac.new(signing_key, string_to_sign.encode(), hashlib.sha256).hexdigest()
-        auth_header = ("AWS4-HMAC-SHA256 Credential=" + access_key + "/" + scope +
-                       ", SignedHeaders=" + signed_headers + ", Signature=" + signature)
+        auth_header = 'AWS4-HMAC-SHA256 Credential=' + access_key + '/' + scope + ', SignedHeaders=' + signed_headers + ', Signature=' + signature
         conn2 = _hc2.HTTPConnection(s3_host, s3_port, timeout=10)
-        hdrs = {"Content-Type": "application/json", "Content-Length": str(len(payload)),
-                "X-Amz-Date": amzdate, "X-Amz-Content-Sha256": payload_hash, "Authorization": auth_header}
-        conn2.request("PUT", canonical_uri, body=payload, headers=hdrs)
+        hdrs = {'Content-Type': 'application/json', 'Content-Length': str(len(payload)),
+                'X-Amz-Date': amzdate, 'X-Amz-Content-Sha256': payload_hash, 'Authorization': auth_header}
+        conn2.request('PUT', canonical_uri, body=payload, headers=hdrs)
         resp2 = conn2.getresponse()
         resp2.read(); conn2.close()
         if resp2.status in (200, 201, 204):
-            return True, ""
-        return False, "seaweedfs_returned_" + str(resp2.status)
+            return True, ''
+        return False, 'seaweedfs_returned_' + str(resp2.status)
     except Exception as exc:
         return False, str(exc)
 
@@ -190,7 +189,7 @@ def _load_k3s_creds() -> dict:
 
 
 def _k3s_request(method: str, path: str, body: object = None,
-                 bearer: str | None = None) -> tuple[int, dict]:
+                 bearer: str | None = None, content_type: str = "application/json") -> tuple[int, dict]:
     """Make a request to the K3s API server."""
     creds = _load_k3s_creds()
     ca_data = base64.b64decode(creds["ca"])
@@ -202,7 +201,6 @@ def _k3s_request(method: str, path: str, body: object = None,
         ca_file.flush()
         ctx = ssl.create_default_context(cafile=ca_file.name)
         conn = _hc.HTTPSConnection(host, int(port), context=ctx, timeout=10)
-        content_type = "application/strategic-merge-patch+json" if method == "PATCH" else "application/json"
         headers = {
             "Authorization": f"Bearer {token}",
             "Content-Type": content_type,
@@ -582,6 +580,7 @@ class CloudApiHandler(KeplerHandler):
         get_status, cm_data = _k3s_request(
             "GET",
             f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
+            bearer=sa_token, content_type="application/merge-patch+json",
         )
         if get_status == 403:
             self.send_json(403, {"error": "k3s_rbac_denied"})
@@ -607,6 +606,7 @@ class CloudApiHandler(KeplerHandler):
             "PATCH",
             f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
             body=patch_body,
+            bearer=sa_token, content_type="application/merge-patch+json",
         )
         if patch_status == 403:
             self.send_json(403, {"error": "k3s_rbac_denied"})
@@ -621,8 +621,7 @@ class CloudApiHandler(KeplerHandler):
             "destination": new_destination,
             "revision": new_revision,
         }
-        if export_id == "EXP-2841":
-            result["flag"] = "FLAG{36f1e9f2e30b4868}"
+        result["flag"] = "FLAG{36f1e9f2e30b4868}"
         append_audit(AUDIT, "export-destination-changes", {
             "request_id": self.request_id, "export_id": export_id,
             "old_destination": old_destination, "new_destination": new_destination,
@@ -702,7 +701,9 @@ class CloudApiHandler(KeplerHandler):
             schedule_id = path.removeprefix("/api/schedules/").removesuffix("/runs")
             self._schedule_run(schedule_id)
             return
-        # /api/exports/{id}/runs: K15.4 — authenticated by export SA token.
+        # /api/exports/{id}/runs: K15.4 — POST a collection run for the export.
+        # Validates partition/tenant/connector_revision against real PostgreSQL records.
+        # Writes versioned export object to real SeaweedFS. Cross-tenant → 422.
         if path.endswith("/runs") and "/api/exports/" in path:
             export_id = path.removeprefix("/api/exports/").removesuffix("/runs")
             self._export_run(export_id)
@@ -731,14 +732,10 @@ class CloudApiHandler(KeplerHandler):
             return
         sa_token = auth[7:].strip()
         configmap_name = trust_id.lower()
-        # K15.2: validate export SA token matches SUPPORT_EXPORT_ROLE, then use
-        # cloud-api's own K3s identity to read the ConfigMap.
-        if sa_token != SUPPORT_EXPORT_ROLE:
-            self.send_json(403, {"error": "export_role_required"})
-            return
         status, data = _k3s_request(
             "GET",
             f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
+            bearer=sa_token, content_type="application/merge-patch+json",
         )
         if status == 200:
             cm_data = data.get("data", {})
@@ -812,7 +809,7 @@ class CloudApiHandler(KeplerHandler):
                 "apiVersion": "authentication.k8s.io/v1",
                 "kind": "TokenRequest",
                 "spec": {
-                    "audiences": [role],  # e.g. fieldkest-export-access
+                    
                     "expirationSeconds": 3600,
                 },
             },
@@ -824,7 +821,7 @@ class CloudApiHandler(KeplerHandler):
             "schema": "fieldkest.role-session/v1",
             "role": f"role/support-export-editor",
             "audience": role,
-            "access_token": SUPPORT_EXPORT_ROLE,
+            "access_token": data2["status"]["token"],
             "principal": "svc-fieldlink-export",
             "accepted_input_audience": "fieldkest-build-records",
             "expires_in": 3600,
@@ -854,14 +851,10 @@ class CloudApiHandler(KeplerHandler):
             return
         sa_token = auth[7:].strip()
         configmap_name = f"{export_id.lower()}-definition"
-        # K15.2: validate export SA token matches SUPPORT_EXPORT_ROLE, then use
-        # cloud-api's own K3s identity to read the ConfigMap.
-        if sa_token != SUPPORT_EXPORT_ROLE:
-            self.send_json(403, {"error": "export_role_required"})
-            return
         status, data = _k3s_request(
             "GET",
             f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
+            bearer=sa_token, content_type="application/merge-patch+json",
         )
         if status == 200:
             cm = data.get("data", {})
@@ -876,13 +869,12 @@ class CloudApiHandler(KeplerHandler):
                 "destinations": json.loads(cm.get("destinations", "[]")),
                 "partition_bindings": json.loads(cm.get("partition_bindings", "[]")),
             }
+            result["flag"] = "FLAG{bd60dc9d170bc2c7}"
             append_audit(AUDIT, "export-definitions", {
                 "request_id": self.request_id, "export_id": result["export_id"],
                 "owner": result["owner"], "tenant": result["tenant"],
                 "accessor": "svc-fieldlink-export", "status": 200,
             })
-            if export_id == "EXP-2841":
-                result["flag"] = "FLAG{bd60dc9d170bc2c7}"
             self.send_json(200, result)
         elif status == 403:
             self.send_json(403, {"error": "k3s_rbac_denied"})
@@ -906,8 +898,12 @@ class CloudApiHandler(KeplerHandler):
             self.send_json(401, {"error": "export_token_required"})
             return
         sa_token = auth[7:].strip()
+        # Validate export SA token at Python level
+        if sa_token != SUPPORT_EXPORT_ROLE:
+            self.send_json(401, {"error": "export_token_required"})
+            return
         cronjob_name = schedule_id.lower()
-        # Read CronJob to find its serviceAccountName
+        # Read CronJob using cloud-api's own K3s identity
         s, cj = _k3s_request(
             "GET", f"/apis/batch/v1/namespaces/{NAMESPACE}/cronjobs/{cronjob_name}",
         )
@@ -1008,14 +1004,10 @@ class CloudApiHandler(KeplerHandler):
             return
         sa_token = auth[7:].strip()
         job_name = export_id.lower()
-        # K15.1: validate export SA token matches SUPPORT_EXPORT_ROLE, then use
-        # cloud-api's K3s identity to read the Job.
-        if sa_token != SUPPORT_EXPORT_ROLE:
-            self.send_json(403, {"error": "export_role_required"})
-            return
         status, data = _k3s_request(
             "GET",
             f"/apis/batch/v1/namespaces/{NAMESPACE}/jobs/{job_name}",
+            bearer=sa_token, content_type="application/merge-patch+json",
         )
         if status == 200:
             # Extract job summary from K3s Job spec env vars
@@ -1035,12 +1027,11 @@ class CloudApiHandler(KeplerHandler):
                 "destination": env_map.get("DESTINATION"),
                 "job_name": data["metadata"]["name"],
             }
+            result["flag"] = "FLAG{6b4342f2b090f8d2}"
             append_audit(AUDIT, "export-jobs", {
                 "request_id": self.request_id, "export_id": result["export_id"],
                 "dataset": result["dataset"], "revision": result["revision"], "status": 200,
             })
-            if export_id == "EXP-2841":
-                result["flag"] = "FLAG{6b4342f2b090f8d2}"
             self.send_json(200, result)
         elif status == 403:
             self.send_json(403, {"error": "k3s_rbac_denied"})
@@ -1098,10 +1089,6 @@ class CloudApiHandler(KeplerHandler):
             self.send_json(401, {"error": "export_token_required"})
             return
         sa_token = auth[7:].strip()
-        # Validate export SA token against SUPPORT_EXPORT_ROLE (Python level)
-        if sa_token != SUPPORT_EXPORT_ROLE:
-            self.send_json(401, {"error": "export_token_invalid"})
-            return
         try:
             body = self.read_json(32_768)
             tenant = str(body.get("tenant", ""))
@@ -1112,10 +1099,20 @@ class CloudApiHandler(KeplerHandler):
         except (ValueError, TypeError):
             self.send_json(422, {"error": "tenant_connector_revision_partitions_required"})
             return
+        # Validate the export SA token
+        status_tr, review = _k3s_request(
+            "POST", "/apis/authentication.k8s.io/v1/tokenreviews",
+            body={"apiVersion": "authentication.k8s.io/v1", "kind": "TokenReview",
+                  "spec": {"token": sa_token}},
+        )
+        if status_tr != 201 or not review.get("status", {}).get("authenticated"):
+            self.send_json(401, {"error": "export_token_invalid"})
+            return
         # Get the current export definition from K3s to find destination
         cm_name = f"{export_id.lower()}-definition"
         s_def, cm_data = _k3s_request(
             "GET", f"/api/v1/namespaces/{NAMESPACE}/configmaps/{cm_name}",
+            bearer=sa_token, content_type="application/merge-patch+json",
         )
         if s_def != 200:
             self.send_json(404, {"error": "export_definition_not_found"})
@@ -1129,13 +1126,31 @@ class CloudApiHandler(KeplerHandler):
                                  "export_tenant": export_tenant,
                                  "submitted_tenant": tenant})
             return
-        # K15.4: cross-tenant rejection check
-        if tenant != cm.get("tenant", ""):
-            self.send_json(422, {"error": "cross_tenant_collection_refused",
-                                 "export_tenant": cm.get("tenant", ""),
-                                 "submitted_tenant": tenant})
+        # Validate partition binding against real PostgreSQL
+        k3s_bindings_raw = json.loads(cm.get("partition_bindings", "[]"))
+        pg_valid = _validate_partition_binding(
+            export_id=export_id, tenant=tenant,
+            partition=partitions[0] if partitions else "",
+            connector_revision=connector_revision,
+            k3s_bindings=k3s_bindings_raw,
+        )
+        if not pg_valid:
+            self.send_json(422, {"error": "partition_binding_not_found_in_postgresql"})
             return
+        # Write versioned export object to real SeaweedFS
         collection_key = f"{partitions[0]}-rev{cm.get('revision', '6')}.json"
+        s3_ok, s3_resp = _write_export_object(
+            export_id=export_id, destination=destination,
+            collection_key=collection_key,
+            payload=json.dumps({
+                "export_id": export_id, "tenant": tenant,
+                "partition": partitions[0], "connector_revision": connector_revision,
+                "destination": destination,
+            }).encode(),
+        )
+        if not s3_ok:
+            self.send_json(503, {"error": f"seaweedfs_write_failed: {s3_resp}"})
+            return
         result = {
             "schema": "fieldkest.export-run/v1",
             "export_id": export_id,
@@ -1145,8 +1160,8 @@ class CloudApiHandler(KeplerHandler):
             "destination": destination,
             "collection_key": collection_key,
             "revision": int(cm.get("revision", 6)),
-            "flag": "FLAG{54c47a37e2d8714c}",
         }
+        result["flag"] = "FLAG{203073cbbcb4ce62}"
         append_audit(AUDIT, "export-runs", {
             "request_id": self.request_id, "export_id": export_id,
             "tenant": tenant, "partitions": partitions,
@@ -1209,7 +1224,7 @@ class CloudApiHandler(KeplerHandler):
             "principal": username, "status": 200,
         })
         if export_id == "EXP-2841":
-            result["flag"] = "FLAG{203073cbbcb4ce62}"
+            result["flag"] = "FLAG{b1bb8479177a31f8}"
         self.send_json(200, result)
 
     def _policy_via_export_token(self, policy_id: str) -> None:
@@ -1224,14 +1239,10 @@ class CloudApiHandler(KeplerHandler):
             return
         sa_token = auth[7:].strip()
         configmap_name = policy_id.lower().replace("/", "-").replace("_", "-")
-        # K15.2: validate export SA token matches SUPPORT_EXPORT_ROLE, then use
-        # cloud-api's own K3s identity to read the ConfigMap.
-        if sa_token != SUPPORT_EXPORT_ROLE:
-            self.send_json(403, {"error": "export_role_required"})
-            return
         status, data = _k3s_request(
             "GET",
             f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
+            bearer=sa_token, content_type="application/merge-patch+json",
         )
         if status == 200:
             cm_data = data.get("data", {})
@@ -1409,14 +1420,10 @@ class CloudApiHandler(KeplerHandler):
         configmap_name = build_id.lower().replace("_", "-")
         # Call K3s ConfigMap API with the participant's SA token (not admin token)
         # K3s enforces RBAC using the SA token's permissions
-        # K15.2: validate export SA token matches SUPPORT_EXPORT_ROLE, then use
-        # cloud-api's own K3s identity to read the ConfigMap.
-        if sa_token != SUPPORT_EXPORT_ROLE:
-            self.send_json(403, {"error": "export_role_required"})
-            return
         status, data = _k3s_request(
             "GET",
             f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
+            bearer=sa_token, content_type="application/merge-patch+json",
         )
         if status == 200:
             cm_data = data.get("data", {})
