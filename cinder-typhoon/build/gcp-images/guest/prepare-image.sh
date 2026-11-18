@@ -27,7 +27,7 @@ Requires=docker.service
 Type=oneshot
 ExecStart=/usr/local/libexec/cinder-image-first-boot $phase
 RemainAfterExit=yes
-TimeoutStartSec=1200
+TimeoutStartSec=infinity
 
 [Install]
 WantedBy=multi-user.target
