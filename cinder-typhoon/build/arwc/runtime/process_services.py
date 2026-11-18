@@ -1123,7 +1123,7 @@ class Handler(BaseHTTPRequestHandler):
                           SELECT ph.source_time AS t
                           FROM public.process_history ph
                           WHERE ph.tag='hmi_accepted' AND ph.value::int=%s
-                            AND ph.source_time > NOW() - INTERVAL '60 minutes'
+                            AND ph.source_time > NOW() - INTERVAL '10 minutes'
                           ORDER BY ph.source_time ASC
                           LIMIT 1
                         ),
@@ -1203,7 +1203,7 @@ class Handler(BaseHTTPRequestHandler):
                           SELECT ph.source_time AS t
                           FROM public.process_history ph
                           WHERE ph.tag='hmi_accepted' AND ph.value::int=%s
-                            AND ph.source_time > NOW() - INTERVAL '60 minutes'
+                            AND ph.source_time > NOW() - INTERVAL '10 minutes'
                           ORDER BY ph.source_time ASC
                           LIMIT 1
                         ),
