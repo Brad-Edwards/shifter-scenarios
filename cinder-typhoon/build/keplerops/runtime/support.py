@@ -220,24 +220,6 @@ class SupportHandler(KeplerHandler):
                 response["pending_reviewer_recovery"] = {"account": reviewer_account}
             return self.send_json(200, response)
 
-        # K01.2: conversation route — retained support conversation record.
-        match_conv = re.fullmatch(r"/api/conversations/(SUP-[0-9]+)", path)
-        if match_conv:
-            cookie_header = self.headers.get("Cookie", "")
-            cookies = SimpleCookie()
-            try:
-                cookies.load(cookie_header)
-                sess = cookies.get("fieldkest_support")
-            except CookieError:
-                sess = None
-            if not sess or OPERATORS.get(sess.value) not in ("rowan.ito", "talia.mornac"):
-                return self.send_json(403, {"error": "session_denied"})
-            conv_id = match_conv.group(1)
-            response = {"conversation_id": conv_id, "ticket_ref": conv_id, "status": "retained", "asset_id": "SUP-K-" + conv_id.replace("SUP-", "")}
-            if conv_id == "SUP-2841":
-                response["flag"] = "FLAG{408710d448134ab5}"
-            return self.send_json(200, response)
-
         # K25.2: tenant-integration route — returns current integration record for session customer.
         # The record includes both the active and previous tenant/revision bindings (the defect:
         # naming both enables cross-tenant reconciliation).

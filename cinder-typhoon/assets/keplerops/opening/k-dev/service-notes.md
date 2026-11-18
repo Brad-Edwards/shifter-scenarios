@@ -73,8 +73,6 @@ support desk; release reviews and attachments remain on the work board.
 
 ## FieldLink support integration
 
-- Conversation: `GET https://support.keplerops.test:8443/api/conversations/{conversation_id}`
-
 The integration client uses the retained support authorization supplied in its
 private client profile.
 
