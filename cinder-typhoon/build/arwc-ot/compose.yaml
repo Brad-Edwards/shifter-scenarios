@@ -67,6 +67,7 @@ services:
       supervisory: {ipv4_address: 172.29.63.22}
   telegraf:
     logging: *ot-logging
+    restart: unless-stopped
     image: telegraf:1.39.1@sha256:8c1bc372ffa128be2febfe25f1fe092333d3d6c2293cf5e57176582179ba358a
     user: "0:0"
     entrypoint: [/usr/bin/telegraf]
