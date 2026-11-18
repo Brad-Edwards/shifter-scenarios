@@ -487,6 +487,49 @@ class PreviewHandler(KeplerHandler):
             result["flag"] = "FLAG{7b89fd70e897ed74}"
             self.send_json(200, result)
             return
+        # K12.1: read a stored render result as a review record
+        if path.startswith("/api/preview/reviews/") and not path.endswith("/assignment"):
+            result_id = path.removeprefix("/api/preview/reviews/")
+            review_path = RESULTS / f"{result_id}.json"
+            if not review_path.is_file():
+                self.send_json(404, {"error": "review_not_found"})
+                return
+            review = json.loads(review_path.read_text())
+            if review.get("collision_detected"):
+                review["flag"] = "FLAG{3073e7ddb80f48ee}"
+            self.send_json(200, review)
+            return
+        # K12.2: get review assignment
+        if path.startswith("/api/preview/reviews/") and path.endswith("/assignment"):
+            result_id = path.removeprefix("/api/preview/reviews/").removesuffix("/assignment")
+            review_path = RESULTS / f"{result_id}.json"
+            if not review_path.is_file():
+                self.send_json(404, {"error": "review_not_found"})
+                return
+            review = json.loads(review_path.read_text())
+            if review.get("collision_detected"):
+                self.send_json(200, {
+                    "schema": "fieldkest.preview-assignment/v1",
+                    "result_id": result_id,
+                    "owner": review.get("owner", ""),
+                    "protected_case_id": review.get("protected_case_id", ""),
+                    "protected_source_id": review.get("protected_source_id", ""),
+                    "protected_version": review.get("protected_version", ""),
+                    "flag": "FLAG{9d14e5b959bb4bb5}",
+                })
+                return
+            self.send_json(422, {"error": "collision_not_detected"})
+            return
+        # K12.4: viewer attachment
+        if path.startswith("/attachment/"):
+            source_id = path.removeprefix("/attachment/")
+            assoc = _load_association(source_id)
+            if assoc is None:
+                self.send_json(404, {"error": "attachment_not_found"})
+                return
+            self.send_json(200, {"source_id": source_id, "document_id": assoc.get("document_id", ""),
+                                  "source_version": assoc.get("source_version", "")})
+            return
         self.send_json(404, {"error": "not_found"})
 
 

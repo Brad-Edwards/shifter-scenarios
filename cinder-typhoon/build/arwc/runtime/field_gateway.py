@@ -22,6 +22,7 @@ STATE = ROOT / "state" / "field-gateway.json"
 AUDIT = ROOT / "audit" / "events.jsonl"
 SESSION = pathlib.Path("/run/arwc-field-session/handover/contractor-session.json")
 OT_EVIDENCE = ROOT / "handover" / "contractor.json"
+CORPORATE = pathlib.Path("/run/arwc-corporate/handover/corporate-session")
 PROCESS_PATHS = {
     "/api/diagnostic-programs/current", "/api/signature-records/current/interpretation",
     "/api/signature-programs/current", "/api/diagnostic-programs/legacy",
@@ -287,10 +288,13 @@ class Handler(BaseHTTPRequestHandler):
             return
         state["nonces"].append(request["nonce"])
         state["current_read_observed"] = True
-        token = state.get("process_session")
-        if not isinstance(token, str):
-            token = secrets.token_urlsafe(40)
-            state["process_session"] = token
+        try:
+            token = CORPORATE.read_bytes().strip().decode()
+        except (OSError, UnicodeDecodeError):
+            token = state.get("process_session")
+            if not isinstance(token, str):
+                token = secrets.token_urlsafe(40)
+                state["process_session"] = token
         atomic_json(STATE, state)
         result = {
             "record_id": "FEED-OG2-R21",
