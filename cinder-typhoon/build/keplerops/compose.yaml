@@ -481,6 +481,7 @@ services:
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/range-seed/runtime-credentials.json:/run/fieldkest-auth/runtime-credentials.json:ro
       - preview-audit:/var/lib/fieldkest-preview/audit
       - preview-results:/var/lib/fieldkest-preview/results
+      - preview-reviews:/var/lib/fieldkest-preview/reviews
     healthcheck:
       test: ["CMD", "curl", "--fail", "--silent", "--cacert", "/tmp/fieldlink-ca.crt", "--resolve", "preview.keplerops.test:443:127.0.0.1", "https://preview.keplerops.test/health"]
       interval: 10s
@@ -1106,6 +1107,7 @@ volumes:
   assistant-api-audit: {name: cinder-keplerops-assistant-api-audit}
   preview-audit: {name: cinder-keplerops-preview-audit}
   preview-results: {name: cinder-keplerops-preview-results}
+  preview-reviews: {name: cinder-keplerops-preview-reviews}
   indexer-state: {name: cinder-keplerops-indexer-state}
   staff-state: {name: cinder-keplerops-staff-state}
   identity-state: {name: cinder-keplerops-identity-state}
