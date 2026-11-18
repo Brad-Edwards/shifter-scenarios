@@ -44,9 +44,9 @@ MAINTENANCE_ARCHIVE_HEADERS = {
     "scheduler_attestation": "X-Scheduler-Attestation",
 }
 
-import threading as _threading
 
 # K31.2: in-memory workload execution state (attestation store)
+import threading as _threading
 _WORKLOAD_EXECUTIONS: dict[str, dict] = {}
 _WORKLOAD_LOCK = _threading.Lock()
 
@@ -602,6 +602,7 @@ class CloudApiHandler(KeplerHandler):
             "destination": new_destination,
             "revision": new_revision,
         }
+        result["flag"] = "FLAG{36f1e9f2e30b4868}"
         append_audit(AUDIT, "export-destination-changes", {
             "request_id": self.request_id, "export_id": export_id,
             "old_destination": old_destination, "new_destination": new_destination,
@@ -849,6 +850,7 @@ class CloudApiHandler(KeplerHandler):
                 "destinations": json.loads(cm.get("destinations", "[]")),
                 "partition_bindings": json.loads(cm.get("partition_bindings", "[]")),
             }
+            result["flag"] = "FLAG{bd60dc9d170bc2c7}"
             append_audit(AUDIT, "export-definitions", {
                 "request_id": self.request_id, "export_id": result["export_id"],
                 "owner": result["owner"], "tenant": result["tenant"],
@@ -1003,6 +1005,7 @@ class CloudApiHandler(KeplerHandler):
                 "destination": env_map.get("DESTINATION"),
                 "job_name": data["metadata"]["name"],
             }
+            result["flag"] = "FLAG{6b4342f2b090f8d2}"
             append_audit(AUDIT, "export-jobs", {
                 "request_id": self.request_id, "export_id": result["export_id"],
                 "dataset": result["dataset"], "revision": result["revision"], "status": 200,
@@ -1134,6 +1137,7 @@ class CloudApiHandler(KeplerHandler):
             "collection_key": collection_key,
             "revision": int(cm.get("revision", 6)),
         }
+        result["flag"] = "FLAG{203073cbbcb4ce62}"
         append_audit(AUDIT, "export-runs", {
             "request_id": self.request_id, "export_id": export_id,
             "tenant": tenant, "partitions": partitions,
@@ -1193,7 +1197,7 @@ class CloudApiHandler(KeplerHandler):
             "principal": username, "status": 200,
         })
         if export_id == "EXP-2841":
-            result["flag"] = "FLAG{b1bb8479177a31f8}"
+            result["flag"] = "FLAG{19f186b21e73e545}"
         self.send_json(200, result)
 
     def _policy_via_export_token(self, policy_id: str) -> None:
@@ -1402,7 +1406,7 @@ class CloudApiHandler(KeplerHandler):
                 **cm_data,
             }
             if build_id == "BLD-1842":
-                result["flag"] = "FLAG{10a79b42b8e652b2}"
+                result["flag"] = "FLAG{0b9877c3539fbcfa}"
             append_audit(AUDIT, "build-records", {
                 "request_id": self.request_id,
                 "build_id": build_id, "principal": cm_data.get("principal"),

@@ -316,7 +316,7 @@ class SourceHandler(KeplerHandler):
                     "schema": "fieldkest.policy-migration-result/v1", "receipt_id": receipt,
                     "operation": operation, "fragment_id": policy_input["fragment_id"],
                     "program_sha256": sha256(raw), "accepted": result, "evaluated_fields": evaluated,
-                    "flag": "FLAG{5f3e067c00b70ca5}",
+                    "flag": "FLAG{65213f715150f979}",
                 }
             elif operation == "corpus-check":
                 if set(policy_input) != {"corpus_id"} or policy_input["corpus_id"] != K11_CONFIG["corpus_id"]:
@@ -339,6 +339,7 @@ class SourceHandler(KeplerHandler):
                     "program_sha256": sha256(raw), "case_count": len(results),
                     "corpus_result_sha256": result_digest,
                     "condition_set_sha256": K11_CONFIG["condition_set_sha256"],
+                    "flag": "FLAG{c71020d43793593b}",
                 }
             else:
                 required = set(K11_CONFIG["fields"]) | {"nonce", "corpus_result_sha256"}
@@ -385,6 +386,8 @@ class SourceHandler(KeplerHandler):
             "receipt_id": receipt, "program_sha256": response["program_sha256"],
             "evaluated_fields": response.get("evaluated_fields", []), "status": 200,
         })
+        if response.get("operation") == "accept" and response.get("accepted"):
+            response["flag"] = "FLAG{23645a251793b19e}"
         self.send_json(200, response)
 
 

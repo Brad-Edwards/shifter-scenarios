@@ -1349,82 +1349,51 @@ class Handler(BaseHTTPRequestHandler):
             card = request.get("card")
             if card not in {"W17.1", "W17.2", "W17.3", "W17.4"}:
                 self.send_json(400, {"error": "card must be W17.1 through W17.4"}); return
-            OT_HISTORIAN = "172.29.63.22"
-            OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
-            try:
-                import hashlib as _hl
-                import psycopg2 as _pg
-                import psycopg2.extras as _ext
-                import sys as _sys
-                import pathlib as _pl
-                _w17_dir = _pl.Path("/opt/arwc-ot/challenges/W17")
-                if str(_w17_dir) not in _sys.path:
-                    _sys.path.insert(0, str(_w17_dir))
-                import check_evidence as _ce
-                ot_conn = _pg.connect(
-                    host=OT_HISTORIAN, port=5432, dbname="historian",
-                    user="reader", password=OT_READER_PASS, connect_timeout=5
-                )
-                ot_conn.autocommit = True
-                with ot_conn.cursor(cursor_factory=_ext.RealDictCursor) as cur:
-                    cur.execute("""
-                        SELECT c.variable, h.source_time, h.value, h.unit,
-                               h.process_quality AS quality, c.node_id, c.series
-                        FROM public.process_history AS h
-                        JOIN public.historian_tag_catalog AS c ON c.series = h.tag
-                        WHERE h.asset = 'AST-CRR-017'
-                          AND h.source_time >= current_timestamp - interval '5 minutes'
-                        ORDER BY h.source_time, c.variable
-                    """)
-                    rows = cur.fetchall()
-                    cur.execute("""
-                        SELECT variable, node_id, series, unit
-                        FROM public.historian_tag_catalog
-                        WHERE asset = 'AST-CRR-017'
-                    """)
-                    catalog_rows = cur.fetchall()
-                ot_conn.close()
-            except Exception as exc:
-                import traceback as _tb
-                print(f"W17 historian error: {exc}", flush=True)
-                _tb.print_exc()
-                self.send_json(503, {"error": "process history unavailable"}); return
-            import datetime as _dt
-            captured_at = _dt.datetime.now(_dt.timezone.utc).isoformat()
-            samples = []
-            raw_bytes = b""
-            for row in rows:
-                raw_bytes += str(row["source_time"]).encode() + str(row["value"]).encode()
-                samples.append({
-                    "variable": row["variable"],
-                    "source_time": row["source_time"].astimezone(_dt.timezone.utc).isoformat(),
-                    "value": float(row["value"]),
-                    "unit": row["unit"],
-                    "quality": row["quality"],
-                })
-            source_digest = _hl.sha256(raw_bytes).hexdigest()
-            catalog = {}
-            for crow in catalog_rows:
-                catalog[crow["variable"]] = {
-                    "node_id": crow["node_id"],
-                    "series": crow["series"],
-                    "unit": crow["unit"],
-                }
-            product_snapshot = {
-                "schema": "arwc.native-product-observation/v1",
-                "asset": "AST-CRR-017",
-                "captured_at": captured_at,
-                "source_digest": source_digest,
-                "catalog": catalog,
-                "samples": samples,
-            }
             submission = {k: v for k, v in request.items() if k != "card"}
+            _w17_prog = (
+                "import sys,json,hashlib,datetime,psycopg2,psycopg2.extras\n"
+                "sys.path.insert(0,'/opt/arwc-ot/challenges/W17')\n"
+                "import check_evidence\n"
+                "UTC=datetime.timezone.utc\n"
+                "d=json.loads(sys.stdin.read())\n"
+                "card=d['card'];submission=d['submission']\n"
+                "conn=psycopg2.connect(host='172.29.63.22',port=5432,dbname='historian',"
+                "user='reader',password='yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw',connect_timeout=5)\n"
+                "conn.autocommit=True\n"
+                "cur=conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)\n"
+                "cur.execute(\"SELECT c.variable,h.source_time,h.value,h.unit,h.process_quality AS quality,"
+                "c.node_id,c.series FROM public.process_history h JOIN public.historian_tag_catalog c "
+                "ON c.series=h.tag WHERE h.asset='AST-CRR-017' AND h.source_time>=current_timestamp-interval '5 minutes' "
+                "ORDER BY h.source_time,c.variable\")\n"
+                "rows=cur.fetchall()\n"
+                "cur.execute(\"SELECT variable,node_id,series,unit FROM public.historian_tag_catalog WHERE asset='AST-CRR-017'\")\n"
+                "cat_rows=cur.fetchall();conn.close()\n"
+                "raw=b''.join(str(r['source_time']).encode()+str(r['value']).encode() for r in rows)\n"
+                "samples=[{'variable':r['variable'],'source_time':r['source_time'].astimezone(UTC).isoformat(),"
+                "'value':float(r['value']),'unit':r['unit'],'quality':r['quality']} for r in rows]\n"
+                "catalog={r['variable']:{'node_id':r['node_id'],'series':r['series'],'unit':r['unit']} for r in cat_rows}\n"
+                "snap={'schema':'arwc.native-product-observation/v1','asset':'AST-CRR-017',"
+                "'captured_at':datetime.datetime.now(UTC).isoformat(),'source_digest':hashlib.sha256(raw).hexdigest(),"
+                "'catalog':catalog,'samples':samples}\n"
+                "try:\n"
+                "    check_evidence.evaluate(card,submission,snap)\n"
+                "    print(json.dumps({'ok':True}))\n"
+                "except check_evidence.EvidenceError as e:\n"
+                "    print(json.dumps({'ok':False,'error':str(e)}))\n"
+                "except Exception as e:\n"
+                "    print(json.dumps({'ok':False,'error':f'eval:{e}'}))\n"
+            )
             try:
-                _ce.evaluate(card, submission, product_snapshot)
-            except _ce.EvidenceError as exc:
+                proc = subprocess.run(
+                    ["python3", "-c", _w17_prog],
+                    input=json.dumps({"card": card, "submission": submission}),
+                    capture_output=True, text=True, timeout=15,
+                )
+                result_json = json.loads(proc.stdout.strip())
+            except (subprocess.TimeoutExpired, json.JSONDecodeError, OSError):
+                self.send_json(503, {"error": "process history unavailable"}); return
+            if not result_json.get("ok"):
                 self.send_json(409, {"error": "observation does not match process history"}); return
-            except Exception:
-                self.send_json(500, {"error": "evaluation failed"}); return
             flags = {
                 "W17.1": "FLAG{33a22dd3dae3a5a9}",
                 "W17.2": "FLAG{a6a4563e676656d3}",

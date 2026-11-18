@@ -457,6 +457,7 @@ class RegistryHandler(KeplerHandler):
             return
         record = load_record("entitlements", record_id)
         append_audit(AUDIT, "entitlement-reads", {"request_id": self.request_id, "principal": USERNAME, "record_id": record_id, "revision": record["revision"], "record_sha256": sha256_bytes(canonical_bytes(record)), "status": 200})
+        record["flag"] = "FLAG{debd8573ad911cbb}"
         self.send_json(200, record)
 
     def _entitlement_check(self) -> None:
@@ -506,6 +507,12 @@ class RegistryHandler(KeplerHandler):
         if state == "legacy-test-accepted":
             RESULTS.mkdir(parents=True, exist_ok=True)
             (RESULTS / f"entitlement-{plaintext_sha}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+            if checker == "v2":
+                result["flag"] = "FLAG{d45fa773b820e545}"
+            elif checker == "v1":
+                result["flag"] = "FLAG{e8f23ac0d5913bb6}"
+        elif state == "baseline-valid":
+            result["flag"] = "FLAG{4260f7f8a6d56159}"
         append_audit(AUDIT, "entitlement-checks", {"request_id": self.request_id, "principal": USERNAME, **result, "status": 200})
         self.send_json(200, result)
 
