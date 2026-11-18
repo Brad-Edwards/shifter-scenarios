@@ -8,4 +8,6 @@ docker compose -f compose.yaml exec -T fieldlink-support php /opt/fieldlink/inst
 docker compose -f compose.yaml exec -T fieldlink-support php /opt/fieldlink/seed-support-users.php
 docker compose -f compose.yaml exec -T fieldlink-support php /opt/fieldlink/seed-support-case.php
 docker compose -f compose.yaml exec -T fieldlink-support php /opt/fieldlink/seed-k17-handover.php
+docker compose -f compose.yaml exec -T fieldlink-support php /opt/fieldlink/seed-k17-talia-recovery.php
+docker compose -f compose.yaml exec -T fieldlink-support php /opt/fieldlink/seed-k17-arwc-assignment.php
 docker compose -f compose.yaml exec -T fieldlink-support php /opt/fieldlink/seed-k18-note.php
