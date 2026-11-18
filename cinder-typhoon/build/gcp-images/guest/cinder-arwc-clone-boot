@@ -41,12 +41,17 @@ published=$(docker port cinder-arwc-fieldlink-edge 443/tcp)
 }
 echo "ARWC fieldlink-edge bound to $address:443"
 
-# Mint a fresh step-ca OTT pool for the archive enrollment at first boot (W04.2).
-# The bake reset mints the pool relative to bake time, so on a cloned range the
-# tokens have expired long before a participant boots. Re-mint here with the
-# event-covering validity (336h from first boot) so archive enrollment works for
-# the whole range lifetime. A mint failure warns but does not fail the boot.
-if [[ -x "$it/native/manage.sh" ]]; then
-  ( cd "$it/native" && bash manage.sh mint-ott-pool 336h ) \
-    || echo 'warning: step-ca OTT pool mint at clone boot failed' >&2
+# Keep the archive step-ca enrollment OTT pool fresh for the whole range life
+# (W04.2). step-ca caps a one-time token at 1h (hardcoded in the step CLI), so a
+# single long-lived pool is impossible; a baked pool also expires long before a
+# clone boots. Install and start a timer that re-mints the whole pool every 20
+# minutes at 1h validity, so the archive always serves a token with at least 30
+# minutes left, with no manual step. The first mint runs about a minute after
+# boot once the native stack is up.
+guest=/opt/arwc-ot-compat/it/cinder-typhoon/build/gcp-images/guest
+if [[ -x "$it/native/manage.sh" && -f "$guest/cinder-arwc-ott-rotate.timer" ]]; then
+  install -m 0644 "$guest/cinder-arwc-ott-rotate.service" /etc/systemd/system/cinder-arwc-ott-rotate.service
+  install -m 0644 "$guest/cinder-arwc-ott-rotate.timer" /etc/systemd/system/cinder-arwc-ott-rotate.timer
+  systemctl daemon-reload
+  systemctl enable --now cinder-arwc-ott-rotate.timer
 fi

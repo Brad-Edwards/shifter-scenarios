@@ -289,11 +289,13 @@ print(q[0]['id'] if q else '')
     # Mint the step-ca one-time-token pool for the archive enrollment endpoint.
     # The provisioner key stays on the host; the archive container receives only
     # the pre-generated tokens, not the signing secrets. Each OTT is single-use
-    # (step-ca enforces jti uniqueness). This is a separate action so it can run
-    # both at reset (dev) and at first boot of an image clone, which lets the
-    # token validity be measured from boot rather than from bake time.
+    # (step-ca enforces jti uniqueness). step-ca caps a one-time token at 1h
+    # (hardcoded MaxValidity in the step CLI; no ca.json claim lifts it), so the
+    # pool is short-lived. A host timer (the ott-rotate systemd units) re-mints
+    # the whole pool on a schedule, so the archive always serves a token with at
+    # least 30 minutes left. Do not pass a validity above 1h: the mint is rejected.
     # Usage: manage.sh mint-ott-pool [validity] [pool-size]
-    ott_validity=${2:-336h}
+    ott_validity=${2:-1h}
     ott_pool=${3:-50}
     # The step-ca container mints the tokens; wait for it on a fresh boot.
     for _ in $(seq 1 60); do
@@ -315,12 +317,14 @@ if p.exists() and not out.exists():
         if prov.get('name') == 'infrastructure' and prov.get('encryptedKey'):
             out.write_text(prov['encryptedKey']); out.chmod(0o644); break
 PYEOF
-    # Generate the OTTs from within the running step-ca container. Each token is
-    # valid for ${ott_validity}; the participant calls GET for a fresh one.
+    # Generate the OTTs from within the running step-ca container. Fail loudly: a
+    # mint error, an empty file, or a non-JWT aborts with a non-zero exit and
+    # leaves no partial pool, so a broken mint never ships empty token files.
     echo "Minting ${ott_pool} step-ca enrollment tokens (validity ${ott_validity})..."
+    mint_err="$(mktemp)"
     for i in $(seq -w 1 "${ott_pool}"); do
-      # Note: stdout redirect must come before stderr redirect for docker exec.
-      docker exec cinder-arwc-native-ca-1 \
+      ott_file=".operator/archive-workflow/tokens/ott-${i}.jwt"
+      if ! docker exec cinder-arwc-native-ca-1 \
         step ca token \
         --provisioner infrastructure \
         --key /home/step/provisioner.enc.json \
@@ -329,24 +333,40 @@ PYEOF
         --root /home/step/certs/root_ca.crt \
         --not-after "${ott_validity}" \
         "archive-submitter" \
-        > ".operator/archive-workflow/tokens/ott-${i}.jwt" 2>/dev/null || true
+        >"${ott_file}" 2>"${mint_err}"; then
+        echo "mint-ott-pool: step ca token failed for ott-${i}: $(cat "${mint_err}")" >&2
+        rm -f .operator/archive-workflow/tokens/ott-*.jwt "${mint_err}"
+        exit 1
+      fi
+      if [[ ! -s "${ott_file}" || "$(tr -cd '.' < "${ott_file}" | wc -c)" -ne 2 ]]; then
+        echo "mint-ott-pool: ott-${i} is empty or not a three-segment JWT" >&2
+        rm -f .operator/archive-workflow/tokens/ott-*.jwt "${mint_err}"
+        exit 1
+      fi
     done
+    rm -f "${mint_err}"
     # Also copy root and intermediate certs for the participant to discover.
     cp .operator/ca/certs/root_ca.crt .operator/archive-workflow/step-ca-root.pem
     cp .operator/ca/certs/intermediate_ca.crt .operator/archive-workflow/step-ca-intermediate.pem
     chmod 0644 .operator/archive-workflow/step-ca-root.pem .operator/archive-workflow/step-ca-intermediate.pem
-    echo "Minted $(ls .operator/archive-workflow/tokens/ott-*.jwt 2>/dev/null | wc -l) enrollment tokens"
-    # Publish tokens and certs to the golden ARWC operator directory for the
-    # archive container. From build/arwc/native/, the golden .operator is at
-    # ../ (build/arwc/.operator).
+    echo "Minted ${ott_pool} enrollment tokens"
+    # Publish tokens and certs to the golden ARWC operator directory that the
+    # archive container serves (ARWC_OPERATOR_DIR/.operator). From build/arwc/
+    # native/, the golden .operator is at ../ (build/arwc/.operator). Publish each
+    # token with a temp-write then atomic rename, so a concurrent read by the
+    # archive during a rotation never sees a truncated or missing token file.
     golden_op="$(cd .. && pwd)/.operator"
-    mkdir -p "${golden_op}/archive-workflow/tokens"
-    chmod 0755 "${golden_op}/archive-workflow/tokens"
-    rm -f "${golden_op}/archive-workflow/tokens/"ott-*.jwt 2>/dev/null || true
-    cp .operator/archive-workflow/tokens/ott-*.jwt "${golden_op}/archive-workflow/tokens/" 2>/dev/null || true
-    chmod 0644 "${golden_op}/archive-workflow/tokens/"ott-*.jwt 2>/dev/null || true
+    golden_tokens="${golden_op}/archive-workflow/tokens"
+    mkdir -p "${golden_tokens}"
+    chmod 0755 "${golden_tokens}"
+    for src in .operator/archive-workflow/tokens/ott-*.jwt; do
+      name="$(basename "${src}")"
+      cp "${src}" "${golden_tokens}/.${name}.tmp"
+      chmod 0644 "${golden_tokens}/.${name}.tmp"
+      mv -f "${golden_tokens}/.${name}.tmp" "${golden_tokens}/${name}"
+    done
     cp .operator/archive-workflow/step-ca-root.pem .operator/archive-workflow/step-ca-intermediate.pem \
-       "${golden_op}/archive-workflow/" 2>/dev/null || true
+       "${golden_op}/archive-workflow/"
     ;;
   seed-archive)
     # Mint the archive enrollment OTT pool. Dev resets mint it here; image clones

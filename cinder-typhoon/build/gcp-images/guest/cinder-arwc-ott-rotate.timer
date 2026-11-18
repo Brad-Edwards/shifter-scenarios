@@ -1,0 +1,16 @@
+[Unit]
+Description=Re-mint the ARWC archive OTT pool so a served token always keeps >=30 minutes validity
+
+[Timer]
+# step-ca one-time tokens are capped at 1h. Re-mint the whole pool every 20
+# minutes so the newest tokens are at most ~20 minutes old when served, leaving
+# at least ~40 minutes of validity and always meeting the 30-minute floor the
+# archive enforces. OnBootSec gives the native stack time to come up; the mint
+# itself also waits for the step-ca container.
+OnBootSec=1min
+OnUnitActiveSec=20min
+AccuracySec=30s
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -503,16 +503,40 @@ def consume_enrollment_token() -> str:
     pool = OTT_POOL
     tokens = sorted(pool.glob("ott-*.jwt")) if pool.exists() else []
     if not tokens:
-        raise ValueError("no enrollment tokens available; re-run seed-archive")
+        raise ValueError("no enrollment tokens available; rotation overdue")
+    # step-ca caps a one-time token at 1h, so the host timer re-mints the whole
+    # pool on a schedule. Serve only a token with at least 30 minutes of validity
+    # left, so a participant who enrolls right after fetching is never handed a
+    # near-expired token. A pool with no such token means rotation has fallen
+    # behind; fail loudly so the caller retries rather than enrolls with a dead
+    # token.
+    min_remaining = 1800
+    now = int(time.time())
+    fresh: list[tuple[int, str, str]] = []
+    for token_path in tokens:
+        ott = token_path.read_text(encoding="utf-8").strip()
+        if ott.count(".") != 2:
+            continue
+        try:
+            payload = ott.split(".")[1]
+            payload += "=" * (-len(payload) % 4)
+            expires = int(json.loads(base64.urlsafe_b64decode(payload))["exp"])
+        except (ValueError, KeyError, json.JSONDecodeError):
+            continue
+        if expires - now >= min_remaining:
+            fresh.append((expires, token_path.name, ott))
+    if not fresh:
+        raise ValueError(
+            "no enrollment token with at least 30 minutes validity; rotation overdue"
+        )
+    # Round-robin across the fresh tokens so each enrollment receives a distinct
+    # single-use OTT (step-ca enforces jti uniqueness).
+    fresh.sort(key=lambda item: (item[0], item[1]))
     state = load_state()
-    index = int(state.get("ott_index", 0)) % len(tokens)
+    index = int(state.get("ott_index", 0)) % len(fresh)
     state["ott_index"] = index + 1
     save_state(state)
-    token_path = tokens[index]
-    ott = token_path.read_text(encoding="utf-8").strip()
-    if not ott:
-        raise ValueError("enrollment token file is empty; re-run seed-archive")
-    return ott
+    return fresh[index][2]
 
 
 def issue_certificate(organizational_unit: str) -> tuple[str, str, str]:

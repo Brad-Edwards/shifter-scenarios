@@ -1,0 +1,14 @@
+[Unit]
+Description=Rotate the ARWC archive step-ca enrollment one-time-token pool
+Documentation=https://smallstep.com/docs/step-ca/provisioners/
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+# manage.sh cd's to its own directory, applies the private-image guard, and waits
+# for the step-ca container before minting. It re-mints the whole pool at 1h
+# validity (the step CLI hardcodes a 1h token cap) and publishes it to the golden
+# operator directory the archive serves. It fails loudly and leaves no empty
+# token files, so a broken mint never ships an unusable pool.
+ExecStart=/usr/bin/env bash /opt/arwc-ot-compat/it/cinder-typhoon/build/arwc/native/manage.sh mint-ott-pool 1h
