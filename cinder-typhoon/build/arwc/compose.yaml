@@ -633,6 +633,8 @@ services:
     container_name: cinder-arwc-diagnostics
     hostname: a-diagnostics
     domainname: a-engineering.arwc.test
+    dns:
+    - 10.77.60.10
     restart: unless-stopped
     read_only: true
     cap_drop: [ALL]
@@ -652,6 +654,9 @@ services:
       engineering:
         ipv4_address: 10.77.63.50
         aliases: [a-diagnostics, diagnostic-services.arwc.test]
+      corporate:
+        ipv4_address: 10.77.60.58
+        aliases: [a-diagnostics]
 
   a-engineering:
     build:
