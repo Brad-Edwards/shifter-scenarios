@@ -122,7 +122,10 @@ def main() -> None:
             for src_file in BUILD_SRC.rglob("*"):
                 if src_file.is_file():
                     rel = src_file.relative_to(BUILD_SRC)
-                    zf.write(src_file, f"core/generated/{rel}")
+                    # The PLC server extracts into core/generated/ — do NOT
+                    # include that prefix in the zip entries or files land in
+                    # core/generated/core/generated/ (double-nested).
+                    zf.write(src_file, str(rel))
         program_zip = buf.getvalue()
         print(f"Program zip: {len(program_zip):,} bytes from host build dir")
     else:
@@ -325,7 +328,9 @@ def save_zip() -> None:
         for src_file in BUILD_SRC.rglob("*"):
             if src_file.is_file():
                 rel = src_file.relative_to(BUILD_SRC)
-                zf.write(src_file, f"core/generated/{rel}")
+                # The PLC server extracts into core/generated/ — do NOT include
+                # that prefix; zip entries are relative to the extraction root.
+                zf.write(src_file, str(rel))
     COMMITTED_ZIP.write_bytes(buf.getvalue())
     print(f"Wrote {COMMITTED_ZIP} ({len(buf.getvalue()):,} bytes) — source digest: {digest[:16]}…")
     print("Commit this file alongside its source.")
