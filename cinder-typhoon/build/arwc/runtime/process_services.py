@@ -1561,22 +1561,24 @@ class Handler(BaseHTTPRequestHandler):
             import psycopg2 as _pg
             ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
                              user="reader", password=OT_READER_PASS, connect_timeout=5)
-            ot.autocommit = True
-            with ot.cursor() as cur:
-                cur.execute("""
-                    SELECT ph.source_time, ph.value, ph.unit, ph.process_quality,
-                           ph.collected_time, ph.ingested_at
-                    FROM public.process_history ph
-                    JOIN public.historian_tag_catalog c ON c.series = ph.tag
-                    WHERE ph.asset = 'AST-CRR-017'
-                      AND c.variable = 'UsableVolumeML'
-                      AND ph.source_time >= current_timestamp - interval '5 minutes'
-                    ORDER BY ph.source_time DESC
-                    LIMIT 20
-                """)
-                rows = cur.fetchall()
-            ot.close()
-        except (OSError, ImportError) as exc:
+            try:
+                ot.autocommit = True
+                with ot.cursor() as cur:
+                    cur.execute("""
+                        SELECT ph.source_time, ph.value, ph.unit, ph.process_quality,
+                               ph.collected_time, ph.ingested_at
+                        FROM public.process_history ph
+                        JOIN public.historian_tag_catalog c ON c.series = ph.tag
+                        WHERE ph.asset = 'AST-CRR-017'
+                          AND c.variable = 'UsableVolumeML'
+                          AND ph.source_time >= current_timestamp - interval '5 minutes'
+                        ORDER BY ph.source_time DESC
+                        LIMIT 20
+                    """)
+                    rows = cur.fetchall()
+            finally:
+                ot.close()
+        except Exception:
             self.send_json(409, {"error": "OT historian unavailable"})
             return
         if not rows:
@@ -1686,20 +1688,22 @@ class Handler(BaseHTTPRequestHandler):
             import psycopg2 as _pg
             ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
                              user="reader", password=OT_READER_PASS, connect_timeout=5)
-            ot.autocommit = True
-            with ot.cursor() as cur:
-                cur.execute("""
-                    SELECT ph.source_time, ph.value, ph.unit, ph.process_quality
-                    FROM public.process_history ph
-                    JOIN public.historian_tag_catalog c ON c.series = ph.tag
-                    WHERE ph.asset = 'AST-CRR-017'
-                      AND c.variable = 'UsableVolumeML'
-                      AND ph.source_time >= current_timestamp - interval '5 minutes'
-                    ORDER BY ph.source_time DESC
-                    LIMIT 20
-                """)
-                rows = cur.fetchall()
-            ot.close()
+            try:
+                ot.autocommit = True
+                with ot.cursor() as cur:
+                    cur.execute("""
+                        SELECT ph.source_time, ph.value, ph.unit, ph.process_quality
+                        FROM public.process_history ph
+                        JOIN public.historian_tag_catalog c ON c.series = ph.tag
+                        WHERE ph.asset = 'AST-CRR-017'
+                          AND c.variable = 'UsableVolumeML'
+                          AND ph.source_time >= current_timestamp - interval '5 minutes'
+                        ORDER BY ph.source_time DESC
+                        LIMIT 20
+                    """)
+                    rows = cur.fetchall()
+            finally:
+                ot.close()
         except Exception:
             self.send_json(409, {"error": "OT historian unavailable"})
             return
@@ -1796,17 +1800,19 @@ class Handler(BaseHTTPRequestHandler):
             import psycopg2 as _pg
             ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
                              user="reader", password=OT_READER_PASS, connect_timeout=5)
-            ot.autocommit = True
-            with ot.cursor() as cur:
-                cur.execute("""
-                    SELECT ph.value FROM public.process_history ph
-                    JOIN public.historian_tag_catalog c ON c.series = ph.tag
-                    WHERE ph.asset = 'AST-CRR-017' AND c.variable = 'ProjectRevision'
-                      AND ph.source_time >= current_timestamp - interval '5 minutes'
-                    ORDER BY ph.source_time DESC LIMIT 1
-                """)
-                row = cur.fetchone()
-            ot.close()
+            try:
+                ot.autocommit = True
+                with ot.cursor() as cur:
+                    cur.execute("""
+                        SELECT ph.value FROM public.process_history ph
+                        JOIN public.historian_tag_catalog c ON c.series = ph.tag
+                        WHERE ph.asset = 'AST-CRR-017' AND c.variable = 'ProjectRevision'
+                          AND ph.source_time >= current_timestamp - interval '5 minutes'
+                        ORDER BY ph.source_time DESC LIMIT 1
+                    """)
+                    row = cur.fetchone()
+            finally:
+                ot.close()
         except Exception:
             self.send_json(409, {"error": "OT historian unavailable"})
             return
@@ -1855,30 +1861,32 @@ class Handler(BaseHTTPRequestHandler):
             UTC = _dt.timezone.utc
             ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
                              user="reader", password=OT_READER_PASS, connect_timeout=5)
-            ot.autocommit = True
-            with ot.cursor() as cur:
-                cur.execute(
-                    "SELECT source_time FROM public.command_history "
-                    "WHERE asset='AST-CRR-017' AND channel='dispatcher' "
-                    "AND source_time >= current_timestamp - interval '24 hours' "
-                    "ORDER BY source_time DESC LIMIT 1"
-                )
-                cmd_row = cur.fetchone()
-                if cmd_row is None:
-                    self.send_json(409, {"error": "W30 PLC acceptance not found in command history"})
-                    ot.close(); return
-                plc_accepted = cmd_row[0].replace(tzinfo=UTC)
-                window_end = plc_accepted + _dt.timedelta(minutes=3)
-                cur.execute("""
-                    SELECT ph.source_time, ph.value, ph.process_quality
-                    FROM public.process_history ph
-                    JOIN public.historian_tag_catalog c ON c.series = ph.tag
-                    WHERE ph.asset = 'AST-CRR-017' AND c.variable = 'TotalFlowM3s'
-                      AND ph.source_time >= %s AND ph.source_time <= %s
-                    ORDER BY ph.source_time
-                """, (plc_accepted, window_end))
-                rows = cur.fetchall()
-            ot.close()
+            try:
+                ot.autocommit = True
+                with ot.cursor() as cur:
+                    cur.execute(
+                        "SELECT source_time FROM public.command_history "
+                        "WHERE asset='AST-CRR-017' AND channel='dispatcher' "
+                        "AND source_time >= current_timestamp - interval '24 hours' "
+                        "ORDER BY source_time DESC LIMIT 1"
+                    )
+                    cmd_row = cur.fetchone()
+                    if cmd_row is None:
+                        self.send_json(409, {"error": "W30 PLC acceptance not found in command history"})
+                        return
+                    plc_accepted = cmd_row[0].replace(tzinfo=UTC)
+                    window_end = plc_accepted + _dt.timedelta(minutes=3)
+                    cur.execute("""
+                        SELECT ph.source_time, ph.value, ph.process_quality
+                        FROM public.process_history ph
+                        JOIN public.historian_tag_catalog c ON c.series = ph.tag
+                        WHERE ph.asset = 'AST-CRR-017' AND c.variable = 'TotalFlowM3s'
+                          AND ph.source_time >= %s AND ph.source_time <= %s
+                        ORDER BY ph.source_time
+                    """, (plc_accepted, window_end))
+                    rows = cur.fetchall()
+            finally:
+                ot.close()
         except Exception:
             self.send_json(409, {"error": "OT historian unavailable"})
             return
@@ -2018,23 +2026,25 @@ class Handler(BaseHTTPRequestHandler):
             import psycopg2 as _pg
             ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
                              user="reader", password=OT_READER_PASS, connect_timeout=5)
-            ot.autocommit = True
-            with ot.cursor() as cur:
-                import psycopg2.extras as _ext
-                cur.execute(
-                    "SELECT id::text, status FROM public.dispatch_history "
-                    "WHERE id::text = ANY(%s) AND status = 'completed'",
-                    (request_ids,)
-                )
-                completed_ids = {r[0] for r in cur.fetchall()}
-                cur.execute(
-                    "SELECT channel, sequence, source_time FROM public.command_history "
-                    "WHERE asset='AST-CRR-017' AND channel='HMI' AND sequence=%s "
-                    "AND source_time >= %s ORDER BY source_time LIMIT 1",
-                    (restore_sequence, started)
-                )
-                hmi_row = cur.fetchone()
-            ot.close()
+            try:
+                ot.autocommit = True
+                with ot.cursor() as cur:
+                    import psycopg2.extras as _ext
+                    cur.execute(
+                        "SELECT id::text, status FROM public.dispatch_history "
+                        "WHERE id::text = ANY(%s) AND status = 'completed'",
+                        (request_ids,)
+                    )
+                    completed_ids = {r[0] for r in cur.fetchall()}
+                    cur.execute(
+                        "SELECT channel, sequence, source_time FROM public.command_history "
+                        "WHERE asset='AST-CRR-017' AND channel='HMI' AND sequence=%s "
+                        "AND source_time >= %s ORDER BY source_time LIMIT 1",
+                        (restore_sequence, started)
+                    )
+                    hmi_row = cur.fetchone()
+            finally:
+                ot.close()
         except Exception:
             self.send_json(409, {"error": "OT historian unavailable"})
             return
@@ -2093,40 +2103,42 @@ class Handler(BaseHTTPRequestHandler):
             UTC = _dt.timezone.utc
             ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
                              user="reader", password=OT_READER_PASS, connect_timeout=5)
-            ot.autocommit = True
-            with ot.cursor() as cur:
-                cur.execute(
-                    "SELECT id::text, time FROM public.dispatch_history "
-                    "WHERE id::text = ANY(%s) AND status = 'completed' ORDER BY time",
-                    (request_ids,)
-                )
-                completed_times = {r[0]: r[1].replace(tzinfo=UTC) for r in cur.fetchall()}
-                means = []
-                for rid in request_ids:
-                    comp = completed_times.get(rid)
-                    if not comp:
-                        self.send_json(409, {"error": f"request {rid[:8]} not completed in historian"}); ot.close(); return
-                    start = comp - _dt.timedelta(seconds=SETTLED_WINDOW)
+            try:
+                ot.autocommit = True
+                with ot.cursor() as cur:
+                    cur.execute(
+                        "SELECT id::text, time FROM public.dispatch_history "
+                        "WHERE id::text = ANY(%s) AND status = 'completed' ORDER BY time",
+                        (request_ids,)
+                    )
+                    completed_times = {r[0]: r[1].replace(tzinfo=UTC) for r in cur.fetchall()}
+                    means = []
+                    for rid in request_ids:
+                        comp = completed_times.get(rid)
+                        if not comp:
+                            self.send_json(409, {"error": f"request {rid[:8]} not completed in historian"}); return
+                        start = comp - _dt.timedelta(seconds=SETTLED_WINDOW)
+                        cur.execute(
+                            "SELECT ph.value FROM public.process_history ph "
+                            "JOIN public.historian_tag_catalog c ON c.series = ph.tag "
+                            "WHERE ph.asset='AST-CRR-017' AND c.variable='TotalFlowM3s' "
+                            "AND ph.source_time >= %s AND ph.source_time <= %s "
+                            "AND ph.process_quality='Good' ORDER BY ph.source_time",
+                            (start, comp)
+                        )
+                        vals = [float(r[0]) for r in cur.fetchall()]
+                        means.append(sum(vals) / len(vals) if vals else 0.0)
+                    first_time = min(completed_times.values()) - _dt.timedelta(seconds=10)
                     cur.execute(
                         "SELECT ph.value FROM public.process_history ph "
                         "JOIN public.historian_tag_catalog c ON c.series = ph.tag "
-                        "WHERE ph.asset='AST-CRR-017' AND c.variable='TotalFlowM3s' "
-                        "AND ph.source_time >= %s AND ph.source_time <= %s "
-                        "AND ph.process_quality='Good' ORDER BY ph.source_time",
-                        (start, comp)
+                        "WHERE ph.asset='AST-CRR-017' AND c.variable='UsableVolumeML' "
+                        "AND ph.source_time <= %s ORDER BY ph.source_time DESC LIMIT 1",
+                        (first_time,)
                     )
-                    vals = [float(r[0]) for r in cur.fetchall()]
-                    means.append(sum(vals) / len(vals) if vals else 0.0)
-                first_time = min(completed_times.values()) - _dt.timedelta(seconds=10)
-                cur.execute(
-                    "SELECT ph.value FROM public.process_history ph "
-                    "JOIN public.historian_tag_catalog c ON c.series = ph.tag "
-                    "WHERE ph.asset='AST-CRR-017' AND c.variable='UsableVolumeML' "
-                    "AND ph.source_time <= %s ORDER BY ph.source_time DESC LIMIT 1",
-                    (first_time,)
-                )
-                uv_row = cur.fetchone()
-            ot.close()
+                    uv_row = cur.fetchone()
+            finally:
+                ot.close()
         except Exception:
             self.send_json(409, {"error": "OT historian unavailable"})
             return
@@ -2209,20 +2221,22 @@ class Handler(BaseHTTPRequestHandler):
             import psycopg2 as _pg
             ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
                              user="reader", password=OT_READER_PASS, connect_timeout=5)
-            ot.autocommit = True
-            with ot.cursor() as cur:
-                cur.execute(
-                    "SELECT status,sequence,time,detail FROM public.dispatch_history "
-                    "WHERE id=%s ORDER BY time", (request_id,)
-                )
-                dispatch_rows = cur.fetchall()
-                cur.execute(
-                    "SELECT channel,decision,sequence,source_time FROM public.command_history "
-                    "WHERE asset='AST-CRR-017' AND source_time >= %s AND source_time <= %s",
-                    (start, end)
-                )
-                command_rows = cur.fetchall()
-            ot.close()
+            try:
+                ot.autocommit = True
+                with ot.cursor() as cur:
+                    cur.execute(
+                        "SELECT status,sequence,time,detail FROM public.dispatch_history "
+                        "WHERE id=%s ORDER BY time", (request_id,)
+                    )
+                    dispatch_rows = cur.fetchall()
+                    cur.execute(
+                        "SELECT channel,decision,sequence,source_time FROM public.command_history "
+                        "WHERE asset='AST-CRR-017' AND source_time >= %s AND source_time <= %s",
+                        (start, end)
+                    )
+                    command_rows = cur.fetchall()
+            finally:
+                ot.close()
         except Exception:
             self.send_json(409, {"error": "OT historian unavailable"})
             return
@@ -2355,21 +2369,23 @@ class Handler(BaseHTTPRequestHandler):
             import psycopg2 as _pg
             ot = _pg.connect(host=OT_HISTORIAN, port=5432, dbname="historian",
                              user="reader", password=OT_READER_PASS, connect_timeout=5)
-            ot.autocommit = True
-            with ot.cursor() as cur:
-                cur.execute("""
-                    SELECT ph.value
-                    FROM public.process_history ph
-                    JOIN public.historian_tag_catalog c ON c.series = ph.tag
-                    WHERE ph.asset = 'AST-CRR-017'
-                      AND c.variable = 'UsableVolumeML'
-                      AND ph.process_quality = 'Good'
-                    ORDER BY ph.source_time DESC
-                    LIMIT 1
-                """)
-                row = cur.fetchone()
-            ot.close()
-        except (OSError, ImportError, Exception):
+            try:
+                ot.autocommit = True
+                with ot.cursor() as cur:
+                    cur.execute("""
+                        SELECT ph.value
+                        FROM public.process_history ph
+                        JOIN public.historian_tag_catalog c ON c.series = ph.tag
+                        WHERE ph.asset = 'AST-CRR-017'
+                          AND c.variable = 'UsableVolumeML'
+                          AND ph.process_quality = 'Good'
+                        ORDER BY ph.source_time DESC
+                        LIMIT 1
+                    """)
+                    row = cur.fetchone()
+            finally:
+                ot.close()
+        except Exception:
             self.send_json(409, {"error": "OT historian unavailable for instrument reserve reading"}); return
         if row is None:
             self.send_json(409, {"error": "no UsableVolumeML reading in OT historian"}); return
@@ -2879,7 +2895,8 @@ def main() -> None:
     context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     context.minimum_version = ssl.TLSVersion.TLSv1_2
     context.load_cert_chain("/tmp/server.crt", "/tmp/server.key")
-    server.socket = context.wrap_socket(server.socket, server_side=True)
+    server.socket = context.wrap_socket(server.socket, server_side=True, do_handshake_on_connect=False)
+    Handler.timeout = 30
     server.serve_forever()
 
 
