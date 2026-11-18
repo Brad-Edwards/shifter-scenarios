@@ -279,7 +279,17 @@ print('opcua.json updated with range credentials')
         check=False,
     )
     print("Server cert copied to .operator/server-cert.pem")
-    print("Done. Run prepare_services.py next to configure Telegraf.")
+    # The running collector trusts /run/pki/server-cert.pem (.operator/telegraf-pki).
+    # A reseeded PLC can present a new certificate, so refresh that trust copy and
+    # restart the collector without rewriting its configuration (the site/historian
+    # collector config differs from the compatibility one prepare_services writes).
+    pki = OPERATOR / "telegraf-pki"
+    if pki.is_dir() and (OPERATOR / "server-cert.pem").is_file():
+        _exec(["cp", str(OPERATOR / "server-cert.pem"), str(pki / "server-cert.pem")])
+        if _exec(["docker", "inspect", "arwc-ot-compat-telegraf-1"]) == 0:
+            _exec(["docker", "restart", "arwc-ot-compat-telegraf-1"])
+            print("Collector trust refreshed and telegraf restarted")
+    print("Done. On a first setup, run prepare_services.py next to configure Telegraf.")
 
 
 _SOURCE_FILES = (
