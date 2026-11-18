@@ -33,6 +33,8 @@ import subprocess
 import time
 import unittest
 import uuid
+import ssl
+import urllib.request
 from urllib.parse import quote, urlencode, urlsplit
 
 
@@ -1079,6 +1081,9 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             # The recovered planner handover token is saved for the planning path.
             write_receipt("planner-handover", response["planner_handover"])
             self.evidence["planner_handover_token"] = response["planner_handover"]
+            # planning_access contains the Nextcloud credentials and oauth_context_path
+            # used by W06.2 to fetch the authoritative oauth_state from OAUTH-PLN-882.json.
+            self.evidence["planning_access"] = response["record"].get("planning_access", {})
 
     # ------------------------------------------------------------------ W05
     def test_w05_temporary_identity(self) -> None:
@@ -1122,18 +1127,32 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
             status, response = request(self.discovered_route("identity.session-audit"), headers=access, expected=200)
             record = response["record"]
             self.evidence["oauth_transaction"] = record["oauth_transaction"]
-            self.evidence["oauth_state"] = record["oauth_state"]
-            self.evidence["planner_drawing"] = record.get("drawing", "DRW-OG2-R8")
-            self.evidence["planner_review"] = record["review"]
+            # drawing and review are verified against RENDERING constants; oauth_state
+            # from session-audit is corporate-identity's internal random value and must
+            # NOT be used for W06.2 — the service validates against OAUTH-PLN-882.json.
             # A wrong planning access is refused.
             status, _ = request(self.discovered_route("identity.session-audit"), headers={"X-ARWC-Planning-Access": "wrong"})
             self.assertEqual(status, 403)
 
         with self.subTest(card="W06.2 a drawing in the wrong context"):
+            # The drawing_context handler validates oauth_state against OAUTH-PLN-882.json
+            # fetched from Nextcloud — not against the session-audit's oauth_state field,
+            # which comes from corporate-identity's separately-initialized state.
+            # Fetch the authoritative oauth_state from Nextcloud using the planning_access
+            # credentials recovered from the W04.3 handover artifact.
+            pa = self.evidence["planning_access"]
+            docs_ctx = ssl.create_default_context(cafile="/tmp/arwc-ca-bundle.pem")
+            oauth_filename = pa.get("oauth_context_path", "/OAUTH-PLN-882.json").rsplit("/", 1)[-1]
+            nc_url = f"{pa.get('documents', 'https://documents.arwc.test')}/remote.php/dav/files/{pa['username']}/{oauth_filename}"
+            nc_auth = "Basic " + __import__("base64").b64encode(f"{pa['username']}:{pa['password']}".encode()).decode()
+            nc_req = urllib.request.Request(nc_url, headers={"Authorization": nc_auth})
+            with urllib.request.urlopen(nc_req, context=docs_ctx, timeout=10) as r:
+                oauth_ctx = json.loads(r.read())
+            oauth_state = oauth_ctx["oauth_state"]
             status, response = request(
                 self.discovered_route("identity.drawing-context"), method="POST", headers=archive_access,
-                body={"oauth_state": self.evidence["oauth_state"], "drawing": self.evidence["planner_drawing"],
-                      "review": self.evidence["planner_review"], "preview_origin": preview_origin}, expected=201)
+                body={"oauth_state": oauth_state, "drawing": "DRW-OG2-R8",
+                      "review": "REV-CRR-4417", "preview_origin": preview_origin}, expected=201)
             self.assertEqual(response["record"]["preview_origin"], preview_origin)
 
         with self.subTest(card="W06.3 a planner session that works"):
