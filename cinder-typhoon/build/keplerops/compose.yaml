@@ -911,7 +911,10 @@ services:
       - "cloud-api.keplerops.test:10.77.52.11"
       - "objects.keplerops.test:10.77.56.60"
     healthcheck:
-      test: ["CMD", "curl", "-f", "--cacert", "/run/fieldkest-tls/server.crt", "https://localhost:443/health"]
+      # The service cert covers cloud-api.keplerops.test, not localhost. Validate the
+      # cert-covered name but force it to the local service with --resolve, so the check
+      # does not depend on the router and does not need -k (no TLS verify bypass).
+      test: ["CMD", "curl", "-f", "--resolve", "cloud-api.keplerops.test:443:127.0.0.1", "--cacert", "/run/fieldkest-tls/server.crt", "https://cloud-api.keplerops.test:443/health"]
       interval: 10s
       timeout: 5s
       retries: 5

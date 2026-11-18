@@ -78,7 +78,12 @@ if [[ ! -e $cloud_api_cred || $previous != "$current" ]]; then
   printf '{"token":"%s","ca":"%s","server":"https://10.77.52.60:6443","namespace":"fieldlink"}\n' \
     "$cloud_token" "$(echo "$ca_data" | base64 -w0)" >"$temporary"
   mv "$temporary" "$cloud_api_cred"
-  chmod 0400 "$cloud_api_cred"
+  # k-cloud-api runs as the non-root fieldkest-cloud-api user and mounts this file
+  # read-only. The file must be readable by that user, so use 0444 like the other
+  # credentials in the same container (server.crt, server.key, export-credentials).
+  # 0400 (root-only) makes k-cloud-api fail to read it and every K3s-backed route
+  # returns 502 (K13.4 workspace token-exchange and the K14/K16 chain depend on it).
+  chmod 0444 "$cloud_api_cred"
   printf '%s\n' "$current" >"$cloud_api_identity"
 fi
 echo 'Native namespace and scoped workspace configuration ready.'
