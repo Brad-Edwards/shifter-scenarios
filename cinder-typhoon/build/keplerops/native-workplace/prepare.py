@@ -130,7 +130,6 @@ def prepare(operator: Path) -> None:
                 'standardFlowEnabled': True, 'directAccessGrantsEnabled': False,
                 'serviceAccountsEnabled': False,
                 'redirectUris': ['https://support.keplerops.test/federation/callback'],
-                'registrationAccessTokenLifespan': 0,
                 'defaultClientScopes': ['web-origins', 'acr', 'profile', 'roles', 'email'],
             },
         ],
