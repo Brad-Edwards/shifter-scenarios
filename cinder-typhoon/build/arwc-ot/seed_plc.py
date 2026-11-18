@@ -27,8 +27,10 @@ OPERATOR = ROOT / ".operator"
 # Generate it once from a configured slice (see README) and commit it so every
 # bake uses the same pre-validated program without the OpenPLC Editor.
 COMMITTED_ZIP = ROOT / "plc-program.zip"
-# Fallback: the C++ source tree produced by a previous editor run on this host.
-BUILD_SRC = pathlib.Path("/opt/arwc-ot-compat/work/arwc-compat/build/OpenPLC Runtime v4/src")
+# Fallback: the C++ source tree produced by the site editor run on this host.
+# arwc-site (two-outlet CRR) is authoritative; arwc-compat (one-outlet) is
+# a compatibility subset that lacks PermissiveB, MovingB, PositionBPct, etc.
+BUILD_SRC = pathlib.Path("/opt/arwc-ot-compat/work/arwc-site/build/OpenPLC Runtime v4/src")
 _PLC_CONTAINER = "arwc-ot-compat-plc-1"
 _PLC_HOST = "172.29.63.20"
 _PLC_PORT = 8443
