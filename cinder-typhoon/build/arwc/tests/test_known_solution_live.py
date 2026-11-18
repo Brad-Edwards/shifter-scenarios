@@ -1115,6 +1115,7 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
     def test_w06_planner_session(self) -> None:
         base = self.host("corporate_identity")
         access = {"X-ARWC-Planning-Access": self.evidence["limited_session"]}
+        archive_access = {"X-ARWC-Planning-Access": self.evidence["planner_handover_token"]}
         preview_origin = "https://preview-cinder.arwc.test"
 
         with self.subTest(card="W06.1 the planner's login trail"):
@@ -1130,14 +1131,14 @@ class ARWCKnownSolutionAcceptance(unittest.TestCase):
 
         with self.subTest(card="W06.2 a drawing in the wrong context"):
             status, response = request(
-                self.discovered_route("identity.drawing-context"), method="POST", headers=access,
+                self.discovered_route("identity.drawing-context"), method="POST", headers=archive_access,
                 body={"oauth_state": self.evidence["oauth_state"], "drawing": self.evidence["planner_drawing"],
                       "review": self.evidence["planner_review"], "preview_origin": preview_origin}, expected=201)
             self.assertEqual(response["record"]["preview_origin"], preview_origin)
 
         with self.subTest(card="W06.3 a planner session that works"):
             status, response = request(
-                self.discovered_route("identity.sessions"), method="POST", headers=access,
+                self.discovered_route("identity.sessions"), method="POST", headers=archive_access,
                 body={"oauth_transaction": self.evidence["oauth_transaction"], "preview_origin": preview_origin}, expected=201)
             self.assertEqual(response["record"]["scope"], "planning-records")
             write_receipt("planner-session", response["planner_session"])
