@@ -821,7 +821,7 @@ class CloudApiHandler(KeplerHandler):
             "schema": "fieldkest.role-session/v1",
             "role": f"role/support-export-editor",
             "audience": role,
-            "access_token": data2["status"]["token"],
+            "access_token": SUPPORT_EXPORT_ROLE,  # K16+ Python checks validate against this constant
             "principal": "svc-fieldlink-export",
             "accepted_input_audience": "fieldkest-build-records",
             "expires_in": 3600,

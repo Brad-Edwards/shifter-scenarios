@@ -1352,12 +1352,14 @@ class Handler(BaseHTTPRequestHandler):
             return
         if ROLE == "engineering" and path == "/api/live-observations/current":
             card = request.get("card")
-            if card not in {"W17.1", "W17.2", "W17.3", "W17.4"}:
-                self.send_json(400, {"error": "card must be W17.1 through W17.4"}); return
+            if card not in {"W17.1", "W17.2", "W17.3", "W17.4",
+                            "W18.1", "W18.2", "W18.3", "W18.4"}:
+                self.send_json(400, {"error": "card must be W17.1-W17.4 or W18.1-W18.4"}); return
             submission = {k: v for k, v in request.items() if k != "card"}
+            _challenge_dir = "/opt/arwc-ot/challenges/W17" if card.startswith("W17") else "/opt/arwc-ot/challenges/W18"
             _w17_prog = (
                 "import sys,json,hashlib,datetime,psycopg2,psycopg2.extras\n"
-                "sys.path.insert(0,'/opt/arwc-ot/challenges/W17')\n"
+                f"sys.path.insert(0,'{_challenge_dir}')\n"
                 "import check_evidence\n"
                 "UTC=datetime.timezone.utc\n"
                 "d=json.loads(sys.stdin.read())\n"
@@ -1404,6 +1406,10 @@ class Handler(BaseHTTPRequestHandler):
                 "W17.2": "FLAG{a6a4563e676656d3}",
                 "W17.3": "FLAG{29af64987ad77321}",
                 "W17.4": "FLAG{a61eaf28fdd2f12c}",
+                "W18.1": "FLAG{73df52a55c086268}",
+                "W18.2": "FLAG{5b9b0ae9726e230f}",
+                "W18.3": "FLAG{d67d3828f16f64ad}",
+                "W18.4": "FLAG{1cdd24443cc4a0bc}",
             }
             self.send_json(201, {"card": card, "satisfied": True, "flag": flags[card]})
             return
