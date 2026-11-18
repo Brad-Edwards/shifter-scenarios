@@ -18,7 +18,7 @@
         {
           "mode": "0640",
           "path": "examples/inspection-compat.fki",
-          "sha256": "543a002d5bf57a8184f6aead0cc74f04e74f8070d750332ef01bcba1f7bbf198",
+          "sha256": "148212922b38ad34f569489fc4452bb70f90de0287c385521361ce5583d89594",
           "size": 13
         },
         {
@@ -60,7 +60,7 @@
       ],
       "group": "fieldkest",
       "owner": "fieldkest",
-      "sha256": "25915d4cb748f2282e1bca8ac0cb4515cd222f964c00efc8b2980fc92f6b51a8",
+      "sha256": "8b87e44bee77dad27a0820d51fa77002b49508fe92de9ffc6622c439a46754d7",
       "size": 20480
     },
     {

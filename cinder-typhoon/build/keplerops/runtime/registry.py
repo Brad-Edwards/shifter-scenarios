@@ -92,6 +92,12 @@ class RegistryHandler(KeplerHandler):
             if self.headers.get("Authorization", "") != f"Bearer {RELEASE_ADMIN_TOKEN}":
                 self.send_json(403, {"error": "release_administration_denied"})
                 return
+            meta_file = PUBLISHED / "package-meta.json"
+            try:
+                meta = json.loads(meta_file.read_text()) if meta_file.exists() else {}
+            except Exception:
+                meta = {}
+            pending = meta.get("pending_release", "7.4.3-cinder.rset1")
             value = {
                 "principal": "svc-release-admin",
                 "approval_scope": "fieldlink-connector-rehearsal",
@@ -99,6 +105,7 @@ class RegistryHandler(KeplerHandler):
                 "consumer": "support-rehearsal-v3",
                 "consumer_interface": "fieldkest.connector/v3",
                 "approval_request": {
+                    "version": pending,
                     "interfaces": ["fieldkest.connector/v2", "fieldkest.connector/v3"],
                     "lineage": K29_CONFIG["lineage"],
                     "key_id": K29_CONFIG["old_key_id"],
