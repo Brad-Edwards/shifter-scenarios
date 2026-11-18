@@ -14,6 +14,10 @@ services:
     networks:
       history_exchange:
         ipv4_address: 172.29.62.3
+  a-data:
+    logging: *id001
+    volumes:
+    - ${ARWC_OT_OPERATOR_DIR:?Set the OT operator directory}/integration-bridge/operating-reader.json:/run/arwc-operating-reader.json:ro
   a-connector:
     logging: *id001
   fieldlink-edge:

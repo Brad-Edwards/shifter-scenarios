@@ -458,7 +458,19 @@ PYEOF
     # host's carrier-network IP (10.77.59.x) so image hosts bind correctly, not
     # only dev/golden at 10.77.59.2. An explicit ARWC_CARRIER_ADDRESS still wins.
     export ARWC_CARRIER_ADDRESS="${ARWC_CARRIER_ADDRESS:-$(ip -o -4 addr show | grep -oE '10\.77\.59\.[0-9]+' | head -1)}"
-    app_compose=(docker compose --project-name cinder-arwc --env-file images.env -f ../compose.yaml)
+    # Prepare the OT-site integration bridge (historian view, TLS, and read-only identity)
+    # so the data-bridge entrypoint can install /tmp/ot-* files and operating-history works.
+    slice=/opt/arwc-ot-compat/slice
+    if [[ -d $slice ]]; then
+      ot_compose=(docker compose -f "${slice}/compose.yaml" -f "${slice}/site/compose.yaml")
+      "${ot_compose[@]}" run --rm -T tools python /slice/integration/prepare.py
+      export ARWC_OT_OPERATOR_DIR="${slice}/.operator"
+    fi
+    ot_overlay=()
+    if [[ -n ${ARWC_OT_OPERATOR_DIR:-} ]]; then
+      ot_overlay=(-f "${slice}/integration/it-compose.yaml")
+    fi
+    app_compose=(docker compose --project-name cinder-arwc --env-file images.env -f ../compose.yaml "${ot_overlay[@]}")
     "${app_compose[@]}" up --no-build --pull never -d
     # compose.yaml defines every application service, including a-engineering,
     # a-instruments, a-diagnostics, a-renderer and a-control-broker. Compose
