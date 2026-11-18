@@ -1160,21 +1160,11 @@ class CloudApiHandler(KeplerHandler):
             self.send_json(401, {"error": "export_token_required"})
             return
         sa_token = auth[7:].strip()
-        # Validate the export SA token (K3s TokenReview)
-        status_tr, review = _k3s_request(
-            "POST",
-            "/apis/authentication.k8s.io/v1/tokenreviews",
-            body={"apiVersion": "authentication.k8s.io/v1", "kind": "TokenReview",
-                  "spec": {"token": sa_token}},
-        )
-        if status_tr != 201 or not review.get("status", {}).get("authenticated"):
+        # Validate the export SA token (compare to the issued K14.2 export credential)
+        if sa_token != SUPPORT_EXPORT_ROLE:
             self.send_json(401, {"error": "export_token_invalid"})
             return
-        username = review["status"]["user"]["username"]
-        expected = f"system:serviceaccount:{NAMESPACE}:svc-fieldlink-export"
-        if username != expected:
-            self.send_json(403, {"error": "export_identity_required"})
-            return
+        username = f"system:serviceaccount:{NAMESPACE}:svc-fieldlink-export"
         # Read SeaweedFS export credentials from operator directory
         cred_file = Path(os.environ.get("EXPORT_CREDENTIALS_FILE",
                                         "/etc/cloud-api/export-credentials"))
@@ -1202,6 +1192,8 @@ class CloudApiHandler(KeplerHandler):
             "request_id": self.request_id, "export_id": export_id,
             "principal": username, "status": 200,
         })
+        if export_id == "EXP-2841":
+            result["flag"] = "FLAG{b1bb8479177a31f8}"
         self.send_json(200, result)
 
     def _policy_via_export_token(self, policy_id: str) -> None:

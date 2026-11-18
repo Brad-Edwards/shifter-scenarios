@@ -98,7 +98,10 @@ class CIHandler(KeplerHandler):
                 return
             job_data = json.loads(job_path.read_text())
             if job_data.get("state") == "success":
-                job_data["flag"] = "FLAG{9c7e8e7a35ec128c}"
+                if job_data.get("profile") == "runner-command":
+                    job_data["flag"] = "FLAG{783b665bfc42fd9f}"
+                else:
+                    job_data["flag"] = "FLAG{9c7e8e7a35ec128c}"
             self.send_json(200, job_data)
         elif path.startswith("/api/runs/"):
             # K09.2: CI runner run metadata and retained artifacts.

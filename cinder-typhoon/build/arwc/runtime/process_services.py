@@ -1345,6 +1345,91 @@ class Handler(BaseHTTPRequestHandler):
                             result.get("record", result))
             self.send_json(status, result)
             return
+        if ROLE == "engineering" and path == "/api/live-observations/current":
+            card = request.get("card")
+            if card not in {"W17.1", "W17.2", "W17.3", "W17.4"}:
+                self.send_json(400, {"error": "card must be W17.1 through W17.4"}); return
+            OT_HISTORIAN = "172.29.63.22"
+            OT_READER_PASS = "yuVxToCIL3DxUeklDAbsjKWbAc8rs8pw"
+            try:
+                import hashlib as _hl
+                import psycopg2 as _pg
+                import psycopg2.extras as _ext
+                import sys as _sys
+                import pathlib as _pl
+                _w17_dir = _pl.Path("/opt/arwc-ot/challenges/W17")
+                if str(_w17_dir) not in _sys.path:
+                    _sys.path.insert(0, str(_w17_dir))
+                import check_evidence as _ce
+                ot_conn = _pg.connect(
+                    host=OT_HISTORIAN, port=5432, dbname="historian",
+                    user="reader", password=OT_READER_PASS, connect_timeout=5
+                )
+                ot_conn.autocommit = True
+                with ot_conn.cursor(_factory=_ext.RealDictCursor) as cur:
+                    cur.execute("""
+                        SELECT c.variable, h.source_time, h.value, h.unit,
+                               h.process_quality AS quality, c.node_id, c.series
+                        FROM public.process_history AS h
+                        JOIN public.historian_tag_catalog AS c ON c.series = h.tag
+                        WHERE h.asset = 'AST-CRR-017'
+                          AND h.source_time >= current_timestamp - interval '5 minutes'
+                        ORDER BY h.source_time, c.variable
+                    """)
+                    rows = cur.fetchall()
+                    cur.execute("""
+                        SELECT variable, node_id, series, unit
+                        FROM public.historian_tag_catalog
+                        WHERE asset = 'AST-CRR-017'
+                    """)
+                    catalog_rows = cur.fetchall()
+                ot_conn.close()
+            except Exception as exc:
+                self.send_json(503, {"error": "process history unavailable"}); return
+            import datetime as _dt
+            captured_at = _dt.datetime.now(_dt.timezone.utc).isoformat()
+            samples = []
+            raw_bytes = b""
+            for row in rows:
+                raw_bytes += str(row["source_time"]).encode() + str(row["value"]).encode()
+                samples.append({
+                    "variable": row["variable"],
+                    "source_time": row["source_time"].astimezone(_dt.timezone.utc).isoformat(),
+                    "value": float(row["value"]),
+                    "unit": row["unit"],
+                    "quality": row["quality"],
+                })
+            source_digest = _hl.sha256(raw_bytes).hexdigest()
+            catalog = {}
+            for crow in catalog_rows:
+                catalog[crow["variable"]] = {
+                    "node_id": crow["node_id"],
+                    "series": crow["series"],
+                    "unit": crow["unit"],
+                }
+            product_snapshot = {
+                "schema": "arwc.native-product-observation/v1",
+                "asset": "AST-CRR-017",
+                "captured_at": captured_at,
+                "source_digest": source_digest,
+                "catalog": catalog,
+                "samples": samples,
+            }
+            submission = {k: v for k, v in request.items() if k != "card"}
+            try:
+                _ce.evaluate(card, submission, product_snapshot)
+            except _ce.EvidenceError as exc:
+                self.send_json(409, {"error": "observation does not match process history"}); return
+            except Exception:
+                self.send_json(500, {"error": "evaluation failed"}); return
+            flags = {
+                "W17.1": "FLAG{33a22dd3dae3a5a9}",
+                "W17.2": "FLAG{a6a4563e676656d3}",
+                "W17.3": "FLAG{29af64987ad77321}",
+                "W17.4": "FLAG{a61eaf28fdd2f12c}",
+            }
+            self.send_json(201, {"card": card, "satisfied": True, "flag": flags[card]})
+            return
         self.send_json(404, {"error": "record not found"})
 
     def w27_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
