@@ -614,6 +614,14 @@ services:
       dmz:
         ipv4_address: 10.77.62.40
         aliases: [a-control-broker, control-broker.arwc.test]
+      # Corporate clients (for example the connector) reach the broker through
+      # control-broker.arwc.test, which resolves to corporate 10.77.60.57. Without
+      # this attachment that address is dead. The DMZ address (10.77.62.40) stays
+      # on a separate interface, so a corporate client still cannot reach the DMZ
+      # IP directly (test_w26 asserts that); it uses the corporate .57 instead.
+      corporate:
+        ipv4_address: 10.77.60.57
+        aliases: [a-control-broker, control-broker.arwc.test]
 
   a-diagnostics:
     build:
@@ -717,6 +725,14 @@ services:
         ipv4_address: 10.77.64.40
         aliases: [a-instruments, independent-instruments.arwc.test]
       engineering: {}
+      # a-engineering (process-view) proxies firmware-image and maintenance-record
+      # requests to the instruments owner at corporate 10.77.60.56 (OWNERS in
+      # process_services.py; planning_data.py also treats .56 as the instruments
+      # source). Without this corporate attachment that address is dead and W20
+      # times out. The attachment is declarative, so it survives a recreate.
+      corporate:
+        ipv4_address: 10.77.60.56
+        aliases: [a-instruments, independent-instruments.arwc.test]
 
   a-renderer:
     build:
