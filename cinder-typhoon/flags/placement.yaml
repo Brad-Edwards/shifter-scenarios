@@ -1031,12 +1031,12 @@ flags:
     source: value
     value: "FLAG{fca8c6786592eb89}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/process_services.py:w25_3_post (around line 1176) — flag in extra dict of accepted() call at POST /api/process-movement/current."
   - flag_id: W25.4
     source: value
     value: "FLAG{454e55928d0c1326}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/process_services.py:w25_4_post (around line 1256) — flag in extra dict of accepted() call at POST /api/process-restoration/current."
   - flag_id: W26.1
     source: value
     value: "FLAG{73be7a91c87cd444}"
