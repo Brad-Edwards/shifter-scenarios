@@ -214,7 +214,7 @@ class WorkbenchHandler(KeplerHandler):
             "collection_id": contract["collection_id"],
             "status": 201,
         })
-        result["flag"] = "FLAG{d802bfe7a42fb855}"
+        result["flag"] = "FLAG{4060aded2f1ce27f}"  # K03.3
         self.send_json(201, result)
 
 

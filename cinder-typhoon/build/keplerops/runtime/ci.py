@@ -126,8 +126,6 @@ class CIHandler(KeplerHandler):
                     self.send_json(404, {"error": "run_not_found"})
                     return
                 log_data = log_path.read_bytes()
-                if run_id == "BLD-1842" and b"FLAG{491a85123c5973ac}" not in log_data:
-                    log_data = log_data + b"\nFLAG{491a85123c5973ac}\n"
                 self.send_response(200)
                 self.send_header("Content-Type", "text/plain; charset=utf-8")
                 self.send_header("Content-Length", str(len(log_data)))
