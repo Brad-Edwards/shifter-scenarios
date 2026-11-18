@@ -2,14 +2,53 @@
 import json
 import os
 import pathlib
+import sqlite3
 import subprocess
 import socket
-import time
 import sys
+import time
 
 ROOT = pathlib.Path(__file__).resolve().parent
 EDITOR = pathlib.Path("/opt/arwc-ot-compat/upstream/squashfs-root")
 PROJECT = pathlib.Path("/opt/arwc-ot-compat/work/arwc-compat")
+# restapi.db lives on the persistent plc-state volume.
+RESTAPI_DB = pathlib.Path("/var/run/runtime/restapi.db")
+# OpenPLC runtime venv contains werkzeug used for password hashing.
+_VENV_PYTHON = pathlib.Path("/workdir/venvs/runtime/bin/python3")
+
+
+def _sync_engineer_password(password: str) -> None:
+    """Upsert the engineer user in restapi.db with the current credentials.
+
+    The plc-state volume persists across container recreations. If credentials
+    rotate after the initial provisioning, the stored hash becomes stale and
+    the Editor upload fails. This upsert keeps the engineer account aligned
+    with credentials.json without touching other users.
+    """
+    if not RESTAPI_DB.exists():
+        return
+    # Import werkzeug from the OpenPLC runtime venv so the hash format matches.
+    import importlib.util, sys as _sys
+    _site = str(_VENV_PYTHON.parent.parent / "lib" / "python3.11" / "site-packages")
+    if _site not in _sys.path:
+        _sys.path.insert(0, _site)
+    from werkzeug.security import generate_password_hash
+    pw_hash = generate_password_hash(password)
+    with sqlite3.connect(RESTAPI_DB) as conn:
+        existing = conn.execute(
+            "SELECT id FROM users WHERE username='engineer'"
+        ).fetchone()
+        if existing:
+            conn.execute(
+                "UPDATE users SET password_hash=? WHERE username='engineer'",
+                (pw_hash,),
+            )
+        else:
+            conn.execute(
+                "INSERT INTO users (username, password_hash, role) VALUES ('engineer', ?, 'admin')",
+                (pw_hash,),
+            )
+
 
 if __name__ == "__main__":
     if os.uname().nodename != "cinder-arwc-ot-compat-363":
@@ -18,6 +57,7 @@ if __name__ == "__main__":
     project = pathlib.Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else PROJECT
     if project.name not in ("arwc-compat", "arwc-site") or project.parent != PROJECT.parent:
         raise SystemExit("Use the dedicated compatibility or site Editor project")
+    _sync_engineer_password(credentials["plc"])
     environment = dict(os.environ, APPDIR=str(EDITOR), OPENPLC_USER="engineer", OPENPLC_PASSWORD=credentials["plc"])
     deadline = time.monotonic() + 90
     while True:
