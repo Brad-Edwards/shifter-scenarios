@@ -108,6 +108,8 @@ PHASES = {
             "/var/lib/fieldlink-connector", "/var/lib/arwc-connector",
             "/run/arwc-tls/server.crt", "/run/arwc-tls/server.key", "/run/arwc-tls/ca.crt",
             "/run/arwc-peer/keplerops-ca.crt", "/run/arwc-handover/authentication.key",
+            "/run/arwc-native/supplier-onboarding.json", "/run/arwc-native/root-ca.crt",
+            "/run/arwc-archive/nc-reader.json",
         }),
         forbidden_paths=COMMON_ABSENT + (
             "/usr/local/sbin/arwc-connector-entrypoint", "/opt/customer-handover",
