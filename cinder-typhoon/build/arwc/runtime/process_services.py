@@ -395,7 +395,17 @@ class Handler(BaseHTTPRequestHandler):
     def authorized(self) -> bool:
         if ROLE == "historian":
             return self.externally_authorized()
-        if ROLE in ("engineering", "instruments"):
+        if ROLE == "instruments":
+            # The process-view front (engineering role) proxies firmware-image and
+            # maintenance-record requests here over the internal path. That path
+            # carries X-ARWC-Internal but not the caller's corporate token (see
+            # internal_request), so a corporate-only check rejects it and W20
+            # fails. Accept the internal service context, as the diagnostics role
+            # does below, and still accept a direct corporate session.
+            if self.headers.get("X-ARWC-Internal") == INTERNAL:
+                return True
+            return self.corporate_authorized()
+        if ROLE == "engineering":
             return self.corporate_authorized()
         if self.headers.get("X-ARWC-Internal") != INTERNAL:
             self.send_json(403, {"error": "historian service context required"})
