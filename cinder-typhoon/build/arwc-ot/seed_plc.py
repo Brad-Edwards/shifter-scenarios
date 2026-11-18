@@ -289,7 +289,9 @@ print('opcua.json updated with range credentials')
         if _exec(["docker", "inspect", "arwc-ot-compat-telegraf-1"]) == 0:
             _exec(["docker", "restart", "arwc-ot-compat-telegraf-1"])
             print("Collector trust refreshed and telegraf restarted")
-    print("Done. On a first setup, run prepare_services.py next to configure Telegraf.")
+    print("Done. Run historian/prepare.py next to configure the collector for ot_history.")
+    print("Do NOT run prepare_services.py — it revokes the collector's schema permissions.")
+    print("After historian/prepare.py: restart Telegraf to pick up the new config.")
 
 
 _SOURCE_FILES = (
