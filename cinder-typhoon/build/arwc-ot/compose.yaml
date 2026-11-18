@@ -16,7 +16,7 @@ services:
       supervisory: {ipv4_address: 172.29.63.20}
       field: {ipv4_address: 172.29.64.20}
     healthcheck:
-      test: ["CMD", "python3", "-c", "import socket; s=socket.socket(); s.settimeout(3); s.connect(('127.0.0.1', 4840)); s.close()"]
+      test: ["CMD", "python3", "-c", "import socket; s=socket.socket(); s.settimeout(3); s.connect(('127.0.0.1', 8443)); s.close()"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -49,7 +49,7 @@ services:
     networks:
       supervisory: {ipv4_address: 172.29.63.21}
     healthcheck:
-      test: ["CMD", "node", "-e", "const n=require('net');const c=n.connect(4840,'plc',()=>process.exit(0));c.on('error',()=>process.exit(1));c.setTimeout(3000,()=>process.exit(1));"]
+      test: ["CMD", "node", "-e", "const n=require('net');const c=n.connect(8443,'plc',()=>process.exit(0));c.on('error',()=>process.exit(1));c.setTimeout(3000,()=>process.exit(1));"]
       interval: 30s
       timeout: 5s
       retries: 3
