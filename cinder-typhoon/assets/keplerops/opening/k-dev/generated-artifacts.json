@@ -2,18 +2,18 @@
   "artifacts": [
     {
       "name": "staging-FKCOL-2841.bin",
-      "sha256": "1f27b3794a03c7c641f4e32430658283c9494e72f65ac0030c05cc55e98b12a7",
-      "size": 1351
+      "sha256": "42e4c62986c8d254680e54a3bd3c56a549da0bc4dc76b69cdda6ba0ec9b1ce76",
+      "size": 1955
     },
     {
       "name": "field-notes-2026-08.odt",
-      "sha256": "573483a063136b9bc30399ecd0edb8e44ebb91a3095a7b540061a0cf4e1569d3",
-      "size": 2207
+      "sha256": "2a14b4c0a6d40ed99e05ba8203f2d14f98f1e66b81d1aa0127eff30ad58e074d",
+      "size": 2579
     },
     {
       "name": "FKCOL-2841.json",
-      "sha256": "b7ba04e5e19e66722585733f3558a59fc0b116d1d50cafa7d0a03a67325ea76f",
-      "size": 1032
+      "sha256": "91c5967a2f5f27fe3675b44d70b1dbe5c06ef36e36a9711d74150519f6d3b40f",
+      "size": 1068
     },
     {
       "name": "chromium-History",

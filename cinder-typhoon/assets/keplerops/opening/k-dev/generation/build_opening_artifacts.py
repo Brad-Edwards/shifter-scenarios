@@ -3,88 +3,18 @@
 
 from __future__ import annotations
 
-import base64
 import hashlib
 import json
 from pathlib import Path
 import sqlite3
 import tempfile
-import zipfile
-import zlib
 
 
 ROOT = Path(__file__).resolve().parents[1]
-FIXED_ZIP_TIME = (2026, 9, 18, 12, 0, 0)
 
 
 def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
-
-
-def zip_entry(name: str, data: bytes, *, stored: bool = False) -> tuple[zipfile.ZipInfo, bytes]:
-    info = zipfile.ZipInfo(name, FIXED_ZIP_TIME)
-    info.create_system = 3
-    info.external_attr = 0o100644 << 16
-    info.compress_type = zipfile.ZIP_STORED if stored else zipfile.ZIP_DEFLATED
-    return info, data
-
-
-def build_stage() -> bytes:
-    collection = (ROOT / "FKCOL-2841.json").read_bytes()
-    manifest = json.dumps(
-        {
-            "schema": "fieldkest.collection-manifest/v2",
-            "endpoint": "https://objects.keplerops.test",
-            "bucket": "fieldlink-collections",
-            "object_key": "callbacks/CB-17/FKCOL-2841.json",
-            "object_sha256": sha256(collection),
-            "collection_id": "FKCOL-2841",
-            "endpoint_id": "CB-17",
-        },
-        sort_keys=True,
-        separators=(",", ":"),
-    ).encode()
-    key = hashlib.sha256(b"FKCOL-2841:CB-17:collector-stage").digest()[:16]
-    compressed_manifest = zlib.compress(manifest, level=9)
-    encrypted_manifest = bytes(
-        value ^ key[index % len(key)]
-        for index, value in enumerate(compressed_manifest)
-    )
-    javascript = (
-        (ROOT / "collector-stage.js").read_text()
-        .replace("__MANIFEST_BASE64__", base64.b64encode(encrypted_manifest).decode())
-        .replace("__MANIFEST_KEY_HEX__", key.hex())
-    ).encode()
-    powershell = (
-        (ROOT / "callback-stage.ps1").read_text()
-        .replace("__STAGE2_SHA256__", sha256(javascript))
-        .replace("__STAGE2_BASE64__", base64.b64encode(zlib.compress(javascript, level=9)).decode())
-    ).encode()
-    lines = [
-        "FIELDKEST-STAGE/2",
-        "collection=FKCOL-2841",
-        "payload-encoding=base64+zlib",
-        f"payload-sha256={sha256(powershell)}",
-        "",
-        "payload=" + base64.b64encode(zlib.compress(powershell, level=9)).decode(),
-        "",
-    ]
-    data = "\n".join(lines).encode()
-    (ROOT / "staging-FKCOL-2841.bin").write_bytes(data)
-    return data
-
-
-def build_odt(stage: bytes) -> None:
-    destination = ROOT / "field-notes-2026-08.odt"
-    with zipfile.ZipFile(destination, "w") as archive:
-        entries = [
-            zip_entry("mimetype", b"application/vnd.oasis.opendocument.text", stored=True),
-            zip_entry("content.xml", (ROOT / "field-notes-content.xml").read_bytes()),
-            zip_entry("META-INF/manifest.xml", (ROOT / "generation/odt-manifest.xml").read_bytes()),
-            zip_entry("Attachments/staging-FKCOL-2841.bin", stage),
-        ]
-        for info, data in entries:
-            archive.writestr(info, data)
 
 
 def build_history() -> None:
@@ -237,8 +167,6 @@ def write_manifest() -> None:
 
 
 def main() -> None:
-    stage = build_stage()
-    build_odt(stage)
     build_history()
     build_cookies()
     write_manifest()

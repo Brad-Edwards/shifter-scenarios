@@ -30,8 +30,8 @@
         {
           "mode": "0640",
           "path": "work/analysis/field-notes-2026-08.odt",
-          "sha256": "677d859355ae669429bac29d2fd0e3f746d9ef3e93056d3b6258f31976b4f4d5",
-          "size": 2525
+          "sha256": "2a14b4c0a6d40ed99e05ba8203f2d14f98f1e66b81d1aa0127eff30ad58e074d",
+          "size": 2579
         },
         {
           "mode": "0640",
@@ -72,13 +72,13 @@
         {
           "mode": "0644",
           "path": "work/service-notes.md",
-          "sha256": "37fa43d594a6485ab7a84e6222d02d896b84e6d9f2b2ffa08e4f39d2372a5e07",
-          "size": 3941
+          "sha256": "0f069988c69d6b96984616674496faeeaf4d0aadfd93f7d069108e375beb6f62",
+          "size": 3926
         }
       ],
       "group": "rowan",
       "owner": "rowan",
-      "sha256": "dccd03716b36f1ca26be51b6041721040fe3ba625c5084d3b78de60c78bbf635",
+      "sha256": "e852cb909cf262894dd232eec26cde1b52ba052ff08a57b2c9d28715df26aee4",
       "size": 51200
     },
     {
@@ -114,8 +114,8 @@
         {
           "mode": "0640",
           "path": "handovers/HND-FLK-2026-09.json",
-          "sha256": "90449306d517ddd4871881e8b094260ed72beb318b47a0df752f74749b98b0eb",
-          "size": 486
+          "sha256": "9c6f0b36816c1e801d70a099a23d9e88bd08f5086460f9e85b35a824c1f848e4",
+          "size": 522
         },
         {
           "mode": "0640",
@@ -132,35 +132,71 @@
       ],
       "group": "git",
       "owner": "git",
-      "sha256": "305109888279a01be326d81c82b12d85931c5391163bc5a1f3815330835b4dc5",
+      "sha256": "f4a79d51a14304529d699e219c7f5c15a9d8d3fbde167d7c44a98b6eb08af818",
       "size": 10240
     },
     {
       "archive": "k-ci-state.tar",
       "files": [
         {
+          "mode": "0664",
+          "path": "artifacts/BLD-1842/integration-review-input-v3.json",
+          "sha256": "b631b38ea24ef0e847b9fb9419d32fe83c67d96a8290c62453db9dfe76fd72d4",
+          "size": 403
+        },
+        {
+          "mode": "0664",
+          "path": "artifacts/BLD-REL-742/release-dossier.json",
+          "sha256": "5e59dd080d1e8d009a5f1cba8c8a04a5246b59d54163aea870999506765356e0",
+          "size": 328
+        },
+        {
           "mode": "0600",
           "path": "config/opening.json",
-          "sha256": "6fdf607fedae9eb8885bef8e574c32e56f0bd5cc8e8dcdb728c080ee4aa878cc",
-          "size": 1039
+          "sha256": "24b2501a0fbb95776145807b96ea2725bf9a8ab9162be2d0253c4ebce40012de",
+          "size": 1724
+        },
+        {
+          "mode": "0640",
+          "path": "import-objects/inputs/report-request.json",
+          "sha256": "c32ca8507c5f6f699a47257a79ebcda88c36c79b398203365ed46723e81ae321",
+          "size": 112
+        },
+        {
+          "mode": "0640",
+          "path": "import-objects/reviews/REVNOTE-1842.json",
+          "sha256": "bd700807fceb408057ad5dc051fe3bd2e2fefa715ca8734400eacd67c9281a4d",
+          "size": 616
         },
         {
           "mode": "0640",
           "path": "runs/BLD-1842.json",
-          "sha256": "6c7bbdb8cbc628b4a5b3cfceb81b69956057178b4c724d50c67ba2dff4e09413",
-          "size": 373
+          "sha256": "e07ce6055eeba7886b98cfce21a9909602f033d7670971e624c7c6f9b620e7eb",
+          "size": 371
         },
         {
           "mode": "0640",
           "path": "runs/BLD-1842.log",
-          "sha256": "2a8d7e3630c9c9a19b885c99e24c3a3cb91f289a301659e77ab863c7f6d65176",
-          "size": 348
+          "sha256": "300f1dd9532371013bfce7e4e751ebd9d80d343ec569a5cc853f4432510fa7ed",
+          "size": 371
+        },
+        {
+          "mode": "0664",
+          "path": "runs/BLD-REL-742.json",
+          "sha256": "f722373815a7c597a9f660f45f5399956422ec30858be98b5676253134145dec",
+          "size": 855
+        },
+        {
+          "mode": "0664",
+          "path": "runs/BLD-REL-742.log",
+          "sha256": "6ea5f0818aebe01cf70b4b83e106720cab925f2586e3d6e026b7e699fa52476f",
+          "size": 312
         }
       ],
       "group": "fieldkest-ci",
       "owner": "fieldkest-ci",
-      "sha256": "5b99cf799e231def1aa85456c94a00130836383767094db93be95651064bf1bd",
-      "size": 10240
+      "sha256": "f3f75a370c250dd4b3502120b84c3e1dd20d577bc039469898802b9265342dae",
+      "size": 20480
     },
     {
       "archive": "k-support-state.tar",
@@ -174,8 +210,8 @@
         {
           "mode": "0640",
           "path": "conversations/SUP-2841.json",
-          "sha256": "3a56ae74649b38c8eee4f8f8efd2c4f218ae5c18f1d0e031eadcb66415f2ce58",
-          "size": 1219
+          "sha256": "e8ed2d83f4616b61434be203bd9e6089af05cbb788a102cd8a511f7310c4dbec",
+          "size": 1461
         },
         {
           "mode": "0600",
@@ -186,7 +222,7 @@
       ],
       "group": "fieldkest-support",
       "owner": "fieldkest-support",
-      "sha256": "77de2e0ce67da1cbcb275540ba4518ede41142f369b5105b994a5d937aa8408d",
+      "sha256": "d35c019240e3f0b526ba16714bee2e1e2e6a2b33a61cb60cdf7a61aaa0c6a74c",
       "size": 10240
     }
   ],

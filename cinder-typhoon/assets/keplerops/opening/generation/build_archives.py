@@ -1,5 +1,19 @@
 #!/usr/bin/env python3
-"""Build deterministic per-node archives for the KeplerOps opening slice."""
+"""Build deterministic per-node archives for the KeplerOps opening slice.
+
+Single source of truth: the loose files under assets/keplerops/opening/ are the
+only authored source. This script packs them into the per-node *.tar artifacts.
+
+Two-stage build order:
+  1. Generators produce loose files first:
+     - k-dev/generation/build_opening_artifacts.py (chromium History/Cookies,
+       generated-artifacts.json)
+     - k-dev/generate_k03_staging.py (staging-FKCOL-2841.bin, field-notes ODT)
+  2. This packer reads the loose files and writes the *.tar archives and
+     archive-manifest.json. Run it after the generators.
+
+Do not hand-edit the *.tar files; edit the loose source and re-run this script.
+"""
 
 from __future__ import annotations
 
@@ -57,6 +71,12 @@ ARCHIVES: dict[str, dict[str, object]] = {
         "files": {
             "runs/BLD-1842.json": ("k-ci/run-BLD-1842.json", 0o640),
             "runs/BLD-1842.log": ("k-ci/run-BLD-1842.log", 0o640),
+            "runs/BLD-REL-742.json": ("k-ci/run-BLD-REL-742.json", 0o664),
+            "runs/BLD-REL-742.log": ("k-ci/run-BLD-REL-742.log", 0o664),
+            "import-objects/inputs/report-request.json": ("k-ci/import-inputs-report-request.json", 0o640),
+            "import-objects/reviews/REVNOTE-1842.json": ("k-ci/import-reviews-REVNOTE-1842.json", 0o640),
+            "artifacts/BLD-1842/integration-review-input-v3.json": ("k-ci/artifact-BLD-1842-integration-review-input-v3.json", 0o664),
+            "artifacts/BLD-REL-742/release-dossier.json": ("k-ci/artifact-BLD-REL-742-release-dossier.json", 0o664),
             "config/opening.json": ("k-ci/ci-service.json", 0o600),
         },
     },
