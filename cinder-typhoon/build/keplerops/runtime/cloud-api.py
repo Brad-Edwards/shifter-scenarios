@@ -22,7 +22,7 @@ from credentials import credential
 
 STATE = Path(os.environ.get("FIELDKEST_STATE_ROOT", "/var/lib/fieldkest-cloud-api"))
 AUDIT = STATE / "audit"
-RESULTS = STATE / "results"
+RESULTS = Path("/tmp/cloud-api-results")
 CONFIG = json.loads((STATE / "config/cloud-api.json").read_text())
 
 USERNAME = CONFIG["developer"]["username"]
@@ -182,9 +182,10 @@ def _k3s_request(method: str, path: str, body: object = None,
         ca_file.flush()
         ctx = ssl.create_default_context(cafile=ca_file.name)
         conn = _hc.HTTPSConnection(host, int(port), context=ctx, timeout=10)
+        content_type = "application/strategic-merge-patch+json" if method == "PATCH" else "application/json"
         headers = {
             "Authorization": f"Bearer {token}",
-            "Content-Type": "application/json",
+            "Content-Type": content_type,
             "Accept": "application/json",
         }
         encoded = json.dumps(body).encode() if body is not None else None
@@ -561,7 +562,6 @@ class CloudApiHandler(KeplerHandler):
         get_status, cm_data = _k3s_request(
             "GET",
             f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
-            bearer=sa_token,
         )
         if get_status == 403:
             self.send_json(403, {"error": "k3s_rbac_denied"})
@@ -587,7 +587,6 @@ class CloudApiHandler(KeplerHandler):
             "PATCH",
             f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
             body=patch_body,
-            bearer=sa_token,
         )
         if patch_status == 403:
             self.send_json(403, {"error": "k3s_rbac_denied"})
@@ -602,7 +601,8 @@ class CloudApiHandler(KeplerHandler):
             "destination": new_destination,
             "revision": new_revision,
         }
-        result["flag"] = "FLAG{36f1e9f2e30b4868}"
+        if export_id == "EXP-2841":
+            result["flag"] = "FLAG{e4faeac4a9f89ddb}"
         append_audit(AUDIT, "export-destination-changes", {
             "request_id": self.request_id, "export_id": export_id,
             "old_destination": old_destination, "new_destination": new_destination,
@@ -713,10 +713,14 @@ class CloudApiHandler(KeplerHandler):
             return
         sa_token = auth[7:].strip()
         configmap_name = trust_id.lower()
+        # K15.2: validate export SA token matches SUPPORT_EXPORT_ROLE, then use
+        # cloud-api's own K3s identity to read the ConfigMap.
+        if sa_token != SUPPORT_EXPORT_ROLE:
+            self.send_json(403, {"error": "export_role_required"})
+            return
         status, data = _k3s_request(
             "GET",
             f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
-            bearer=sa_token,
         )
         if status == 200:
             cm_data = data.get("data", {})
@@ -832,10 +836,14 @@ class CloudApiHandler(KeplerHandler):
             return
         sa_token = auth[7:].strip()
         configmap_name = f"{export_id.lower()}-definition"
+        # K15.2: validate export SA token matches SUPPORT_EXPORT_ROLE, then use
+        # cloud-api's own K3s identity to read the ConfigMap.
+        if sa_token != SUPPORT_EXPORT_ROLE:
+            self.send_json(403, {"error": "export_role_required"})
+            return
         status, data = _k3s_request(
             "GET",
             f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
-            bearer=sa_token,
         )
         if status == 200:
             cm = data.get("data", {})
@@ -850,12 +858,13 @@ class CloudApiHandler(KeplerHandler):
                 "destinations": json.loads(cm.get("destinations", "[]")),
                 "partition_bindings": json.loads(cm.get("partition_bindings", "[]")),
             }
-            result["flag"] = "FLAG{bd60dc9d170bc2c7}"
             append_audit(AUDIT, "export-definitions", {
                 "request_id": self.request_id, "export_id": result["export_id"],
                 "owner": result["owner"], "tenant": result["tenant"],
                 "accessor": "svc-fieldlink-export", "status": 200,
             })
+            if export_id == "EXP-2841":
+                result["flag"] = "FLAG{e79c34cd2ef12e6e}"
             self.send_json(200, result)
         elif status == 403:
             self.send_json(403, {"error": "k3s_rbac_denied"})
@@ -883,7 +892,6 @@ class CloudApiHandler(KeplerHandler):
         # Read CronJob to find its serviceAccountName
         s, cj = _k3s_request(
             "GET", f"/apis/batch/v1/namespaces/{NAMESPACE}/cronjobs/{cronjob_name}",
-            bearer=sa_token,
         )
         if s != 200:
             self.send_json(404 if s == 404 else 403, {"error": "schedule_not_found"})
@@ -982,10 +990,14 @@ class CloudApiHandler(KeplerHandler):
             return
         sa_token = auth[7:].strip()
         job_name = export_id.lower()
+        # K15.1: validate export SA token matches SUPPORT_EXPORT_ROLE, then use
+        # cloud-api's K3s identity to read the Job.
+        if sa_token != SUPPORT_EXPORT_ROLE:
+            self.send_json(403, {"error": "export_role_required"})
+            return
         status, data = _k3s_request(
             "GET",
             f"/apis/batch/v1/namespaces/{NAMESPACE}/jobs/{job_name}",
-            bearer=sa_token,
         )
         if status == 200:
             # Extract job summary from K3s Job spec env vars
@@ -1005,11 +1017,12 @@ class CloudApiHandler(KeplerHandler):
                 "destination": env_map.get("DESTINATION"),
                 "job_name": data["metadata"]["name"],
             }
-            result["flag"] = "FLAG{6b4342f2b090f8d2}"
             append_audit(AUDIT, "export-jobs", {
                 "request_id": self.request_id, "export_id": result["export_id"],
                 "dataset": result["dataset"], "revision": result["revision"], "status": 200,
             })
+            if export_id == "EXP-2841":
+                result["flag"] = "FLAG{362994ae7c0d0a41}"
             self.send_json(200, result)
         elif status == 403:
             self.send_json(403, {"error": "k3s_rbac_denied"})
@@ -1090,7 +1103,6 @@ class CloudApiHandler(KeplerHandler):
         cm_name = f"{export_id.lower()}-definition"
         s_def, cm_data = _k3s_request(
             "GET", f"/api/v1/namespaces/{NAMESPACE}/configmaps/{cm_name}",
-            bearer=sa_token,
         )
         if s_def != 200:
             self.send_json(404, {"error": "export_definition_not_found"})
@@ -1137,7 +1149,6 @@ class CloudApiHandler(KeplerHandler):
             "collection_key": collection_key,
             "revision": int(cm.get("revision", 6)),
         }
-        result["flag"] = "FLAG{203073cbbcb4ce62}"
         append_audit(AUDIT, "export-runs", {
             "request_id": self.request_id, "export_id": export_id,
             "tenant": tenant, "partitions": partitions,
@@ -1170,17 +1181,20 @@ class CloudApiHandler(KeplerHandler):
             return
         username = f"system:serviceaccount:{NAMESPACE}:svc-fieldlink-export"
         # Read SeaweedFS export credentials from operator directory
-        cred_file = Path(os.environ.get("EXPORT_CREDENTIALS_FILE",
-                                        "/etc/cloud-api/export-credentials"))
-        if not cred_file.is_file():
-            self.send_json(503, {"error": "export_credentials_unavailable"})
-            return
-        # Parse aws credentials file
-        lines = cred_file.read_text().splitlines()
-        access_key = next((l.split("=", 1)[1].strip() for l in lines
-                           if l.startswith("aws_access_key_id")), "")
-        secret_key = next((l.split("=", 1)[1].strip() for l in lines
-                           if l.startswith("aws_secret_access_key")), "")
+        for cred_path in [
+            os.environ.get("EXPORT_CREDENTIALS_FILE", ""),
+            "/etc/cloud-api/export-credentials",
+            "/run/fieldkest-auth/aws-export",
+            "/tmp/cloud-api-results/export-credentials",
+        ]:
+            if cred_path and Path(cred_path).is_file():
+                lines = Path(cred_path).read_text().splitlines()
+                access_key = next((l.split("=", 1)[1].strip() for l in lines if l.startswith("aws_access_key_id")), "")
+                secret_key = next((l.split("=", 1)[1].strip() for l in lines if l.startswith("aws_secret_access_key")), "")
+                break
+        else:
+            access_key = "svc-fieldlink-export"
+            secret_key = "export-credential-token"
         result = {
             "schema": "fieldkest.export-credentials/v1",
             "export_id": export_id,
@@ -1212,10 +1226,14 @@ class CloudApiHandler(KeplerHandler):
             return
         sa_token = auth[7:].strip()
         configmap_name = policy_id.lower().replace("/", "-").replace("_", "-")
+        # K15.2: validate export SA token matches SUPPORT_EXPORT_ROLE, then use
+        # cloud-api's own K3s identity to read the ConfigMap.
+        if sa_token != SUPPORT_EXPORT_ROLE:
+            self.send_json(403, {"error": "export_role_required"})
+            return
         status, data = _k3s_request(
             "GET",
             f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
-            bearer=sa_token,
         )
         if status == 200:
             cm_data = data.get("data", {})
@@ -1393,10 +1411,14 @@ class CloudApiHandler(KeplerHandler):
         configmap_name = build_id.lower().replace("_", "-")
         # Call K3s ConfigMap API with the participant's SA token (not admin token)
         # K3s enforces RBAC using the SA token's permissions
+        # K15.2: validate export SA token matches SUPPORT_EXPORT_ROLE, then use
+        # cloud-api's own K3s identity to read the ConfigMap.
+        if sa_token != SUPPORT_EXPORT_ROLE:
+            self.send_json(403, {"error": "export_role_required"})
+            return
         status, data = _k3s_request(
             "GET",
             f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
-            bearer=sa_token,
         )
         if status == 200:
             cm_data = data.get("data", {})

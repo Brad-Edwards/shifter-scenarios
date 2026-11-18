@@ -412,7 +412,8 @@ class Handler(BaseHTTPRequestHandler):
             }
             state = load_state(); state["vault_contract_observed"] = True; atomic_json(STATE, state)
             self.send_json(200, {"audit_id": append_audit("vault-record-read", record),
-                                 "record": record, "worker_b64": base64.b64encode(artifact).decode()})
+                                 "record": record, "worker_b64": base64.b64encode(artifact).decode(),
+                                 "flag": "FLAG{57aedcb6774e1e4d}"})
             return
         if path != "/api/signature-requests":
             self.send_json(404, {"error": "record not found"}); return
@@ -789,7 +790,7 @@ class Handler(BaseHTTPRequestHandler):
                       "workspace_bytes": result["workspace_bytes"],
                       "copied_bytes": result["copied_bytes"],
                       "worker_exited_normally": True}
-            self.accepted("vault-program-accepted", record); return
+            self.accepted("vault-program-accepted", record, extra={"flag": "FLAG{efc608d7e3b45ea7}"}); return
         if path == "/api/replay-sessions/current/divergence":
             if not state["vault_boundary_controlled"]:
                 self.send_json(403, {"error": "accepted DVL1 boundary access required"}); return
@@ -820,7 +821,7 @@ class Handler(BaseHTTPRequestHandler):
             record = {key: value for key, value in execution.items() if key != "history"}
             record.update({"record_id": "DVL-STATE-CRR-R5", "revision": 5,
                            "canary_preserved": True, "worker_exited_normally": True})
-            self.accepted("vault-state-observed", record, correlation=correlation); return
+            self.accepted("vault-state-observed", record, extra={"flag": "FLAG{eeb8cd2277f9cad3}"}, correlation=correlation); return
         if path == "/api/diagnostic-programs/authority":
             execution = state.get("vault_execution")
             if not state["vault_saved_state_controlled"] or not isinstance(execution, dict):
@@ -841,7 +842,7 @@ class Handler(BaseHTTPRequestHandler):
                       "principal": "svc-diagnostic-vault", "current_approval": False,
                       "control_authority": False}
             response = {"audit_id": append_audit("diagnostic-authority-issued", record),
-                        "record": record, "history": history}
+                        "record": record, "history": history, "flag": "FLAG{8f3c02020245b1c4}"}
             state["vault_history_response"] = response; atomic_json(STATE, state)
             self.send_json(201, response); return
         self.send_json(404, {"error": "record not found"})

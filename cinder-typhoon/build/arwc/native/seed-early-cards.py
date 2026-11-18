@@ -150,6 +150,7 @@ def seed() -> None:
         "revision": 6,
         "district": "Merewick",
         "classification": "restricted planning record",
+        "flag": "FLAG{b6ce9acecf846354}",
         "title": "Merewick dry-period intake plan",
         "planning_window": "DP3-2026",
         "status": "current",

@@ -220,7 +220,10 @@ def seed() -> None:
     )
     sel_sql = (
         "SELECT record_id, revision, district, planning_window, "
-        "allocation_source, meter_source, reserve_report_source, duplicate_transfer "
+        "allocation_source, meter_source, reserve_report_source, duplicate_transfer, "
+        "chr(70)||chr(76)||chr(65)||chr(71)||chr(123)||chr(48)||chr(54)||chr(53)||chr(55)||"
+        "chr(99)||chr(57)||chr(51)||chr(50)||chr(54)||chr(102)||chr(99)||chr(99)||chr(49)||"
+        "chr(97)||chr(101)||chr(100)||chr(125) AS flag "
         "FROM report_source_selection"
     )
     sel_card = next((card for card in api("card") if card["name"] == sel_title), None)
@@ -231,11 +234,17 @@ def seed() -> None:
             "dataset_query": {"database": database["id"], "type": "native", "native": {
                 "query": sel_sql, "template-tags": {}}}})
         print(f"Created Metabase question: {sel_title} (id={sel_card.get('id')})")
-    elif sel_card.get("description") != sel_description:
-        api(f'card/{sel_card["id"]}', {"description": sel_description}, method="PUT")
-        print(f"Updated Metabase question: {sel_title}")
     else:
-        print(f"Metabase question already current: {sel_title}")
+        existing_query = sel_card.get("dataset_query", {}).get("native", {}).get("query", "")
+        if sel_card.get("description") != sel_description or existing_query != sel_sql:
+            api(f'card/{sel_card["id"]}', {
+                "description": sel_description,
+                "dataset_query": {"database": database["id"], "type": "native", "native": {
+                    "query": sel_sql, "template-tags": {}}}
+            }, method="PUT")
+            print(f"Updated Metabase question: {sel_title}")
+        else:
+            print(f"Metabase question already current: {sel_title}")
 
     # Seed the EXT-EXCERPTS-DP3 retrieval question (W10.2).
     # Queries district_excerpts for source_set=SEL-CRR-DP3-7 WITHOUT a district filter.
@@ -246,7 +255,7 @@ def seed() -> None:
         "Table: district_excerpts. No district predicate applied — all districts returned."
     )
     ext_sql = (
-        "SELECT record_id, revision, district, classification, linked_document, excerpt_text "
+        "SELECT record_id, revision, district, classification, linked_document, excerpt_text, flag "
         "FROM district_excerpts WHERE source_set = 'SEL-CRR-DP3-7'"
     )
     ext_card = next((card for card in api("card") if card["name"] == ext_title), None)
@@ -257,11 +266,17 @@ def seed() -> None:
             "dataset_query": {"database": database["id"], "type": "native", "native": {
                 "query": ext_sql, "template-tags": {}}}})
         print(f"Created Metabase question: {ext_title} (id={ext_card.get('id')})")
-    elif ext_card.get("description") != ext_description:
-        api(f'card/{ext_card["id"]}', {"description": ext_description}, method="PUT")
-        print(f"Updated Metabase question: {ext_title}")
     else:
-        print(f"Metabase question already current: {ext_title}")
+        existing_query = ext_card.get("dataset_query", {}).get("native", {}).get("query", "")
+        if ext_card.get("description") != ext_description or existing_query != ext_sql:
+            api(f'card/{ext_card["id"]}', {
+                "description": ext_description,
+                "dataset_query": {"database": database["id"], "type": "native", "native": {
+                    "query": ext_sql, "template-tags": {}}}
+            }, method="PUT")
+            print(f"Updated Metabase question: {ext_title}")
+        else:
+            print(f"Metabase question already current: {ext_title}")
 
     # Seed the RELPROTO-CRR-R3 relation contract question (W11.1).
     # Describes the ERPNext REST API representation of the ASSET_WORK relation.

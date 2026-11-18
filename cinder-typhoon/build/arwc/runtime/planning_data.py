@@ -991,7 +991,10 @@ class Handler(BaseHTTPRequestHandler):
         state = load_state()
         state["allocation_observed"] = True
         save_state(state)
-        self.accepted("allocation-ledger-read", result, extra={"flag": "FLAG{47d6fc3a22c3a83d}"})
+        extra: dict[str, object] = {"flag": "FLAG{47d6fc3a22c3a83d}"}
+        if state.get("tariff_observed"):
+            extra["planning_flag"] = "FLAG{e3d444e18d2f9106}"
+        self.accepted("allocation-ledger-read", result, extra=extra)
 
     def tariff(self) -> None:
         with database() as connection, connection.cursor() as cursor:

@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS public.reconciliation_copy (
 -- Use distinct RETURNS TABLE column names (copy_*) to avoid PL/pgSQL ambiguity
 -- with the reconciliation_copy table's own column names inside the function body.
 CREATE OR REPLACE FUNCTION public.arwc_reconcile_copy(requested text)
-RETURNS TABLE(copy_id text, copy_revision integer, copy_source text, copy_identity text)
+RETURNS TABLE(copy_id text, copy_revision integer, copy_source text, copy_identity text, flag text)
 LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp AS
 $func$
 DECLARE
@@ -102,7 +102,8 @@ BEGIN
     SET revision = public.reconciliation_copy.revision + 1,
         database_identity = v_identity;
   RETURN QUERY
-    SELECT rc.record_id, rc.revision, rc.source_record, rc.database_identity
+    SELECT rc.record_id, rc.revision, rc.source_record, rc.database_identity,
+           'FLAG{9f7a03ecbffb3005}'::text
     FROM public.reconciliation_copy AS rc
     WHERE rc.record_id = requested || '-COPY';
 END;
@@ -229,16 +230,20 @@ CREATE TABLE IF NOT EXISTS public.district_excerpts (
   source_set text NOT NULL,
   classification text NOT NULL,
   linked_document text NOT NULL,
-  excerpt_text text NOT NULL
+  excerpt_text text NOT NULL,
+  flag text
 );
+ALTER TABLE IF EXISTS public.district_excerpts ADD COLUMN IF NOT EXISTS flag text;
 INSERT INTO public.district_excerpts VALUES
   ('EXC-CRR-DP3-7', 7, 'Cairn Reach', 'SEL-CRR-DP3-7', 'planning excerpt',
    'RPT-CRR-DP3-R7',
-   'Cairn Reach reserve outlook is within tolerance for the approaching dry period.'),
+   'Cairn Reach reserve outlook is within tolerance for the approaching dry period.',
+   NULL),
   ('EXC-MER-DP3-4', 4, 'Merewick', 'SEL-CRR-DP3-7', 'restricted planning excerpt',
    'PLN-MER-DP3-R6',
-   'Merewick intake continuity remains subject to the accepted reservation and the current dry-period plan. Review the linked planning record before confirming cross-district supply.')
-ON CONFLICT (record_id) DO NOTHING;
+   'Merewick intake continuity remains subject to the accepted reservation and the current dry-period plan. Review the linked planning record before confirming cross-district supply.',
+   'FLAG{4532fcbfca255df4}')
+ON CONFLICT (record_id) DO UPDATE SET flag = EXCLUDED.flag;
 GRANT SELECT ON public.district_excerpts TO planning_reader;
 -- W10.1: report_source_selection view for SEL-CRR-DP3-7.
 CREATE OR REPLACE VIEW public.report_source_selection AS

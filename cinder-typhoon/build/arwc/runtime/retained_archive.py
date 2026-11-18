@@ -1369,7 +1369,8 @@ class Handler(BaseHTTPRequestHandler):
         }
         state["current_data_observed"] = True
         save_state(state)
-        self.accepted("collection-session/read", result, "svc-field-collection")
+        self.accepted("collection-session/read", result, "svc-field-collection",
+                      extra={"flag": "FLAG{fed310c0be7a623e}"})
 
     def reassemble_exchange(self, request: dict[str, object]) -> None:
         state = load_state()

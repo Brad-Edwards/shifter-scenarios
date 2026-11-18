@@ -1091,27 +1091,27 @@ flags:
     source: value
     value: "FLAG{e3d444e18d2f9106}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/planning_data.py:allocation() — planning_flag in extra dict when tariff_observed. Participant earns it by calling GET /api/settlement-tariffs/current then GET /api/allocation-ledgers/current."
   - flag_id: W29.2
     source: value
     value: "FLAG{ea5a5c4c83724109}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/process_services.py:w29_2_post() — flag in extra dict of accepted() call at POST /api/reserve-reconciliations/current."
   - flag_id: W29.3
     source: value
     value: "FLAG{34d1f606b3506a89}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/process_services.py:w29_3_post() — flag in extra dict of accepted() call at POST /api/paper-reconciliations/current."
   - flag_id: W30.1
     source: value
     value: "FLAG{86bf26d3fc61d20c}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/process_services.py:w30_post() — flag in extra dict of accepted() call at POST /api/request-plans/current."
   - flag_id: W30.2
     source: value
     value: "FLAG{c22198847dd20ce6}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc/runtime/process_services.py:w30_2_post() — flag in extra dict of accepted() call at POST /api/remote-operations/current."
   - flag_id: W31.1
     source: value
     value: "FLAG{57aedcb6774e1e4d}"

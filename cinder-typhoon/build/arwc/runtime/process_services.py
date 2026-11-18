@@ -798,6 +798,7 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("replay-model-created", record, extra={
                 "replay_b64": base64.b64encode(binary).decode(),
                 "distinguishing_cases": cases,
+                "flag": "FLAG{1d16a3a336e29908}",
             })
             return
         if ROLE == "engineering" and path == "/api/diagnostic-programs/current":
@@ -1366,7 +1367,7 @@ class Handler(BaseHTTPRequestHandler):
                 "ON c.series=h.tag WHERE h.asset='AST-CRR-017' AND h.source_time>=current_timestamp-interval '5 minutes' "
                 "ORDER BY h.source_time,c.variable\")\n"
                 "rows=cur.fetchall()\n"
-                "cur.execute(\"SELECT variable,node_id,series,unit FROM public.historian_tag_catalog WHERE asset='AST-CRR-017'\")\n"
+                "cur.execute(\"SELECT variable,node_id,series,unit FROM public.historian_tag_catalog\")\n"
                 "cat_rows=cur.fetchall();conn.close()\n"
                 "raw=b''.join(str(r['source_time']).encode()+str(r['value']).encode() for r in rows)\n"
                 "samples=[{'variable':r['variable'],'source_time':r['source_time'].astimezone(UTC).isoformat(),"
@@ -1607,7 +1608,7 @@ class Handler(BaseHTTPRequestHandler):
             "uncommitted_margin_ml": margin, "margin_state": margin_state,
         }
         atomic_json(ROOT / "artifacts" / "reserve-reconciliation" / "result.json", record)
-        self.accepted("reserve-reconciliation", record, 201)
+        self.accepted("reserve-reconciliation", record, 201, extra={"flag": "FLAG{ea5a5c4c83724109}"})
 
     def w29_3_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state.get("reserve_observed"):
@@ -1711,7 +1712,7 @@ class Handler(BaseHTTPRequestHandler):
             "conclusion": "paper_report_is_not_current_process_truth",
         }
         atomic_json(ROOT / "artifacts" / "paper-reconciliation" / "result.json", record)
-        self.accepted("paper-reconciliation", record, 201)
+        self.accepted("paper-reconciliation", record, 201, extra={"flag": "FLAG{34d1f606b3506a89}"})
 
     def w30_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state.get("paper_variance_observed"):
@@ -1790,7 +1791,7 @@ class Handler(BaseHTTPRequestHandler):
             "product_action_issued": False,
         }
         atomic_json(ROOT / "artifacts" / "request-plan" / "result.json", record)
-        self.accepted("request-plan", record, 201)
+        self.accepted("request-plan", record, 201, extra={"flag": "FLAG{86bf26d3fc61d20c}"})
         return
 
     def w33_1_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
@@ -2238,7 +2239,7 @@ class Handler(BaseHTTPRequestHandler):
             "flow_a_m3s": flow_a, "flow_b_m3s": flow_b,
         }
         atomic_json(ROOT / "artifacts" / "remote-operation" / "result.json", record)
-        self.accepted("remote-operation", record, 201)
+        self.accepted("remote-operation", record, 201, extra={"flag": "FLAG{c22198847dd20ce6}"})
 
     def w32_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state["replay_structure_recovered"]:
@@ -2259,7 +2260,7 @@ class Handler(BaseHTTPRequestHandler):
                           expected["transitions"], sort_keys=True,
                           separators=(",", ":")).encode()).hexdigest()}
             atomic_json(ROOT / "artifacts/replay-transitions-created/result.json", record)
-            self.accepted("replay-transitions-created", record, 201)
+            self.accepted("replay-transitions-created", record, 201, extra={"flag": "FLAG{551d772cb90103fd}"})
             return
         if not state["replay_transitions_reproduced"]:
             self.send_json(403, {"error": "reproduced ECS transitions required"})
@@ -2275,7 +2276,7 @@ class Handler(BaseHTTPRequestHandler):
             record = {**condition, "trace": "TRACE-R19-DISPUTED",
                       "current_binding": "post-ReserveUpdate independently observed Reserve"}
             atomic_json(ROOT / "artifacts/replay-condition-created/result.json", record)
-            self.accepted("replay-condition-created", record, 201)
+            self.accepted("replay-condition-created", record, 201, extra={"flag": "FLAG{7329a078d7db6108}"})
             return
         if not state["replay_condition_recovered"]:
             self.send_json(403, {"error": "retained approval condition required"})
@@ -2292,7 +2293,8 @@ class Handler(BaseHTTPRequestHandler):
             return
         record = {**witness, "evidence_role": "optional-model-evidence"}
         atomic_json(ROOT / "artifacts/replay-witness-created/result.json", record)
-        response = {"audit_id": append_audit("replay-witness-created", record), "record": record}
+        response = {"audit_id": append_audit("replay-witness-created", record), "record": record,
+                    "flag": "FLAG{f4403d8aabe6a550}"}
         state["replay_witness_response"] = response; save_state(state)
         self.send_json(201, response)
 
