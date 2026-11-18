@@ -10,7 +10,7 @@ nodes:
     os_version: '12'
     source:
       name: cinder-training-host
-      version: event-2026.11.11-04
+      version: event-2026.11.17-01
     resources:
       ram: 8 gib
       cpu: 2
@@ -27,10 +27,10 @@ nodes:
     os_version: '12'
     source:
       name: cinder-keplerops-host
-      version: event-2026.11.11-04
+      version: event-2026.11.17-03
     resources:
-      ram: 16 gib
-      cpu: 4
+      ram: 32 gib
+      cpu: 8
     roles:
       participant:
         username: rowan
@@ -44,7 +44,7 @@ nodes:
     os_version: '12'
     source:
       name: cinder-arwc-host
-      version: event-2026.11.11-07
+      version: event-2026.11.17-03
     resources:
       ram: 16 gib
       cpu: 4

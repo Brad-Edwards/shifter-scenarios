@@ -1,16 +1,16 @@
 # Binding the cinder-typhoon-direct pack
 
-Use `cinder-typhoon-direct.binding.json` with pack version 0.1.5 and adapter
-`panw.cinder-typhoon-direct` version 0.3.1. The adapter binding contains only
+Use `cinder-typhoon-direct.binding.json` with pack version 0.1.9 and adapter
+`panw.cinder-typhoon-direct` version 0.3.2. The adapter binding contains only
 the three compiled node addresses. Register
 `cinder-typhoon-direct.image-mappings.json` through BigRAE's RAES Image Registry
 to map the SDL sources to the exact private images in `prod-2hl4ce`.
 
 Pack content digest:
-`sha256:2c7ee539a8e97219cafc4ec5765d4493c3719b3fcd2f8804a914d879a0b06c16`.
+`sha256:35db7192b4afc64fa51065d839d0be37a597767de460ad7e0f64e5f26612c913`.
 
 Adapter worker:
-`ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter@sha256:cabeb7b75667678f78fb325253ce41fc96c8d8eaa16e5c1de4b2adc20165026a`.
+`ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter@sha256:7b2071a27958ae3bab71f5fff072cb41fbe3d9095cf35b20ef675b79641161d8`.
 Install it with
 [`cinder-typhoon-direct.manifest.json`](../runtime-adapter/cinder-typhoon-direct.manifest.json).
 
@@ -22,9 +22,9 @@ ARWC image source commit:
 
 | Target | Image | Numeric image ID | Machine | Disk | Capability |
 | --- | --- | --- | --- | --- | --- |
-| Training | `cinder-training-event-20261111-04` | `8977970493488990576` | `e2-standard-2` | 40 GB `pd-balanced` | `preconfigured-machine-host` |
-| KeplerOps | `cinder-keplerops-event-20261111-04` | `3080290997995406893` | `e2-standard-4` | 80 GB `pd-balanced` | `preconfigured-machine-host` |
-| ARWC | `cinder-arwc-event-20261111-07` | `6798526683874406924` | `e2-standard-4` | 80 GB `pd-balanced` | `standard` |
+| Training | `cinder-training-event-20261117-01` | `7824232850606066145` | `n2-standard-2` | 40 GB `pd-balanced` | `preconfigured-machine-host` |
+| KeplerOps | `cinder-keplerops-event-20261117-03` | `1569265548428132476` | `n2-standard-8` | 100 GB `pd-balanced` | `preconfigured-machine-host` |
+| ARWC | `cinder-arwc-event-20261117-03` | `1634262727332550818` | `n2-standard-4` | 80 GB `pd-balanced` | `standard` |
 
 Training readiness manifest:
 `77a86d8595bcda3654cd0b1d38356dad1cfe0b9aa08305cdfc8af1e3de87f8cc`.

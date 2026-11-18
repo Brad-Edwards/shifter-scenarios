@@ -946,11 +946,13 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/tag-exports/current":
             state["tag_export_observed"] = True
             record, action = TAG_EXPORT, "tag-export-read"
+            save_state(state)
+            self.accepted(action, record, extra={"flag": "FLAG{73df52a55c086268}"})
         else:
             state["scale_observed"] = True
             record, action = SCALE, "tag-scale-read"
-        save_state(state)
-        self.accepted(action, record)
+            save_state(state)
+            self.accepted(action, record, extra={"flag": "FLAG{5b9b0ae9726e230f}"})
 
     def historian_post(self, path: str, request: dict[str, object]) -> None:
         if path == "/api/forecasts/current":
@@ -983,7 +985,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
             state["unit_change_interpreted"] = True
             save_state(state)
-            self.accepted("unit-change-read", UNIT_CHANGE, 201)
+            self.accepted("unit-change-read", UNIT_CHANGE, 201, extra={"flag": "FLAG{d67d3828f16f64ad}"})
             return
         if path == "/api/outlet-groups/current/instruments":
             state = load_state()
@@ -1007,7 +1009,7 @@ class Handler(BaseHTTPRequestHandler):
             save_state(state)
             atomic_json(EVIDENCE / "historian" / "outlet-map.json", MAPPING)
             self.accepted("outlet-map-read", MAPPING, 201,
-                          {"instrument_observation": i_result["record"]})
+                          {"instrument_observation": i_result["record"], "flag": "FLAG{1cdd24443cc4a0bc}"})
             return
         if path == "/api/vault-access":
             e_status, e_result = self.internal_request("engineering", "POST", path, request)
@@ -1082,6 +1084,7 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("replay-model-created", record, extra={
                 "replay_b64": base64.b64encode(binary).decode(),
                 "distinguishing_cases": cases,
+                "flag": "FLAG{1d16a3a336e29908}",
             })
             return
         if ROLE == "engineering" and path == "/api/diagnostic-programs/current":
@@ -1100,7 +1103,7 @@ class Handler(BaseHTTPRequestHandler):
                 "protected_record": W19_RECORDS[4],
             }
             self.accepted("legacy-diagnostic-read", record,
-                          extra={"artifact_b64": base64.b64encode(binary).decode()})
+                          extra={"artifact_b64": base64.b64encode(binary).decode(), "flag": "FLAG{a701d55117606501}"})
             return
         if ROLE == "engineering" and path == "/api/sealed-projects/current/viewer":
             if not state["deployed_revision_observed"]:
@@ -1141,7 +1144,7 @@ class Handler(BaseHTTPRequestHandler):
                 },
             }
             self.accepted("firmware-image-read", record,
-                          extra={"image_b64": base64.b64encode(image).decode()})
+                          extra={"image_b64": base64.b64encode(image).decode(), "flag": "FLAG{65213f715150f979}"})
             return
         if ROLE == "hmi":
             if path == "/api/schedule-windows/current":
@@ -1195,6 +1198,7 @@ class Handler(BaseHTTPRequestHandler):
             extra["engineering_context"] = authored_asset("me-engineering-note-01-1")
         elif path == "/api/sealed-projects/current/note":
             extra["handover_context"] = authored_asset("me-project-handover-01")
+            extra["flag"] = "FLAG{0440d5e5947665f6}"
         self.accepted(action, record, extra=extra)
 
     def owner_post(self, path: str, request: dict[str, object]) -> None:
@@ -1411,7 +1415,7 @@ class Handler(BaseHTTPRequestHandler):
                       "program_set": "DPG1-CASES-R3", "cases_verified": 6,
                       "approved_digest": manifest["approved_digest"]}
             atomic_json(INTEGRITY_STATE / "integrity-verifier" / "result.json", record)
-            self.accepted("integrity-verifier", record, 201)
+            self.accepted("integrity-verifier", record, 201, extra={"flag": "FLAG{783b582e0ba2a939}"})
             return
 
         if not state["integrity_verifier_reproduced"]:
@@ -1464,7 +1468,7 @@ class Handler(BaseHTTPRequestHandler):
                   "digest": dpg1.digest_hex(candidate), "nonidentical": True,
                   "structure": "accepted", "outputs": parsed["outputs"]}
         atomic_json(output / "result.json", record)
-        self.accepted("collision-model", record, 201)
+        self.accepted("collision-model", record, 201, extra={"flag": "FLAG{de0df9d4236a7ea9}"})
 
     def w32_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state["replay_structure_recovered"]:
@@ -1485,7 +1489,7 @@ class Handler(BaseHTTPRequestHandler):
                           expected["transitions"], sort_keys=True,
                           separators=(",", ":")).encode()).hexdigest()}
             atomic_json(ROOT / "artifacts/replay-transitions-created/result.json", record)
-            self.accepted("replay-transitions-created", record, 201)
+            self.accepted("replay-transitions-created", record, 201, extra={"flag": "FLAG{551d772cb90103fd}"})
             return
         if not state["replay_transitions_reproduced"]:
             self.send_json(403, {"error": "reproduced ECS transitions required"})
@@ -1501,7 +1505,7 @@ class Handler(BaseHTTPRequestHandler):
             record = {**condition, "trace": "TRACE-R19-DISPUTED",
                       "current_binding": "post-ReserveUpdate independently observed Reserve"}
             atomic_json(ROOT / "artifacts/replay-condition-created/result.json", record)
-            self.accepted("replay-condition-created", record, 201)
+            self.accepted("replay-condition-created", record, 201, extra={"flag": "FLAG{7329a078d7db6108}"})
             return
         if not state["replay_condition_recovered"]:
             self.send_json(403, {"error": "retained approval condition required"})
@@ -1518,7 +1522,8 @@ class Handler(BaseHTTPRequestHandler):
             return
         record = {**witness, "evidence_role": "optional-model-evidence"}
         atomic_json(ROOT / "artifacts/replay-witness-created/result.json", record)
-        response = {"audit_id": append_audit("replay-witness-created", record), "record": record}
+        response = {"audit_id": append_audit("replay-witness-created", record), "record": record,
+                    "flag": "FLAG{f4403d8aabe6a550}"}
         state["replay_witness_response"] = response; save_state(state)
         self.send_json(201, response)
 
@@ -1629,7 +1634,7 @@ class Handler(BaseHTTPRequestHandler):
                   "alternate_supply_m3s": request["alternate_supply_m3s"]}
         response = {"audit_id": correlation, "hmi_audit_id": append_audit(
             "schedule-window-read", record, correlation), "planning_audit_id": data_result["audit_id"],
-            "record": record}
+            "record": record, "flag": "FLAG{a972558765950459}"}
         state["schedule_observed"] = True; state["schedule_response"] = response; save_state(state)
         atomic_json(EVIDENCE / "hmi" / "schedule-evaluation.json", record)
         self.send_json(201, response)
@@ -1693,7 +1698,8 @@ class Handler(BaseHTTPRequestHandler):
         if (status != 201 or result.get("audit_id") != correlation or not isinstance(record, dict) or
                 record.get("record_id") != "POL-RESULT-CRR-33"):
             self.send_json(status if status in {403, 409} else 409, result); return
-        response = {**result, "hmi_audit_id": append_audit("forecast-policy-created", record, correlation)}
+        response = {**result, "hmi_audit_id": append_audit("forecast-policy-created", record, correlation),
+                    "flag": "FLAG{8d62fb9ea4f1924f}"}
         state["forecast_policy_observed"] = True; state["forecast_policy_response"] = response; save_state(state)
         atomic_json(EVIDENCE / "hmi" / "forecast-policy.json", record)
         self.send_json(201, response)
@@ -1735,7 +1741,7 @@ class Handler(BaseHTTPRequestHandler):
             "schedule-evaluation-created", record, str(correlation)),
             "reservoir_audit_id": reservoir["audit_id"], "distribution_audit_id": distribution["audit_id"],
             "record": record, "reservoir_observation": reservoir["record"],
-            "distribution_observation": distribution["record"]}
+            "distribution_observation": distribution["record"], "flag": "FLAG{7fc27069641f0cc2}"}
         state["schedule_rehearsal_observed"] = True; state["schedule_rehearsal_response"] = response; save_state(state)
         atomic_json(EVIDENCE / "instruments" / "schedule-rehearsal.json", record)
         self.send_json(201, response)
@@ -1765,7 +1771,7 @@ class Handler(BaseHTTPRequestHandler):
         response = {"audit_id": str(correlation), "instrument_audit_id": append_audit(
             "forecast-policy-created", record, str(correlation)),
             "reservoir_audit_id": reservoir["audit_id"], "distribution_audit_id": distribution["audit_id"],
-            "record": record}
+            "record": record, "flag": "FLAG{271d8984b1b19a04}"}
         state["forecast_policy_observed"] = True; state["forecast_policy_response"] = response; save_state(state)
         self.send_json(201, response)
 
@@ -1804,7 +1810,7 @@ class Handler(BaseHTTPRequestHandler):
         response = {"audit_id": str(correlation), "instrument_audit_id": append_audit(
             "reporting-handover-created", record, str(correlation)),
             "reservoir_audit_id": reservoir["audit_id"], "record": record,
-            "reservoir_observation": reservoir["record"]}
+            "reservoir_observation": reservoir["record"], "flag": "FLAG{30f75150343d624e}"}
         state["reporting_handover_observed"] = True; state["reporting_handover_response"] = response; save_state(state)
         atomic_json(EVIDENCE / "instruments" / "reporting-handover.json", record)
         self.send_json(201, response)
@@ -1833,6 +1839,7 @@ class Handler(BaseHTTPRequestHandler):
         save_state(state)
         atomic_json(EVIDENCE / "instruments" / "reserve-observation.json", record)
         self.accepted("reserve-balance-created", record, 201,
+                      extra={"flag": "FLAG{ea5a5c4c83724109}"},
                       correlation=str(correlation))
 
     def w29_plan(self, request: dict[str, object], state: dict[str, object]) -> None:
@@ -1900,7 +1907,8 @@ class Handler(BaseHTTPRequestHandler):
         state["loss_plan_constructed"] = True
         save_state(state)
         atomic_json(EVIDENCE / "hmi" / "loss-plan.json", record)
-        self.accepted("loss-plan-created", record, 201, correlation=str(correlation))
+        self.accepted("loss-plan-created", record, 201, extra={"flag": "FLAG{34d1f606b3506a89}"},
+                      correlation=str(correlation))
 
     def w30_process_context(self) -> bool:
         expected = {
@@ -1962,7 +1970,8 @@ class Handler(BaseHTTPRequestHandler):
         save_state(state)
         atomic_json(EVIDENCE / "hmi" / "release-plan.json", record)
         self.accepted("release-plan-bound", record, 201,
-                      {"reservoir_audit_id": result["audit_id"]}, str(correlation))
+                      {"reservoir_audit_id": result["audit_id"], "flag": "FLAG{86bf26d3fc61d20c}"},
+                      str(correlation))
 
     def w30_open(self, request: dict[str, object]) -> None:
         if not load_state()["release_plan_bound"]:
@@ -2079,6 +2088,7 @@ class Handler(BaseHTTPRequestHandler):
             "audit_id": str(correlation), "reservoir_audit_id": reservoir["audit_id"],
             "instrument_audit_id": instrument_audit, "record": result,
             "actuation": action, "instrument_observation": observation,
+            "flag": "FLAG{c22198847dd20ce6}",
         }
         state["gate_release_observed"] = True
         state["gate_release_response"] = response
@@ -2168,6 +2178,7 @@ class Handler(BaseHTTPRequestHandler):
                 "relationship": relationship, "ordinary_invocations": ordinary,
                 "relocations": (UTILITY_ARTIFACTS / "relocations.txt").read_text(),
                 "seccomp_policy": seccomp,
+                "flag": "FLAG{3f8005c9af25c506}",
             })
             return
 
@@ -2208,7 +2219,7 @@ class Handler(BaseHTTPRequestHandler):
                 "pie": True, "aslr": True, "controlled_flow": True,
             }
             atomic_json(UTILITY_STATE / "controlled-flow" / "result.json", record)
-            self.accepted("controlled-flow", record, 201)
+            self.accepted("controlled-flow", record, 201, extra={"flag": "FLAG{08c247e97a430854}"})
             return
 
         if not state["utility_flow_controlled"]:
@@ -2261,7 +2272,7 @@ class Handler(BaseHTTPRequestHandler):
             if not isinstance(response, dict) or not isinstance(response.get("record"), dict):
                 self.send_json(403, {"error": "scoped utility control client required"})
                 return
-            self.send_json(201, response)
+            self.send_json(201, {**response, "flag": "FLAG{e0cc03bd006f272b}"})
             return
         self.send_json(409, {"error": "utility control operation is not valid"})
 
@@ -2361,7 +2372,7 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("legacy-interpretation-created", {
                 "record_id": "DIAG-TRACE-COMPAT-19", "revision": 19,
                 "execution": "i386-compatibility", **expected,
-            }, 201)
+            }, 201, extra={"flag": "FLAG{3074d89b1b111db1}"})
             return
         if not state["compatibility_reproduced"]:
             self.send_json(403, {"error": "compatibility-decoder result required"})
@@ -2383,7 +2394,7 @@ class Handler(BaseHTTPRequestHandler):
                 "verifier64": expected[-1]["verifier64"], "decision": "valid",
             }
             atomic_json(EVIDENCE / "engineering" / "legacy-verifier.json", result)
-            self.accepted("legacy-check-read", result, 201)
+            self.accepted("legacy-check-read", result, 201, extra={"flag": "FLAG{9babf5077ba75607}"})
             return
         if not state["hidden_check_recovered"]:
             self.send_json(403, {"error": "recovered diagnostic decisions required"})
@@ -2405,7 +2416,7 @@ class Handler(BaseHTTPRequestHandler):
         result = {"record_id": "MAP-OG2-LEGACY-R21", "revision": 21,
                   "historical": True, "comparison_digest": digest, **mapping}
         atomic_json(EVIDENCE / "engineering" / "legacy-map.json", result)
-        self.accepted("legacy-map-read", result, 201)
+        self.accepted("legacy-map-read", result, 201, extra={"flag": "FLAG{bbf27da1a4f01783}"})
 
     def w20_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state["flash_observed"]:
@@ -2423,7 +2434,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
             state["inspection_recovered"] = True
             save_state(state)
-            self.accepted("maintenance-record-created", target, 201)
+            self.accepted("maintenance-record-created", target, 201, extra={"flag": "FLAG{fc1ffbdd541e5aa8}"})
             return
         if not state["inspection_recovered"]:
             self.send_json(403, {"error": "valid last-inspection record required"})
@@ -2484,7 +2495,7 @@ class Handler(BaseHTTPRequestHandler):
         result = {**updated, "image_id": "IMG-FIT-204-R6", "wear_counts": [17, 9],
                   "live_telemetry_changed": False}
         atomic_json(EVIDENCE / "instruments" / "firmware-image.json", result)
-        self.accepted("firmware-record-created", result, 201)
+        self.accepted("firmware-record-created", result, 201, extra={"flag": "FLAG{d802bfe7a42fb855}"})
 
 
 def main() -> None:

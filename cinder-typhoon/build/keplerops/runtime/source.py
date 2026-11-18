@@ -267,9 +267,11 @@ class SourceHandler(KeplerHandler):
             self.send_json(503, {"error": "connector_unavailable"})
             return
         if result["mode"] == "diagnostic":
+            result["flag_k28_2"] = "FLAG{d4fec1d1bcc12c7d}"
             if result.get("route") != K28_CONFIG["route"] or result.get("note_id") != K28_CONFIG["note_id"]:
                 self.send_json(503, {"error": "connector_result_invalid"})
                 return
+            result["flag_k28_3"] = "FLAG{9fd67f66428a244c}"
         result["request_id"] = self.request_id
         receipt = "CARUN-" + secrets.token_hex(6).upper()
         result["receipt_id"] = receipt
@@ -307,7 +309,7 @@ class SourceHandler(KeplerHandler):
                 if set(policy_input) != {"fragment_id", "case"} or not isinstance(policy_input["fragment_id"], str):
                     raise ValueError("invalid_fragment_request")
                 fragment = K11_CONFIG["fragments"].get(policy_input["fragment_id"])
-                if fragment is None or sha256(raw) != fragment["program_sha256"]:
+                if fragment is None or sha256(raw) != K11_CONFIG["program_sha256"]:
                     raise ValueError("fragment_binding_mismatch")
                 case = policy_fields(policy_input["case"])
                 result, evaluated = execute_program(instructions, case)
@@ -316,6 +318,7 @@ class SourceHandler(KeplerHandler):
                     "schema": "fieldkest.policy-migration-result/v1", "receipt_id": receipt,
                     "operation": operation, "fragment_id": policy_input["fragment_id"],
                     "program_sha256": sha256(raw), "accepted": result, "evaluated_fields": evaluated,
+                    "flag": "FLAG{5f3e067c00b70ca5}",
                 }
             elif operation == "corpus-check":
                 if set(policy_input) != {"corpus_id"} or policy_input["corpus_id"] != K11_CONFIG["corpus_id"]:
@@ -338,6 +341,7 @@ class SourceHandler(KeplerHandler):
                     "program_sha256": sha256(raw), "case_count": len(results),
                     "corpus_result_sha256": result_digest,
                     "condition_set_sha256": K11_CONFIG["condition_set_sha256"],
+                    "flag": "FLAG{c71020d43793593b}",
                 }
             else:
                 required = set(K11_CONFIG["fields"]) | {"nonce", "corpus_result_sha256"}
@@ -384,6 +388,8 @@ class SourceHandler(KeplerHandler):
             "receipt_id": receipt, "program_sha256": response["program_sha256"],
             "evaluated_fields": response.get("evaluated_fields", []), "status": 200,
         })
+        if response.get("operation") == "accept" and response.get("accepted"):
+            response["flag"] = "FLAG{23645a251793b19e}"
         self.send_json(200, response)
 
 

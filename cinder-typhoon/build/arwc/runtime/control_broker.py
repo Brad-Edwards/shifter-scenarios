@@ -403,7 +403,7 @@ class Handler(BaseHTTPRequestHandler):
         public = {key: value for key, value in current.items()
                   if key not in {"token_sha256", "bearer_token"}}
         self.accepted("approval-client/issue", "veybridge.tech.204", public,
-                      extra={"control_client": raw})
+                      extra={"control_client": raw, "flag": "FLAG{dcad7d22a6c5fb80}"})
 
 
 def main() -> None:

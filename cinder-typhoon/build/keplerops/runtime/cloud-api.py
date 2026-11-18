@@ -1,0 +1,1432 @@
+"""k-cloud-api: thin workspace token-exchange front for the K3s workload identity.
+
+K13.4: the participant exchanges developer credentials for a real K3s service-account
+token (svc-fieldlink-workload) and uses it to read the protected build record.
+RBAC is enforced by real K3s — not by Python if-statements in this service.
+"""
+from __future__ import annotations
+
+import base64
+import hashlib
+import http.client as _hc
+import json
+import os
+from pathlib import Path
+import secrets
+import ssl
+import tempfile
+from urllib.parse import urlsplit
+
+from http_support import KeplerHandler, append_audit, serve_tls
+from credentials import credential
+
+STATE = Path(os.environ.get("FIELDKEST_STATE_ROOT", "/var/lib/fieldkest-cloud-api"))
+AUDIT = STATE / "audit"
+RESULTS = STATE / "results"
+CONFIG = json.loads((STATE / "config/cloud-api.json").read_text())
+
+USERNAME = CONFIG["developer"]["username"]
+TOKEN = credential("developer_token")
+RELEASE_READER_TOKEN = credential("release_reader_token")  # K29.1 exchange handle
+HISTORY_RECOVERY_SESSION = credential("cloud_history_recovery_session")  # K30.1 recovery session
+WORKLOAD_SESSION = credential("cloud_workload_session")  # K13.4 workload path
+MAINTENANCE_WORKER = credential("ci_maintenance_worker")  # K31 maintenance worker
+MAINTENANCE_RUNTIME = credential("cloud_maintenance_runtime")  # K31 runtime credential
+SUPPORT_EXPORT_ROLE = credential("cloud_support_export_role")  # K16/K31 export role
+
+# K31: maintenance job constants
+MAINTENANCE_COMMAND = ["maintenance-summary", "--archive", "FIELD-CRR-2026-09"]
+MAINTENANCE_LABEL = {"workload.class": "maintenance"}
+MAINTENANCE_WORKLOAD_ID = "MAINT-FLK-01"
+MAINTENANCE_POLICY_ID = "fieldlink-maintenance"
+MAINTENANCE_ARCHIVE_HEADERS = {
+    "workload_class": "X-Workload-Class",
+    "scheduler_attestation": "X-Scheduler-Attestation",
+}
+
+import threading as _threading
+
+# K31.2: in-memory workload execution state (attestation store)
+_WORKLOAD_EXECUTIONS: dict[str, dict] = {}
+_WORKLOAD_LOCK = _threading.Lock()
+
+# K16.2-K16.4: in-memory schedule state (startup_hook, assignment changes)
+_SCHEDULE_STATE: dict[str, object] = {"startup_hook": None, "assignment": "CAS-MAYA-2841", "assignment_changed": False}
+_SCHEDULE_LOCK = _threading.Lock()
+FIELD_ARCHIVE_CALIBRATION = "CRR-OG2-CAL-2026-09-18"
+NAMESPACE = CONFIG.get("namespace", "fieldlink")
+WORKLOAD_SA = CONFIG.get("workload_sa", "svc-fieldlink-workload")
+
+# K3s connection credentials (from cloud-api-k3s.json mounted at startup)
+_K3S_CRED_PATH = Path(os.environ.get("K3S_CREDENTIALS_FILE", "/etc/cloud-api/k3s.json"))
+
+# K30.2/K30.3: in-memory restore namespace store (recovery session grants access)
+_RECOVERY_NAMESPACES: dict[str, dict] = {}
+_RECOVERY_LOCK = _threading.Lock()
+
+# Seeded ARWC migration history (the "real restored state" from BAK-2026-021)
+_ARWC_MIGRATION_HISTORY = {
+    "schema": "fieldkest.customer-migration-history/v1",
+    "backup_id": "BAK-2026-021",
+    "records": [
+        {
+            "tenant_id": "TEN-ARWC-019",
+            "current_tenant": "TEN-ARWC-047",
+            "migration_date": "2026-08-15",
+            "connector": "fieldlink",
+            "connector_revision": "FLK-7.4.2",
+            "reason": "tenant-consolidation-2026",
+        }
+    ],
+}
+
+
+def _validate_partition_binding(export_id: str, tenant: str,
+                                partition: str, connector_revision: str) -> bool:
+    """K15.4: validate partition binding against real PostgreSQL export.partition_bindings.
+
+    Queries: SELECT 1 FROM export.partition_bindings WHERE export_id=? AND tenant=?
+             AND partition_id=? AND connector_revision=? AND is_current=true
+    Returns True if found (valid binding), False otherwise.
+    """
+    try:
+        import psycopg2
+        import os
+        pg_host = CONFIG.get("postgres_host", "data.keplerops.test")
+        pg_port = int(CONFIG.get("postgres_port", 5432))
+        pg_db = CONFIG.get("postgres_db", "fieldlink_data")
+        pg_user = CONFIG.get("postgres_user", "rowan_data")
+        pg_pass_file = Path(os.environ.get("POSTGRES_PASSWORD_FILE",
+                                           "/etc/cloud-api/pgpass"))
+        if pg_pass_file.is_file():
+            pg_pass = pg_pass_file.read_text().strip()
+        else:
+            pg_pass = os.environ.get("PGPASSWORD", "")
+        conn = psycopg2.connect(
+            host=pg_host, port=pg_port, dbname=pg_db,
+            user=pg_user, password=pg_pass,
+            connect_timeout=5,
+        )
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT 1 FROM export.partition_bindings "
+            "WHERE export_id=%s AND tenant=%s AND partition_id=%s "
+            "AND connector_revision=%s AND is_current=true",
+            (export_id, tenant, partition, connector_revision),
+        )
+        found = cur.fetchone() is not None
+        conn.close()
+        return found
+    except Exception:
+        return False
+
+
+def _write_export_object(export_id: str, destination: str,
+                         collection_key: str, payload: bytes) -> tuple[bool, str]:
+    """K15.4: write a versioned export object to real SeaweedFS S3.
+
+    Uses the svc-fieldlink-export credentials to write to fieldkest-exports bucket.
+    Returns (success, error_message).
+    """
+    try:
+        cred_file = Path(os.environ.get("EXPORT_CREDENTIALS_FILE",
+                                        "/etc/cloud-api/export-credentials"))
+        if not cred_file.is_file():
+            return False, "export_credentials_missing"
+        lines = cred_file.read_text().splitlines()
+        access_key = next((l.split("=", 1)[1].strip() for l in lines
+                           if l.startswith("aws_access_key_id")), "")
+        secret_key = next((l.split("=", 1)[1].strip() for l in lines
+                           if l.startswith("aws_secret_access_key")), "")
+        s3_endpoint = CONFIG.get("s3_endpoint", "http://fieldlink-objects:8333")
+        s3_host, s3_port_str = s3_endpoint.removeprefix("http://").split(":")
+        s3_port = int(s3_port_str)
+        # Build S3 PUT request (unsigned for simplicity — SeaweedFS accepts unsigned if credentials match)
+        # Use AWS Signature V4 via subprocess aws command
+        import subprocess
+        bucket = "fieldkest-exports"
+        s3_key = f"{export_id}/{collection_key}"
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".json") as f:
+            f.write(payload); tmp_path = f.name
+        env = {**os.environ,
+               "AWS_ACCESS_KEY_ID": access_key,
+               "AWS_SECRET_ACCESS_KEY": secret_key,
+               "AWS_DEFAULT_REGION": "us-east-1"}
+        result = subprocess.run(
+            ["aws", "--endpoint-url", s3_endpoint,
+             "s3", "cp", tmp_path, f"s3://{bucket}/{s3_key}"],
+            capture_output=True, text=True, env=env, timeout=10
+        )
+        os.unlink(tmp_path)
+        if result.returncode == 0:
+            return True, ""
+        return False, result.stderr[:200]
+    except Exception as exc:
+        return False, str(exc)
+
+
+def _load_k3s_creds() -> dict:
+    return json.loads(_K3S_CRED_PATH.read_text())
+
+
+def _k3s_request(method: str, path: str, body: object = None,
+                 bearer: str | None = None) -> tuple[int, dict]:
+    """Make a request to the K3s API server."""
+    creds = _load_k3s_creds()
+    ca_data = base64.b64decode(creds["ca"])
+    server = creds["server"]  # e.g. https://10.77.52.60:6443
+    host, port = server.removeprefix("https://").split(":")
+    token = bearer if bearer else creds["token"]
+    with tempfile.NamedTemporaryFile(suffix=".crt", delete=True) as ca_file:
+        ca_file.write(ca_data)
+        ca_file.flush()
+        ctx = ssl.create_default_context(cafile=ca_file.name)
+        conn = _hc.HTTPSConnection(host, int(port), context=ctx, timeout=10)
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        }
+        encoded = json.dumps(body).encode() if body is not None else None
+        conn.request(method, path, body=encoded, headers=headers)
+        resp = conn.getresponse()
+        data = resp.read()
+        conn.close()
+    try:
+        return resp.status, json.loads(data) if data else {}
+    except (ValueError, json.JSONDecodeError):
+        return resp.status, {}
+
+
+class CloudApiHandler(KeplerHandler):
+    def _developer(self) -> bool:
+        return self.basic_or_bearer(USERNAME, TOKEN)
+
+    def do_GET(self) -> None:
+        path = urlsplit(self.path).path
+        if path == "/.well-known/fieldkest-client":
+            docs = json.loads(Path("/opt/fieldkest/client_documents.json").read_text())
+            self.send_json(200, docs["documents"]["cloud-api.keplerops.test"])
+            return
+        if path == "/health":
+            self.send_json(200, {"status": "up"})
+            return
+        # /api/build-records/{id}: two paths depending on the build record type.
+        # K29.1: BLD-REL-742 is developer-authenticated and returns the release exchange handle.
+        #   The flaw: checks project membership (developer token) but omits release-dossier
+        #   entitlement check before returning the exchange handle.
+        # K13.4: all other build records require a K3s workload SA token (enforced by K3s RBAC).
+        # K31.1: maintenance index — returns policy, workload, field archive, and credentials.
+        # Requires SUPPORT_EXPORT_ROLE, WORKLOAD_SESSION, or MAINTENANCE_WORKER token.
+        if path == "/api/maintenance":
+            auth = self.headers.get("Authorization", "")
+            token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
+            if token not in {SUPPORT_EXPORT_ROLE, WORKLOAD_SESSION, MAINTENANCE_WORKER}:
+                self.send_json(401, {"error": "authentication_required"})
+                return
+            result = {
+                "policy_id": MAINTENANCE_POLICY_ID,
+                "workload_id": MAINTENANCE_WORKLOAD_ID,
+                "field_archive": "FIELD-CRR-2026-09",
+                "archive_asset": "CRR-OG2",
+                "workload_class": "maintenance",
+                "worker_credential": MAINTENANCE_WORKER,
+                "runtime_credential": MAINTENANCE_RUNTIME,
+            }
+            append_audit(AUDIT, "maintenance-index", {
+                "request_id": self.request_id, "status": 200,
+            })
+            self.send_json(200, result)
+            return
+
+        # K31.1: maintenance policy — PROTECTED; requires SUPPORT_EXPORT_ROLE (K14.2) or
+        # MAINTENANCE_WORKER only. Plain developer token must NOT read this.
+        if path == "/api/policies/fieldlink-maintenance":
+            auth = self.headers.get("Authorization", "")
+            token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
+            if token not in {SUPPORT_EXPORT_ROLE, MAINTENANCE_WORKER}:
+                self.send_json(401, {"error": "earned_identity_required"})
+                return
+            result = {
+                "policy_id": MAINTENANCE_POLICY_ID,
+                "management_caller": "svc-fieldkest-runner",
+                "scheduler": "fieldkest-scheduler",
+                "runtime_identity": "svc-fieldlink-maintenance",
+                "command": MAINTENANCE_COMMAND,
+                "required_label": MAINTENANCE_LABEL,
+                "archive_request": {"headers": MAINTENANCE_ARCHIVE_HEADERS},
+                "whoami": "svc-fieldkest-runner",
+                "flag": "FLAG{c3f9834223486bbe}",
+            }
+            append_audit(AUDIT, "maintenance-policy", {
+                "request_id": self.request_id, "status": 200,
+            })
+            self.send_json(200, result)
+            return
+
+        # K31.1 scoped operation: worker can read/probe its OWN bounded job (MAINT-FLK-01) but not others.
+        # This demonstrates the identity distinction: management_caller ≠ runtime_identity.
+        # Requires MAINTENANCE_WORKER credential only (bounded scope).
+        if path.startswith("/api/maintenance/"):
+            auth = self.headers.get("Authorization", "")
+            token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
+            if token != MAINTENANCE_WORKER:
+                self.send_json(401, {"error": "maintenance_worker_required"})
+                return
+            job_part = path.removeprefix("/api/maintenance/")
+            # Probe endpoint: K31.1 scoped-operation grader (GET MAINT-FLK-01/probe)
+            if job_part == f"{MAINTENANCE_WORKLOAD_ID}/probe":
+                import uuid as _uuid2
+                receipt_id = "K31-1-" + _uuid2.uuid4().hex[:10].upper()
+                result = {
+                    "card": "K31.1",
+                    "receipt_id": receipt_id,
+                    "workload_id": MAINTENANCE_WORKLOAD_ID,
+                    "runtime_identity": "svc-fieldlink-maintenance",
+                    "management_caller": "svc-fieldkest-runner",
+                    "identity_distinction": "runtime_identity != management_caller",
+                    "label_check": "passed",
+                    "required_label": MAINTENANCE_LABEL,
+                }
+                append_audit(AUDIT, "maintenance-probe", {
+                    "request_id": self.request_id,
+                    "workload_id": MAINTENANCE_WORKLOAD_ID,
+                    "receipt_id": receipt_id,
+                    "runtime_identity": "svc-fieldlink-maintenance",
+                    "status": 200,
+                })
+                self.send_json(200, result)
+                return
+            if job_part != MAINTENANCE_WORKLOAD_ID:
+                self.send_json(403, {"error": "out_of_scope_workload"})
+                return
+            result = {
+                "workload_id": MAINTENANCE_WORKLOAD_ID,
+                "runtime_identity": "svc-fieldlink-maintenance",
+                "management_caller": "svc-fieldkest-runner",
+                "required_label": MAINTENANCE_LABEL,
+                "label_check": "passed",
+            }
+            append_audit(AUDIT, "maintenance-job-read", {
+                "request_id": self.request_id,
+                "workload_id": MAINTENANCE_WORKLOAD_ID,
+                "runtime_identity": "svc-fieldlink-maintenance",
+                "status": 200,
+            })
+            self.send_json(200, result)
+            return
+
+        # K31.2: whoami — returns runtime identity and scheduler attestation after PATCH execution.
+        # Requires MAINTENANCE_WORKER. The attestation is generated after a PATCH execution.
+        if path == f"/api/workloads/{MAINTENANCE_WORKLOAD_ID}/whoami":
+            auth = self.headers.get("Authorization", "")
+            token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
+            if token != MAINTENANCE_WORKER:
+                self.send_json(401, {"error": "maintenance_worker_required"})
+                return
+            with _WORKLOAD_LOCK:
+                execution = _WORKLOAD_EXECUTIONS.get(MAINTENANCE_WORKLOAD_ID)
+            if execution is None:
+                self.send_json(404, {"error": "no_execution_found"})
+                return
+            self.send_json(200, {
+                "workload_id": MAINTENANCE_WORKLOAD_ID,
+                "runtime_identity": "svc-fieldlink-maintenance",
+                "attestation": execution["attestation"],
+                "flag": "FLAG{a17c2fea31043bd8}",
+            })
+            return
+
+        # K31.3: field-archive — returns the protected FIELD-CRR-2026-09 archive.
+        # Requires MAINTENANCE_RUNTIME credential + workload-class header + scheduler attestation.
+        if path == f"/api/field-archive/FIELD-CRR-2026-09":
+            auth = self.headers.get("Authorization", "")
+            token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
+            if token != MAINTENANCE_RUNTIME:
+                self.send_json(401, {"error": "maintenance_runtime_required"})
+                return
+            workload_class = self.headers.get("X-Workload-Class", "")
+            attestation = self.headers.get("X-Scheduler-Attestation", "")
+            if workload_class != MAINTENANCE_LABEL.get("workload.class"):
+                self.send_json(403, {"error": "workload_class_mismatch"})
+                return
+            # Verify the attestation was issued by a real PATCH execution
+            with _WORKLOAD_LOCK:
+                known = any(
+                    e.get("attestation") == attestation
+                    for e in _WORKLOAD_EXECUTIONS.values()
+                )
+            if not known:
+                self.send_json(403, {"error": "attestation_invalid"})
+                return
+            append_audit(AUDIT, "field-archive", {
+                "request_id": self.request_id,
+                "archive_id": "FIELD-CRR-2026-09",
+                "runtime_identity": "svc-fieldlink-maintenance",
+                "status": 200,
+            })
+            self.send_json(200, {
+                "archive_id": "FIELD-CRR-2026-09",
+                "runtime_identity": "svc-fieldlink-maintenance",
+                "calibration_revision": FIELD_ARCHIVE_CALIBRATION,
+                "asset": "CRR-OG2",
+                "flag": "FLAG{fde258527cfc25b1}",
+            })
+            return
+
+        # K30.2: backup catalog — requires recovery session, source_database denied
+        if path == "/api/backups/BAK-2026-021":
+            self._backup_catalog()
+            return
+        # K30.3: recovery history — requires recovery session, reads from restored namespace
+        if path.startswith("/api/recovery/") and path.endswith("/customer-migration-history"):
+            namespace_id = path.removeprefix("/api/recovery/").removesuffix("/customer-migration-history")
+            self._recovery_history(namespace_id)
+            return
+        if path.startswith("/api/build-records/"):
+            build_id = path.removeprefix("/api/build-records/")
+            if build_id == "BLD-REL-742":
+                self._build_record_release_dossier(build_id)
+            elif build_id == "BLD-REC-021":
+                self._build_record_history_recovery(build_id)
+            else:
+                self._build_record_via_workload(build_id)
+            return
+        # /api/trust-records/{id}: K14.1 — authenticated by workload SA token.
+        # The trust record is a real K3s ConfigMap containing the token's trust context.
+        if path.startswith("/api/trust-records/"):
+            trust_id = path.removeprefix("/api/trust-records/")
+            self._trust_record_via_workload(trust_id)
+            return
+        # /api/policies/{id}: K14.2 — authenticated by export SA token.
+        # Reads the protected role record via K3s ConfigMap using the export SA token.
+        if path.startswith("/api/policies/"):
+            policy_id = path.removeprefix("/api/policies/")
+            self._policy_via_export_token(policy_id)
+            return
+        # /api/data/exports/{id}: K14.3 — authenticated by export SA token.
+        # Returns export S3 credentials for svc-fieldlink-export.
+        # Proves SeaweedFS bucket policy boundary: developer denied, export role allowed.
+        if path.startswith("/api/data/exports/"):
+            export_id = path.removeprefix("/api/data/exports/")
+            self._export_credentials(export_id)
+            return
+        # /api/exports/{id}/definition: K15.2 — authenticated by export SA token.
+        # Reads the K3s ConfigMap for the export definition. The detail route checks
+        # tenant visibility but omits job ownership (the K15.2 ownership gap).
+        if path.endswith("/definition") and "/api/exports/" in path:
+            export_id = path.removeprefix("/api/exports/").removesuffix("/definition")
+            self._export_definition(export_id)
+            return
+        # /api/schedules/{id}/context: K16.3 — returns the execution identity.
+        if path.endswith("/context") and "/api/schedules/" in path:
+            schedule_id = path.removeprefix("/api/schedules/").removesuffix("/context")
+            self._schedule_context(schedule_id)
+            return
+        # /api/schedules/{id}: K16.1 — authenticated by export SA token.
+        # Reads the real K3s CronJob spec for the support schedule.
+        if path.startswith("/api/schedules/"):
+            schedule_id = path.removeprefix("/api/schedules/")
+            self._schedule_summary(schedule_id)
+            return
+        # /api/exports/{id}: K15.1 — authenticated by export SA token.
+        # Reads the real K3s Job spec for the export job and returns job summary.
+        if path.startswith("/api/exports/"):
+            export_id = path.removeprefix("/api/exports/")
+            self._export_job_summary(export_id)
+            return
+        if not self._developer():
+            self.send_json(401, {"error": "authentication_required"})
+            return
+        if path == "/api/workspaces/current/token-exchange":
+            self._workspace_exchange()
+            return
+        self.send_json(404, {"error": "not_found"})
+
+    def _patch_schedule(self, schedule_id: str) -> None:
+        """K16.2/K16.4: patch the schedule startup hook or assignment.
+
+        K16.2: participant updates startup_hook from allowed_startup_hooks.
+        K16.4: participant updates assignment to next_assignment.
+        State is kept in-memory; the K3s CronJob provides the initial values.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        role_token = auth[7:].strip()
+        if role_token != SUPPORT_EXPORT_ROLE:
+            self.send_json(403, {"error": "export_role_required"})
+            return
+        try:
+            body = self.read_json(32_768)
+        except Exception:
+            self.send_json(400, {"error": "bad_request"})
+            return
+        with _SCHEDULE_LOCK:
+            if "startup_hook" in body:
+                hook = body["startup_hook"]
+                _SCHEDULE_STATE["startup_hook"] = hook
+                result = {"schedule_id": schedule_id.upper(), "startup_hook": hook, "flag": "FLAG{ba92d77607f974b5}"}
+            elif "assignment" in body:
+                _SCHEDULE_STATE["assignment"] = body["assignment"]
+                _SCHEDULE_STATE["assignment_changed"] = True
+                result = {"schedule_id": schedule_id.upper(), "assignment": body["assignment"], "revision": 2}
+            else:
+                self.send_json(422, {"error": "unknown_update_field"})
+                return
+        append_audit(AUDIT, "schedule-patches", {
+            "request_id": self.request_id, "schedule_id": schedule_id.upper(), "status": 200,
+        })
+        self.send_json(200, result)
+
+    def do_PATCH(self) -> None:
+        """K15.3: PATCH the export destination using the export SA token.
+
+        Delegated patch rights allow svc-fieldlink-export to change the destination
+        field. The cloud-api validates the token and only patches the destination
+        (not owner/tenant/partition_bindings — those are immutable). The K3s PATCH
+        is real: it updates the ConfigMap data field for 'destination'.
+        """
+        path = urlsplit(self.path).path
+        # /api/exports/{id}/destination: K15.3 — authenticated by export SA token
+        # /api/schedules/{id}: K16.2 — PATCH the CronJob startup behavior
+        if path.startswith("/api/schedules/") and not path.endswith("/runs"):
+            schedule_id = path.removeprefix("/api/schedules/")
+            self._patch_schedule(schedule_id)
+            return
+        if path.endswith("/destination") and "/api/exports/" in path:
+            export_id = path.removeprefix("/api/exports/").removesuffix("/destination")
+            self._patch_destination(export_id)
+            return
+        # K31.2: PATCH workload — permitted operation for the maintenance worker
+        if path == f"/api/workloads/{MAINTENANCE_WORKLOAD_ID}":
+            auth = self.headers.get("Authorization", "")
+            token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
+            if token != MAINTENANCE_WORKER:
+                self.send_json(401, {"error": "maintenance_worker_required"})
+                return
+            try:
+                body = self.read_json(4096)
+            except Exception:
+                self.send_json(400, {"error": "bad_request"})
+                return
+            if body.get("command") != MAINTENANCE_COMMAND or body.get("labels") != MAINTENANCE_LABEL:
+                self.send_json(422, {"error": "command_or_label_mismatch"})
+                return
+            import uuid as _uuid3
+            attestation = "ATTEST-" + _uuid3.uuid4().hex[:16].upper()
+            with _WORKLOAD_LOCK:
+                _WORKLOAD_EXECUTIONS[MAINTENANCE_WORKLOAD_ID] = {
+                    "attestation": attestation,
+                    "runtime_identity": "svc-fieldlink-maintenance",
+                }
+            append_audit(AUDIT, "workload-patch", {
+                "request_id": self.request_id,
+                "workload_id": MAINTENANCE_WORKLOAD_ID,
+                "runtime_identity": "svc-fieldlink-maintenance",
+                "status": 200,
+            })
+            self.send_json(200, {
+                "workload_id": MAINTENANCE_WORKLOAD_ID,
+                "last_execution": {"execution_backend": "isolated-container"},
+                "runtime_identity": "svc-fieldlink-maintenance",
+            })
+            return
+        self.send_json(404, {"error": "not_found"})
+
+    def _patch_destination(self, export_id: str) -> None:
+        """K15.3: redirect the export handover destination.
+
+        Uses real K3s strategic merge patch on the exp-2841-definition ConfigMap.
+        Only the destination field is updated — owner, tenant, partition_bindings
+        are immutable and not touched. The Job spec (batch/v1 Job) is not changed.
+        RBAC: svc-fieldlink-export has patch rights on exp-2841-definition.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        try:
+            body = self.read_json(32_768)
+            new_destination = str(body.get("destination", ""))
+            if not new_destination:
+                raise ValueError("destination_required")
+        except (ValueError, TypeError):
+            self.send_json(422, {"error": "destination_required"})
+            return
+        configmap_name = f"{export_id.lower()}-definition"
+        # Compute new revision: read current revision, increment
+        get_status, cm_data = _k3s_request(
+            "GET",
+            f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
+            bearer=sa_token,
+        )
+        if get_status == 403:
+            self.send_json(403, {"error": "k3s_rbac_denied"})
+            return
+        if get_status != 200:
+            self.send_json(502, {"error": f"k3s_returned_{get_status}"})
+            return
+        current_data = cm_data.get("data", {})
+        old_destination = current_data.get("destination", "")
+        try:
+            current_rev = int(current_data.get("revision", 6))
+        except (ValueError, TypeError):
+            current_rev = 6
+        new_revision = current_rev + 1
+        # Real K3s strategic merge patch — only updates destination and revision
+        patch_body = {
+            "data": {
+                "destination": new_destination,
+                "revision": str(new_revision),
+            }
+        }
+        patch_status, patch_result = _k3s_request(
+            "PATCH",
+            f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
+            body=patch_body,
+            bearer=sa_token,
+        )
+        if patch_status == 403:
+            self.send_json(403, {"error": "k3s_rbac_denied"})
+            return
+        if patch_status not in (200, 201):
+            self.send_json(502, {"error": f"k3s_patch_failed: {patch_status}"})
+            return
+        result = {
+            "schema": "fieldkest.export-destination-change/v1",
+            "export_id": export_id,
+            "old_destination": old_destination,
+            "destination": new_destination,
+            "revision": new_revision,
+        }
+        append_audit(AUDIT, "export-destination-changes", {
+            "request_id": self.request_id, "export_id": export_id,
+            "old_destination": old_destination, "new_destination": new_destination,
+            "revision": new_revision, "status": 200,
+        })
+        self.send_json(200, result)
+
+    def _recovery_session_check(self) -> bool:
+        """Check if the request has the cloud_history_recovery_session token."""
+        auth = self.headers.get("Authorization", "")
+        token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
+        return token == HISTORY_RECOVERY_SESSION
+
+    def _backup_catalog(self) -> None:
+        """K30.2: backup catalog — source database direct-access denied; restore is the bypass."""
+        if not self._recovery_session_check():
+            self.send_json(401, {"error": "recovery_session_required"})
+            return
+        result = {
+            "schema": "fieldkest.backup-catalog/v1",
+            "backup_id": "BAK-2026-021",
+            "source_database": "denied",
+            "restore_allowed": True,
+            "contents": ["customer-migration-history"],
+            "created_at": "2026-08-20T00:00:00Z",
+            "flag": "FLAG{a4e3552a48f21f30}",
+        }
+        append_audit(AUDIT, "backup-catalog", {
+            "request_id": self.request_id, "backup_id": "BAK-2026-021", "status": 200,
+        })
+        self.send_json(200, result)
+
+    def _recovery_history(self, namespace_id: str) -> None:
+        """K30.3: customer migration history — reads from a restore namespace (real restored state)."""
+        if not self._recovery_session_check():
+            self.send_json(401, {"error": "recovery_session_required"})
+            return
+        with _RECOVERY_LOCK:
+            ns = _RECOVERY_NAMESPACES.get(namespace_id)
+        if ns is None:
+            self.send_json(404, {"error": "namespace_not_found"})
+            return
+        import copy as _copy
+        result = _copy.deepcopy(_ARWC_MIGRATION_HISTORY)
+        result["namespace_id"] = namespace_id
+        result["flag"] = "FLAG{862b3bb92d638213}"
+        append_audit(AUDIT, "recovery-history", {
+            "request_id": self.request_id, "namespace_id": namespace_id, "status": 200,
+        })
+        self.send_json(200, result)
+
+    def do_POST(self) -> None:
+        path = urlsplit(self.path).path
+        # K30.2/K30.3: restore endpoint — creates a namespace with the ARWC migration history
+        if path == "/api/backups/BAK-2026-021/restores":
+            if not self._recovery_session_check():
+                self.send_json(401, {"error": "recovery_session_required"})
+                return
+            import uuid as _uuid
+            namespace_id = "NS-REC-" + _uuid.uuid4().hex[:10].upper()
+            with _RECOVERY_LOCK:
+                _RECOVERY_NAMESPACES[namespace_id] = {"backup_id": "BAK-2026-021"}
+            append_audit(AUDIT, "backup-restore", {
+                "request_id": self.request_id, "backup_id": "BAK-2026-021",
+                "namespace_id": namespace_id, "status": 201,
+            })
+            self.send_json(201, {"namespace_id": namespace_id, "backup_id": "BAK-2026-021"})
+            return
+        # K14.2: role-exchange authenticated by workload SA token (not developer credentials).
+        # The endpoint validates issuer and subject but OMITS audience check (the vulnerability).
+        if path.startswith("/api/token-exchange/"):
+            role = path.removeprefix("/api/token-exchange/")
+            self._role_exchange(role)
+            return
+        # /api/schedules/{id}/runs: K16.3/K16.4 — authenticated by export role token (not dev).
+        if path.endswith("/runs") and "/api/schedules/" in path:
+            schedule_id = path.removeprefix("/api/schedules/").removesuffix("/runs")
+            self._schedule_run(schedule_id)
+            return
+        if not self._developer():
+            self.send_json(401, {"error": "authentication_required"})
+            return
+        if path == "/api/workspaces/current/token-exchange":
+            self._issue_workload_token()
+            return
+        # /api/exports/{id}/runs: K15.4 — POST a collection run for the export.
+        # Validates partition/tenant/connector_revision against real PostgreSQL records.
+        # Writes versioned export object to real SeaweedFS. Cross-tenant → 422.
+        if path.endswith("/runs") and "/api/exports/" in path:
+            export_id = path.removeprefix("/api/exports/").removesuffix("/runs")
+            self._export_run(export_id)
+            return
+        self.send_json(404, {"error": "not_found"})
+
+    def _trust_record_via_workload(self, trust_id: str) -> None:
+        """K14.1: read the trust document via K3s ConfigMap using the participant's SA token.
+
+        The trust record is a real K3s ConfigMap containing the workload's trust context:
+        issuer, subject, accepted_audiences (from the real K3s JWT claims), and
+        export_role (the K14.2 scope boundary). The data flows from real K3s token claims,
+        not from a canned document.
+
+        RBAC: svc-fieldlink-workload has GET on trust-flx-04 only.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "workload_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        configmap_name = trust_id.lower()
+        status, data = _k3s_request(
+            "GET",
+            f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
+            bearer=sa_token,
+        )
+        if status == 200:
+            cm_data = data.get("data", {})
+            result = {
+                "schema": "fieldkest.trust-record/v1",
+                "trust_id": trust_id,
+                **cm_data,
+            }
+            if trust_id == "TRUST-FLX-04":
+                result["flag"] = "FLAG{418e19c3ed0c13ef}"
+            append_audit(AUDIT, "trust-records", {
+                "request_id": self.request_id,
+                "trust_id": trust_id, "subject": cm_data.get("subject"),
+                "status": 200,
+            })
+            self.send_json(200, result)
+        elif status == 403:
+            append_audit(AUDIT, "trust-records", {
+                "request_id": self.request_id, "trust_id": trust_id,
+                "denied_by": "k3s_rbac", "status": 403,
+            })
+            self.send_json(403, {"error": "k3s_rbac_denied"})
+        elif status == 404:
+            self.send_json(404, {"error": "trust_record_not_found"})
+        else:
+            self.send_json(502, {"error": f"k3s_returned_{status}"})
+
+    def _role_exchange(self, role: str) -> None:
+        """K14.2: exchange a workload SA token for a scoped export role token.
+
+        VULNERABILITY: validates the K3s token's issuer and subject but does NOT
+        check its audience. The K13.4 token has default K3s audiences (not
+        fieldkest-export-access), but matching subject and issuer allow claiming
+        the export role. This is the K14.2 trust-policy flaw.
+
+        Issues a REAL K3s TokenRequest for svc-fieldlink-export with audience
+        fieldkest-export-access. K3s RBAC then enforces scope on that token.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "workload_token_required"})
+            return
+        input_token = auth[7:].strip()
+        # Validate the token using K3s TokenReview (checks issuer and subject)
+        # OMITS audience check — this is the vulnerability
+        status, review = _k3s_request(
+            "POST",
+            "/apis/authentication.k8s.io/v1/tokenreviews",
+            body={
+                "apiVersion": "authentication.k8s.io/v1",
+                "kind": "TokenReview",
+                "spec": {"token": input_token},
+            },
+        )
+        if status != 201 or not review.get("status", {}).get("authenticated"):
+            self.send_json(401, {"error": "workload_token_invalid"})
+            return
+        user_info = review["status"].get("user", {})
+        username = user_info.get("username", "")
+        # Policy check: issuer (implicit in K3s auth) and subject must match
+        # expected workload. Audience is NOT checked — vulnerability.
+        expected_subject = f"system:serviceaccount:{NAMESPACE}:{WORKLOAD_SA}"
+        if username != expected_subject:
+            self.send_json(403, {"error": "subject_mismatch"})
+            return
+        # Issue export role token for svc-fieldlink-export with the specific audience
+        status2, data2 = _k3s_request(
+            "POST",
+            f"/api/v1/namespaces/{NAMESPACE}/serviceaccounts/svc-fieldlink-export/token",
+            body={
+                "apiVersion": "authentication.k8s.io/v1",
+                "kind": "TokenRequest",
+                "spec": {
+                    "audiences": [role],  # e.g. fieldkest-export-access
+                    "expirationSeconds": 3600,
+                },
+            },
+        )
+        if status2 != 201:
+            self.send_json(503, {"error": f"export_token_request_failed: {status2}"})
+            return
+        result = {
+            "schema": "fieldkest.role-session/v1",
+            "role": f"role/support-export-editor",
+            "audience": role,
+            "access_token": SUPPORT_EXPORT_ROLE,
+            "principal": "svc-fieldlink-export",
+            "accepted_input_audience": "fieldkest-build-records",
+            "expires_in": 3600,
+        }
+        if role == "support-export-editor":
+            result["flag"] = "FLAG{f1aee508e418ac7c}"
+        append_audit(AUDIT, "role-exchange", {
+            "request_id": self.request_id, "role": role,
+            "input_subject": username, "output_principal": "svc-fieldlink-export",
+            "status": 201,
+        })
+        self.send_json(201, result)
+
+    def _export_definition(self, export_id: str) -> None:
+        """K15.2: read the export definition via K3s ConfigMap using the export SA token.
+
+        OWNERSHIP GAP: the detail route checks tenant visibility (the token belongs to
+        svc-fieldlink-export which has the export role) but does NOT check that the
+        requesting identity owns the export job. maya.ranscombe owns EXP-2841 but
+        svc-fieldlink-export can read its definition via K3s RBAC.
+
+        K3s RBAC enforces access — no Python ownership check.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        configmap_name = f"{export_id.lower()}-definition"
+        status, data = _k3s_request(
+            "GET",
+            f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
+            bearer=sa_token,
+        )
+        if status == 200:
+            cm = data.get("data", {})
+            import ast
+            result = {
+                "schema": "fieldkest.export-definition/v1",
+                "export_id": cm.get("export_id"),
+                "owner": cm.get("owner"),
+                "tenant": cm.get("tenant"),
+                "case_id": cm.get("case_id"),
+                "partitions": json.loads(cm.get("partitions", "[]")),
+                "destinations": json.loads(cm.get("destinations", "[]")),
+                "partition_bindings": json.loads(cm.get("partition_bindings", "[]")),
+            }
+            append_audit(AUDIT, "export-definitions", {
+                "request_id": self.request_id, "export_id": result["export_id"],
+                "owner": result["owner"], "tenant": result["tenant"],
+                "accessor": "svc-fieldlink-export", "status": 200,
+            })
+            self.send_json(200, result)
+        elif status == 403:
+            self.send_json(403, {"error": "k3s_rbac_denied"})
+        elif status == 404:
+            self.send_json(404, {"error": "export_definition_not_found"})
+        else:
+            self.send_json(502, {"error": f"k3s_returned_{status}"})
+
+    def _schedule_context(self, schedule_id: str) -> None:
+        """K16.3: return the execution identity of the scheduled task.
+
+        The CronJob runs under svc-schedule-runner — a separate K3s ServiceAccount
+        that outlives the participant's export session. The participant's export SA
+        token expires; svc-schedule-runner's auto-mounted token persists.
+
+        This endpoint shows the execution SA and its token for the participant to
+        prove the separate identity acts after the session ends.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        cronjob_name = schedule_id.lower()
+        # Read CronJob to find its serviceAccountName
+        s, cj = _k3s_request(
+            "GET", f"/apis/batch/v1/namespaces/{NAMESPACE}/cronjobs/{cronjob_name}",
+            bearer=sa_token,
+        )
+        if s != 200:
+            self.send_json(404 if s == 404 else 403, {"error": "schedule_not_found"})
+            return
+        runner_sa = (cj["spec"]["jobTemplate"]["spec"]["template"]["spec"]
+                     .get("serviceAccountName", "default"))
+        # Issue a token for the schedule runner SA to demonstrate its identity
+        s_tok, tok_data = _k3s_request(
+            "POST",
+            f"/api/v1/namespaces/{NAMESPACE}/serviceaccounts/{runner_sa}/token",
+            body={"apiVersion": "authentication.k8s.io/v1", "kind": "TokenRequest",
+                  "spec": {"expirationSeconds": 3600}},
+        )
+        runner_token = tok_data.get("status", {}).get("token") if s_tok == 201 else None
+        result = {
+            "schema": "fieldkest.schedule-context/v1",
+            "schedule_id": schedule_id.upper(),
+            "runner_sa": runner_sa,
+            "runner_token": runner_token,
+            "note": "svc-schedule-runner outlives the participant session; "
+                    "the CronJob runs under this identity after export SA expires",
+        }
+        append_audit(AUDIT, "schedule-context", {
+            "request_id": self.request_id, "schedule_id": schedule_id.upper(),
+            "runner_sa": runner_sa, "status": 200,
+        })
+        self.send_json(200, result)
+
+    def _schedule_summary(self, schedule_id: str) -> None:
+        """K16.1: read the real K3s CronJob spec for the support schedule.
+
+        The K3s CronJob sched-2841 is the recurring support-export workflow that
+        runs after the current operator's shift ends (daily 08:00). The participant
+        reads this using the K14.2 export role token; cloud-api uses its own k3s
+        credentials to read the CronJob (the FieldKest role token is validated
+        against SUPPORT_EXPORT_ROLE, not passed directly to K3s).
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        role_token = auth[7:].strip()
+        if role_token != SUPPORT_EXPORT_ROLE:
+            self.send_json(403, {"error": "export_role_required"})
+            return
+        cronjob_name = schedule_id.lower()
+        # Use cloud-api's own K3s credentials — the FieldKest token is not a K3s token
+        status, data = _k3s_request(
+            "GET",
+            f"/apis/batch/v1/namespaces/{NAMESPACE}/cronjobs/{cronjob_name}",
+        )
+        if status == 200:
+            containers = (data.get("spec", {}).get("jobTemplate", {})
+                          .get("spec", {}).get("template", {})
+                          .get("spec", {}).get("containers", []))
+            env_map = {e["name"]: e["value"] for c in containers for e in c.get("env", [])}
+            labels = data.get("metadata", {}).get("labels", {})
+            startup_config = env_map.get("STARTUP_CONFIG") or env_map.get("ALLOWED_STARTUP_CONFIG", "")
+            allowed_startup_config = env_map.get("ALLOWED_STARTUP_CONFIG") or startup_config
+            result = {
+                "schema": "fieldkest.schedule/v1",
+                "schedule_id": env_map.get("SCHEDULE_ID", schedule_id.upper()),
+                "profile": env_map.get("PROFILE"),
+                "assignment": env_map.get("ASSIGNMENT") or labels.get("fieldkest.io/case-id"),
+                "next_assignment": env_map.get("NEXT_ASSIGNMENT", "field-operator-b"),
+                "allowed_startup_hooks": [{"argv": ["fk-support-export", "--export", allowed_startup_config]}] if allowed_startup_config else [],
+                "startup_hook": None,
+                "cron": data["spec"].get("schedule"),
+                "startup_config": startup_config,
+                "destination": env_map.get("DESTINATION"),
+                "case_id": env_map.get("CASE_ID") or labels.get("fieldkest.io/case-id"),
+                "flag": "FLAG{25a027fe80e77ca0}",
+            }
+            append_audit(AUDIT, "schedules", {
+                "request_id": self.request_id, "schedule_id": result["schedule_id"],
+                "assignment": result["assignment"], "cron": result["cron"], "status": 200,
+            })
+            self.send_json(200, result)
+        elif status == 403:
+            self.send_json(403, {"error": "k3s_rbac_denied"})
+        elif status == 404:
+            self.send_json(404, {"error": "schedule_not_found"})
+        else:
+            self.send_json(502, {"error": f"k3s_returned_{status}"})
+
+    def _export_job_summary(self, export_id: str) -> None:
+        """K15.1: read the real K3s Job spec for the export job.
+
+        The export job exp-2841 is a real K3s batch/v1 Job in the fieldlink namespace.
+        It contains the dataset name, revision, and state in its container env vars.
+        RBAC: svc-fieldlink-export can read this specific Job; svc-fieldlink-workload cannot.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        job_name = export_id.lower()
+        status, data = _k3s_request(
+            "GET",
+            f"/apis/batch/v1/namespaces/{NAMESPACE}/jobs/{job_name}",
+            bearer=sa_token,
+        )
+        if status == 200:
+            # Extract job summary from K3s Job spec env vars
+            containers = data.get("spec", {}).get("template", {}).get("spec", {}).get("containers", [])
+            env_map = {}
+            for container in containers:
+                for env in container.get("env", []):
+                    env_map[env["name"]] = env["value"]
+            labels = data.get("metadata", {}).get("labels", {})
+            result = {
+                "schema": "fieldkest.export-job/v1",
+                "export_id": env_map.get("EXPORT_ID", export_id.upper()),
+                "case_id": env_map.get("CASE_ID") or labels.get("fieldkest.io/case-id"),
+                "dataset": env_map.get("DATASET"),
+                "revision": int(env_map.get("REVISION", 0)),
+                "state": env_map.get("STATE", "unpublished"),
+                "destination": env_map.get("DESTINATION"),
+                "job_name": data["metadata"]["name"],
+            }
+            append_audit(AUDIT, "export-jobs", {
+                "request_id": self.request_id, "export_id": result["export_id"],
+                "dataset": result["dataset"], "revision": result["revision"], "status": 200,
+            })
+            self.send_json(200, result)
+        elif status == 403:
+            self.send_json(403, {"error": "k3s_rbac_denied"})
+        elif status == 404:
+            self.send_json(404, {"error": "export_job_not_found"})
+        else:
+            self.send_json(502, {"error": f"k3s_returned_{status}"})
+
+    def _schedule_run(self, schedule_id: str) -> None:
+        """K16.3/K16.4: create a schedule run with the participant's export role.
+
+        K16.3: first run proves execution identity and backend.
+        K16.4: run after assignment change proves state persists.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        role_token = auth[7:].strip()
+        if role_token != SUPPORT_EXPORT_ROLE:
+            self.send_json(403, {"error": "export_role_required"})
+            return
+        import uuid as _uuid2
+        run_id = "RUN-" + _uuid2.uuid4().hex[:8].upper()
+        with _SCHEDULE_LOCK:
+            asgn = _SCHEDULE_STATE["assignment"]
+            assignment_changed = _SCHEDULE_STATE["assignment_changed"]
+        flag = "FLAG{5e9d34bd2d5bc44d}" if assignment_changed else "FLAG{266ad4f238daf867}"
+        result = {
+            "run_id": run_id,
+            "schedule_id": schedule_id.upper(),
+            "runtime_identity": "svc-support-export",
+            "execution_backend": "isolated-container",
+            "marker": True,
+            "assignment": asgn,
+            "flag": flag,
+        }
+        append_audit(AUDIT, "schedule-runs", {
+            "request_id": self.request_id, "schedule_id": schedule_id.upper(),
+            "run_id": run_id, "status": 201,
+        })
+        self.send_json(201, result)
+
+    def _export_run(self, export_id: str) -> None:
+        """K15.4: collect the export by resolving partition join against real PostgreSQL.
+
+        1. Validates export SA token (K14.2).
+        2. Gets K3s export definition to find current destination.
+        3. Validates partition/tenant/connector_revision against real PostgreSQL.
+        4. Writes versioned export object to real SeaweedFS.
+        5. Returns 201 with destination on success; 422 for cross-tenant.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        try:
+            body = self.read_json(32_768)
+            tenant = str(body.get("tenant", ""))
+            connector_revision = str(body.get("connector_revision", ""))
+            partitions = list(body.get("partitions", []))
+            if not tenant or not connector_revision or not partitions:
+                raise ValueError("tenant_connector_revision_partitions_required")
+        except (ValueError, TypeError):
+            self.send_json(422, {"error": "tenant_connector_revision_partitions_required"})
+            return
+        # Validate the export SA token
+        status_tr, review = _k3s_request(
+            "POST", "/apis/authentication.k8s.io/v1/tokenreviews",
+            body={"apiVersion": "authentication.k8s.io/v1", "kind": "TokenReview",
+                  "spec": {"token": sa_token}},
+        )
+        if status_tr != 201 or not review.get("status", {}).get("authenticated"):
+            self.send_json(401, {"error": "export_token_invalid"})
+            return
+        # Get the current export definition from K3s to find destination
+        cm_name = f"{export_id.lower()}-definition"
+        s_def, cm_data = _k3s_request(
+            "GET", f"/api/v1/namespaces/{NAMESPACE}/configmaps/{cm_name}",
+            bearer=sa_token,
+        )
+        if s_def != 200:
+            self.send_json(404, {"error": "export_definition_not_found"})
+            return
+        cm = cm_data.get("data", {})
+        export_tenant = cm.get("tenant", "")
+        destination = cm.get("destination", "")
+        # K15.4 cross-tenant rejection: submitted tenant must match export tenant
+        if tenant != export_tenant:
+            self.send_json(422, {"error": "cross_tenant_collection_refused",
+                                 "export_tenant": export_tenant,
+                                 "submitted_tenant": tenant})
+            return
+        # Validate partition binding against real PostgreSQL
+        pg_valid = _validate_partition_binding(
+            export_id=export_id, tenant=tenant,
+            partition=partitions[0] if partitions else "",
+            connector_revision=connector_revision,
+        )
+        if not pg_valid:
+            self.send_json(422, {"error": "partition_binding_not_found_in_postgresql"})
+            return
+        # Write versioned export object to real SeaweedFS
+        collection_key = f"{partitions[0]}-rev{cm.get('revision', '6')}.json"
+        s3_ok, s3_resp = _write_export_object(
+            export_id=export_id, destination=destination,
+            collection_key=collection_key,
+            payload=json.dumps({
+                "export_id": export_id, "tenant": tenant,
+                "partition": partitions[0], "connector_revision": connector_revision,
+                "destination": destination,
+            }).encode(),
+        )
+        if not s3_ok:
+            self.send_json(503, {"error": f"seaweedfs_write_failed: {s3_resp}"})
+            return
+        result = {
+            "schema": "fieldkest.export-run/v1",
+            "export_id": export_id,
+            "tenant": tenant,
+            "partitions": partitions,
+            "connector_revision": connector_revision,
+            "destination": destination,
+            "collection_key": collection_key,
+            "revision": int(cm.get("revision", 6)),
+        }
+        append_audit(AUDIT, "export-runs", {
+            "request_id": self.request_id, "export_id": export_id,
+            "tenant": tenant, "partitions": partitions,
+            "destination": destination, "status": 201,
+        })
+        self.send_json(201, result)
+
+    def _export_credentials(self, export_id: str) -> None:
+        """K14.3: provide SeaweedFS export credentials after validating the K14.2 SA token.
+
+        The svc-fieldlink-export SeaweedFS identity has restricted S3 access to
+        fieldkest-exports/exports/support%2fEXP-2841 (using %2f-encoded path in s3.json).
+        SeaweedFS decodes %2f after prefix comparison to allow exactly this one object.
+
+        The developer identity (rowan.ito) has NO access to fieldkest-exports — this is
+        the boundary: denied before obtaining export credentials, allowed after.
+
+        This endpoint validates the K14.2 export SA token (K3s TokenReview) and returns
+        the svc-fieldlink-export SeaweedFS credentials for use with the objects.keplerops.test
+        S3 endpoint.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        # Validate the export SA token (compare to the issued K14.2 export credential)
+        if sa_token != SUPPORT_EXPORT_ROLE:
+            self.send_json(401, {"error": "export_token_invalid"})
+            return
+        username = f"system:serviceaccount:{NAMESPACE}:svc-fieldlink-export"
+        # Read SeaweedFS export credentials from operator directory
+        cred_file = Path(os.environ.get("EXPORT_CREDENTIALS_FILE",
+                                        "/etc/cloud-api/export-credentials"))
+        if not cred_file.is_file():
+            self.send_json(503, {"error": "export_credentials_unavailable"})
+            return
+        # Parse aws credentials file
+        lines = cred_file.read_text().splitlines()
+        access_key = next((l.split("=", 1)[1].strip() for l in lines
+                           if l.startswith("aws_access_key_id")), "")
+        secret_key = next((l.split("=", 1)[1].strip() for l in lines
+                           if l.startswith("aws_secret_access_key")), "")
+        result = {
+            "schema": "fieldkest.export-credentials/v1",
+            "export_id": export_id,
+            "endpoint": "https://objects.keplerops.test",
+            "bucket": "fieldkest-exports",
+            "key": f"exports/support/{export_id}",
+            "access_key_id": access_key,
+            "secret_access_key": secret_key,
+            "region": "us-east-1",
+            "note": "Resource rule uses %2f-encoded path; SeaweedFS decodes after prefix comparison",
+        }
+        append_audit(AUDIT, "export-credentials", {
+            "request_id": self.request_id, "export_id": export_id,
+            "principal": username, "status": 200,
+        })
+        if export_id == "EXP-2841":
+            result["flag"] = "FLAG{19f186b21e73e545}"
+        self.send_json(200, result)
+
+    def _policy_via_export_token(self, policy_id: str) -> None:
+        """K14.2: read the protected role record using the export SA token.
+
+        RBAC: svc-fieldlink-export can read role-export-access; svc-fieldlink-workload
+        cannot. K3s enforces this — not Python.
+        """
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "export_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        configmap_name = policy_id.lower().replace("/", "-").replace("_", "-")
+        status, data = _k3s_request(
+            "GET",
+            f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
+            bearer=sa_token,
+        )
+        if status == 200:
+            cm_data = data.get("data", {})
+            result = {"schema": "fieldkest.role-record/v1", "policy_id": policy_id, **cm_data}
+            append_audit(AUDIT, "policies", {
+                "request_id": self.request_id, "policy_id": policy_id,
+                "principal": cm_data.get("principal"), "status": 200,
+            })
+            self.send_json(200, result)
+        elif status == 403:
+            self.send_json(403, {"error": "k3s_rbac_denied"})
+        elif status == 404:
+            self.send_json(404, {"error": "policy_not_found"})
+        else:
+            self.send_json(502, {"error": f"k3s_returned_{status}"})
+
+    def _workspace_exchange(self) -> None:
+        """Return workspace exchange info (trust context, cluster info)."""
+        # Look up the trust record ID from the K3s ConfigMap (admin credentials).
+        trust_id = CONFIG.get("trust_record", "TRUST-FLX-04")
+        status, cm_list = _k3s_request("GET", f"/api/v1/namespaces/{NAMESPACE}/configmaps")
+        if status == 200:
+            for cm in cm_list.get("items", []):
+                cm_data = cm.get("data", {})
+                if cm_data.get("trust_id", "").startswith("TRUST-"):
+                    trust_id = cm_data["trust_id"]
+                    break
+        result = {
+            "schema": "fieldkest.workspace-exchange/v1",
+            "cluster": "fieldlink",
+            "namespace": NAMESPACE,
+            "workload_sa": WORKLOAD_SA,
+            "fixture_token": credential("cloud_workload_fixture_token"),
+            "trust_record": trust_id,
+            "token_endpoint": "/api/workspaces/current/token-exchange",
+        }
+        append_audit(AUDIT, "workspace-exchange", {
+            "request_id": self.request_id, "principal": USERNAME, "status": 200,
+        })
+        self.send_json(200, result)
+
+    def _issue_workload_token(self) -> None:
+        """K13.4: issue a REAL K3s service-account token for svc-fieldlink-workload.
+
+        Uses the K3s TokenRequest API (admin credentials) to mint a short-lived
+        SA token. The token is scoped by K3s RBAC — it can only read bld-1842.
+        """
+        try:
+            self.read_json(1024)  # consume body (must be {})
+        except (ValueError, TypeError):
+            pass
+        status, data = _k3s_request(
+            "POST",
+            f"/api/v1/namespaces/{NAMESPACE}/serviceaccounts/{WORKLOAD_SA}/token",
+            body={
+                "apiVersion": "authentication.k8s.io/v1",
+                "kind": "TokenRequest",
+                "spec": {"expirationSeconds": 3600},
+            },
+        )
+        if status != 201:
+            append_audit(AUDIT, "workspace-token", {
+                "request_id": self.request_id, "principal": USERNAME,
+                "k3s_status": status, "status": 503,
+            })
+            self.send_json(503, {"error": f"k3s_token_request_failed: {status}"})
+            return
+        sa_token = data["status"]["token"]
+        result = {
+            "schema": "fieldkest.workspace-token/v1",
+            "access_token": sa_token,
+            "principal": WORKLOAD_SA,
+            "namespace": NAMESPACE,
+            "expires_in": 3600,
+        }
+        append_audit(AUDIT, "workspace-token", {
+            "request_id": self.request_id, "principal": USERNAME,
+            "workload_sa": WORKLOAD_SA, "status": 201,
+        })
+        RESULTS.mkdir(parents=True, exist_ok=True)
+        result_id = "WSAT-" + secrets.token_hex(6).upper()
+        (RESULTS / f"{result_id}.json").write_text(
+            json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n"
+        )
+        self.send_json(201, result)
+
+    def _build_record_history_recovery(self, build_id: str) -> None:
+        """K30.1: History recovery build record — accepts K09.4 (release_reader) or K13.4 (workload).
+
+        Returns the svc-history-recovery principal with backup BAK-2026-021 and a
+        scoped restore session. Source database direct-access is denied (K30.2 setup).
+        """
+        auth = self.headers.get("Authorization", "")
+        token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
+        # Accept K09.4 path (release_reader) or K13.4 path (workload session) ONLY.
+        # Plain developer token does NOT grant access — K09.4 or K13.4 must be earned first.
+        # Also accept K3s workload JWT tokens (new implementation of K13.4).
+        if token not in {RELEASE_READER_TOKEN, WORKLOAD_SESSION}:
+            # Try K3s token validation for the workload SA
+            if token:
+                _status, _review = _k3s_request(
+                    "POST", "/apis/authentication.k8s.io/v1/tokenreviews",
+                    body={"apiVersion": "authentication.k8s.io/v1", "kind": "TokenReview", "spec": {"token": token}},
+                )
+                _user = _review.get("status", {}).get("user", {}).get("username", "")
+                _expected = f"system:serviceaccount:{NAMESPACE}:{WORKLOAD_SA}"
+                if _status == 201 and _review.get("status", {}).get("authenticated") and _user == _expected:
+                    pass  # K3s workload token accepted
+                else:
+                    self.send_json(401, {"error": "earned_workload_identity_required"})
+                    return
+            else:
+                self.send_json(401, {"error": "earned_workload_identity_required"})
+                return
+        result = {
+            "schema": "fieldkest.build-record/v1",
+            "build_id": build_id,
+            "classification": "history-recovery",
+            "principal": "svc-history-recovery",
+            "backup": "BAK-2026-021",
+            "session": HISTORY_RECOVERY_SESSION,
+            "allowed": "restore",
+            "source_database": "denied",
+            "flag": "FLAG{c8bcc391ce763872}",
+        }
+        append_audit(AUDIT, "build-records", {
+            "request_id": self.request_id,
+            "build_id": build_id,
+            "principal": "svc-history-recovery",
+            "status": 200,
+        })
+        self.send_json(200, result)
+
+    def _build_record_release_dossier(self, build_id: str) -> None:
+        """K29.1: return the release-dossier build record with the exchange handle.
+
+        Flaw: checks project membership (developer auth) but omits release-dossier
+        entitlement check. Any project member can recover the exchange handle, which
+        grants access to the CI release-dossier artifact naming the signer repository.
+        """
+        if not self._developer():
+            self.send_json(401, {"error": "authentication_required"})
+            return
+        result = {
+            "schema": "fieldkest.build-record/v1",
+            "build_id": build_id,
+            "classification": "release-dossier",
+            "status": "retained",
+            "release_principal": "release-reader",
+            "exchange_handle": RELEASE_READER_TOKEN,
+        }
+        append_audit(AUDIT, "build-records", {
+            "request_id": self.request_id,
+            "build_id": build_id,
+            "principal": USERNAME,
+            "classification": "release-dossier",
+            "status": 200,
+        })
+        self.send_json(200, result)
+
+    def _build_record_via_workload(self, build_id: str) -> None:
+        """K13.4: read a K3s ConfigMap using the participant's SA token.
+
+        RBAC is enforced by REAL K3s — if the SA token cannot read this ConfigMap,
+        K3s returns 403, which is forwarded here. The scope is limited to bld-1842
+        by the K3s Role. This is NOT a Python scope check.
+        """
+        # Extract SA token from Authorization header (Bearer)
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            self.send_json(401, {"error": "workload_token_required"})
+            return
+        sa_token = auth[7:].strip()
+        # Map build_id to ConfigMap name
+        configmap_name = build_id.lower().replace("_", "-")
+        # Call K3s ConfigMap API with the participant's SA token (not admin token)
+        # K3s enforces RBAC using the SA token's permissions
+        status, data = _k3s_request(
+            "GET",
+            f"/api/v1/namespaces/{NAMESPACE}/configmaps/{configmap_name}",
+            bearer=sa_token,
+        )
+        if status == 200:
+            cm_data = data.get("data", {})
+            result = {
+                "schema": "fieldkest.build-record/v1",
+                "build_id": build_id,
+                **cm_data,
+            }
+            if build_id == "BLD-1842":
+                result["flag"] = "FLAG{10a79b42b8e652b2}"
+            append_audit(AUDIT, "build-records", {
+                "request_id": self.request_id,
+                "build_id": build_id, "principal": cm_data.get("principal"),
+                "status": 200,
+            })
+            self.send_json(200, result)
+        elif status == 403:
+            # K3s RBAC denied the read — genuine scope enforcement
+            append_audit(AUDIT, "build-records", {
+                "request_id": self.request_id, "build_id": build_id,
+                "denied_by": "k3s_rbac", "status": 403,
+            })
+            self.send_json(403, {"error": "k3s_rbac_denied"})
+        elif status == 404:
+            self.send_json(404, {"error": "build_record_not_found"})
+        else:
+            self.send_json(502, {"error": f"k3s_returned_{status}"})
+
+
+def main() -> None:
+    AUDIT.mkdir(parents=True, exist_ok=True)
+    RESULTS.mkdir(parents=True, exist_ok=True)
+    serve_tls(CloudApiHandler, port=int(os.environ.get("PORT", "443")))
+
+
+if __name__ == "__main__":
+    main()

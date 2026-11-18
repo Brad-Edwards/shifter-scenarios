@@ -757,6 +757,7 @@ class Handler(BaseHTTPRequestHandler):
             save_state(state)
             self.accepted("planning-tariff-read", result, extra={
                 "planning_method": PLAN_METHOD.read_text(encoding="utf-8"),
+                "flag": "FLAG{e3d444e18d2f9106}",
             })
             return
         if path == "/api/allocation-ledgers/current":
@@ -974,7 +975,8 @@ class Handler(BaseHTTPRequestHandler):
                   "ordinary_decision": "ALLOC-HOLD-R3", "decision": "ALLOC-EXPAND-R2",
                   "decision_changed": True, "consistency": "accepted", "checks": checks,
                   "unaffected": expected["unaffected"]}
-        response = {"audit_id": append_audit("reporting-decision-created", record, correlation), "record": record}
+        response = {"audit_id": append_audit("reporting-decision-created", record, correlation), "record": record,
+                    "flag": "FLAG{509426611d275191}"}
         state["reporting_decision_observed"] = True; state["reporting_decision_response"] = response; save_state(state)
         atomic_json(ROOT / "results/DECISION-CRR-34.json", record); self.send_json(201, response)
 
@@ -1023,7 +1025,8 @@ class Handler(BaseHTTPRequestHandler):
                     "instrument_audit_id": observed["instrument_audit_id"],
                     "reservoir_audit_id": observed["reservoir_audit_id"], "record": record,
                     "instrument_observation": instrument,
-                    "reservoir_observation": observed["reservoir_observation"]}
+                    "reservoir_observation": observed["reservoir_observation"],
+                    "flag": "FLAG{19b29c1602862994}"}
         state["reporting_handover_observed"] = True; state["reporting_handover_response"] = response; save_state(state)
         atomic_json(ROOT / "results/REPORT-CRR-34.json", record); self.send_json(201, response)
 
@@ -1273,6 +1276,7 @@ class Handler(BaseHTTPRequestHandler):
             method="POST",
         )
         context = ssl.create_default_context(cafile="/run/arwc-tls/ca.crt")
+        context.check_hostname = False
         try:
             response = urllib.request.urlopen(outbound, context=context, timeout=5)
         except urllib.error.HTTPError as error:

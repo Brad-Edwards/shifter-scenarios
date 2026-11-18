@@ -188,7 +188,7 @@ class Handler(BaseHTTPRequestHandler):
         assert state is not None
         state["profile_observed"] = True
         atomic_json(STATE, state)
-        self.accepted("renderer-profile-read", PROFILE)
+        self.accepted("renderer-profile-read", PROFILE, extra={"flag": "FLAG{73be7a91c87cd444}"})
 
     def do_POST(self) -> None:
         if not self.authorized():
@@ -224,7 +224,7 @@ class Handler(BaseHTTPRequestHandler):
             }
             state["restricted_preview_accepted"] = True
             atomic_json(STATE, state)
-            self.accepted("preview-authority-created", record, status=201)
+            self.accepted("preview-authority-created", record, status=201, extra={"flag": "FLAG{4bed1f5e45cdee8e}"})
             return
         if path == "/api/preview-executions":
             if not state["restricted_preview_accepted"]:
@@ -272,7 +272,8 @@ class Handler(BaseHTTPRequestHandler):
             atomic_json(STATE, state)
             public_handover = {key: value for key, value in evidence.items() if key != "token_sha256"}
             self.accepted("preview-execution-created", record, status=201,
-                          extra={"handover": public_handover, "renderer_attestation": token})
+                          extra={"handover": public_handover, "renderer_attestation": token,
+                                 "flag": "FLAG{c7156e4c3562c448}"})
             return
         self.send_json(404, {"error": "record not found"})
 

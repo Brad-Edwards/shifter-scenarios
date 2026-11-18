@@ -200,13 +200,14 @@ def earn_corporate(route: str, receipt_id: str, version: str) -> None:
             "maintenance_case": "MTN-CRR-204",
             "customer_receipt": "RCP-742-047",
             "customer_handover": "https://customer-handover.arwc.test:8443",
-            "business_workplace": "https://business-workplace.arwc.test",
-            "planning_data": "https://planning-data.arwc.test",
-            "retained_archive": "https://retained-archive.arwc.test",
-            "corporate_identity": "https://corporate-identity.arwc.test",
-            "contractor_portal": "https://contractor-portal.arwc.test",
-            "field_gateway": "https://field-gateway.arwc.test",
-            "maintenance_review": "https://maintenance-review.arwc.test",
+            "corporate_records": "https://erp.arwc.test",
+            "documents": "https://documents.arwc.test",
+            "planning_reports": "https://reports.arwc.test",
+            "workforce_identity": "https://identity.arwc.test",
+            "supplier_portal": "https://suppliers.arwc.test/purchase-orders",
+            "engineering": "https://engineering.arwc.test",
+            "read_service": "https://read-data.arwc.test",
+            "document_conversion": "https://render.arwc.test",
             "client_reference": "https://customer-handover.arwc.test:8443/.well-known/arwc-client",
             "handover_id": handover_id,
             "session_file": "/var/lib/fieldlink-connector/handover/corporate-session",
@@ -215,7 +216,7 @@ def earn_corporate(route: str, receipt_id: str, version: str) -> None:
         atomic_json(TRANSITION, transition, 0o440)
         os.chown(TRANSITION, -1, FIELDLINK.stat().st_gid)
         # Publish the token last so consumers never observe it before its
-        # authenticated metadata and participant-facing transition record.
+        # authenticated metadata and customer transition record.
         atomic_bytes(TOKEN, (token + "\n").encode(), 0o440)
         os.chown(TOKEN, -1, FIELDLINK.stat().st_gid)
 
@@ -353,7 +354,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send_json(409, {"error": "immutable_candidate_conflict"})
             atomic_json(path, candidate)
         correlation = append_audit({"action": "package-poll", "principal": PACKAGE_PRINCIPAL, "tenant": candidate["tenant"], "version": version, "sha256": candidate["sha256"]})
-        self.send_json(200, {key: candidate[key] for key in ("tenant", "channel", "version", "sha256")} | {"interface": "fieldkest.connector/v3", "audit_id": correlation})
+        self.send_json(200, {key: candidate[key] for key in ("tenant", "channel", "version", "sha256")} | {"interface": "fieldkest.connector/v3", "audit_id": correlation, "flag": "FLAG{dcb9c36f1eb38451}"})
 
     def activate(self, version: str, request: dict[str, object]) -> None:
         if request != {"tenant": "TEN-ARWC-047", "channel": "arwc-stable"}:
@@ -380,6 +381,7 @@ class Handler(BaseHTTPRequestHandler):
         receipt["audit_id"] = correlation
         atomic_json(RECEIPTS / f"{version}.json", receipt)
         earn_corporate("package-activation", receipt_id, version)
+        receipt["flag"] = "FLAG{09929e787131c2bf}"
         self.send_json(201, receipt)
 
     def rollback(self, request: dict[str, object]) -> None:
@@ -390,6 +392,7 @@ class Handler(BaseHTTPRequestHandler):
         receipt = {"receipt_id": receipt_id, "tenant": "TEN-ARWC-047", "selected_version": "7.4.2", "slot": "future-state", "current_activation": "unchanged", "operation": "diagnostic_summary", "output": output, "state": "complete", "completed_at": now()}
         receipt["audit_id"] = append_audit({"action": "rollback-rehearsal", "principal": PACKAGE_PRINCIPAL, **receipt})
         atomic_json(RECEIPTS / f"rollback-{receipt_id}.json", receipt)
+        receipt["flag"] = "FLAG{b461f302f2a11c33}"
         self.send_json(201, receipt)
 
     def diagnostic(self, request: dict[str, object]) -> None:

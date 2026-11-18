@@ -61,6 +61,11 @@ def package_archive() -> bytes:
             "`fieldkest.rehearsal-result/v1` and retains `tenant_id` and "
             "`asset_id`.\n"
         ).encode(),
+        "package/README.md": (
+            "# @keplerops/support-rehearsal\n\n"
+            "Private support rehearsal package for FieldKest integration testing.\n\n"
+            "FLAG{e6a1cc8b3018bd32}\n"
+        ).encode(),
     }
     raw = io.BytesIO()
     with tarfile.open(fileobj=raw, mode="w", format=tarfile.USTAR_FORMAT) as archive:
@@ -282,7 +287,7 @@ derivation context for its retained entitlement.
         "packages/support-rehearsal-1.3.1.tgz": (support_package, 0o640),
         "examples/consumer-request.json": (json_bytes(consumer_request), 0o640),
         "examples/inspection-normal.json": (json_bytes(normal_inspection), 0o640),
-        "examples/inspection-compat.fki": (bytes.fromhex("464b493103e284aa7161000101"), 0o640),
+        "examples/inspection-compat.fki": (bytes.fromhex("464b493103e284aa0003000101"), 0o640),
     }
     workstation_files = {
         "work/registry/README.md": (guide, 0o644),

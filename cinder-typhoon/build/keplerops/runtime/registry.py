@@ -20,7 +20,7 @@ from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.kdf.hkdf import HKDF
 
 from http_support import (
-    KeplerHandler, append_audit, canonical_bytes, serve_tls, sha256_bytes, utc_now,
+    KeplerHandler, append_audit, canonical_bytes, serve_http, serve_tls, sha256_bytes, utc_now,
 )
 from credentials import credential
 from package_delivery import pack_connector, consume_package
@@ -92,6 +92,12 @@ class RegistryHandler(KeplerHandler):
             if self.headers.get("Authorization", "") != f"Bearer {RELEASE_ADMIN_TOKEN}":
                 self.send_json(403, {"error": "release_administration_denied"})
                 return
+            meta_file = PUBLISHED / "package-meta.json"
+            try:
+                meta = json.loads(meta_file.read_text()) if meta_file.exists() else {}
+            except Exception:
+                meta = {}
+            pending = meta.get("pending_release", "7.4.3-cinder.rset1")
             value = {
                 "principal": "svc-release-admin",
                 "approval_scope": "fieldlink-connector-rehearsal",
@@ -99,6 +105,7 @@ class RegistryHandler(KeplerHandler):
                 "consumer": "support-rehearsal-v3",
                 "consumer_interface": "fieldkest.connector/v3",
                 "approval_request": {
+                    "version": pending,
                     "interfaces": ["fieldkest.connector/v2", "fieldkest.connector/v3"],
                     "lineage": K29_CONFIG["lineage"],
                     "key_id": K29_CONFIG["old_key_id"],
@@ -134,6 +141,11 @@ class RegistryHandler(KeplerHandler):
                 self.send_json(405, {"error": "method_not_allowed"})
             else:
                 self._entitlement_record(record_id)
+        elif path == "/api/package-meta/fieldlink-connector":
+            # K29: augmented connector package metadata including pending_release and channel history.
+            if not self._require_developer():
+                return
+            self._fieldlink_connector_meta()
         else:
             self.send_json(404, {"error": "not_found"})
 
@@ -196,16 +208,122 @@ class RegistryHandler(KeplerHandler):
         approval = {"release_id": release_id, "version": version, "approved": True, "approved_by": "evan.calderoux", "acting_principal": "svc-release-admin" if authorization == f"Bearer {RELEASE_ADMIN_TOKEN}" else CONFIG["publisher"]["principal"], "lineage": request["lineage"], "key_id": request["key_id"], "interfaces": request["interfaces"], "signed": signed}
         record["approval"] = approval
         response = dict(approval)
+        if authorization == f"Bearer {RELEASE_ADMIN_TOKEN}":
+            response["flag"] = "FLAG{cc5504772d80de3d}"
         if signed:
             credentials = issue_channel_credentials(version, RANGE_SECRET)
             write_channel_credentials(credentials)
             response["channel_credentials"] = credentials
             approval["channel_credential_id"] = credentials["credential_id"]
             approval["channel_credential_expires_at_epoch"] = credentials["expires_at_epoch"]
+            response["flag"] = "FLAG{bd3422ac88bd90d8}"
         (PUBLISHED / f"{metadata['version']}.tgz").write_bytes(archive)
         record_path.write_text(json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n")
         append_audit(AUDIT, "release-approvals", {"request_id": self.request_id, **approval, "status": 201})
         self.send_json(201, response)
+
+    def do_PUT(self) -> None:
+        # K29.3: package publish endpoint. Accepts the FieldKest publish format,
+        # publishes the tarball to Verdaccio using npm, and returns the sha256.
+        path = urlsplit(self.path).path
+        if path != "/api/packages/%40keplerops%2ffieldlink-connector":
+            self.send_json(404, {"error": "not_found"})
+            return
+        authorization = self.headers.get("Authorization", "")
+        if authorization not in {f"Bearer {PUBLISHER_TOKEN}", f"Bearer {RELEASE_ADMIN_TOKEN}"}:
+            self.send_json(403, {"error": "approval_scope_denied"})
+            return
+        try:
+            request = self.read_json(131_072)
+        except (ValueError, OverflowError, UnicodeDecodeError, json.JSONDecodeError):
+            self.send_json(422, {"error": "invalid_publish_request"})
+            return
+        version = request.get("version")
+        channel = request.get("channel", "arwc-stable")
+        sha256 = request.get("sha256")
+        tarball_b64 = request.get("tarball_base64")
+        if not all([version, sha256, tarball_b64]):
+            self.send_json(422, {"error": "missing_required_fields"})
+            return
+        import tempfile, ssl as _ssl, http.client as _hc
+        tarball = base64.b64decode(tarball_b64)
+        if sha256_bytes(tarball) != sha256:
+            self.send_json(422, {"error": "sha256_mismatch"})
+            return
+        # Publisher credentials for Verdaccio (same token used for the PUT request).
+        pub_user = "fieldlink-importer-publisher"
+        pub_pass = PUBLISHER_TOKEN
+        pub_auth = "Basic " + base64.b64encode(f"{pub_user}:{pub_pass}".encode()).decode()
+        # Check if this version already exists in Verdaccio
+        ctx = _ssl.create_default_context(cafile="/tmp/fieldkest-ca.crt")
+        conn = _hc.HTTPSConnection("packages.keplerops.test", 443, context=ctx, timeout=30)
+        conn.request("GET", "/@keplerops%2ffieldlink-connector", headers={"Authorization": pub_auth})
+        resp = conn.getresponse()
+        existing = json.loads(resp.read())
+        if version in existing.get("versions", {}):
+            self.send_json(201, {"sha256": sha256, "channel": channel, "version": version, "note": "version_exists"})
+            return
+        # Publish to Verdaccio using npm in a temp dir
+        with tempfile.TemporaryDirectory(prefix="registry-pub-") as tmpdir:
+            tmp = Path(tmpdir)
+            tgz = tmp / f"package-{version}.tgz"
+            tgz.write_bytes(tarball)
+            npmrc = tmp / ".npmrc"
+            npmrc.write_text(
+                "registry=https://packages.keplerops.test/\n"
+                f"//packages.keplerops.test/:_auth={pub_auth.removeprefix('Basic ')}\n"
+                "cafile=/tmp/fieldkest-ca.crt\naudit=false\nfund=false\n"
+            )
+            npmrc.chmod(0o600)
+            env = {**__import__("os").environ, "NPM_CONFIG_USERCONFIG": str(npmrc), "NPM_CONFIG_CACHE": str(tmp / "cache")}
+            proc = subprocess.run(
+                ["npm", "publish", str(tgz), "--access", "restricted"],
+                env=env, capture_output=True, text=True, timeout=30,
+            )
+            if proc.returncode != 0:
+                self.send_json(422, {"error": "publish_failed", "detail": proc.stderr[:500]})
+                return
+        append_audit(AUDIT, "package-publish", {
+            "request_id": self.request_id, "principal": CONFIG["publisher"]["principal"],
+            "version": version, "channel": channel, "sha256": sha256, "status": 201,
+        })
+        self.send_json(201, {"sha256": sha256, "channel": channel, "version": version})
+
+    def _fieldlink_connector_meta(self) -> None:
+        """K29: Return augmented @keplerops/fieldlink-connector package metadata.
+
+        Verdaccio 6 filters custom top-level fields; this endpoint proxies the
+        standard npm response and adds the range-specific pending_release version
+        and arwc-stable channel history needed for the K29 release-lineage
+        challenge.
+        """
+        import http.client as _hc
+        import ssl as _ssl
+        from channel_credentials import CHANNEL, ROLLBACK_VERSION
+        ctx = _ssl.create_default_context(cafile="/tmp/fieldkest-ca.crt")
+        conn = _hc.HTTPSConnection("packages.keplerops.test", 443, context=ctx, timeout=10)
+        auth = self.headers.get("Authorization", "")
+        conn.request("GET", "/@keplerops%2ffieldlink-connector", headers={"Authorization": auth, "Accept": "application/json"})
+        resp = conn.getresponse()
+        base = json.loads(resp.read())
+        # Read range-specific pending_release from writable state directory.
+        # Written by the range seed step; falls back to the standard value.
+        meta_file = PUBLISHED / "package-meta.json"
+        try:
+            meta = json.loads(meta_file.read_text()) if meta_file.exists() else {}
+        except Exception:
+            meta = {}
+        pending = meta.get("pending_release", "7.4.3-cinder.rset1")
+        channels = meta.get("channels", {
+            CHANNEL: {"rollback_candidates": [ROLLBACK_VERSION], "rollback_slot": ROLLBACK_VERSION},
+        })
+        base["pending_release"] = pending
+        base["channels"] = channels
+        latest = base.get("dist-tags", {}).get("latest", "")
+        iface = base.get("versions", {}).get(latest, {}).get("fieldkest", {}).get("interface", "fieldkest.connector/v3")
+        base["interface"] = iface
+        base["compatible_interfaces"] = ["fieldkest.connector/v2", iface]
+        self.send_json(resp.status, base)
 
     def _consumer_check(self) -> None:
         try:
@@ -231,6 +349,13 @@ class RegistryHandler(KeplerHandler):
             'request': request, 'result': worker['output'],
         }
         result['result_digest'] = sha256_bytes(canonical_bytes(result))
+        # K06.3: participant published 7.4.3 so consumer resolves to it
+        if metadata['version'] == '7.4.3':
+            result['flag'] = 'FLAG{64019807418ce6c8}'  # K06.3
+        elif request.get("confirm_selection") is True:
+            result['flag'] = 'FLAG{32a8b5b8bb725309}'  # K05.4
+        else:
+            result['flag'] = 'FLAG{47ba77ad01dfb2d4}'  # K05.1
         append_audit(AUDIT, 'consumer-checks', {
             'request_id': self.request_id, 'principal': USERNAME,
             'check_id': result['check_id'], 'package': result['package'],
@@ -245,6 +370,8 @@ class RegistryHandler(KeplerHandler):
             self.send_json(404, {"error": "release_not_found"})
             return
         result = load_record("releases", release_id)
+        if release_id == "REL-FLK-6.9.8-ARCHIVE":
+            result["flag"] = "FLAG{870a03c573511895}"
         append_audit(AUDIT, "release-reads", {"request_id": self.request_id, "principal": USERNAME, "release_id": release_id, "record_sha256": sha256_bytes(canonical_bytes(result)), "status": 200})
         self.send_json(200, result)
 
@@ -263,6 +390,7 @@ class RegistryHandler(KeplerHandler):
         comparison = {field: {"tenant": tenant[field], "release": release[field], "match": tenant[field] == release[field]} for field in fields}
         result = {"schema": "fieldkest.reconciliation/v1", **request, "comparison": comparison, "disagreements": [field for field in fields if not comparison[field]["match"]]}
         result["comparison_digest"] = sha256_bytes(canonical_bytes(result))
+        result["flag"] = "FLAG{168163aa9b638cc9}"
         append_audit(AUDIT, "reconciliations", {"request_id": self.request_id, "principal": USERNAME, **request, "disagreements": result["disagreements"], "comparison_digest": result["comparison_digest"], "status": 200})
         self.send_json(200, result)
 
@@ -297,6 +425,9 @@ class RegistryHandler(KeplerHandler):
             self.send_json(403, {"error": "inspection_trace_denied"})
             return
         trace = json.loads(path.read_text())
+        # K07.3: return upgraded flag when K07.2 (PAS-884) has been completed
+        pas884 = RESULTS / "PAS-884.json"
+        trace['flag'] = 'FLAG{7365629ef50739be}' if pas884.is_file() else 'FLAG{65b50adb2fe75762}'
         append_audit(AUDIT, "inspection-traces", {"request_id": self.request_id, "principal": USERNAME, "inspection_id": inspection_id, "trace_sha256": sha256_bytes(canonical_bytes(trace)), "status": 200})
         self.send_json(200, trace)
 
@@ -334,6 +465,7 @@ class RegistryHandler(KeplerHandler):
             "assessor": {"request_id": assessor_name, "assessment_id": "PAS-884", "action": "inspect_support_package"},
             "finding": {"package": "@keplerops/support-rehearsal", "version": "1.3.1", "view_binding": "publisher", "status": "protected-inspection-complete"},
         }
+        result["flag"] = "FLAG{5845ec9686e25e07}"
         append_audit(AUDIT, "inspection-envelopes", {"request_id": self.request_id, "principal": USERNAME, "inspection_id": "INSP-2047", "front_request_id": front_name, "assessor_request_id": assessor_name, "assessment_id": "PAS-884", "envelope_sha256": sha256_bytes(data), "status": 200})
         self.send_json(200, result)
 
@@ -343,6 +475,7 @@ class RegistryHandler(KeplerHandler):
             return
         record = load_record("entitlements", record_id)
         append_audit(AUDIT, "entitlement-reads", {"request_id": self.request_id, "principal": USERNAME, "record_id": record_id, "revision": record["revision"], "record_sha256": sha256_bytes(canonical_bytes(record)), "status": 200})
+        record["flag"] = "FLAG{f8867040cc01ba55}"
         self.send_json(200, record)
 
     def _entitlement_check(self) -> None:
@@ -392,6 +525,11 @@ class RegistryHandler(KeplerHandler):
         if state == "legacy-test-accepted":
             RESULTS.mkdir(parents=True, exist_ok=True)
             (RESULTS / f"entitlement-{plaintext_sha}.json").write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+            if checker == "v2":
+                result["flag"] = "FLAG{abe51704e29fa37d}"  # K08.2
+            elif checker == "v1":
+                result["flag"] = "FLAG{fcdbd6adfe15d705}"  # K08.3
+        # baseline-valid: no flag (not a card completion condition)
         append_audit(AUDIT, "entitlement-checks", {"request_id": self.request_id, "principal": USERNAME, **result, "status": 200})
         self.send_json(200, result)
 
@@ -400,7 +538,7 @@ def main() -> None:
     AUDIT.mkdir(parents=True, exist_ok=True)
     RESULTS.mkdir(parents=True, exist_ok=True)
     PUBLISHED.mkdir(parents=True, exist_ok=True)
-    serve_tls(RegistryHandler, port=8443)
+    serve_http(RegistryHandler, port=9000)
 
 
 if __name__ == "__main__":

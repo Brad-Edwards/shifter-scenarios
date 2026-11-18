@@ -5,7 +5,7 @@ import re
 from pathlib import Path
 
 ROOT = Path('/home/atomik/src/shifter-scenarios')
-PLACEMENT = ROOT / 'cinder-typhoon/flags/placement.yaml'
+PLACEMENT = Path('/tmp/cinder-dev-release/cinder-typhoon/flags/placement.yaml')
 reported = {}
 for agent in ('qa1', 'qa2', 'qa3', 'qa4'):
     try:
@@ -32,3 +32,28 @@ for i, line in enumerate(lines):
 PLACEMENT.write_text('\n'.join(lines) + '\n')
 placed = sum(1 for l in lines if l.startswith('    path: ') and l != '    path: TBD')
 print(f'updated {updated}; placed {placed}/240')
+
+# Also detect flags placed in the code tree but not reported: search for each TBD flag value.
+import subprocess
+data = PLACEMENT.read_text()
+lines = data.splitlines()
+vals = {}
+cur = None
+for l in lines:
+    m = re.match(r'  - flag_id: (\S+)', l)
+    if m: cur = m.group(1)
+    m = re.match(r'    value: "(FLAG\{[0-9a-f]{16}\})"', l)
+    if m and cur: vals[cur] = m.group(1)
+found = 0
+for i, l in enumerate(lines):
+    m = re.match(r'  - flag_id: (\S+)', l)
+    if m: cur = m.group(1)
+    elif l == '    path: TBD' and cur in vals:
+        r = subprocess.run(['grep', '-rlF', '--exclude=placement.yaml', '--exclude-dir=.operator', '--exclude-dir=walkthroughs', vals[cur],
+                            '/tmp/cinder-dev-release/cinder-typhoon/build', '/tmp/cinder-dev-release/cinder-typhoon/assets'], capture_output=True, text=True)
+        hits = [h.replace('/tmp/cinder-dev-release/cinder-typhoon/', '') for h in r.stdout.split()]
+        if hits:
+            lines[i] = f'    path: "in code: {", ".join(hits[:3])}"'; found += 1
+PLACEMENT.write_text('\n'.join(lines) + '\n')
+placed = sum(1 for l in lines if l.startswith('    path: ') and l != '    path: TBD')
+print(f'code-tree scan recorded {found}; placed {placed}/240')

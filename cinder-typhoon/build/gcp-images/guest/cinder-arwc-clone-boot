@@ -40,3 +40,13 @@ published=$(docker port cinder-arwc-fieldlink-edge 443/tcp)
   exit 1
 }
 echo "ARWC fieldlink-edge bound to $address:443"
+
+# Start additional services that are defined in the compose but not managed
+# by the OT-compat slice. These run from the cinder-arwc image set and need
+# the operator directory and the connector-fieldlink volume that the connector
+# establishes above.
+docker compose -f "$it/compose.yaml" \
+  up -d --no-deps --no-build --pull never \
+  a-identity a-contractor-bridge a-hmi a-historian \
+  2>&1 | grep -v '^#' || true
+echo "ARWC supplementary services started"

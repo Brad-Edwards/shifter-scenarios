@@ -48,6 +48,11 @@ def test_cinder_plan_is_authorized_and_shell_valid(phase):
 def test_configure_only_pairs_existing_image_helpers():
     actions = CinderTyphoonDirectAdapter().plan(request("configure")).actions
     assert [action.action_id for action in actions] == [
+        "training-boot-wait",
+        "arwc-boot-wait",
+        "keplerops-boot-wait-1",
+        "keplerops-boot-wait-2",
+        "keplerops-boot-wait-3",
         "training-participant-password",
         "keplerops-participant-password",
         "keplerops-ca-export",
@@ -57,6 +62,14 @@ def test_configure_only_pairs_existing_image_helpers():
         "keplerops-ca-export-stop",
         "arwc-ca-export-stop",
     ]
+    assert sum(action.timeout_seconds for action in actions) <= 1200
+    waits, actions = actions[:5], actions[5:]
+    assert [action.binding for action in waits] == ["training", "arwc", "keplerops", "keplerops", "keplerops"]
+    for action in waits:
+        assert "cinder-image-first-boot cinder-arwc-clone-boot" in action.script
+        assert "failed) echo" in action.script
+    # Only the last wait for each host fails when the boot unit is still running.
+    assert [action.script.rstrip().endswith("exit 1") for action in waits] == [True, True, False, False, True]
     assert actions[4].runtime_values["arwc-address"].field == "private_address"
     assert actions[4].runtime_values["arwc-address"].binding == "arwc"
     assert actions[5].runtime_values["keplerops-address"].binding == "keplerops"
