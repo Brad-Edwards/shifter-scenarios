@@ -15,6 +15,13 @@ cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 root=/opt/arwc-ot-compat
 editor="$root/upstream/squashfs-root"
 project="$root/work/arwc-compat"
+# Sync PLC build files from the IT tree so the slice always uses the
+# version that was baked into the image, not an older snapshot.
+_it_tree="$root/it/cinder-typhoon/build/arwc-ot"
+for _f in plc.Dockerfile plc-entrypoint.sh plugins.conf; do
+  [[ -f "$_it_tree/$_f" ]] && sudo cp "$_it_tree/$_f" "$PWD/$_f"
+done
+unset _it_tree _f
 if [[ ! -x "$editor/AppRun" ]]; then
   sudo install -d -o "$(id -u)" -g "$(id -g)" "$root/work"
   (cd "$root/work" && "$root/upstream/OpenPLC.Editor-4.3.4.AppImage" --appimage-extract > /tmp/arwc-ot-editor-extract.log)
