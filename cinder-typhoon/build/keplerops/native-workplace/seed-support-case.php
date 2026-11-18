@@ -4,7 +4,7 @@ $_SERVER['SCRIPT_NAME'] = '/scp/index.php';
 require '/var/www/html/main.inc.php';
 require_once INCLUDE_DIR.'class.staff.php';
 $state = new Config('fieldlink-platform');
-if ($state->get('company_case_import_revision') === '3') {
+if ($state->get('company_case_import_revision') === '2') {
     exit(0);
 }
 $conversation = json_decode(file_get_contents('/operator/company-conversation.json'), true, 512, JSON_THROW_ON_ERROR);
@@ -81,5 +81,5 @@ foreach ($ordinary['tickets'] as $record) {
         }
     }
 }
-$state->set('company_case_import_revision', '3');
+$state->set('company_case_import_revision', '2');
 echo "Native company support cases imported.\n";
