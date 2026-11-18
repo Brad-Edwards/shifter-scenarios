@@ -49,7 +49,7 @@ echo "ARWC fieldlink-edge bound to $address:443"
 # minutes left, with no manual step. The first mint runs about a minute after
 # boot once the native stack is up.
 guest=/opt/arwc-ot-compat/it/cinder-typhoon/build/gcp-images/guest
-if [[ -x "$it/native/manage.sh" && -f "$guest/cinder-arwc-ott-rotate.timer" ]]; then
+if [[ -f "$it/native/manage.sh" && -f "$guest/cinder-arwc-ott-rotate.timer" ]]; then
   install -m 0644 "$guest/cinder-arwc-ott-rotate.service" /etc/systemd/system/cinder-arwc-ott-rotate.service
   install -m 0644 "$guest/cinder-arwc-ott-rotate.timer" /etc/systemd/system/cinder-arwc-ott-rotate.timer
   systemctl daemon-reload
