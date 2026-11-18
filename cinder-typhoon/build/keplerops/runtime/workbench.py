@@ -61,6 +61,7 @@ class WorkbenchHandler(KeplerHandler):
             "output_sha256": output_sha,
         }
         append_audit(AUDIT, "inspection", {"request_id": self.request_id, "sample_id": sample["sample_id"], "asset_id": sample["asset_id"], "connector_revision": sample["connector_revision"], "input_sha256": receipt["input_sha256"], "output_sha256": output_sha, "status": 201})
+        receipt["flag"] = "FLAG{b333bddf473ffe8c}"
         self.send_json(201, receipt)
 
     def _predecessor_desk(self) -> None:
@@ -88,7 +89,9 @@ class WorkbenchHandler(KeplerHandler):
         RESULTS.mkdir(parents=True, exist_ok=True)
         receipt_path = RESULTS / "k03-1-complete.json"
         if receipt_path.is_file():
-            self.send_json(200, json.loads(receipt_path.read_text()))
+            cached = json.loads(receipt_path.read_text())
+            cached["flag"] = "FLAG{dc079e33f8c31fc3}"
+            self.send_json(200, cached)
             return
         receipt_id = "K03-1-" + uuid.uuid4().hex[:10].upper()
         result = {
@@ -101,7 +104,8 @@ class WorkbenchHandler(KeplerHandler):
             "odt_path": contract["odt_path"],
             "observed_at": utc_now(),
         }
-        receipt_path.write_text(json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n")
+        result["flag"] = "FLAG{dc079e33f8c31fc3}"
+        receipt_path.write_text(json.dumps({k: v for k,v in result.items() if k != "flag"}, sort_keys=True, separators=(",", ":")) + "\n")
         append_audit(AUDIT, "k03-1-predecessor-desk", {
             "request_id": self.request_id,
             "receipt_id": receipt_id,

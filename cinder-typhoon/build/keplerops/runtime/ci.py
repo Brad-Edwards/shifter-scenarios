@@ -96,7 +96,10 @@ class CIHandler(KeplerHandler):
             if not _re.fullmatch(r"RJ-[0-9A-F]{8}", run_id) or not job_path.is_file():
                 self.send_json(404, {"error": "review_job_not_found"})
                 return
-            self.send_json(200, json.loads(job_path.read_text()))
+            job_data = json.loads(job_path.read_text())
+            if job_data.get("state") == "success":
+                job_data["flag"] = "FLAG{fbd7154bb29c94fa}"
+            self.send_json(200, job_data)
         elif path.startswith("/api/runs/"):
             # K09.2: CI runner run metadata and retained artifacts.
             # The run metadata lists retained_artifacts that are not on the Jenkins
@@ -109,7 +112,10 @@ class CIHandler(KeplerHandler):
                 if not _re.fullmatch(r"BLD-[\w-]+", run_id) or not run_path.is_file():
                     self.send_json(404, {"error": "run_not_found"})
                     return
-                self.send_json(200, json.loads(run_path.read_text()))
+                run_data = json.loads(run_path.read_text())
+                if run_id == "BLD-1842":
+                    run_data["flag"] = "FLAG{a4b836c914be9dc1}"
+                self.send_json(200, run_data)
             elif remainder.endswith("/log"):
                 run_id = remainder.removesuffix("/log")
                 log_path = STATE / "runs" / f"{run_id}.log"
@@ -132,7 +138,10 @@ class CIHandler(KeplerHandler):
                     "request_id": self.request_id, "principal": USERNAME,
                     "run_id": run_id, "artifact": artifact_name, "status": 200,
                 })
-                self.send_json(200, json.loads(art_path.read_text()))
+                art_data = json.loads(art_path.read_text())
+                if artifact_name == "release-dossier.json" and run_id == "BLD-REL-742":
+                    art_data["flag"] = "FLAG{e1cd013a6cdd8991}"
+                self.send_json(200, art_data)
             else:
                 self.send_json(404, {"error": "not_found"})
         else:

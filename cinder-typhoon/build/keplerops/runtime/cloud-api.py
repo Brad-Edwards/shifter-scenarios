@@ -724,6 +724,8 @@ class CloudApiHandler(KeplerHandler):
                 "trust_id": trust_id,
                 **cm_data,
             }
+            if trust_id == "TRUST-FLX-04":
+                result["flag"] = "FLAG{c1e0dbfdffe75425}"
             append_audit(AUDIT, "trust-records", {
                 "request_id": self.request_id,
                 "trust_id": trust_id, "subject": cm_data.get("subject"),
@@ -804,6 +806,8 @@ class CloudApiHandler(KeplerHandler):
             "accepted_input_audience": "fieldkest-build-records",
             "expires_in": 3600,
         }
+        if role == "support-export-editor":
+            result["flag"] = "FLAG{244cd323590694f6}"
         append_audit(AUDIT, "role-exchange", {
             "request_id": self.request_id, "role": role,
             "input_subject": username, "output_principal": "svc-fieldlink-export",
@@ -1312,9 +1316,24 @@ class CloudApiHandler(KeplerHandler):
         token = auth.removeprefix("Bearer ") if auth.startswith("Bearer ") else None
         # Accept K09.4 path (release_reader) or K13.4 path (workload session) ONLY.
         # Plain developer token does NOT grant access — K09.4 or K13.4 must be earned first.
+        # Also accept K3s workload JWT tokens (new implementation of K13.4).
         if token not in {RELEASE_READER_TOKEN, WORKLOAD_SESSION}:
-            self.send_json(401, {"error": "earned_workload_identity_required"})
-            return
+            # Try K3s token validation for the workload SA
+            if token:
+                _status, _review = _k3s_request(
+                    "POST", "/apis/authentication.k8s.io/v1/tokenreviews",
+                    body={"apiVersion": "authentication.k8s.io/v1", "kind": "TokenReview", "spec": {"token": token}},
+                )
+                _user = _review.get("status", {}).get("user", {}).get("username", "")
+                _expected = f"system:serviceaccount:{NAMESPACE}:{WORKLOAD_SA}"
+                if _status == 201 and _review.get("status", {}).get("authenticated") and _user == _expected:
+                    pass  # K3s workload token accepted
+                else:
+                    self.send_json(401, {"error": "earned_workload_identity_required"})
+                    return
+            else:
+                self.send_json(401, {"error": "earned_workload_identity_required"})
+                return
         result = {
             "schema": "fieldkest.build-record/v1",
             "build_id": build_id,
@@ -1390,6 +1409,8 @@ class CloudApiHandler(KeplerHandler):
                 "build_id": build_id,
                 **cm_data,
             }
+            if build_id == "BLD-1842":
+                result["flag"] = "FLAG{0b9877c3539fbcfa}"
             append_audit(AUDIT, "build-records", {
                 "request_id": self.request_id,
                 "build_id": build_id, "principal": cm_data.get("principal"),

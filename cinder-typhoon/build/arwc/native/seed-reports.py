@@ -274,7 +274,8 @@ def seed() -> None:
     )
     rel_sql = (
         "SELECT record_id, revision, api, doctype, relation, association, "
-        "work_order, asset, query_template FROM relation_contracts WHERE record_id = 'RELPROTO-CRR-R3'"
+        "work_order, asset, query_template, 'FLAG{362994ae7c0d0a41}' AS flag "
+        "FROM relation_contracts WHERE record_id = 'RELPROTO-CRR-R3'"
     )
     rel_card = next((card for card in api("card") if card["name"] == rel_title), None)
     if rel_card is None:

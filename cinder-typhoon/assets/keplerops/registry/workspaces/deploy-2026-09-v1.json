@@ -1,11 +1,12 @@
 {
-  "schema": "fieldkest.workspace-notebook/v1",
-  "notebook_id": "NB-DEPLOY-2026-09",
-  "title": "September 2026 deployment notebook",
-  "customer_note": "Deployment for TEN-ARWC-019 cedar run customer — retain for support reconciliation",
-  "job": "SCHED-2841",
-  "export_ref": "EXP-2841",
-  "version": "v1",
   "authored_by": "maya.ranscombe",
-  "status": "superseded"
+  "customer_note": "Deployment for TEN-ARWC-019 cedar run customer \u2014 retain for support reconciliation",
+  "export_ref": "EXP-2841",
+  "flag": "FLAG{04fd2fd48f756040}",
+  "job": "SCHED-2841",
+  "notebook_id": "NB-DEPLOY-2026-09",
+  "schema": "fieldkest.workspace-notebook/v1",
+  "status": "superseded",
+  "title": "September 2026 deployment notebook",
+  "version": "v1"
 }

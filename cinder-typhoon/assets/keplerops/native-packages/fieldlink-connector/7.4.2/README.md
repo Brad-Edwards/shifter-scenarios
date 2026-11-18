@@ -9,3 +9,5 @@ The result retains the tenant and asset, states the connector version, and
 compares the observed latency and sample count with `limits.json`.
 Missing measurements are reported as unknown values rather than invented
 samples. Invalid units or negative measurements are rejected.
+
+FLAG{a4046971d9b4974b}

@@ -213,10 +213,17 @@ def evaluate(card: str, submission: dict[str, Any], product_snapshot: dict[str, 
     }
     if card not in evaluators:
         raise EvidenceError("card is outside W17")
+    flags = {
+        "W17.1": "FLAG{33a22dd3dae3a5a9}",
+        "W17.2": "FLAG{a6a4563e676656d3}",
+        "W17.3": "FLAG{29af64987ad77321}",
+        "W17.4": "FLAG{a61eaf28fdd2f12c}",
+    }
     return {
         "schema": "arwc.challenge-result/v1",
         "card": card,
         "satisfied": True,
         "product_source_digest": product_snapshot["source_digest"],
         "evidence": evaluators[card](),
+        "flag": flags[card],
     }

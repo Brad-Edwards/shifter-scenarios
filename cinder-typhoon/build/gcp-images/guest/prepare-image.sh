@@ -50,6 +50,12 @@ case "$phase" in
       install -m 0644 "$model" /opt/cinder-typhoon/cache/keplerops-model/fieldlink-qwen-q4_k_m.gguf
     fi
     test -s /opt/cinder-typhoon/cache/keplerops-model/fieldlink-qwen-q4_k_m.gguf
+    k3s=$phase_root/.operator/native-platform/k3s-images/k3s-airgap-images-amd64.tar.zst
+    if [[ -s $k3s ]]; then
+      install -d -m 0755 /opt/cinder-typhoon/cache/keplerops-k3s
+      install -m 0644 "$k3s" /opt/cinder-typhoon/cache/keplerops-k3s/k3s-airgap-images-amd64.tar.zst
+    fi
+    test -s /opt/cinder-typhoon/cache/keplerops-k3s/k3s-airgap-images-amd64.tar.zst
     printf '%s\n' keplerops.private-image/v1 >/etc/cinder-keplerops-image
     chmod 0644 /etc/cinder-keplerops-image
     ;;

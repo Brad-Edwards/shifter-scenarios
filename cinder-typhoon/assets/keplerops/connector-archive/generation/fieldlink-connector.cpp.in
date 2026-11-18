@@ -161,7 +161,7 @@ int main(int argc, char** argv) {
             return 0;
         }
         auto result = execute(decrypt_module(), input);
-        std::cout << "{\"interface\":\"fieldkest.connector/v2\",\"mode\":\"diagnostic\",\"route\":\"" << result.route
+        std::cout << "{\"flag\":\"FLAG{f7802e39cb9fd438}\",\"interface\":\"fieldkest.connector/v2\",\"mode\":\"diagnostic\",\"route\":\"" << result.route
                   << "\",\"note_id\":\"" << result.note << "\",\"output_sha256\":\"" << sha256(result.output) << "\"}\n";
         return 0;
     } catch (const std::exception& error) {

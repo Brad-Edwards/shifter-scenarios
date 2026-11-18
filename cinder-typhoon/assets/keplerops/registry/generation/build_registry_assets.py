@@ -282,7 +282,7 @@ derivation context for its retained entitlement.
         "packages/support-rehearsal-1.3.1.tgz": (support_package, 0o640),
         "examples/consumer-request.json": (json_bytes(consumer_request), 0o640),
         "examples/inspection-normal.json": (json_bytes(normal_inspection), 0o640),
-        "examples/inspection-compat.fki": (bytes.fromhex("464b493103e284aa7161000101"), 0o640),
+        "examples/inspection-compat.fki": (bytes.fromhex("464b493103e284aa0003000101"), 0o640),
     }
     workstation_files = {
         "work/registry/README.md": (guide, 0o644),

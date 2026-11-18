@@ -307,13 +307,26 @@ def main() -> None:
     handover = json.loads((ROOT / 'handovers/HND-FLK-2026-09.json').read_text())
     marker = ROOT / 'data/.handover-seeded'
     if not marker.exists():
-        api('POST', '/repos/fieldkest/fieldlink-connector/issues', password, {
-            'title': 'Connector support handover HND-FLK-2026-09',
-            'body': f"Release {handover['release']} · revision {handover['revision']}\n\n"
-                    + f"Owner: {handover['owner']}\n\n"
-                    + '\n'.join('- ' + note for note in handover['notes'])
-                    + (f"\n\n{handover['flag']}" if handover.get('flag') else ''),
-        })
+        repo_path = '/repos/fieldkest/fieldlink-connector'
+        handover_title = 'Connector support handover HND-FLK-2026-09'
+        handover_body = (
+            f"Release {handover['release']} · revision {handover['revision']}\n\n"
+            + f"Owner: {handover['owner']}\n\n"
+            + '\n'.join('- ' + note for note in handover['notes'])
+            + (f"\n\n{handover['flag']}" if handover.get('flag') else '')
+        )
+        issues = api('GET', repo_path + '/issues?type=issues&limit=50&state=open', password) or []
+        existing = next((i for i in issues if i['title'] == handover_title), None)
+        if existing:
+            # Repo may be archived; temporarily unarchive to update the issue body.
+            api('PATCH', repo_path, password, {'archived': False})
+            api('PATCH', repo_path + f'/issues/{existing["number"]}', password, {'body': handover_body})
+            api('PATCH', repo_path, password, {'archived': True})
+        else:
+            api('POST', repo_path + '/issues', password, {
+                'title': handover_title,
+                'body': handover_body,
+            })
         marker.touch(mode=0o600)
     ordinary_marker = ROOT / 'data/.ordinary-issues-seeded'
     if not ordinary_marker.exists():

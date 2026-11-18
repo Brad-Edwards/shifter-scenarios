@@ -1,8 +1,9 @@
 {
-  "schema": "fieldkest.workspace-handover/v1",
+  "created": "2026-09-18T16:00:00Z",
+  "destination": "fieldkest-exports",
   "export_id": "EXP-2841",
+  "flag": "FLAG{7ee9c8accac3a580}",
   "job": "SCHED-2841",
   "owner": "maya.ranscombe",
-  "destination": "fieldkest-exports",
-  "created": "2026-09-18T16:00:00Z"
+  "schema": "fieldkest.workspace-handover/v1"
 }

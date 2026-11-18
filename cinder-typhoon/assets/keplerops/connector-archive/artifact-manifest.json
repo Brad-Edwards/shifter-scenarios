@@ -6,26 +6,26 @@
         {
           "mode": "0600",
           "path": "config/connector-archive.json",
-          "sha256": "7130cf4ae237f6dc4c12dcaf52be6944e245f85df46e846660ab19565dc3853f",
+          "sha256": "21b34775f0e55c4f4de626bfeb5e23f42e56845a5b3e2871c13eeb0709bc3c63",
           "size": 638
         },
         {
           "mode": "0550",
           "path": "exercises/connector-archive/fieldlink-connector",
-          "sha256": "f7f0fa564b984ea001debfb2a250c5dd30f2a63cdd92db887e294f580459a513",
-          "size": 1577616
+          "sha256": "209f87d7fefe157e903acd929427ba23bf5eee15f180b89c1e60ef32ca2fc4c0",
+          "size": 1530888
         },
         {
           "mode": "0640",
           "path": "seeds/connector-archive.bundle",
-          "sha256": "b0d192a6c0a1534f6efb371da4d3dfb8abd461eb6718f02b2fba96b35c7c0c1b",
-          "size": 651119
+          "sha256": "d25da26af4bc06d79c76137d5dea6b095d52bfa14e6bc063bc1ce425b5c68de9",
+          "size": 627457
         }
       ],
       "group": "fieldkest",
       "owner": "fieldkest",
-      "sha256": "8b6fbf8ba8afc635b68d29f45165638086289a05e647c8fc9bd3e7a88a754d2c",
-      "size": 2242560
+      "sha256": "84dc1a2224c49701ecfea3dd11cac19cfa1fdbe71ff43da114bc2bbe201c4a1e",
+      "size": 2170880
     },
     {
       "archive": "k-dev-connector-archive-home.tar",
@@ -46,13 +46,13 @@
   "binary": {
     "architecture": "linux-x86_64-elf",
     "build_id": "698d42c6a1776e9fc002b91ef68431ad775e0c28",
-    "link_map_sha256": "0b6798ff777a62afafd63e7e46012b159dd49455425f839abc74f71fe71cef56",
-    "sha256": "f7f0fa564b984ea001debfb2a250c5dd30f2a63cdd92db887e294f580459a513",
+    "link_map_sha256": "d587c93057c0591c57343f25d4db6052f1fbaaf27a7df5b2047aa620fa1b2185",
+    "sha256": "209f87d7fefe157e903acd929427ba23bf5eee15f180b89c1e60ef32ca2fc4c0",
     "version": "6.9.8"
   },
   "repository": {
-    "bundle_sha256": "b0d192a6c0a1534f6efb371da4d3dfb8abd461eb6718f02b2fba96b35c7c0c1b",
-    "commit": "9b65bd4cea72ef35259fce2b0911a36c058e0688",
+    "bundle_sha256": "d25da26af4bc06d79c76137d5dea6b095d52bfa14e6bc063bc1ce425b5c68de9",
+    "commit": "7646138d7074113a944f5065e96e817442206262",
     "repository": "fieldkest/connector-archive"
   },
   "schema": "fieldkest.connector-archive-artifacts/v1"

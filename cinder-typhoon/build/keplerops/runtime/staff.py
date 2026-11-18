@@ -39,8 +39,10 @@ import threading as _threading
 
 # Keycloak rotates the RAT on every DCR access. Track the current valid RAT in
 # memory so subsequent requests use the rotated token.
+# Support override via env for initial Keycloak RAT seeding.
 _rat_lock = _threading.Lock()
-_current_rat: list[str] = [credential("staff_preview_service")]
+_initial_rat = os.environ.get("FIELDKEST_INITIAL_RAT") or credential("staff_preview_service")
+_current_rat: list[str] = [_initial_rat]
 
 
 def _get_rat() -> str:

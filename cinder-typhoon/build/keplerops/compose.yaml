@@ -855,6 +855,7 @@ services:
       FIELDKEST_TLS_KEY: /tmp/fieldkest.key
       FIELDKEST_STATE_ROOT: /var/lib/fieldkest-staff
       SUPPORT_DB_PASSWORD_FILE: /run/fieldkest-staff/support_db_password
+      FIELDKEST_INITIAL_RAT_FILE: /run/fieldkest-staff/initial_rat
     volumes:
       - *runtime-credentials
       - ${KEPLEROPS_OPERATOR_DIR:-./.operator}/tls/server.crt:/run/fieldkest-tls/server.crt:ro

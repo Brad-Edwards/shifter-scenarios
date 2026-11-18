@@ -1,5 +1,5 @@
 {
-  "binary_sha256": "f7f0fa564b984ea001debfb2a250c5dd30f2a63cdd92db887e294f580459a513",
+  "binary_sha256": "209f87d7fefe157e903acd929427ba23bf5eee15f180b89c1e60ef32ca2fc4c0",
   "build_id": "698d42c6a1776e9fc002b91ef68431ad775e0c28",
   "corpus": [
     {
@@ -16,7 +16,7 @@
     }
   ],
   "note_id": "ENG-FLK-LEGACY-42",
-  "repository_commit": "9b65bd4cea72ef35259fce2b0911a36c058e0688",
+  "repository_commit": "7646138d7074113a944f5065e96e817442206262",
   "route": "/internal/fieldlink/legacy-diagnostics/CRR-OG2",
   "schema": "fieldkest.connector-archive-service/v1",
   "version": "6.9.8"

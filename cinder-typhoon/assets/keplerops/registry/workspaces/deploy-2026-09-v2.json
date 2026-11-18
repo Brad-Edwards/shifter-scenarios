@@ -1,11 +1,12 @@
 {
-  "schema": "fieldkest.workspace-notebook/v1",
-  "notebook_id": "NB-DEPLOY-2026-09",
-  "title": "September 2026 deployment notebook",
-  "customer_note": "Deployment notebook for field deployment batch — September 2026",
-  "job": "SCHED-2841",
-  "export_ref": "EXP-2841",
-  "version": "v2",
   "authored_by": "maya.ranscombe",
-  "status": "active"
+  "customer_note": "Deployment notebook for field deployment batch \u2014 September 2026",
+  "export_ref": "EXP-2841",
+  "flag": "FLAG{2688ab401d2fb0dd}",
+  "job": "SCHED-2841",
+  "notebook_id": "NB-DEPLOY-2026-09",
+  "schema": "fieldkest.workspace-notebook/v1",
+  "status": "active",
+  "title": "September 2026 deployment notebook",
+  "version": "v2"
 }

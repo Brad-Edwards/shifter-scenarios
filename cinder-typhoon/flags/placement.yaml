@@ -771,7 +771,7 @@ flags:
     source: value
     value: "FLAG{362994ae7c0d0a41}"
     host: arwc-host
-    path: TBD
+    path: "in code: build/arwc/native/seed-reports.py"
   - flag_id: W11.2
     source: value
     value: "FLAG{6c7d3f3e1de42300}"
@@ -881,22 +881,22 @@ flags:
     source: value
     value: "FLAG{33a22dd3dae3a5a9}"
     host: arwc-host
-    path: TBD
+    path: "build/arwc-ot/challenges/W17/check_evidence.py:evaluate() — flag field added to return dict for each W17.x card: W17.1=FLAG{33a22dd3dae3a5a9}, W17.2=FLAG{a6a4563e676656d3}, W17.3=FLAG{29af64987ad77321}, W17.4=FLAG{a61eaf28fdd2f12c}."
   - flag_id: W17.2
     source: value
     value: "FLAG{a6a4563e676656d3}"
     host: arwc-host
-    path: TBD
+    path: "in code: build/arwc-ot/challenges/W17/check_evidence.py"
   - flag_id: W17.3
     source: value
     value: "FLAG{29af64987ad77321}"
     host: arwc-host
-    path: TBD
+    path: "in code: build/arwc-ot/challenges/W17/check_evidence.py"
   - flag_id: W17.4
     source: value
     value: "FLAG{a61eaf28fdd2f12c}"
     host: arwc-host
-    path: TBD
+    path: "in code: build/arwc-ot/challenges/W17/check_evidence.py"
   - flag_id: W18.1
     source: value
     value: "FLAG{73df52a55c086268}"
@@ -951,37 +951,37 @@ flags:
     source: value
     value: "FLAG{d802bfe7a42fb855}"
     host: arwc-host
-    path: TBD
+    path: "FLAG{d802bfe7a42fb855} in process_services.py accepted('firmware-record-created') extra. POST /api/maintenance-records/current with operations+image_b64 (erase-rewrite), proxied engineering->instruments. Wrong order gate: 409."
   - flag_id: W21.1
     source: value
     value: "FLAG{0440d5e5947665f6}"
     host: arwc-host
-    path: TBD
+    path: "FLAG{0440d5e5947665f6} in process_services.py accepted('sealed-project-note-read') extra. GET /api/sealed-projects/current/note. workspace_claim=CRR-CTRL-R19, manifest_project=CRR-CTRL-R21."
   - flag_id: W21.2
     source: value
     value: "FLAG{c86054b8e7f7d0f7}"
     host: arwc-host
-    path: TBD
+    path: "FLAG{c86054b8e7f7d0f7} in process_services.py accepted('vault-access-granted') extra. POST /api/vault-access with project_index, workspace_claim, deployment_note, observed_project=CRR-CTRL-R21, observed_digest=sha256('CRR-CTRL-R21/deployed'). Wrong gate: observed_project=workspace_claim->409."
   - flag_id: W22.1
     source: value
     value: "FLAG{f8a5c9e2b7fb06db}"
     host: arwc-host
-    path: TBD
+    path: "FLAG{f8a5c9e2b7fb06db} in process_services.py accepted('sealed-viewer-read') extra. GET /api/sealed-projects/current/viewer. Binary executes, VM verified."
   - flag_id: W22.2
     source: value
     value: "FLAG{2aff355751accd95}"
     host: arwc-host
-    path: TBD
+    path: "FLAG{2aff355751accd95} in process_services.py accepted('sealed-vm-reconstructed') extra. POST /api/sealed-viewers/current/execute with 4 cases."
   - flag_id: W22.3
     source: value
     value: "FLAG{e4faeac4a9f89ddb}"
     host: arwc-host
-    path: TBD
+    path: "FLAG{e4faeac4a9f89ddb} in process_services.py accepted('sealed-decision-read') extra. POST /api/sealed-projects/current with project_id and key_hex derived from VM execution."
   - flag_id: W22.4
     source: value
     value: "FLAG{e7cf68818ecbefd1}"
     host: arwc-host
-    path: TBD
+    path: "FLAG{e7cf68818ecbefd1} in process_services.py accepted('sealed-review-created') extra. POST /api/unlisted-reviewers/current. Reviewer elias.vorn-review recovered from ReviewHelper.dll native instruction chunks."
   - flag_id: W23.1
     source: value
     value: "FLAG{0b6fa11278a4c58e}"

@@ -838,6 +838,7 @@ class Handler(BaseHTTPRequestHandler):
                 "viewer_b64": base64.b64encode(viewer).decode(),
                 "program_b64": base64.b64encode(program).decode(),
                 "package_b64": base64.b64encode(package).decode(),
+                "flag": "FLAG{f8a5c9e2b7fb06db}",
             })
             return
         if ROLE == "instruments" and path == "/api/firmware-images/current":
@@ -868,6 +869,14 @@ class Handler(BaseHTTPRequestHandler):
             result = json.loads(evidence_path.read_text(encoding="utf-8"))
             self.accepted("maintenance-record-read", result)
             return
+        if ROLE == "engineering" and path == "/api/sealed-projects/current/note":
+            try:
+                handover_context = authored_asset("me-project-handover-01")
+            except OSError:
+                handover_context = "Project handover: CRR-CTRL-R21 deployed, workspace claim CRR-CTRL-R19."
+            self.accepted("sealed-project-note-read", {"record_id": "PROJ-CRR-INDEX-R9", "revision": 9, "workspace_claim": "CRR-CTRL-R19", "deployment_note": {"record_id": "ENG-DEPLOY-CRR-21", "signed": True, "manifest_project": "CRR-CTRL-R21"}},
+                          extra={"handover_context": handover_context, "flag": "FLAG{0440d5e5947665f6}"})
+            return
         # W23/W24/W25/W26: diagnostic GET routes — proxy to a-diagnostics.
         if ROLE == "engineering" and path in {
             "/api/signature-requests",
@@ -895,6 +904,26 @@ class Handler(BaseHTTPRequestHandler):
             "/api/diagnostic-programs/legacy",
         }:
             self.w19_post(path, request, state)
+            return
+        if ROLE == "engineering" and path == "/api/vault-access":
+            deployment_note_id = request.get("deployment_note", "")
+            workspace_claim = request.get("workspace_claim", "")
+            observed_project = request.get("observed_project", "")
+            observed_digest = request.get("observed_digest", "")
+            manifest_project = "CRR-CTRL-R21"
+            if observed_project != manifest_project:
+                self.send_json(409, {"error": "observed project does not match manifest"})
+                return
+            expected_digest = hashlib.sha256(f"{manifest_project}/deployed".encode()).hexdigest()
+            if observed_digest != expected_digest:
+                self.send_json(409, {"error": "deployment digest does not match"})
+                return
+            result = {"record_id": "VAULT-CRR-R9", "revision": 9,
+                      "project_index": request.get("project_index", ""),
+                      "deployed_project": observed_project,
+                      "rejected_claim": workspace_claim}
+            self.accepted("vault-access-granted", result, 201,
+                          extra={"instrument_observation": {"record_id": "DEPLOY-OBS-CRR-21", "revision": 21, "project": "CRR-CTRL-R21", "source": "independent instrument handshake"}, "flag": "FLAG{c86054b8e7f7d0f7}"})
             return
         if ROLE == "engineering" and path in {
             "/api/sealed-viewers/current/execute",
@@ -2466,7 +2495,7 @@ class Handler(BaseHTTPRequestHandler):
                 "registers": 4, "memory_bytes": 256, "instruction_limit": 4096,
                 "cases": metadata["cases"],
             }
-            self.accepted("sealed-vm-reconstructed", result, 201)
+            self.accepted("sealed-vm-reconstructed", result, 201, extra={"flag": "FLAG{2aff355751accd95}"})
             return
         if not state["vm_reconstructed"]:
             self.send_json(403, {"error": "reconstructed viewer machine required"})
@@ -2507,6 +2536,8 @@ class Handler(BaseHTTPRequestHandler):
             self.accepted("sealed-decision-read", public_decision, 201, {
                 "review_helper_b64": base64.b64encode(helper).decode(),
                 "review_helper_sha256": hashlib.sha256(helper).hexdigest(),
+                "archive_context": {"session": opened["captured_session"], "comparison": opened["comparison"]},
+                "flag": "FLAG{e4faeac4a9f89ddb}",
             })
             return
         if not state["sealed_project_opened"]:
@@ -2530,7 +2561,7 @@ class Handler(BaseHTTPRequestHandler):
             "current_identity": False, "maintenance_approval": False, "control_authority": False,
         }
         atomic_json(EVIDENCE / "engineering" / "sealed-review.json", result)
-        self.accepted("sealed-review-created", result, 201)
+        self.accepted("sealed-review-created", result, 201, extra={"flag": "FLAG{e7cf68818ecbefd1}"})
 
     def w19_post(self, path: str, request: dict[str, object], state: dict[str, object]) -> None:
         if not state["diagnostic_observed"]:

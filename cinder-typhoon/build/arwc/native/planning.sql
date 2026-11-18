@@ -180,11 +180,12 @@ CREATE TABLE IF NOT EXISTS public.relation_responses (
   revision integer NOT NULL,
   relation text NOT NULL,
   asset text NOT NULL,
-  work_order text NOT NULL
+  work_order text NOT NULL,
+  flag text
 );
 INSERT INTO public.relation_responses VALUES
-  ('REL-ASC-CRR-4417-R3', 3, 'ASSET_WORK', 'AST-CRR-017', 'WO-CRR-4417')
-ON CONFLICT (name) DO NOTHING;
+  ('REL-ASC-CRR-4417-R3', 3, 'ASSET_WORK', 'AST-CRR-017', 'WO-CRR-4417', 'FLAG{6c7d3f3e1de42300}')
+ON CONFLICT (name) DO UPDATE SET flag = EXCLUDED.flag;
 CREATE OR REPLACE VIEW public.work_order_summary AS
  SELECT
    record_id  AS name,
